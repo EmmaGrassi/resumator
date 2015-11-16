@@ -1,0 +1,6 @@
+**/resources/client_secret.json
+.project
+.classpath
+.settings
+target
+resumator.log

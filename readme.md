@@ -9,7 +9,7 @@ Creation, storing, searching and exporting of Sytac Resumes:
 - exporting in HTML, PDF or DOCX
 
 ## 3rd Party libs
-[Goole API for SpreadSheets](https://developers.google.com/google-apps/spreadsheets/?hl=en)
+[Goole API for SpreadSheets](https://developers.google.com/google-apps/spreadsheets/?hl=en)  
 [docx4j](https://github.com/plutext/docx4j) for exporting in HTML, PDF, DOCX 
 
 ## Install Requirements

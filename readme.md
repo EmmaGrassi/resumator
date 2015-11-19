@@ -17,7 +17,8 @@ Creation, storing, searching and exporting of Sytac Resumes:
 * Maven 3.x
 
 ## Usage
-1. Create a config file like the example [here](TODO), specifying your application tokens, for more info see [here](https://developers.google.com/google-apps/spreadsheets/authorize).
+1. Create a config file like the example [here](TODO), specifying your application tokens.
+2. For more info see [here](https://developers.google.com/google-apps/spreadsheets/authorize).
 
 ## License
 All the code and documentation in this repository are distributed under [MIT license](https://opensource.org/licenses/MIT).

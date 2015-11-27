@@ -1,18 +1,5 @@
 package com.sytac.resumator;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.NoSuchElementException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
@@ -24,25 +11,29 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.gdata.client.spreadsheet.SpreadsheetService;
-import com.google.gdata.data.spreadsheet.ListEntry;
-import com.google.gdata.data.spreadsheet.ListFeed;
-import com.google.gdata.data.spreadsheet.SpreadsheetEntry;
-import com.google.gdata.data.spreadsheet.SpreadsheetFeed;
-import com.google.gdata.data.spreadsheet.WorksheetEntry;
+import com.google.gdata.data.spreadsheet.*;
 import com.google.gdata.util.ServiceException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 public class App {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(App.class);
-	
-	
+
 	private static final String NAME_COLUMN = "name";
 	private static final String SURNAME_COLUMN = "surname";
 	private static final String ADDRESS_COLUMN = "address";
 	private static final String EXP1_COLUMN = "exp1";
-	private static final String EXP2_COLUMN = "exp2";
-	private static final String EXP3_COLUMN = "exp3";
-	
+
 	private static final String SERVICE_NAME = "resumator-service";
 	private static final File DATA_STORE_DIR = new File(System.getProperty("user.home"), ".credentials/resumator");
 	private static final List<String> SCOPES = Arrays.asList("https://spreadsheets.google.com/feeds","https://docs.google.com/feeds");
@@ -67,68 +58,19 @@ public class App {
 	
 	
 	private SpreadsheetService service;
-	private SpreadsheetFeed feed;
 	private List<SpreadsheetEntry> spreadsheetsList;
-	private SpreadsheetEntry sheet;
 	private List<WorksheetEntry> worksheets;
-	private String workingSheet;
-	
-	
-	public SpreadsheetService getService() {
-		return service;
-	}
-
-	public void setService(SpreadsheetService service) {
-		this.service = service;
-	}
-
-	public SpreadsheetFeed getFeed() {
-		return feed;
-	}
-
-	public void setFeed(SpreadsheetFeed feed) {
-		this.feed = feed;
-	}
-
-	public List<SpreadsheetEntry> getSpreadsheetsList() {
-		return spreadsheetsList;
-	}
-
-	public void setSpreadsheetsList(List<SpreadsheetEntry> spreadsheetsList) {
-		this.spreadsheetsList = spreadsheetsList;
-	}
-
-	public SpreadsheetEntry getSheet() {
-		return sheet;
-	}
-
-	public void setSheet(SpreadsheetEntry sheet) {
-		this.sheet = sheet;
-	}
-
-	public List<WorksheetEntry> getWorksheets() {
-		return worksheets;
-	}
-
-	public void setWorksheets(List<WorksheetEntry> worksheets) {
-		this.worksheets = worksheets;
-	}
-
-	public String getWorkingSheetName() {
-		return workingSheet;
-	}
 
 	public void setWorkingSheet(String sheetName) throws IOException, ServiceException {
-		sheet = findSpreadSheet(sheetName); //throw exception if sheet not found
+		SpreadsheetEntry sheet = findSpreadSheet(sheetName);
 		worksheets = sheet.getWorksheets();
-		this.workingSheet = sheetName;
 	}
 	
 	
 
 	public void init() throws IOException, ServiceException{
 		service = initializeAndGetSsService();
-		feed = service.getFeed(SPREADSHEET_FEED_URL, SpreadsheetFeed.class);
+		SpreadsheetFeed feed = service.getFeed(SPREADSHEET_FEED_URL, SpreadsheetFeed.class);
 		spreadsheetsList = feed.getEntries();
 	}
 	
@@ -177,10 +119,9 @@ public class App {
 	}
 	
 	SpreadsheetEntry findSpreadSheet(String sheetName){
-		SpreadsheetEntry dbSheet = null;
-		final Iterator<SpreadsheetEntry> iterator = spreadsheetsList.iterator();
-		while (iterator.hasNext()) {
-			dbSheet = iterator.next();
+		SpreadsheetEntry dbSheet;
+		for (SpreadsheetEntry aSpreadsheetsList : spreadsheetsList) {
+			dbSheet = aSpreadsheetsList;
 			if (dbSheet.getTitle().getPlainText().trim().equals(sheetName))
 				return dbSheet;
 		}

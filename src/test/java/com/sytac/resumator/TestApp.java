@@ -1,19 +1,17 @@
 package com.sytac.resumator;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.List;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.gdata.client.spreadsheet.SpreadsheetService;
 import com.google.gdata.data.spreadsheet.SpreadsheetEntry;
 import com.google.gdata.data.spreadsheet.SpreadsheetFeed;
 import com.google.gdata.util.ServiceException;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.List;
 
 public class TestApp {
 	
@@ -28,8 +26,7 @@ public class TestApp {
 		}
 	}
 	
-	
-	App app;
+	private App app;
 	
 	@Before
 	public void before(){

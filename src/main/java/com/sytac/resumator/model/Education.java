@@ -2,43 +2,43 @@ package com.sytac.resumator.model;
 
 import com.sytac.resumator.model.enums.Degree;
 
+/**
+ * A school or university attended by the employee
+ *
+ * @author Tonino Catapano
+ * @author Carlo Sciolla
+ * @since 0.1
+ */
 public class Education {
 
-	private Degree degree;
-	private String fieldOfStudy;
-	private String school;
-	private boolean graduated;
-	private Integer graduationYear;
-	
+	private final Degree degree;
+	private final String fieldOfStudy;
+	private final String school;
+	private final Boolean graduated;
+	private final Integer graduationYear;
+
+	public Education(Degree degree, String fieldOfStudy, String school, Boolean graduated, Integer graduationYear) {
+		this.degree = degree;
+		this.fieldOfStudy = fieldOfStudy;
+		this.school = school;
+		this.graduated = graduated;
+		this.graduationYear = graduationYear;
+	}
+
 	public String getSchool() {
 		return school;
-	}
-	public void setSchool(String school) {
-		this.school = school;
 	}
 	public Degree getDegree() {
 		return degree;
 	}
-	public void setDegree(Degree degree) {
-		this.degree = degree;
-	}
 	public String getFieldOfStudy() {
 		return fieldOfStudy;
-	}
-	public void setFieldOfStudy(String fieldOfStudy) {
-		this.fieldOfStudy = fieldOfStudy;
 	}
 	public int getGraduationYear() {
 		return graduationYear;
 	}
-	public void setGraduationYear(int graduationYear) {
-		this.graduationYear = graduationYear;
-	}
 	public boolean isGraduated() {
 		return graduated;
 	}
-	public void setGraduated(boolean graduated) {
-		this.graduated = graduated;
-	}
-	
+
 }

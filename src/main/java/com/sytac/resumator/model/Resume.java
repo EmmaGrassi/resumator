@@ -1,62 +1,58 @@
 package com.sytac.resumator.model;
 
+import com.sytac.resumator.model.enums.LangSkill;
+
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
-import com.sytac.resumator.model.enums.LangSkill;
-import com.sytac.resumator.model.enums.Language;
-
+/**
+ * The complete CV of an employee
+ *
+ * @author Tonino Catapano
+ * @author Carlo Sciolla
+ * @since 0.1
+ */
 public class Resume {
 
-	private String jobTitle;
-	private Employee employee;
-	private String shortBio;
-	private Map<Language,LangSkill> languages;
-	private List<Course> courses;
-	private List<Education> educations;
-	private List<Experience> experiences;
-	
+	private final String jobTitle;
+	private final Employee employee;
+	private final String shortBio;
+	private final Map<Locale,LangSkill> languages;
+	private final List<Course> courses;
+	private final List<Education> educations;
+	private final List<Experience> experiences;
+
+	public Resume(String jobTitle, Employee employee, String shortBio, Map<Locale, LangSkill> languages, List<Course> courses, List<Education> educations, List<Experience> experiences) {
+		this.jobTitle = jobTitle;
+		this.employee = employee;
+		this.shortBio = shortBio;
+		this.languages = languages;
+		this.courses = courses;
+		this.educations = educations;
+		this.experiences = experiences;
+	}
+
 	public Employee getEmployee() {
 		return employee;
-	}
-	public void setEmployee(Employee employee) {
-		this.employee = employee;
 	}
 	public String getShortBio() {
 		return shortBio;
 	}
-	public void setShortBio(String shortBio) {
-		this.shortBio = shortBio;
-	}
-	public Map<Language, LangSkill> getLanguages() {
+	public Map<Locale, LangSkill> getLanguages() {
 		return languages;
-	}
-	public void setLanguages(Map<Language, LangSkill> languages) {
-		this.languages = languages;
 	}
 	public List<Course> getCourses() {
 		return courses;
 	}
-	public void setCourses(List<Course> courses) {
-		this.courses = courses;
-	}
 	public List<Education> getEducations() {
 		return educations;
-	}
-	public void setEducations(List<Education> educations) {
-		this.educations = educations;
 	}
 	public List<Experience> getExperiences() {
 		return experiences;
 	}
-	public void setExperiences(List<Experience> experiences) {
-		this.experiences = experiences;
-	}
 	public String getJobTitle() {
 		return jobTitle;
 	}
-	public void setJobTitle(String title) {
-		this.jobTitle = title;
-	}
-	
+
 }

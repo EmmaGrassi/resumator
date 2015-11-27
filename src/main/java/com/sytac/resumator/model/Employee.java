@@ -2,43 +2,42 @@ package com.sytac.resumator.model;
 
 import com.sytac.resumator.model.enums.Nationality;
 
+/**
+ * One employee
+ *
+ * @author Tonino Catapano
+ * @author Carlo Sciolla
+ * @since 0.1
+ */
 public class Employee {
 	
-	private String name;
-	private String surname;
-	private int yearOfBirth;
-	private Nationality nationality;
-	private String currentResidence;
-	
-	
+	private final String name;
+	private final String surname;
+	private final Integer yearOfBirth;
+	private final Nationality nationality;
+	private final String currentResidence;
+
+	public Employee(String name, String surname, Integer yearOfBirth, Nationality nationality, String currentResidence) {
+		this.name = name;
+		this.surname = surname;
+		this.yearOfBirth = yearOfBirth;
+		this.nationality = nationality;
+		this.currentResidence = currentResidence;
+	}
+
 	public String getName() {
 		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
 	}
 	public String getSurname() {
 		return surname;
 	}
-	public void setSurname(String surname) {
-		this.surname = surname;
-	}
-	public int getYearOfBirth() {
+	public Integer getYearOfBirth() {
 		return yearOfBirth;
-	}
-	public void setYearOfBirth(int yearOfBirth) {
-		this.yearOfBirth = yearOfBirth;
 	}
 	public Nationality getNationality() {
 		return nationality;
 	}
-	public void setNationality(Nationality nationality) {
-		this.nationality = nationality;
-	}
 	public String getCurrentResidence() {
 		return currentResidence;
-	}
-	public void setCurrentResidence(String currentResidence) {
-		this.currentResidence = currentResidence;
 	}
 }

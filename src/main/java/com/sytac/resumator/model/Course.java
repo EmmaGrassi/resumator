@@ -1,29 +1,34 @@
 package com.sytac.resumator.model;
 
+import java.util.Date;
+
+/**
+ * A course / training followed by the employee
+ *
+ * @author Tonino Catapano
+ * @author Carlo Sciolla
+ * @since 0.1
+ */
 public class Course {
 	
-	private String name;
-	private String description;
-	private int year;
-	
-	
+	private final String name;
+	private final String description;
+	private final Date date;
+
+	public Course(String name, String description, Date date) {
+		this.name = name;
+		this.description = description;
+		this.date = date;
+	}
+
 	public String getName() {
 		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
 	}
 	public String getDescription() {
 		return description;
 	}
-	public void setDescription(String description) {
-		this.description = description;
+	public Date getYear() {
+		return date;
 	}
-	public int getYear() {
-		return year;
-	}
-	public void setYear(int year) {
-		this.year = year;
-	}
-	
+
 }

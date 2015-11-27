@@ -4,7 +4,6 @@ import io.sytac.resumator.ConfigurationException;
 import io.sytac.resumator.model.Event;
 import io.sytac.resumator.store.EventStore;
 import io.sytac.resumator.store.StoreException;
-import io.sytac.resumator.store.sql.mapper.DateTypeHandler;
 import io.sytac.resumator.store.sql.mapper.EventMapper;
 import org.apache.ibatis.datasource.pooled.PooledDataSource;
 import org.apache.ibatis.mapping.Environment;
@@ -14,7 +13,6 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
-import org.apache.ibatis.type.JdbcType;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -42,7 +40,6 @@ public class SqlStore implements EventStore {
         Environment environment = new Environment("resumator", transactionFactory, dataSource);
         Configuration configuration = new Configuration(environment);
         configuration.addMapper(EventMapper.class);
-        configuration.getTypeHandlerRegistry().register(JdbcType.TIMESTAMP, new DateTypeHandler());
         sessionFactory = new SqlSessionFactoryBuilder().build(configuration);
     }
 

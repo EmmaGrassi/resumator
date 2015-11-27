@@ -1,6 +1,11 @@
 package io.sytac.resumator;
 
-import java.io.File;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.*;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Optional;
 import java.util.Properties;
 
@@ -17,14 +22,41 @@ import java.util.Properties;
  */
 public class Configuration {
 
-    private static final File DEFAULT_CONFIG_LOCATION = new File(System.getProperty("user.home"), ".credentials/resumator");
-//    private final Properties defaultProperties;
-//    private final Properties userProperties;
+    private static final Logger LOGGER = LoggerFactory.getLogger(Configuration.class);
+
+    private static final String STATIC_CONFIG_LOCATION = "resumator.properties";
+//    private static final File DEFAULT_CONFIG_LOCATION = Paths.get(System.getProperty("user.home"), ".resumator", "config.properties").toFile();
+    private final Properties defaultProperties;
 
     public Configuration() {
-//        defaultProperties = readDefaultProperties();
-//        File configFile = chooseConfigFileLocation();
-//        userProperties = readProperties();
+        defaultProperties = readDefaultProperties();
+    }
+
+    private Properties readDefaultProperties() {
+        URL url = this.getClass().getClassLoader().getResource(STATIC_CONFIG_LOCATION);
+        try {
+            // skipping proper null check here as static config should be always embedded
+            assert url != null;
+            File staticConfig = new File(url.toURI());
+            return readProperties(staticConfig);
+        } catch (URISyntaxException e) {
+            LOGGER.error("Cannot find the static configuration file, exiting");
+            throw new IllegalStateException();
+        }
+    }
+
+    private Properties readProperties(final File propertiesFile) {
+        final Properties properties = new Properties();
+        try(final InputStream propertiesStream = new FileInputStream(propertiesFile)) {
+            properties.load(propertiesStream);
+        } catch (FileNotFoundException e) {
+            // cannot happen, file should be retrieved through class loader
+        } catch (IOException e) {
+            LOGGER.error("Cannot read the static configuration file, exiting");
+            throw new IllegalStateException(e);
+        }
+
+        return properties;
     }
 
     /**
@@ -33,7 +65,25 @@ public class Configuration {
      * @param key The configuration key to look
      * @return The configuration entry found, or nothing
      */
-    public Optional<String> getProperty(String key) {
-        return Optional.ofNullable(System.getProperty(key));
+    public Optional<String> getProperty(final String key) {
+
+        return or(Optional.ofNullable(System.getProperty(key)),
+                  Optional.ofNullable(defaultProperties.getProperty(key)));
+    }
+
+    /**
+     * Returns the first {@link Optional} value that's present, or an empty one if none is found
+     *
+     * @param options The optionals to process
+     * @param <T> The type of the optional
+     * @return The first optional which is present, or empty
+     */
+    @SafeVarargs
+    static <T> Optional<T> or(Optional<T>... options) {
+        for(Optional<T> option : options) {
+            if(option.isPresent()) return option;
+        }
+
+        return Optional.empty();
     }
 }

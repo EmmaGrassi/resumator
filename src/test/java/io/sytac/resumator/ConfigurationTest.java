@@ -28,4 +28,14 @@ public class ConfigurationTest {
         assertEquals("System properties are not read properly", "Check!", property);
     }
 
+    @Test
+    public void systemPropertiesWinOverDefault(){
+        String serviceName = configuration.getProperty("resumator.service.name").get();
+        assertEquals("Static configuration was not found", "The Resumator", serviceName);
+
+        System.setProperty("resumator.service.name", "foobar");
+        serviceName = configuration.getProperty("resumator.service.name").get();
+        assertEquals("System properties don't override static default properties", "foobar", serviceName);
+    }
+
 }

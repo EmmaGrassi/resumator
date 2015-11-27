@@ -4,15 +4,20 @@ import io.sytac.resumator.ConfigurationException;
 import io.sytac.resumator.model.Event;
 import io.sytac.resumator.store.EventStore;
 import io.sytac.resumator.store.StoreException;
+import io.sytac.resumator.store.sql.mapper.DateTypeHandler;
+import io.sytac.resumator.store.sql.mapper.EventMapper;
 import org.apache.ibatis.datasource.pooled.PooledDataSource;
 import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.session.Configuration;
+import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
+import org.apache.ibatis.type.JdbcType;
 
 import javax.sql.DataSource;
+import java.util.List;
 
 /**
  * Stores and retrieves events from a SQL database
@@ -27,7 +32,8 @@ public class SqlStore implements EventStore {
     private final static String CONF_DB_USER   = "resumator.db.user";
     private final static String CONF_DB_PASS   = "resumator.db.password";
 
-    private final SqlSessionFactory sqlSessionFactory;
+    private ThreadLocal<SqlSession> session = new ThreadLocal<>();
+    private final SqlSessionFactory sessionFactory;
     private final DataSource dataSource;
 
     public SqlStore(final io.sytac.resumator.Configuration properties){
@@ -35,7 +41,9 @@ public class SqlStore implements EventStore {
         TransactionFactory transactionFactory = new JdbcTransactionFactory();
         Environment environment = new Environment("resumator", transactionFactory, dataSource);
         Configuration configuration = new Configuration(environment);
-        sqlSessionFactory = new SqlSessionFactoryBuilder().build(configuration);
+        configuration.addMapper(EventMapper.class);
+        configuration.getTypeHandlerRegistry().register(JdbcType.TIMESTAMP, new DateTypeHandler());
+        sessionFactory = new SqlSessionFactoryBuilder().build(configuration);
     }
 
     private PooledDataSource createDataSource(final io.sytac.resumator.Configuration properties) {
@@ -57,6 +65,31 @@ public class SqlStore implements EventStore {
 
     @Override
     public void put(Event event) throws StoreException {
+        if(session.get() == null) {
+            session.set(sessionFactory.openSession());
+        }
+        EventMapper mapper = session.get().getMapper(EventMapper.class);
+        mapper.put(event);
+        session.get().commit();
+    }
 
+    @Override
+    public List<Event> getAll() throws StoreException {
+        if(session.get() == null) {
+            session.set(sessionFactory.openSession());
+        }
+        EventMapper mapper = session.get().getMapper(EventMapper.class);
+        session.get().commit();
+        return mapper.getAll();
+    }
+
+    @Override
+    public void removeAll() {
+        if(session.get() == null) {
+            session.set(sessionFactory.openSession());
+        }
+        EventMapper mapper = session.get().getMapper(EventMapper.class);
+        mapper.removeAll();
+        session.get().commit();
     }
 }

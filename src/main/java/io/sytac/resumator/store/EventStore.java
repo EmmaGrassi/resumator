@@ -2,6 +2,8 @@ package io.sytac.resumator.store;
 
 import io.sytac.resumator.model.Event;
 
+import java.util.List;
+
 /**
  * Models the retrieval of events
  *
@@ -10,4 +12,6 @@ import io.sytac.resumator.model.Event;
  */
 public interface EventStore {
     void put(Event event) throws StoreException;
+    List<Event> getAll() throws StoreException;
+    void removeAll();
 }

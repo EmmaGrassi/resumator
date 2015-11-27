@@ -1,5 +1,6 @@
 package io.sytac.resumator.model;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -15,16 +16,20 @@ public class Event {
     final Long insertOrder;
     final Long streamOrder;
     final byte[] payload;
-    final Date createdAt;
-    final String eventType;
+    final Timestamp created;
+    final String type;
 
-    public Event(String id, String streamId, Long insertOrder, Long streamOrder, byte[] payload, Date createdAt, String eventType) {
+    public Event(String id, String streamId, Long insertOrder, Long streamOrder, byte[] payload, Timestamp created, String type) {
         this.id = id;
         this.streamId = streamId;
         this.insertOrder = insertOrder;
         this.streamOrder = streamOrder;
         this.payload = payload;
-        this.createdAt = createdAt;
-        this.eventType = eventType;
+        this.created = created;
+        this.type = type;
+    }
+
+    public String getId() {
+        return this.id;
     }
 }

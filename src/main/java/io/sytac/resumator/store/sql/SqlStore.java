@@ -1,7 +1,9 @@
 package io.sytac.resumator.store.sql;
 
 import io.sytac.resumator.ConfigurationException;
+import io.sytac.resumator.model.Event;
 import io.sytac.resumator.store.EventStore;
+import io.sytac.resumator.store.StoreException;
 import org.apache.ibatis.datasource.pooled.PooledDataSource;
 import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.session.Configuration;
@@ -51,5 +53,10 @@ public class SqlStore implements EventStore {
 
     public DataSource getDataSource() {
         return dataSource;
+    }
+
+    @Override
+    public void put(Event event) throws StoreException {
+
     }
 }

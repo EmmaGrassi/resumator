@@ -2,8 +2,13 @@ package io.sytac.resumator.store.sql;
 
 import io.sytac.resumator.AbstractResumatorTest;
 import io.sytac.resumator.Configuration;
+import io.sytac.resumator.model.Event;
+import io.sytac.resumator.store.StoreException;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Date;
+import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 
@@ -25,7 +30,13 @@ public class SqlStoreTest extends AbstractResumatorTest {
     }
 
     @Test
-    public void testDBConnection(){
+    public void connectedToTheTestDB(){
         assertEquals(configuration.getProperty("resumator.db.user").get(), "sa");
+    }
+
+    @Test
+    public void canStoreOneEvent() {
+        Event event = new Event(UUID.randomUUID().toString(), "constant", 1l, 1l, "test".getBytes(), new Date(), "test");
+        store.put(event);
     }
 }

@@ -1,5 +1,6 @@
 package io.sytac.resumator;
 
+import com.google.common.io.Resources;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,7 +37,7 @@ public class Configuration {
     }
 
     private Properties readDefaultProperties() {
-        URL url = this.getClass().getClassLoader().getResource(STATIC_CONFIG_LOCATION);
+        URL url = Resources.getResource(STATIC_CONFIG_LOCATION);
         try {
             // skipping proper null check here as static config should be always embedded
             assert url != null;

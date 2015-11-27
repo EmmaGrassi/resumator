@@ -1,5 +1,6 @@
 package io.sytac.resumator;
 
+import com.google.common.io.Resources;
 import org.junit.Before;
 
 import java.io.File;
@@ -16,7 +17,7 @@ public class AbstractResumatorTest {
     }
 
     private String getTestProperties() throws URISyntaxException {
-        return new File(this.getClass().getClassLoader().getResource("test.properties").toURI()).toString();
+        return new File(Resources.getResource("test.properties").toURI()).toString();
     }
 
 }

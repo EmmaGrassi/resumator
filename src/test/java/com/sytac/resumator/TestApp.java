@@ -15,8 +15,6 @@ import com.google.gdata.data.spreadsheet.SpreadsheetEntry;
 import com.google.gdata.data.spreadsheet.SpreadsheetFeed;
 import com.google.gdata.util.ServiceException;
 
-
-
 public class TestApp {
 	
 	private static URL SPREADSHEET_FEED_URL;
@@ -37,16 +35,7 @@ public class TestApp {
 	public void before(){
 		app = new App();
 	}
-	
-	@After
-	public void after(){
-		
-	}
 
-
-
-	
-	
 	@Test
 	public void authorizationOK() throws IOException {
 		final Credential credential = app.authorize();
@@ -54,8 +43,7 @@ public class TestApp {
 		org.junit.Assert.assertNotNull(credential.getAccessToken());
 		org.junit.Assert.assertFalse(credential.getAccessToken().isEmpty());
 	}
-	
-	
+
 	@Test
 	public void atLeastOneSpreadSheetInAccount() throws IOException, ServiceException{
 		final SpreadsheetService service = app.initializeAndGetSsService();
@@ -70,9 +58,5 @@ public class TestApp {
 		org.junit.Assert.assertEquals("Test", (app.findSpreadSheet("Test")).getTitle().getPlainText());
 		
 	}
-	
-	
-	
-	
-	 
+
 }

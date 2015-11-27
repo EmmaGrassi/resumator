@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Paths;
 import java.util.Optional;
 import java.util.Properties;
 
@@ -25,11 +26,13 @@ public class Configuration {
     private static final Logger LOGGER = LoggerFactory.getLogger(Configuration.class);
 
     private static final String STATIC_CONFIG_LOCATION = "resumator.properties";
-//    private static final File DEFAULT_CONFIG_LOCATION = Paths.get(System.getProperty("user.home"), ".resumator", "config.properties").toFile();
+    private static final File DEFAULT_CONFIG_LOCATION = Paths.get(System.getProperty("user.home"), ".resumator", "config.properties").toFile();
     private final Properties defaultProperties;
+    private final Properties userProperties;
 
     public Configuration() {
         defaultProperties = readDefaultProperties();
+        userProperties = getUserProperties();
     }
 
     private Properties readDefaultProperties() {
@@ -68,6 +71,7 @@ public class Configuration {
     public Optional<String> getProperty(final String key) {
 
         return or(Optional.ofNullable(System.getProperty(key)),
+                  Optional.ofNullable(userProperties.getProperty(key)),
                   Optional.ofNullable(defaultProperties.getProperty(key)));
     }
 
@@ -85,5 +89,35 @@ public class Configuration {
         }
 
         return Optional.empty();
+    }
+
+    private Properties getUserProperties() {
+        Optional<File> properties = getCustomLocationOr(DEFAULT_CONFIG_LOCATION);
+        if(properties.isPresent()) {
+            return readProperties(properties.get());
+        }
+
+        return new Properties();
+    }
+
+    private Optional<File> getCustomLocationOr(final File defaultFile) {
+        File propertiesFile;
+        String customLocation = System.getProperty("resumator.config");
+        if(customLocation != null) {
+            propertiesFile = Paths.get(customLocation).toFile();
+            if(!propertiesFile.isFile()) {
+                LOGGER.warn("No configuration file was found at the provided location: {}", customLocation);
+                return Optional.empty();
+            }
+        } else {
+            if(defaultFile.isFile()) {
+                propertiesFile = defaultFile;
+            } else {
+                LOGGER.info("No configuration file was found");
+                return Optional.empty();
+            }
+        }
+
+        return Optional.of(propertiesFile);
     }
 }

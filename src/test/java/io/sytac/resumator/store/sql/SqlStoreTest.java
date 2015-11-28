@@ -3,6 +3,7 @@ package io.sytac.resumator.store.sql;
 import io.sytac.resumator.AbstractResumatorTest;
 import io.sytac.resumator.Configuration;
 import io.sytac.resumator.model.Event;
+import io.sytac.resumator.store.IllegalInsertSequenceException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,6 +47,10 @@ public class SqlStoreTest extends AbstractResumatorTest {
         return new Event(UUID.randomUUID().toString(), "constant", 1l, 1l, "test".getBytes(), new Timestamp(0), "test");
     }
 
+    private Event createRandomEvent(final Long insertSequence) {
+        return new Event(UUID.randomUUID().toString(), "constant", insertSequence, 1l, "test".getBytes(), new Timestamp(0), "test");
+    }
+
     @Test
     public void canRetrieveOneEvent() {
         assertTrue("DB is not clean at the start of a test", store.getAll().size() == 0);
@@ -53,6 +58,15 @@ public class SqlStoreTest extends AbstractResumatorTest {
         store.put(event);
         Event retrieved = store.getAll().get(0);
         assertEquals("Retrieved event doesn't match with the stored event", event.getId(), retrieved.getId());
+    }
+
+    @Test(expected = IllegalInsertSequenceException.class)
+    public void insertSequenceMustBeUnique(){
+        Event event1 = createRandomEvent(1l);
+        Event event2 = createRandomEvent(1l);
+
+        store.put(event1);
+        store.put(event2);
     }
 
     @After

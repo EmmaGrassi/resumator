@@ -31,4 +31,7 @@ public interface EventMapper {
 
     @Delete("DELETE FROM resumator_events")
     void removeAll();
+
+    @Select("SELECT MAX(insert_order) FROM resumator_events")
+    Long getLastInsertOrder();
 }

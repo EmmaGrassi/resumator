@@ -32,4 +32,12 @@ public class Event {
     public String getId() {
         return this.id;
     }
+
+    public boolean hasInsertOrder() {
+        return insertOrder != null;
+    }
+
+    public Long getInsertOrder() {
+        return insertOrder;
+    }
 }

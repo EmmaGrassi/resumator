@@ -2,6 +2,7 @@ package io.sytac.resumator.store.sql;
 
 import io.sytac.resumator.ConfigurationException;
 import io.sytac.resumator.model.Event;
+import io.sytac.resumator.store.IllegalInsertSequenceException;
 import io.sytac.resumator.store.EventStore;
 import io.sytac.resumator.store.StoreException;
 import io.sytac.resumator.store.sql.mapper.EventMapper;
@@ -66,8 +67,20 @@ public class SqlStore implements EventStore {
             session.set(sessionFactory.openSession());
         }
         EventMapper mapper = session.get().getMapper(EventMapper.class);
+        checkInsertSequence(event, mapper);
         mapper.put(event);
         session.get().commit();
+    }
+
+    private void checkInsertSequence(Event event, EventMapper mapper) {
+        if(event.hasInsertOrder()) {
+            Long insertSequence = event.getInsertOrder();
+            Long lastInsertSequence = mapper.getLastInsertOrder();
+            lastInsertSequence = lastInsertSequence == null ? -1 : lastInsertSequence;
+            if(lastInsertSequence >= insertSequence) {
+                throw new IllegalInsertSequenceException();
+            }
+        }
     }
 
     @Override

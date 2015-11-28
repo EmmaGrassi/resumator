@@ -40,4 +40,16 @@ public class Event {
     public Long getInsertOrder() {
         return insertOrder;
     }
+
+    public boolean hasStreamOrder() {
+        return streamOrder != null;
+    }
+
+    public Long getStreamOrder() {
+        return streamOrder;
+    }
+
+    public String getStreamId() {
+        return streamId;
+    }
 }

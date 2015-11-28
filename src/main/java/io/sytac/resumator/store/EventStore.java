@@ -11,7 +11,28 @@ import java.util.List;
  * @since 0.1
  */
 public interface EventStore {
-    void put(Event event) throws StoreException;
-    List<Event> getAll() throws StoreException;
+    /**
+     * Puts a new event into the store
+     *
+     * @param event The event to store
+     * @throws IllegalInsertOrderException when the event contains an insert order number which is already used in the store
+     * @throws IllegalStreamOrderException when the event contains a stream order which is already used in the store for the given event stream
+     * @since 0.1
+     */
+    void put(Event event);
+
+    /**
+     * Retrieves all the events in the store
+     *
+     * @return All the events found in the store
+     * @since 0.1
+     */
+    List<Event> getAll();
+
+    /**
+     * Clears out all the events from the store, effectively making it empty.
+     *
+     * @since 0.1
+     */
     void removeAll();
 }

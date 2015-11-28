@@ -34,4 +34,7 @@ public interface EventMapper {
 
     @Select("SELECT MAX(insert_order) FROM resumator_events")
     Long getLastInsertOrder();
+
+    @Select("SELECT MAX(stream_order) FROM resumator_events WHERE stream_id=#{stream}")
+    Long getLastStreamOrder(@Param("stream") String streamId);
 }

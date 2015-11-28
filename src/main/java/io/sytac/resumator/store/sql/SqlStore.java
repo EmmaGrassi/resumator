@@ -2,9 +2,9 @@ package io.sytac.resumator.store.sql;
 
 import io.sytac.resumator.ConfigurationException;
 import io.sytac.resumator.model.Event;
-import io.sytac.resumator.store.IllegalInsertSequenceException;
+import io.sytac.resumator.store.IllegalInsertOrderException;
 import io.sytac.resumator.store.EventStore;
-import io.sytac.resumator.store.StoreException;
+import io.sytac.resumator.store.IllegalStreamOrderException;
 import io.sytac.resumator.store.sql.mapper.EventMapper;
 import org.apache.ibatis.datasource.pooled.PooledDataSource;
 import org.apache.ibatis.mapping.Environment;
@@ -62,29 +62,41 @@ public class SqlStore implements EventStore {
     }
 
     @Override
-    public void put(Event event) throws StoreException {
+    public void put(Event event) {
         if(session.get() == null) {
             session.set(sessionFactory.openSession());
         }
         EventMapper mapper = session.get().getMapper(EventMapper.class);
-        checkInsertSequence(event, mapper);
+        checkInsertOrder(event, mapper);
+        checkStreamOrder(event, mapper);
         mapper.put(event);
         session.get().commit();
     }
 
-    private void checkInsertSequence(Event event, EventMapper mapper) {
+    private void checkStreamOrder(Event event, EventMapper mapper) {
+        if(event.hasStreamOrder()){
+            Long streamOrder = event.getStreamOrder();
+            Long lastStreamOrder = mapper.getLastStreamOrder(event.getStreamId());
+            lastStreamOrder = lastStreamOrder == null ? -1 : lastStreamOrder;
+            if(lastStreamOrder >= streamOrder) {
+                throw new IllegalStreamOrderException();
+            }
+        }
+    }
+
+    private void checkInsertOrder(Event event, EventMapper mapper) {
         if(event.hasInsertOrder()) {
             Long insertSequence = event.getInsertOrder();
             Long lastInsertSequence = mapper.getLastInsertOrder();
             lastInsertSequence = lastInsertSequence == null ? -1 : lastInsertSequence;
             if(lastInsertSequence >= insertSequence) {
-                throw new IllegalInsertSequenceException();
+                throw new IllegalInsertOrderException();
             }
         }
     }
 
     @Override
-    public List<Event> getAll() throws StoreException {
+    public List<Event> getAll() {
         if(session.get() == null) {
             session.set(sessionFactory.openSession());
         }

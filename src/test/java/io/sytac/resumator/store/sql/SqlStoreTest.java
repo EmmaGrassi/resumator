@@ -3,7 +3,8 @@ package io.sytac.resumator.store.sql;
 import io.sytac.resumator.AbstractResumatorTest;
 import io.sytac.resumator.Configuration;
 import io.sytac.resumator.model.Event;
-import io.sytac.resumator.store.IllegalInsertSequenceException;
+import io.sytac.resumator.store.IllegalInsertOrderException;
+import io.sytac.resumator.store.IllegalStreamOrderException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,11 +45,15 @@ public class SqlStoreTest extends AbstractResumatorTest {
     }
 
     private Event createRandomEvent() {
-        return new Event(UUID.randomUUID().toString(), "constant", 1l, 1l, "test".getBytes(), new Timestamp(0), "test");
+        return new Event(UUID.randomUUID().toString(), "stream", 1l, 1l, "test".getBytes(), new Timestamp(0), "test");
     }
 
     private Event createRandomEvent(final Long insertSequence) {
-        return new Event(UUID.randomUUID().toString(), "constant", insertSequence, 1l, "test".getBytes(), new Timestamp(0), "test");
+        return new Event(UUID.randomUUID().toString(), "stream", insertSequence, 1l, "test".getBytes(), new Timestamp(0), "test");
+    }
+
+    private Event createRandomEvent(final Long insertSequence, final String streamId, final Long streamOrder) {
+        return new Event(UUID.randomUUID().toString(), streamId, insertSequence, streamOrder, "test".getBytes(), new Timestamp(0), "test");
     }
 
     @Test
@@ -60,10 +65,19 @@ public class SqlStoreTest extends AbstractResumatorTest {
         assertEquals("Retrieved event doesn't match with the stored event", event.getId(), retrieved.getId());
     }
 
-    @Test(expected = IllegalInsertSequenceException.class)
+    @Test(expected = IllegalInsertOrderException.class)
     public void insertSequenceMustBeUnique(){
         Event event1 = createRandomEvent(1l);
         Event event2 = createRandomEvent(1l);
+
+        store.put(event1);
+        store.put(event2);
+    }
+
+    @Test(expected = IllegalStreamOrderException.class)
+    public void streamOrderMustBeUnique(){
+        Event event1 = createRandomEvent(1l, "stream", 1l);
+        Event event2 = createRandomEvent(2l, "stream", 1l);
 
         store.put(event1);
         store.put(event2);

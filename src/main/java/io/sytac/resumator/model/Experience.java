@@ -61,7 +61,4 @@ public class Experience {
 	public List<String> getMethodologies() {
 		return methodologies;
 	}
-
-
-	
 }

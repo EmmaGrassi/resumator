@@ -1,7 +1,6 @@
 package io.sytac.resumator.model;
 
 import java.sql.Timestamp;
-import java.util.Date;
 
 /**
  * Models events flowing through the system

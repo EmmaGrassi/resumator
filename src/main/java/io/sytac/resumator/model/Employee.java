@@ -3,7 +3,7 @@ package io.sytac.resumator.model;
 import io.sytac.resumator.model.enums.Nationality;
 
 /**
- * One employee
+ * One employee. Acts as the Aggregate Root for the Employee aggregate
  *
  * @author Tonino Catapano
  * @author Carlo Sciolla

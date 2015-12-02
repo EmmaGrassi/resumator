@@ -29,15 +29,19 @@ public class ResumatorApp {
         banner();
         final Configuration configuration = loadConfiguration();
 
-        final ResourceConfig rc = new ResourceConfig().packages("io.sytac.resumator.http");
+        final ResourceConfig rc = registerApplicationResorces(new ResourceConfig());
         final Server server = startServer(configuration, rc);
+    }
+
+    protected static ResourceConfig registerApplicationResorces(final ResourceConfig rc) {
+        return rc.packages("io.sytac.resumator.http");
     }
 
     private static Server startServer(final Configuration configuration, final ResourceConfig rc) {
         final Optional<URI> maybeURI = configuration.getURIProperty("resumator.http.uri");
         final URI uri = maybeURI.orElseGet(() -> {
             try {
-                return new URI("http://localhost:8080/resumator");
+                return new URI("http://localhost:8080");
             } catch (URISyntaxException e) {
                 // NOP
             }

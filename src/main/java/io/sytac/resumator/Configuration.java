@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;
@@ -120,5 +121,22 @@ public class Configuration {
         }
 
         return Optional.of(propertiesFile);
+    }
+
+    /**
+     * Retrieves a configuration entry as a {@link URL}
+     *
+     * @param key The key of the configuration to retrieve as a {@link URL}
+     * @return The URL property if found
+     */
+    public Optional<URI> getURIProperty(String key) {
+        final Optional<String> string = getProperty(key);
+        return string.map(value -> {
+            try {
+                return new URI(value);
+            } catch (URISyntaxException e) {
+                throw new ConfigurationException(key);
+            }
+        });
     }
 }

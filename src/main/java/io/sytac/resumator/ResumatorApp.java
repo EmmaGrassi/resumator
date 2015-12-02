@@ -16,7 +16,7 @@ import java.util.Optional;
  *   ║ ├─┤├┤   ╠╦╝├┤ └─┐│ ││││├─┤ │ │ │├┬┘
  *   ╩ ┴ ┴└─┘  ╩╚═└─┘└─┘└─┘┴ ┴┴ ┴ ┴ └─┘┴└─
  *
- * The entry point to the Resumator&trade;. Making consultants life better.
+ * The entry point to the Resumator&trade;. Making consultanting life easier.
  *
  * @author Carlo Sciolla
  * @since 0.1

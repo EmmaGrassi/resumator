@@ -2,7 +2,7 @@ package io.sytac.resumator.http;
 
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
-import com.theoryinpractise.halbuilder.standard.StandardRepresentationFactory;
+import com.theoryinpractise.halbuilder.json.JsonRepresentationFactory;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -17,7 +17,7 @@ import javax.ws.rs.Produces;
 @Path("info")
 public class ServiceInfo {
 
-    private final RepresentationFactory rest = new StandardRepresentationFactory();
+    private final RepresentationFactory rest = new JsonRepresentationFactory();
 
     @GET
     @Produces(RepresentationFactory.HAL_JSON)

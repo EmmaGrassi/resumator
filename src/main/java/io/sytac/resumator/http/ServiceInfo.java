@@ -6,7 +6,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 /**
- * Created by skuro on 02/12/15.
+ * Main entry point for the API: provides hypermedia links to the other resources
+ *
+ * @author Carlo Sciolla
+ * @since 0.1
  */
 @Path("info")
 public class ServiceInfo {

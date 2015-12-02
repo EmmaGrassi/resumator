@@ -23,7 +23,7 @@ import java.util.Optional;
  */
 public class ResumatorApp {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(App.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ResumatorApp.class);
 
 	public static void main(String[] args) throws IOException {
         banner();

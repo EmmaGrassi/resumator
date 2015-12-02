@@ -115,7 +115,7 @@ public class Configuration {
             if(defaultFile.isFile()) {
                 propertiesFile = defaultFile;
             } else {
-                LOGGER.info("No configuration file was found");
+                LOGGER.debug("No configuration file was found");
                 return Optional.empty();
             }
         }

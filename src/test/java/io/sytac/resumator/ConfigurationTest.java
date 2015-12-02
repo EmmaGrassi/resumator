@@ -3,6 +3,8 @@ package io.sytac.resumator;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Random;
 
 import static org.junit.Assert.*;
@@ -36,6 +38,13 @@ public class ConfigurationTest {
         System.setProperty("resumator.service.name", "foobar");
         serviceName = configuration.getProperty("resumator.service.name").get();
         assertEquals("System properties don't override static default properties", "foobar", serviceName);
+    }
+
+    @Test
+    public void canGetURIsOutOfConfig() throws URISyntaxException {
+        System.setProperty("resumator.http.uri", "http://1.1.1.1:8080/resumator");
+        URI uri = configuration.getURIProperty("resumator.http.uri").get();
+        assertEquals("URIs are not properly supported", new URI("http://1.1.1.1:8080/resumator"), uri);
     }
 
 }

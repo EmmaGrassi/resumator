@@ -12,11 +12,11 @@ import java.net.URISyntaxException;
 import java.util.Optional;
 
 /**
- * The entry point to the Resumator&trade;. Making consultants life better.
- *
- *  ╔╦╗┬ ┬┌─┐  ╦═╗┌─┐┌─┐┬ ┬┌┬┐┌─┐┌┬┐┌─┐┬─┐
+ *  ╔╦╗┬ ┬┌─┐  ╦═╗┌─┐┌─┐┬ ┬┌┬┐┌─┐┌┬┐┌─┐┬─┐TM
  *   ║ ├─┤├┤   ╠╦╝├┤ └─┐│ ││││├─┤ │ │ │├┬┘
  *   ╩ ┴ ┴└─┘  ╩╚═└─┘└─┘└─┘┴ ┴┴ ┴ ┴ └─┘┴└─
+ *
+ * The entry point to the Resumator&trade;. Making consultants life better.
  *
  * @author Carlo Sciolla
  * @since 0.1

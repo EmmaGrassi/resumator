@@ -34,7 +34,9 @@ public class ResumatorApp {
     }
 
     protected static ResourceConfig registerApplicationResorces(final ResourceConfig rc) {
-        return rc.packages("io.sytac.resumator.http");
+        return rc.packages(
+                "io.sytac.resumator.http",                // Resumator
+                "com.theoryinpractise.halbuilder.jaxrs"); // HAL support
     }
 
     private static Server startServer(final Configuration configuration, final ResourceConfig rc) {

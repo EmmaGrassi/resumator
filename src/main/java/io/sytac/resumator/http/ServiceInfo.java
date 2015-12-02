@@ -1,9 +1,12 @@
 package io.sytac.resumator.http;
 
+import com.theoryinpractise.halbuilder.api.Representation;
+import com.theoryinpractise.halbuilder.api.RepresentationFactory;
+import com.theoryinpractise.halbuilder.standard.StandardRepresentationFactory;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 
 /**
  * Main entry point for the API: provides hypermedia links to the other resources
@@ -14,9 +17,15 @@ import javax.ws.rs.core.MediaType;
 @Path("info")
 public class ServiceInfo {
 
+    private final RepresentationFactory rest = new StandardRepresentationFactory();
+
     @GET
-    @Produces(MediaType.TEXT_PLAIN)
-    public String helloWorld() {
-        return "hello, world!";
+    @Produces(RepresentationFactory.HAL_JSON)
+    public Representation helloWorld() {
+
+        return rest.newRepresentation()
+                .withProperty("app-name", "Resumator")
+                .withProperty("app-version", "0.1")
+                .withLink("self", "/info");
     }
 }

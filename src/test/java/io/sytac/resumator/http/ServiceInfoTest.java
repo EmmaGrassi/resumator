@@ -21,7 +21,6 @@ import javax.ws.rs.ext.MessageBodyWriter;
 import java.io.*;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
-import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
 
@@ -63,8 +62,7 @@ public class ServiceInfoTest extends JerseyTest {
 
         @Override
         public ContentRepresentation readFrom(Class<ContentRepresentation> type, Type genericType, Annotation[] annotations, MediaType mediaType, MultivaluedMap<String, String> httpHeaders, InputStream entityStream) throws IOException, WebApplicationException {
-            final ContentRepresentation representation = new JsonRepresentationFactory().readRepresentation(mediaType.toString(), new InputStreamReader(entityStream));
-            return representation;
+            return new JsonRepresentationFactory().readRepresentation(mediaType.toString(), new InputStreamReader(entityStream));
         }
     }
 

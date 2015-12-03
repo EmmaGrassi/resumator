@@ -30,7 +30,8 @@ public class RESTTest extends JerseyTest {
 
     @Override
     public Application configure() {
-        return new ResourceConfig(ServiceInfo.class)
+        return new ResourceConfig()
+                .packages("io.sytac.resumator.http")
                 .register(new ConfigurationBinder())
                 .register(HALMessageBodyReader.class)
                 .register(HALMessageBodyWriter.class);

@@ -3,7 +3,9 @@ package io.sytac.resumator.http;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import com.theoryinpractise.halbuilder.json.JsonRepresentationFactory;
+import io.sytac.resumator.Configuration;
 
+import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -18,14 +20,20 @@ import javax.ws.rs.Produces;
 public class ServiceInfo {
 
     private final RepresentationFactory rest = new JsonRepresentationFactory();
+    private final Configuration config;
+
+    @Inject
+    public ServiceInfo(final Configuration configuration) {
+        this.config = configuration;
+    }
 
     @GET
     @Produces(RepresentationFactory.HAL_JSON)
     public Representation helloWorld() {
 
         return rest.newRepresentation()
-                .withProperty("app-name", "Resumator")
-                .withProperty("app-version", "0.1")
+                .withProperty("app-name", config.getProperty("resumator.service.name").orElse("--"))
+                .withProperty("app-version", config.getProperty("resumator.service.version").orElse("--"))
                 .withLink("self", "/info");
     }
 }

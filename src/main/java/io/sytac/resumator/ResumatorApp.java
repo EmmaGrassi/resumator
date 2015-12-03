@@ -1,6 +1,7 @@
 package io.sytac.resumator;
 
 import org.eclipse.jetty.server.Server;
+import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.jetty.JettyHttpContainerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.slf4j.Logger;
@@ -27,16 +28,32 @@ public class ResumatorApp {
 
 	public static void main(String[] args) throws IOException {
         banner();
-        final Configuration configuration = loadConfiguration();
 
-        final ResourceConfig rc = registerApplicationResorces(new ResourceConfig());
+        ResourceConfig rc = registerApplicationResorces(new ResourceConfig());
+        final Configuration configuration = loadConfiguration();
+        rc = registerConfiguration(rc, configuration);
         final Server server = startServer(configuration, rc);
+    }
+
+    private static ResourceConfig registerConfiguration(final ResourceConfig rc, final Configuration configuration) {
+        return rc.register(new AbstractBinder() {
+            @Override
+            protected void configure() {
+                bind(configuration);
+            }
+        });
     }
 
     protected static ResourceConfig registerApplicationResorces(final ResourceConfig rc) {
         return rc.packages(
                 "io.sytac.resumator.http",                // Resumator
                 "com.theoryinpractise.halbuilder.jaxrs"); // HAL support
+    }
+
+    private static Configuration loadConfiguration() {
+        LOGGER.info("Loading the configuration");
+        return new Configuration();
+
     }
 
     private static Server startServer(final Configuration configuration, final ResourceConfig rc) {
@@ -50,13 +67,8 @@ public class ResumatorApp {
 
             return null; // never happens
         });
+
         return JettyHttpContainerFactory.createServer(uri, rc);
-    }
-
-    private static Configuration loadConfiguration() {
-        LOGGER.info("Loading the configuration");
-        return new Configuration();
-
     }
 
     private static void banner() {

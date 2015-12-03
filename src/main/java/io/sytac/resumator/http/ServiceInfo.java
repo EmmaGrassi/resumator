@@ -9,6 +9,8 @@ import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.UriInfo;
 
 /**
  * Main entry point for the API: provides hypermedia links to the other resources
@@ -29,11 +31,10 @@ public class ServiceInfo {
 
     @GET
     @Produces(RepresentationFactory.HAL_JSON)
-    public Representation helloWorld() {
-
+    public Representation helloWorld(@Context final UriInfo uriInfo) {
         return rest.newRepresentation()
                 .withProperty("app-name", config.getProperty("resumator.service.name").orElse("--"))
                 .withProperty("app-version", config.getProperty("resumator.service.version").orElse("--"))
-                .withLink("self", "/info");
+                .withLink("self", uriInfo.getRequestUri());
     }
 }

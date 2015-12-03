@@ -38,6 +38,7 @@ public class ConfigurationTest {
         System.setProperty("resumator.service.name", "foobar");
         serviceName = configuration.getProperty("resumator.service.name").get();
         assertEquals("System properties don't override static default properties", "foobar", serviceName);
+        System.getProperties().remove("resumator.service.name");
     }
 
     @Test

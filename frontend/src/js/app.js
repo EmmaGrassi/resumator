@@ -115,6 +115,11 @@ var EmployeeIndexPageView = View.extend({
   template: _.template($('script.employeeIndexPageTemplate').html()),
 });
 
+var EmployeeSearchView = View.extend({
+  // el: '#employeeSearchContainer',
+  template: _.template($('script.employeeSearchTemplate').html()),
+});
+
 var EmployeeNewPageView = View.extend({
   el: '#contentContainer',
   template: _.template($('script.employeeNewPageTemplate').html()),
@@ -131,6 +136,12 @@ var EmployeeNewPageView = View.extend({
     });
 
     $("#inputNationality").selectpicker({
+    });
+
+    $('#resetButton').on('click', function(event) {
+      event.preventDefault();
+
+      window.location = '#employee'
     });
   }
 });
@@ -159,12 +170,18 @@ var ApplicationRouter = Backbone.Router.extend({
 
   employeeIndex: function() {
     var pageView = new EmployeeIndexPageView();
+    var searchView = new EmployeeSearchView();
 
     // Select the correct menu item.
     navigationView
       .navigateTo('employeeIndex');
 
+    // Render the page and the search.
     pageView.render();
+    searchView.render();
+
+    // Put the search into the page.
+    $('#employeeSearchContainer').html(searchView.$el);
   },
 
   employeeNew: function() {

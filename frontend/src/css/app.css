@@ -1,3 +1,31 @@
-#contentContainer {
-  margin-top: 60px;
+body {
+  background-color: #eee;
 }
+
+#contentContainer {
+  margin-top: 100px;
+}
+
+#navigationContainer .navbar {
+  background: #E67E1F;
+
+  border: none;
+
+  z-index: 1;
+}
+
+#navigationContainer .navbar .navbar-brand img {
+  margin-top: -15px;
+
+  width: 100px;
+  height: 50px;
+}
+
+#navigationContainer .navbar .nav a {
+  color: #ffffff;
+}
+
+/*
+  search interface
+  add button
+*/

@@ -1,5 +1,8 @@
 package io.sytac.resumator.http;
 
+import com.theoryinpractise.halbuilder.api.RepresentationFactory;
+import com.theoryinpractise.halbuilder.json.JsonRepresentationFactory;
+
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
@@ -11,6 +14,8 @@ import java.net.URI;
  * @since 0.1
  */
 public class BaseResource {
+
+    protected final RepresentationFactory rest = new JsonRepresentationFactory();
 
     /**
      * Build the URI for the link connected to the provided resource

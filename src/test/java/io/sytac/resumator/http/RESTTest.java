@@ -1,11 +1,15 @@
 package io.sytac.resumator.http;
 
-import com.google.common.collect.Sets;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.theoryinpractise.halbuilder.api.ContentRepresentation;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import com.theoryinpractise.halbuilder.json.JsonRepresentationFactory;
 import io.sytac.resumator.Configuration;
+import io.sytac.resumator.ObjectMapperResolver;
+import io.sytac.resumator.model.Employee;
+import io.sytac.resumator.model.EmployeeId;
+import io.sytac.resumator.model.enums.Nationality;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
@@ -16,9 +20,14 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.nio.charset.Charset;
+import java.util.Map;
 
 /**
  * Base class that initializes Jersey and HAL [de]serialization to support testing REST endpoints
@@ -30,11 +39,14 @@ public class RESTTest extends JerseyTest {
 
     @Override
     public Application configure() {
-        return new ResourceConfig()
+        final ResourceConfig resourceConfig = new ResourceConfig();
+        return resourceConfig
                 .packages("io.sytac.resumator.http")
                 .register(new ConfigurationBinder())
+                .register(new ObjectMapperResolver())
                 .register(HALMessageBodyReader.class)
-                .register(HALMessageBodyWriter.class);
+                .register(HALMessageBodyWriter.class)
+                .register(EmployeeMessageBodyReader.class);
     }
 
     /**
@@ -82,7 +94,30 @@ public class RESTTest extends JerseyTest {
 
         @Override
         public void writeTo(Representation representation, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType, MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream) throws IOException, WebApplicationException {
-            new JsonRepresentationFactory().lookupRenderer(mediaType.toString()).write(representation, Sets.newHashSet(RepresentationFactory.STRIP_NULLS), new OutputStreamWriter(entityStream));
+            final String serialized = new JsonRepresentationFactory().newRepresentation().withBean(type).toString();
+            entityStream.write(serialized.getBytes(Charset.forName("UTF-8")));
+        }
+    }
+
+    protected static class EmployeeMessageBodyReader implements MessageBodyReader<Employee> {
+
+        private final ObjectMapper mapper = new ObjectMapper();
+
+        @Override
+        public boolean isReadable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
+            return type.equals(Employee.class)  &&
+                    mediaType.toString().equals(RepresentationFactory.HAL_JSON);
+        }
+
+        @Override
+        public Employee readFrom(Class<Employee> type, Type genericType, Annotation[] annotations, MediaType mediaType, MultivaluedMap<String, String> httpHeaders, InputStream entityStream) throws IOException, WebApplicationException {
+            Map<String, Object> map = mapper.readerFor(Map.class).readValue(entityStream);
+            return new Employee(new EmployeeId(map.get("id").toString()),
+                                                map.get("name").toString(),
+                                                map.get("surname").toString(),
+                                                Integer.valueOf(map.get("yearOfBirth").toString()),
+                                                Nationality.valueOf(map.get("nationality").toString()),
+                                                map.get("currentResidence").toString());
         }
     }
 

@@ -21,7 +21,6 @@ import javax.ws.rs.core.UriInfo;
 @Path("info")
 public class ServiceInfo extends BaseResource {
 
-    private final RepresentationFactory rest = new JsonRepresentationFactory();
     private final Configuration config;
 
     @Inject

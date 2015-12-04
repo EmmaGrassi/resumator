@@ -33,8 +33,6 @@ public class EmployeeId {
 
     @Override
     public String toString() {
-        return "EmployeeId{" +
-                "internalId=" + internalId +
-                '}';
+        return internalId.toString();
     }
 }

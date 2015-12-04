@@ -15,12 +15,6 @@ import javax.ws.rs.*;
 @Path("employee")
 public class EmployeeResource {
 
-    @GET
-    @Produces(RepresentationFactory.HAL_JSON)
-    public Representation getEmployee() {
-        throw new WebApplicationException("Cannot get an employee yet, sorry!", HttpStatus.NOT_IMPLEMENTED_501);
-    }
-
     @POST
     @Produces(RepresentationFactory.HAL_JSON)
     public Representation storeEmployee() {

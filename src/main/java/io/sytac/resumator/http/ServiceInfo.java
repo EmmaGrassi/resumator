@@ -10,9 +10,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
-import java.net.URI;
 
 /**
  * Main entry point for the API: provides hypermedia links to the other resources
@@ -21,7 +19,7 @@ import java.net.URI;
  * @since 0.1
  */
 @Path("info")
-public class ServiceInfo {
+public class ServiceInfo extends BaseResource {
 
     private final RepresentationFactory rest = new JsonRepresentationFactory();
     private final Configuration config;
@@ -39,18 +37,5 @@ public class ServiceInfo {
                 .withProperty("app-version", config.getProperty("resumator.service.version").orElse("--"))
                 .withLink("self", uriInfo.getRequestUri())
                 .withLink("employees", resourceLink(uriInfo, EmployeesResource.class));
-    }
-
-    /**
-     * Build the URI for the link connected to the provided resource
-     *
-     * @param uriInfo  The base URI for the service
-     * @param resource The resource for which to build the link
-     * @return The link to the provided resoruce
-     */
-    protected URI resourceLink(final UriInfo uriInfo, final Class<?> resource) {
-        return UriBuilder.fromUri(uriInfo.getBaseUri())
-                                         .path(resource)
-                                         .build();
     }
 }

@@ -42,6 +42,11 @@
             <version>${jersey.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.glassfish.jersey.security</groupId>
+            <artifactId>oauth2-client</artifactId>
+            <version>${jersey.version}</version>
+        </dependency>
+        <dependency>
             <groupId>com.theoryinpractise</groupId>
             <artifactId>halbuilder-standard</artifactId>
             <version>4.0.1</version>

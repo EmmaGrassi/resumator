@@ -7,6 +7,7 @@ import io.sytac.resumator.model.Employee;
 import io.sytac.resumator.model.EmployeeId;
 import io.sytac.resumator.store.EmployeeRepository;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -20,6 +21,7 @@ import java.util.Optional;
  * @since 0.1
  */
 @Path("employee/{id}")
+@RolesAllowed({"user"})
 public class EmployeeQuery extends BaseResource {
 
     private final EmployeeRepository repository;

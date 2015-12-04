@@ -1,11 +1,8 @@
 package io.sytac.resumator.http;
 
-import com.theoryinpractise.halbuilder.api.Link;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
-import com.theoryinpractise.halbuilder.json.JsonRepresentationFactory;
 import io.sytac.resumator.Configuration;
-import io.sytac.resumator.http.dto.ServiceInfoDTO;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -13,7 +10,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
-import java.util.Arrays;
 
 /**
  * Main entry point for the API: provides hypermedia links to the other resources

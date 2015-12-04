@@ -1,10 +1,12 @@
 package io.sytac.resumator;
 
 import com.google.common.eventbus.AsyncEventBus;
+import io.sytac.resumator.security.Oauth2AuthenticationFilter;
 import org.eclipse.jetty.server.Server;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.jetty.JettyHttpContainerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
+import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,7 +46,13 @@ public class ResumatorApp {
         rc = registerConfiguration(rc, configuration);
         rc = registerEventBus(rc, configuration);
         rc = registerJSONSupport(rc);
+        rc = registerSecurity(rc);
         return rc;
+    }
+
+    private ResourceConfig registerSecurity(ResourceConfig rc) {
+        return rc.register(RolesAllowedDynamicFeature.class)
+                    .register(Oauth2AuthenticationFilter.class);
     }
 
     private ResourceConfig registerJSONSupport(ResourceConfig rc) {

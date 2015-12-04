@@ -15,6 +15,9 @@ import java.util.Set;
 
 /**
  * Sets up a security context
+ *
+ * @author Carlo Sciolla
+ * @since 0.1
  */
 @Priority(Priorities.AUTHENTICATION)
 public class Oauth2AuthenticationFilter implements ContainerRequestFilter {

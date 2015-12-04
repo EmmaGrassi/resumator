@@ -1,5 +1,6 @@
 package io.sytac.resumator.http;
 
+import com.theoryinpractise.halbuilder.api.Link;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import com.theoryinpractise.halbuilder.json.JsonRepresentationFactory;
 
@@ -28,6 +29,17 @@ public class BaseResource {
         return UriBuilder.fromUri(uriInfo.getBaseUri())
                 .path(resource)
                 .build();
+    }
+
+    /**
+     * Helper method to create a new {@link Link}
+     *
+     * @param rel The link relationship
+     * @param uri The link URI
+     * @return The {@link Link} representation
+     */
+    protected Link link(final String rel, final URI uri) {
+        return new Link(rest, rel, uri.toString());
     }
 
 }

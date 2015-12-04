@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.theoryinpractise.halbuilder.api.ContentRepresentation;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
+import com.theoryinpractise.halbuilder.jaxrs.JaxRsHalBuilderReaderSupport;
+import com.theoryinpractise.halbuilder.jaxrs.JaxRsHalBuilderSupport;
 import com.theoryinpractise.halbuilder.json.JsonRepresentationFactory;
 import io.sytac.resumator.Configuration;
 import io.sytac.resumator.ObjectMapperResolver;
@@ -44,9 +46,10 @@ public class RESTTest extends JerseyTest {
                 .packages("io.sytac.resumator.http")
                 .register(new ConfigurationBinder())
                 .register(new ObjectMapperResolver())
-                .register(HALMessageBodyReader.class)
-                .register(HALMessageBodyWriter.class)
-                .register(EmployeeMessageBodyReader.class);
+                .register(JaxRsHalBuilderSupport.class)
+                .register(JaxRsHalBuilderReaderSupport.class)
+                .register(EmployeeMessageBodyReader.class)
+                ;
     }
 
     /**

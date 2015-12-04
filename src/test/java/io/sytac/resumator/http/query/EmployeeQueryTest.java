@@ -66,8 +66,6 @@ public class EmployeeQueryTest extends RESTTest {
         final WebTarget target = target("employee/" + id.toString()).register(EmployeeMessageBodyReader.class);
         final Employee response = target.request().buildGet().invoke(Employee.class);
         assertEquals("Existing employee was not found", id.toString(), response.getId().toString());
-//        final String response = target.request().buildGet().invoke(String.class);
-//        assertEquals("nope", response);
     }
 
 }

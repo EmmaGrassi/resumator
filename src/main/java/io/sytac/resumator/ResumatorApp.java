@@ -43,7 +43,12 @@ public class ResumatorApp {
         ResourceConfig rc = registerApplicationResorces(new ResourceConfig());
         rc = registerConfiguration(rc, configuration);
         rc = registerEventBus(rc, configuration);
+        rc = registerJSONSupport(rc);
         return rc;
+    }
+
+    private ResourceConfig registerJSONSupport(ResourceConfig rc) {
+        return rc.register(ObjectMapperResolver.class);
     }
 
     protected ResourceConfig registerEventBus(final ResourceConfig rc, final Configuration configuration) {

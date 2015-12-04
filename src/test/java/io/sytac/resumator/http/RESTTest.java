@@ -62,46 +62,6 @@ public class RESTTest extends JerseyTest {
         }
     }
 
-    /**
-     * Enables support to read HAL formatted JSON documents
-     */
-    protected static class HALMessageBodyReader implements MessageBodyReader<ContentRepresentation> {
-
-        @Override
-        public boolean isReadable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
-            return type == ContentRepresentation.class &&
-                    mediaType.toString().equals(RepresentationFactory.HAL_JSON);
-        }
-
-        @Override
-        public ContentRepresentation readFrom(Class<ContentRepresentation> type, Type genericType, Annotation[] annotations, MediaType mediaType, MultivaluedMap<String, String> httpHeaders, InputStream entityStream) throws IOException, WebApplicationException {
-            return new JsonRepresentationFactory().readRepresentation(mediaType.toString(), new InputStreamReader(entityStream));
-        }
-    }
-
-    /**
-     * Enables support to write HAL formatted JSON documents
-     */
-    protected static class HALMessageBodyWriter implements MessageBodyWriter<Representation> {
-
-        @Override
-        public boolean isWriteable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
-            return Representation.class.isAssignableFrom(type) &&
-                    mediaType.toString().equals(RepresentationFactory.HAL_JSON);
-        }
-
-        @Override
-        public long getSize(Representation representation, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
-            return -1; // see javadocs on the interface
-        }
-
-        @Override
-        public void writeTo(Representation representation, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType, MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream) throws IOException, WebApplicationException {
-            final String serialized = new JsonRepresentationFactory().newRepresentation().withBean(type).toString();
-            entityStream.write(serialized.getBytes(Charset.forName("UTF-8")));
-        }
-    }
-
     protected static class EmployeeMessageBodyReader implements MessageBodyReader<Employee> {
 
         private final ObjectMapper mapper = new ObjectMapper();

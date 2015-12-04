@@ -78,9 +78,9 @@ public class RESTTest extends JerseyTest {
             return new Employee(new EmployeeId(map.get("id").toString()),
                                                 map.get("name").toString(),
                                                 map.get("surname").toString(),
-                                                Integer.valueOf(map.get("yearOfBirth").toString()),
+                                                Integer.valueOf(map.get("year-of-birth").toString()),
                                                 Nationality.valueOf(map.get("nationality").toString()),
-                                                map.get("currentResidence").toString());
+                                                map.get("current-residence").toString());
         }
     }
 

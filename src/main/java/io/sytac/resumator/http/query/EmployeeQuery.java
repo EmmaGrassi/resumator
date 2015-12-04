@@ -1,5 +1,6 @@
 package io.sytac.resumator.http.query;
 
+import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import io.sytac.resumator.http.BaseResource;
 import io.sytac.resumator.model.Employee;
@@ -30,10 +31,29 @@ public class EmployeeQuery extends BaseResource {
 
     @GET
     @Produces(RepresentationFactory.HAL_JSON)
-    public Employee getEmployee(@PathParam("id") final String id, @Context final UriInfo uriInfo) {
+    public Representation getEmployee(@PathParam("id") final String id, @Context final UriInfo uriInfo) {
         final EmployeeId employeeId = new EmployeeId(id);
-        final Optional<Employee> employee = repository.find(employeeId);
-        return employee.orElseThrow(() -> new WebApplicationException(404));
+        final Employee employee = repository.find(employeeId).orElseThrow(() -> new WebApplicationException(404));
+        return represent(employee, uriInfo);
+    }
+
+    /**
+     * Translates an {@link Employee} into its HAL representation
+     *
+     * @param employee The employee to represent
+     * @param uriInfo  The current REST endpoint information
+     * @return The {@link Representation} of the {@link Employee}
+     */
+    private Representation represent(final Employee employee, final UriInfo uriInfo) {
+
+        return rest.newRepresentation()
+                .withProperty("id", employee.getId().toString())
+                .withProperty("name", employee.getName())
+                .withProperty("surname", employee.getSurname())
+                .withProperty("nationality", employee.getNationality())
+                .withProperty("current-residence", employee.getCurrentResidence())
+                .withProperty("year-of-birth", employee.getYearOfBirth())
+                .withLink("self", uriInfo.getRequestUri().toString());
     }
 
 }

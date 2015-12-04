@@ -5,15 +5,22 @@ the Resumator is using as its conceptual basis.
 
 ```
 
-+-----------+
-| Recruiter |
-+----+------+
-     |
-     | recruits
-     |
-     v
-+----------+
-| Employee |
-+----------+
++-----------+ discovers  +-----------+
+| Recruiter +----------->| Candidate |
++----+------+ 1        * +----+------+
+     |                      1 |
+     | recruits     +---------+
+     |              | becomes
+     v              |
++----------+ 1      |
+| Employee |<-------+
++-+------+-+
+  |     0| has +------------+
+  |      +---->| Experience |
+  |          * +------------+
+  |
+  |
+  |
+  |
 
 ```

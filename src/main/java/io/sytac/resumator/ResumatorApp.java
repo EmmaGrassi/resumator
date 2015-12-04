@@ -1,5 +1,6 @@
 package io.sytac.resumator;
 
+import com.google.common.eventbus.AsyncEventBus;
 import org.eclipse.jetty.server.Server;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.jetty.JettyHttpContainerFactory;
@@ -11,6 +12,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Optional;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  *  ╔╦╗┬ ┬┌─┐  ╦═╗┌─┐┌─┐┬ ┬┌┬┐┌─┐┌┬┐┌─┐┬─┐TM
@@ -27,15 +30,40 @@ public class ResumatorApp {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ResumatorApp.class);
 
 	public static void main(String[] args) throws IOException {
-        banner();
+        final ResumatorApp app = new ResumatorApp();
+        app.banner();
 
-        ResourceConfig rc = registerApplicationResorces(new ResourceConfig());
-        final Configuration configuration = loadConfiguration();
-        rc = registerConfiguration(rc, configuration);
-        final Server server = startServer(configuration, rc);
+        final Configuration configuration = app.loadConfiguration();
+        final ResourceConfig rc = app.constructConfig(configuration);
+
+        app.startServer(configuration, rc);
     }
 
-    private static ResourceConfig registerConfiguration(final ResourceConfig rc, final Configuration configuration) {
+    protected ResourceConfig constructConfig(final Configuration configuration) {
+        ResourceConfig rc = registerApplicationResorces(new ResourceConfig());
+        rc = registerConfiguration(rc, configuration);
+        rc = registerEventBus(rc, configuration);
+        return rc;
+    }
+
+    protected ResourceConfig registerEventBus(final ResourceConfig rc, final Configuration configuration) {
+        final String id = configuration.getProperty("resumator.logs.events.tag").orElse("resumator");
+        final ExecutorService executor = createExecutorService(configuration);
+        final AsyncEventBus eventBus = new AsyncEventBus(id, executor);
+        return rc.register(new AbstractBinder() {
+            @Override
+            protected void configure() {
+                bind(eventBus);
+            }
+        });
+    }
+
+    protected ExecutorService createExecutorService(Configuration configuration) {
+        final Integer concurrency = configuration.getIntegerProperty("resumator.sys.threadpool.size").orElse(1);
+        return Executors.newFixedThreadPool(concurrency);
+    }
+
+    protected ResourceConfig registerConfiguration(final ResourceConfig rc, final Configuration configuration) {
         return rc.register(new AbstractBinder() {
             @Override
             protected void configure() {
@@ -44,19 +72,19 @@ public class ResumatorApp {
         });
     }
 
-    protected static ResourceConfig registerApplicationResorces(final ResourceConfig rc) {
+    protected ResourceConfig registerApplicationResorces(final ResourceConfig rc) {
         return rc.packages(
                 "io.sytac.resumator.http",                // Resumator
                 "com.theoryinpractise.halbuilder.jaxrs"); // HAL support
     }
 
-    private static Configuration loadConfiguration() {
+    protected Configuration loadConfiguration() {
         LOGGER.info("Loading the configuration");
         return new Configuration();
 
     }
 
-    private static Server startServer(final Configuration configuration, final ResourceConfig rc) {
+    protected Server startServer(final Configuration configuration, final ResourceConfig rc) {
         final Optional<URI> maybeURI = configuration.getURIProperty("resumator.http.uri");
         final URI uri = maybeURI.orElseGet(() -> {
             try {
@@ -71,7 +99,7 @@ public class ResumatorApp {
         return JettyHttpContainerFactory.createServer(uri, rc);
     }
 
-    private static void banner() {
+    protected void banner() {
         LOGGER.info("╔╦╗┬ ┬┌─┐  ╦═╗┌─┐┌─┐┬ ┬┌┬┐┌─┐┌┬┐┌─┐┬─┐");
         LOGGER.info(" ║ ├─┤├┤   ╠╦╝├┤ └─┐│ ││││├─┤ │ │ │├┬┘");
         LOGGER.info(" ╩ ┴ ┴└─┘  ╩╚═└─┘└─┘└─┘┴ ┴┴ ┴ ┴ └─┘┴└─");

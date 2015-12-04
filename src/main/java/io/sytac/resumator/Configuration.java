@@ -135,7 +135,24 @@ public class Configuration {
             try {
                 return new URI(value);
             } catch (URISyntaxException e) {
-                throw new ConfigurationException(key);
+                return null;
+            }
+        });
+    }
+
+    /**
+     * Retrieves a configuration entry as an Integer
+     *
+     * @param key The key of the configuration to retrieve as an Integer
+     * @return The Integer property if found
+     */
+    public Optional<Integer> getIntegerProperty(String key) {
+        final Optional<String> string = getProperty(key);
+        return string.map(value -> {
+            try {
+                return Integer.valueOf(key);
+            } catch (NumberFormatException e) {
+                return null;
             }
         });
     }

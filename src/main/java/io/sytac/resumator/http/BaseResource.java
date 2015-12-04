@@ -5,7 +5,10 @@ import javax.ws.rs.core.UriInfo;
 import java.net.URI;
 
 /**
- * Created by skuro on 03/12/15.
+ * Common functionality required by any REST resource
+ *
+ * @author Carlo Sciolla
+ * @since 0.1
  */
 public class BaseResource {
 

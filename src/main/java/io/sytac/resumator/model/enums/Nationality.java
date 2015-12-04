@@ -193,5 +193,5 @@ public enum Nationality {
 	WELSH,
 	YEMENITE,
 	ZAMBIAN,
-	ZIMBABWEAN;
+	ZIMBABWEAN
 }

@@ -31,7 +31,7 @@ public class SqlStore implements EventStore {
     private final static String CONF_DB_USER   = "resumator.db.user";
     private final static String CONF_DB_PASS   = "resumator.db.password";
 
-    private ThreadLocal<SqlSession> session = new ThreadLocal<>();
+    private final ThreadLocal<SqlSession> session = new ThreadLocal<>();
     private final SqlSessionFactory sessionFactory;
     private final DataSource dataSource;
 

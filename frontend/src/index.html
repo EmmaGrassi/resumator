@@ -68,7 +68,7 @@
       <div id="employeeSearchContainer"></div>
     </script>
 
-    <script class="employeeSearchTemplate" type="text/template">
+    <script class="employeeSearchFormTemplate" type="text/template">
       <form>
         <div class="form-group">
           <label for="employeeSearchName">Name</label>
@@ -329,6 +329,42 @@
             <button type="reset" id="resetButton" class="btn btn-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancel</button>
             <button type="submit" id="confirmButton" class="btn btn-success"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Create</button>
           </div>
+        </div>
+
+        <div id="employeeCoursesContainer"></div>
+        <div id="employeeEducationContainer"></div>
+        <div id="employeeExperienceContainer"></div>
+      </form>
+    </script>
+
+    <script class="employeeCoursesTemplate" type="text/template">
+      <ul>
+      </ul>
+
+      <!-- Add Course Button (pops up new add course form, one at a time (removes add button) .) -->
+    </script>
+
+    <script class="employeeEducationTemplate" type="text/template">
+    </script>
+
+    <script class="employeeExperienceTemplate" type="text/template">
+    </script>
+
+    <script class="employeeNewCourseFormTemplate" type="text/template">
+      <form>
+        <div class="form-group">
+          <label for="employeeCourseName">Name</label>
+          <input type="email" class="form-control" id="employeeCourseName" placeholder="Name">
+        </div>
+
+        <div class="form-group">
+          <label for="employeeCourseDescription">Description</label>
+          <input type="email" class="form-control" id="employeeCourseDescription" placeholder="Description">
+        </div>
+
+        <div class="form-group">
+          <label for="employeeCourseDate">Date</label>
+          <input type="email" class="form-control" id="employeeCourseDate" placeholder="Date">
         </div>
       </form>
     </script>

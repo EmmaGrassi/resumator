@@ -15,7 +15,11 @@ var EmployeeModel = Backbone.Model.extend({
     surname: '',
     yearOfBirth: '',
     nationality: '',
-    currentResidence: ''
+    currentResidence: '',
+
+    courses: [],
+    education: [],
+    experience: []
   }
 });
 
@@ -23,9 +27,6 @@ var EventModel = Backbone.Model.extend({
 });
 
 var ExperienceModel = Backbone.Model.extend({
-});
-
-var ResumeModel = Backbone.Model.extend({
 });
 
 // Views
@@ -127,10 +128,7 @@ var EmployeeNewPageView = View.extend({
   render: function () {
     View.prototype.render.call(this);
 
-    $("#inputYearOfBirth").datepicker( {
-      format: " yyyy", // Notice the Extra space at the beginning
-      viewMode: "years",
-      minViewMode: "years"
+    $("#inputYearOfBirth").datepicker({
     }).on('changeDate', function(e){
       $(this).datepicker('hide');
     });

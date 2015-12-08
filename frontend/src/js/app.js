@@ -9,23 +9,17 @@ var EducationModel = Backbone.Model.extend({
 var CourseModel = Backbone.Model.extend({
 });
 
+var CoursesCollection = Backbone.Collection.extend({
+  model: CourseModel
+});
+
 var EmployeeModel = Backbone.Model.extend({
-  defaults: {
-    name: '',
-    surname: '',
-    yearOfBirth: '',
-    nationality: '',
-    currentResidence: ''
-  }
 });
 
 var EventModel = Backbone.Model.extend({
 });
 
 var ExperienceModel = Backbone.Model.extend({
-});
-
-var ResumeModel = Backbone.Model.extend({
 });
 
 // Views
@@ -127,22 +121,97 @@ var EmployeeNewPageView = View.extend({
   render: function () {
     View.prototype.render.call(this);
 
-    $("#inputYearOfBirth").datepicker( {
-      format: " yyyy", // Notice the Extra space at the beginning
-      viewMode: "years",
-      minViewMode: "years"
-    }).on('changeDate', function(e){
-      $(this).datepicker('hide');
+    var coursesView = new EmployeeCoursesView({
+      collection: this.model.get('courses')
     });
 
-    $("#inputNationality").selectpicker({
+    coursesView.render();
+
+    $("#inputYearOfBirth").datepicker()
+      .on('changeDate', function(e){
+        $(this).datepicker('hide');
+      });
+
+    $("#inputNationality").selectpicker();
+
+    $('#resetButton')
+      .on('click', function(event) {
+        event.preventDefault();
+
+        window.location = '#employee'
+      });
+  }
+});
+
+var EmployeeCoursesView = View.extend({
+  el: '#employeeCoursesContainer',
+  template: _.template($('script.employeeCoursesTemplate').html()),
+
+  events: {
+    'click .employeeCoursesEntryButton': 'handleEmployeeCoursesEntryButtonClick'
+  },
+
+  render: function() {
+    var self = this;
+
+    View.prototype.render.call(this);
+
+    this.collection.each(function(model) {
+      var view = new EmployeeCoursesEntryView({
+        model: model
+      });
+
+      view.on('remove', self.handleEmployeeCoursesEntryRemove.bind(self));
+
+      view.render();
+
+      this.$('#employeeCoursesEntriesContainer').append(view.el);
+    });
+  },
+
+  handleEmployeeCoursesEntryRemove: function(model) {
+    debugger;
+
+    this.collection.remove(model);
+
+    this.render();
+  },
+
+  handleEmployeeCoursesEntryButtonClick: function(event) {
+    event.preventDefault();
+
+    var value = this.$('.employeeCoursesEntryInput').val();
+
+    if (!value || value === '') {
+      return;
+    }
+
+    var model = new CourseModel({
+      value: value
     });
 
-    $('#resetButton').on('click', function(event) {
-      event.preventDefault();
+    this.collection.add(model);
 
-      window.location = '#employee'
-    });
+    this.render();
+  }
+});
+
+var EmployeeCoursesEntryView = View.extend({
+  // el: '#employeeCoursesEntriesContainer',
+  template: _.template($('script.employeeCoursesEntryTemplate').html()),
+
+  events: {
+    'click .remove': 'handleRemoveClick'
+  },
+
+  render: function() {
+    this.$el.html(this.template(this.model.toJSON()));
+  },
+
+  handleRemoveClick: function(event) {
+    event.preventDefault();
+
+    this.trigger('remove', this.model);
   }
 });
 
@@ -185,7 +254,14 @@ var ApplicationRouter = Backbone.Router.extend({
   },
 
   employeeNew: function() {
-    var pageView = new EmployeeNewPageView();
+    var employeeModel = new EmployeeModel();
+    var coursesCollection = new CoursesCollection;
+
+    employeeModel.set('courses', coursesCollection);
+
+    var pageView = new EmployeeNewPageView({
+      model: employeeModel
+    });
 
     // Select the correct menu item.
     navigationView
@@ -214,12 +290,8 @@ var router = new ApplicationRouter();
 
 // When the DOM is ready
 $(document).ready(function() {
-  console.log('DOM ready');
-
   applicationView.render();
   navigationView.render();
 
   Backbone.history.start();
-
-  console.log('Application started');
 });

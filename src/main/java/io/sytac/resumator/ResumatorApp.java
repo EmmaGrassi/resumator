@@ -1,6 +1,7 @@
 package io.sytac.resumator;
 
 import com.google.common.eventbus.AsyncEventBus;
+import io.sytac.resumator.http.UriRewriteSupportFilter;
 import io.sytac.resumator.security.Oauth2AuthenticationFilter;
 import org.eclipse.jetty.rewrite.handler.RewriteHandler;
 import org.eclipse.jetty.rewrite.handler.RewriteRegexRule;
@@ -53,7 +54,12 @@ public class ResumatorApp {
         rc = registerEventBus(rc, configuration);
         rc = registerJSONSupport(rc);
         rc = registerSecurity(rc);
+        rc = registerUriRewriteSupport(rc);
         return rc;
+    }
+
+    private ResourceConfig registerUriRewriteSupport(ResourceConfig rc) {
+        return rc.register(UriRewriteSupportFilter.class);
     }
 
     private ResourceConfig registerSecurity(ResourceConfig rc) {
@@ -116,8 +122,8 @@ public class ResumatorApp {
         });
 
         final Server server = JettyHttpContainerFactory.createServer(uri, rc, false);
-        final RewriteHandler rewrite = createRewriteHandler(server);
-        server.setHandler(rewrite);
+//        final RewriteHandler rewrite = createRewriteHandler(server);
+//        server.setHandler(rewrite);
         return server;
     }
 

@@ -1,8 +1,10 @@
-package io.sytac.resumator.http;
+package io.sytac.resumator.http.query;
 
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import io.sytac.resumator.Configuration;
+import io.sytac.resumator.http.BaseResource;
+import io.sytac.resumator.http.query.EmployeesQuery;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -34,6 +36,6 @@ public class ServiceInfo extends BaseResource {
                 .withProperty("app-name", config.getProperty("resumator.service.name").orElse("--"))
                 .withProperty("app-version", config.getProperty("resumator.service.version").orElse("--"))
                 .withLink("self", uriInfo.getRequestUri())
-                .withLink("employees", resourceLink(uriInfo, EmployeesResource.class));
+                .withLink("employees", resourceLink(uriInfo, EmployeesQuery.class));
     }
 }

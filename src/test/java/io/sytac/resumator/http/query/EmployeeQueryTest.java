@@ -1,7 +1,5 @@
 package io.sytac.resumator.http.query;
 
-import com.theoryinpractise.halbuilder.api.ContentRepresentation;
-import io.sytac.resumator.AbstractResumatorTest;
 import io.sytac.resumator.http.RESTTest;
 import io.sytac.resumator.model.Employee;
 import io.sytac.resumator.model.EmployeeId;
@@ -9,7 +7,6 @@ import io.sytac.resumator.model.enums.Nationality;
 import io.sytac.resumator.store.EmployeeRepository;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
-import org.junit.Before;
 import org.junit.Test;
 
 import javax.ws.rs.client.WebTarget;

@@ -1,7 +1,8 @@
-package io.sytac.resumator.http;
+package io.sytac.resumator.http.query;
 
 import com.theoryinpractise.halbuilder.api.ContentRepresentation;
 import com.theoryinpractise.halbuilder.jaxrs.JaxRsHalBuilderReaderSupport;
+import io.sytac.resumator.http.RESTTest;
 import org.junit.Test;
 
 import javax.ws.rs.client.WebTarget;
@@ -13,7 +14,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * Tests the Employees resource
  */
-public class EmployeesResourceTest extends RESTTest {
+public class EmployeesQueryTest extends RESTTest {
 
     @Test
     public void testGetEmptyEmployees() throws Exception {

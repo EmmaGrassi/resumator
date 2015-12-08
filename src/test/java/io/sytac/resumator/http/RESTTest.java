@@ -1,12 +1,9 @@
 package io.sytac.resumator.http;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.theoryinpractise.halbuilder.api.ContentRepresentation;
-import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import com.theoryinpractise.halbuilder.jaxrs.JaxRsHalBuilderReaderSupport;
 import com.theoryinpractise.halbuilder.jaxrs.JaxRsHalBuilderSupport;
-import com.theoryinpractise.halbuilder.json.JsonRepresentationFactory;
 import io.sytac.resumator.Configuration;
 import io.sytac.resumator.ObjectMapperResolver;
 import io.sytac.resumator.model.Employee;
@@ -21,14 +18,10 @@ import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
-import javax.ws.rs.ext.MessageBodyWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
-import java.nio.charset.Charset;
 import java.util.Map;
 
 /**

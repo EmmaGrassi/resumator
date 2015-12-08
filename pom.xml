@@ -42,6 +42,11 @@
             <version>${jersey.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-rewrite</artifactId>
+            <version>9.1.1.v20140108</version>
+        </dependency>
+        <dependency>
             <groupId>org.glassfish.jersey.security</groupId>
             <artifactId>oauth2-client</artifactId>
             <version>${jersey.version}</version>

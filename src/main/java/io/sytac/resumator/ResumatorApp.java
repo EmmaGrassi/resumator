@@ -2,6 +2,8 @@ package io.sytac.resumator;
 
 import com.google.common.eventbus.AsyncEventBus;
 import io.sytac.resumator.security.Oauth2AuthenticationFilter;
+import org.eclipse.jetty.rewrite.handler.RewriteHandler;
+import org.eclipse.jetty.rewrite.handler.RewriteRegexRule;
 import org.eclipse.jetty.server.Server;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.jetty.JettyHttpContainerFactory;
@@ -38,7 +40,11 @@ public class ResumatorApp {
         final Configuration configuration = app.loadConfiguration();
         final ResourceConfig rc = app.constructConfig(configuration);
 
-        app.startServer(configuration, rc);
+        try {
+            app.createServer(configuration, rc).start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     protected ResourceConfig constructConfig(final Configuration configuration) {
@@ -97,11 +103,11 @@ public class ResumatorApp {
 
     }
 
-    protected Server startServer(final Configuration configuration, final ResourceConfig rc) {
+    protected Server createServer(final Configuration configuration, final ResourceConfig rc) {
         final Optional<URI> maybeURI = configuration.getURIProperty("resumator.http.uri");
         final URI uri = maybeURI.orElseGet(() -> {
             try {
-                return new URI("http://localhost:8080");
+                return new URI("http://localhost:9090");
             } catch (URISyntaxException e) {
                 // NOP
             }
@@ -109,7 +115,20 @@ public class ResumatorApp {
             return null; // never happens
         });
 
-        return JettyHttpContainerFactory.createServer(uri, rc);
+        final Server server = JettyHttpContainerFactory.createServer(uri, rc, false);
+        final RewriteHandler rewrite = createRewriteHandler(server);
+        server.setHandler(rewrite);
+        return server;
+    }
+
+    private RewriteHandler createRewriteHandler(Server server) {
+        final RewriteHandler rewrite = new RewriteHandler();
+        rewrite.setHandler(server.getHandler());
+        final RewriteRegexRule rule = new RewriteRegexRule();
+        rule.setRegex("^/api(.*)");
+        rule.setReplacement("$1");
+        rewrite.addRule(rule);
+        return rewrite;
     }
 
     protected void banner() {

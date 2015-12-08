@@ -48,6 +48,17 @@
               <li><a class="applicationIndex" href="#">Home</a></li>
               <li><a class="employeeIndex" href="#employee">Employees</a></li>
             </ul>
+            <div class="nav navbar-nav navbar-right avatar">
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                  <img class="avatar-small" src="<%= icon %>" />
+                  <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a href="#">Login</a></li>
+                </ul>
+              </li>
+            </div>
           </div>
         </div>
       </nav>
@@ -396,6 +407,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.2.3/backbone-min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.7/js/bootstrap-select.min.js"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
     <script src="js/app.js"></script>
+    <script src="js/login.js"></script>
   </body>
 </html>

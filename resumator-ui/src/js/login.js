@@ -1,3 +1,6 @@
 /**
- * Created by skuro on 04/12/15.
+ * Integration with Google OAuth2 login
+ *
+ * @author Carlo Sciolla
  */
+

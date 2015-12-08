@@ -2,8 +2,6 @@ package io.sytac.resumator;
 
 import com.google.common.eventbus.AsyncEventBus;
 import io.sytac.resumator.http.UriRewriteSupportFilter;
-import org.eclipse.jetty.rewrite.handler.RewriteHandler;
-import org.eclipse.jetty.rewrite.handler.RewriteRegexRule;
 import org.eclipse.jetty.server.Server;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.jetty.JettyHttpContainerFactory;
@@ -113,20 +111,7 @@ public class ResumatorApp {
             return null; // never happens
         });
 
-        final Server server = JettyHttpContainerFactory.createServer(uri, rc, false);
-//        final RewriteHandler rewrite = createRewriteHandler(server);
-//        server.setHandler(rewrite);
-        return server;
-    }
-
-    private RewriteHandler createRewriteHandler(Server server) {
-        final RewriteHandler rewrite = new RewriteHandler();
-        rewrite.setHandler(server.getHandler());
-        final RewriteRegexRule rule = new RewriteRegexRule();
-        rule.setRegex("^/api(.*)");
-        rule.setReplacement("$1");
-        rewrite.addRule(rule);
-        return rewrite;
+        return JettyHttpContainerFactory.createServer(uri, rc, false);
     }
 
     protected void banner() {

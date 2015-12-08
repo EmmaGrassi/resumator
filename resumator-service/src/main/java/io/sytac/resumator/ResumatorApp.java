@@ -2,14 +2,12 @@ package io.sytac.resumator;
 
 import com.google.common.eventbus.AsyncEventBus;
 import io.sytac.resumator.http.UriRewriteSupportFilter;
-import io.sytac.resumator.security.Oauth2AuthenticationFilter;
 import org.eclipse.jetty.rewrite.handler.RewriteHandler;
 import org.eclipse.jetty.rewrite.handler.RewriteRegexRule;
 import org.eclipse.jetty.server.Server;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.jetty.JettyHttpContainerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
-import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,18 +51,12 @@ public class ResumatorApp {
         rc = registerConfiguration(rc, configuration);
         rc = registerEventBus(rc, configuration);
         rc = registerJSONSupport(rc);
-        rc = registerSecurity(rc);
         rc = registerUriRewriteSupport(rc);
         return rc;
     }
 
     private ResourceConfig registerUriRewriteSupport(ResourceConfig rc) {
         return rc.register(UriRewriteSupportFilter.class);
-    }
-
-    private ResourceConfig registerSecurity(ResourceConfig rc) {
-        return rc.register(RolesAllowedDynamicFeature.class)
-                    .register(Oauth2AuthenticationFilter.class);
     }
 
     private ResourceConfig registerJSONSupport(ResourceConfig rc) {

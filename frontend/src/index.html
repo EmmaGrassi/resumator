@@ -324,24 +324,45 @@
           </div>
         </div>
 
+        <div id="employeeCoursesContainer"></div>
+        <div id="employeeEducationContainer"></div>
+        <div id="employeeExperienceContainer"></div>
+
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
             <button type="reset" id="resetButton" class="btn btn-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancel</button>
             <button type="submit" id="confirmButton" class="btn btn-success"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Create</button>
           </div>
         </div>
-
-        <div id="employeeCoursesContainer"></div>
-        <div id="employeeEducationContainer"></div>
-        <div id="employeeExperienceContainer"></div>
       </form>
     </script>
 
     <script class="employeeCoursesTemplate" type="text/template">
-      <ul>
-      </ul>
+      <div class="form-group">
+        <label for="employeeCoursesEntriesContainer" class="col-sm-2 control-label">Courses</label>
 
-      <!-- Add Course Button (pops up new add course form, one at a time (removes add button) .) -->
+        <div class="col-sm-10">
+          <ul id="employeeCoursesEntriesContainer">
+          </ul>
+
+          <div class="input-group employeeCoursesEntry">
+            <input type="text" class="form-control employeeCoursesEntryInput" placeholder="Course Name">
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-default employeeCoursesEntryButton"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add</button>
+            </span>
+          </div>
+        </div>
+      </div>
+    </script>
+
+    <script class="employeeCoursesEntryTemplate" type="text/template">
+      <li>
+        <span class="value"><%- value %></span>
+        <span class="glyphicon glyphicon-trash remove" aria-hidden="true"></span>
+      </li>
+    </script>
+
+    <script class="employeeCoursesAddEntryTemplate" type="text/template">
     </script>
 
     <script class="employeeEducationTemplate" type="text/template">

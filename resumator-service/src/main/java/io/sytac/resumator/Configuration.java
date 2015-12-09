@@ -11,6 +11,8 @@ import java.nio.file.Paths;
 import java.util.Optional;
 import java.util.Properties;
 
+import static io.sytac.resumator.ConfigurationEntries.*;
+
 /**
  * A simple interface towards the application configuration. Will look for configuration entries in the following
  * sources, in order:
@@ -113,7 +115,7 @@ public class Configuration {
 
     private Optional<File> getCustomLocationOr(final File defaultFile) {
         File propertiesFile;
-        String customLocation = System.getProperty("resumator.config");
+        String customLocation = System.getProperty(USER_CONFIG_FILE_LOCATION);
         if(customLocation != null) {
             propertiesFile = Paths.get(customLocation).toFile();
             if(!propertiesFile.isFile()) {

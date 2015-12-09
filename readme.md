@@ -13,12 +13,14 @@ Creation, storing, searching and exporting of Sytac Resumes:
 - storing of resumes into a SQL database (only PostgreSQL supported at the moment)
 - exporting in HTML, PDF or DOCX
 
+## Documentation
+
+- [building from sources](https://github.com/sytac/resumator/blob/master/doc/building.md)
+- [run the application](https://github.com/sytac/resumator/blob/master/doc/running.md)
+- [configuration reference](https://github.com/sytac/resumator/blob/master/doc/configure.md)
+
 ## 3rd Party libs
 [docx4j](https://github.com/plutext/docx4j) for exporting in HTML, PDF, DOCX
-
-## Install Requirements
-* JDK 8
-* Maven 3.x
 
 ## Usage
 1. Create a [config file](FIXME)

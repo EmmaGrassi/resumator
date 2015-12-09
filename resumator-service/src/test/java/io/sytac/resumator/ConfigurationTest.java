@@ -9,6 +9,8 @@ import java.util.Random;
 
 import static org.junit.Assert.*;
 
+import static io.sytac.resumator.ConfigurationEntries.*;
+
 /**
  * Test class for {@link Configuration}
  */
@@ -32,20 +34,21 @@ public class ConfigurationTest {
 
     @Test
     public void systemPropertiesWinOverDefault(){
-        String serviceName = configuration.getProperty("resumator.service.name").get();
+        String serviceName = configuration.getProperty(SERVICE_NAME).get();
         assertEquals("Static configuration was not found", "The Resumator", serviceName);
 
         System.setProperty("resumator.service.name", "foobar");
-        serviceName = configuration.getProperty("resumator.service.name").get();
+        serviceName = configuration.getProperty(SERVICE_NAME).get();
         assertEquals("System properties don't override static default properties", "foobar", serviceName);
-        System.getProperties().remove("resumator.service.name");
+        System.clearProperty(SERVICE_NAME);
     }
 
     @Test
     public void canGetURIsOutOfConfig() throws URISyntaxException {
-        System.setProperty("resumator.http.uri", "http://1.1.1.1:8080/resumator");
-        URI uri = configuration.getURIProperty("resumator.http.uri").get();
+        System.setProperty(BASE_URI, "http://1.1.1.1:8080/resumator");
+        URI uri = configuration.getURIProperty(BASE_URI).get();
         assertEquals("URIs are not properly supported", new URI("http://1.1.1.1:8080/resumator"), uri);
+        System.clearProperty(BASE_URI);
     }
 
 }

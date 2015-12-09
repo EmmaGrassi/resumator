@@ -15,6 +15,8 @@ import java.util.UUID;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import static io.sytac.resumator.ConfigurationEntries.*;
+
 /**
  * Test SQL connections
  *
@@ -35,7 +37,7 @@ public class SqlStoreTest extends AbstractResumatorTest {
 
     @Test
     public void connectedToTheTestDB(){
-        assertEquals(configuration.getProperty("resumator.db.user").get(), "sa");
+        assertEquals(configuration.getProperty(SQL_DB_USER).get(), "sa");
     }
 
     @Test
@@ -45,11 +47,11 @@ public class SqlStoreTest extends AbstractResumatorTest {
     }
 
     private Event createRandomEvent() {
-        return new Event(UUID.randomUUID().toString(), "stream", 1l, 1l, "test".getBytes(), new Timestamp(0), "test");
+        return new Event(UUID.randomUUID().toString(), "stream", 1L, 1L, "test".getBytes(), new Timestamp(0), "test");
     }
 
     private Event createRandomEvent(final Long insertSequence) {
-        return new Event(UUID.randomUUID().toString(), "stream", insertSequence, 1l, "test".getBytes(), new Timestamp(0), "test");
+        return new Event(UUID.randomUUID().toString(), "stream", insertSequence, 1L, "test".getBytes(), new Timestamp(0), "test");
     }
 
     private Event createRandomEvent(final Long insertSequence, final String streamId, final Long streamOrder) {
@@ -67,8 +69,8 @@ public class SqlStoreTest extends AbstractResumatorTest {
 
     @Test(expected = IllegalInsertOrderException.class)
     public void insertSequenceMustBeUnique(){
-        Event event1 = createRandomEvent(1l);
-        Event event2 = createRandomEvent(1l);
+        Event event1 = createRandomEvent(1L);
+        Event event2 = createRandomEvent(1L);
 
         store.put(event1);
         store.put(event2);
@@ -76,8 +78,8 @@ public class SqlStoreTest extends AbstractResumatorTest {
 
     @Test(expected = IllegalStreamOrderException.class)
     public void streamOrderMustBeUnique(){
-        Event event1 = createRandomEvent(1l, "stream", 1l);
-        Event event2 = createRandomEvent(2l, "stream", 1l);
+        Event event1 = createRandomEvent(1L, "stream", 1L);
+        Event event2 = createRandomEvent(2L, "stream", 1L);
 
         store.put(event1);
         store.put(event2);

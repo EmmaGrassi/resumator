@@ -5,6 +5,8 @@ import org.flywaydb.core.Flyway;
 
 import java.util.Optional;
 
+import static io.sytac.resumator.ConfigurationEntries.*;
+
 /**
  * Manages the database schema of the Resumator, including creation of the DB and migrations
  *
@@ -12,8 +14,6 @@ import java.util.Optional;
  * @since 0.1
  */
 public class SchemaManager {
-
-    public static final String SQL_FILES_DIR_CONFIG = "resumator.db.sql.dir";
 
     private final Flyway flyway;
 

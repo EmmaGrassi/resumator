@@ -16,6 +16,8 @@ import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import static io.sytac.resumator.ConfigurationEntries.*;
+
 /**
  *  ╔╦╗┬ ┬┌─┐  ╦═╗┌─┐┌─┐┬ ┬┌┬┐┌─┐┌┬┐┌─┐┬─┐TM
  *   ║ ├─┤├┤   ╠╦╝├┤ └─┐│ ││││├─┤ │ │ │├┬┘
@@ -62,7 +64,7 @@ public class ResumatorApp {
     }
 
     protected ResourceConfig registerEventBus(final ResourceConfig rc, final Configuration configuration) {
-        final String id = configuration.getProperty("resumator.logs.events.tag").orElse("resumator");
+        final String id = configuration.getProperty(LOG_TAG).orElse("resumator");
         final ExecutorService executor = createExecutorService(configuration);
         final AsyncEventBus eventBus = new AsyncEventBus(id, executor);
         return rc.register(new AbstractBinder() {
@@ -74,7 +76,7 @@ public class ResumatorApp {
     }
 
     protected ExecutorService createExecutorService(Configuration configuration) {
-        final Integer concurrency = configuration.getIntegerProperty("resumator.sys.threadpool.size").orElse(1);
+        final Integer concurrency = configuration.getIntegerProperty(THREAD_POOL_SIZE).orElse(1);
         return Executors.newFixedThreadPool(concurrency);
     }
 
@@ -100,7 +102,7 @@ public class ResumatorApp {
     }
 
     protected Server createServer(final Configuration configuration, final ResourceConfig rc) {
-        final Optional<URI> maybeURI = configuration.getURIProperty("resumator.http.uri");
+        final Optional<URI> maybeURI = configuration.getURIProperty(BASE_URI);
         final URI uri = maybeURI.orElseGet(() -> {
             try {
                 return new URI("http://localhost:9090");

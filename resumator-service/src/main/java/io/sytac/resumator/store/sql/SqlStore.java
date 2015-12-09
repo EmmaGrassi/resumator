@@ -18,6 +18,8 @@ import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 import javax.sql.DataSource;
 import java.util.List;
 
+import static io.sytac.resumator.ConfigurationEntries.*;
+
 /**
  * Stores and retrieves events from a SQL database
  *
@@ -25,11 +27,6 @@ import java.util.List;
  * @since 0.1
  */
 public class SqlStore implements EventStore {
-
-    private final static String CONF_DB_DRIVER = "resumator.db.driver";
-    private final static String CONF_DB_URL    = "resumator.db.url";
-    private final static String CONF_DB_USER   = "resumator.db.user";
-    private final static String CONF_DB_PASS   = "resumator.db.password";
 
     private final ThreadLocal<SqlSession> session = new ThreadLocal<>();
     private final SqlSessionFactory sessionFactory;
@@ -45,10 +42,10 @@ public class SqlStore implements EventStore {
     }
 
     private PooledDataSource createDataSource(final io.sytac.resumator.Configuration properties) {
-        final String driver = getDBProperty(properties, CONF_DB_DRIVER);
-        final String url = getDBProperty(properties, CONF_DB_URL);
-        final String user = getDBProperty(properties, CONF_DB_USER);
-        final String password = getDBProperty(properties, CONF_DB_PASS);
+        final String driver = getDBProperty(properties, SQL_DB_DRIVER);
+        final String url = getDBProperty(properties, SQL_DB_URL);
+        final String user = getDBProperty(properties, SQL_DB_USER);
+        final String password = getDBProperty(properties, SQL_DB_PASS);
 
         return new PooledDataSource(driver, url, user, password);
     }

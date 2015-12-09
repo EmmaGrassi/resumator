@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import static io.sytac.resumator.ConfigurationEntries.*;
+
 /**
  * Enables Jersey routes to work even when the Resumator is serving requests from a rewritten context path
  *
@@ -54,7 +56,7 @@ public class UriRewriteSupportFilter implements ContainerRequestFilter {
     }
 
     private String getRewrittenContextPath() {
-        return config.getProperty("resumator.http.context.path")
+        return config.getProperty(CONTEXT_PATH)
                      .orElse("");
     }
 }

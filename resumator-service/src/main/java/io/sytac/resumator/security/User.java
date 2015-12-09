@@ -10,7 +10,7 @@ import java.util.Set;
  * @author Carlo Sciolla
  * @since 0.1
  */
-class User implements Principal {
+public class User implements Principal {
 
     private final String name;
     private final Set<String> roles;
@@ -27,5 +27,9 @@ class User implements Principal {
 
     public boolean hasRole(String role) {
         return roles.contains(role);
+    }
+
+    public Set<String> getRoles() {
+        return roles;
     }
 }

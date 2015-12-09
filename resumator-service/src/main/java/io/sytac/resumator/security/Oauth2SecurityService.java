@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -42,15 +41,15 @@ public class Oauth2SecurityService {
         this.eventBus = eventBus;
     }
 
-    public Optional<User> authenticateUser(final String idtoken) {
+    public User authenticateUser(final String idtoken) {
         final GoogleIdTokenVerifier verifier = buildVerifier();
         final Optional<GoogleIdToken> idToken = verify(verifier, idtoken);
-        final Optional<User> user = toUser(idToken);
-        return user;
+        return toUser(idToken);
     }
 
-    private Optional<User> toUser(Optional<GoogleIdToken> idToken) {
-        return idToken.map(token -> new User(token.getPayload().getAuthorizedParty(), Sets.newHashSet("user")));
+    private User toUser(Optional<GoogleIdToken> idToken) {
+        return idToken.map(token -> new User(token.getPayload().getEmail(), Sets.newHashSet("user")))
+                .orElse(new User(null, Sets.newHashSet("anonymous")));
     }
 
     private Optional<GoogleIdToken> verify(GoogleIdTokenVerifier verifier, String idtoken) {
@@ -68,8 +67,14 @@ public class Oauth2SecurityService {
     private Optional<GoogleIdToken> validate(GoogleIdToken token) {
         if (token != null) {
             GoogleIdToken.Payload payload = token.getPayload();
-            if (assertCondition("Wrong Google domain", () -> payload.getHostedDomain().equals(GOOGLE_APPS_DOMAIN_NAME))
-                    && assertCondition("Wrong client application ID", () -> Collections.singletonList(GOOGLE_CLIENT_ID).contains(payload.getAuthorizedParty()))) {
+            if (assertCondition("Wrong Google domain", () ->
+                    config.getProperty(GOOGLE_APPS_DOMAIN_NAME)
+                          .map(domain -> domain.equals(payload.getHostedDomain()))
+                          .orElse(false)
+                    && assertCondition("Wrong client application ID", () ->
+                            config.getProperty(GOOGLE_CLIENT_ID)
+                                  .map(id -> id.equals(payload.getAuthorizedParty()))
+                                  .orElse(false)))) {
                 return Optional.of(token);
             }
         }

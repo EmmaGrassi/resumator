@@ -11,6 +11,7 @@ import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.SecurityContext;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -33,14 +34,14 @@ public class Oauth2AuthenticationFilter implements ContainerRequestFilter {
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
-        final SecurityContext sc = defineSecurityContext(requestContext.getCookies().get(AUTHENTICATION_COOKIE));
-        requestContext.setSecurityContext(sc);
+        defineSecurityContext(Optional.ofNullable(requestContext.getCookies()
+                                      .get(AUTHENTICATION_COOKIE)))
+                             .ifPresent(requestContext::setSecurityContext);
     }
 
-    private SecurityContext defineSecurityContext(final Cookie cookie) {
-        final User user = security.authenticateUser(cookie.getValue())
-                                  .orElse(new User("", Collections.unmodifiableSet(Sets.newHashSet("anonymous"))));
-        return new Oauth2SecurityContext(user.getRoles(), user.getName());
+    private Optional<SecurityContext> defineSecurityContext(final Optional<Cookie> maybeCookie) {
+        final Optional<User> maybeUser = maybeCookie.map(cookie -> security.authenticateUser(cookie.getValue()));
+        return maybeUser.map(user -> new Oauth2SecurityContext(maybeUser.get().getRoles(), maybeUser.get().getName()));
     }
 
 }

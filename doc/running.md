@@ -73,7 +73,7 @@ server {
     server_name resumator.sytac.io;
 
     location / {
-        root /Users/skuro/Development/Sytac/resumator/frontend/src;
+        root ${path to the resumator-ui src folder};
     }
 }
 ```

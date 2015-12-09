@@ -1,6 +1,5 @@
 package io.sytac.resumator;
 
-import com.google.common.io.Resources;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,21 +37,31 @@ public class Configuration {
     }
 
     private Properties readDefaultProperties() {
-        URL url = Resources.getResource(STATIC_CONFIG_LOCATION);
-        try {
-            // skipping proper null check here as static config should be always embedded
-            assert url != null;
-            File staticConfig = new File(url.toURI());
-            return readProperties(staticConfig);
-        } catch (URISyntaxException e) {
-            LOGGER.error("Cannot find the static configuration file, exiting");
-            throw new IllegalStateException();
-        }
+        final InputStream stream = getDefaultConfigurationResource();
+        // skipping proper null check here as static config should be always embedded
+        assert stream != null;
+        return readProperties(stream);
+    }
+
+    private InputStream getDefaultConfigurationResource() {
+        return this.getClass().getClassLoader().getResourceAsStream(STATIC_CONFIG_LOCATION);
     }
 
     private Properties readProperties(final File propertiesFile) {
+        final FileInputStream fileInputStream;
+        try {
+            fileInputStream = new FileInputStream(propertiesFile);
+            return readProperties(fileInputStream);
+        } catch (FileNotFoundException e) {
+            LOGGER.error("Couldn't read properties file, ignoring");
+        }
+
+        return new Properties();
+    }
+
+    private Properties readProperties(final InputStream stream) {
         final Properties properties = new Properties();
-        try(final InputStream propertiesStream = new FileInputStream(propertiesFile)) {
+        try(final InputStream propertiesStream = stream) {
             properties.load(propertiesStream);
         } catch (FileNotFoundException e) {
             // cannot happen, file should be retrieved through class loader

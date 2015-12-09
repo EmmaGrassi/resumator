@@ -17,8 +17,12 @@ WORKDIR /usr/local/resumator
 # Install the app
 COPY target/resumator-0.1-SNAPSHOT.jar /usr/local/resumator/resumator.jar
 
-# TODO: write the config!
+# Install the startup script
+COPY docker/resumator.sh /usr/local/resumator
+RUN chmod +x /usr/local/resumator/resumator.sh
+
+EXPOSE 9090
 
 # Run the app
-CMD ["java", "-jar", "resumator.jar"]
+ENTRYPOINT ["/usr/local/resumator/resumator.sh"]
 

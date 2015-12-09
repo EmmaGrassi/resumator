@@ -1,4 +1,4 @@
-package io.sytac.resumator.security.security;
+package io.sytac.resumator.security;
 
 import com.google.common.collect.Sets;
 

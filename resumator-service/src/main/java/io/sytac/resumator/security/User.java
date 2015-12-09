@@ -1,4 +1,4 @@
-package io.sytac.resumator.security.security;
+package io.sytac.resumator.security;
 
 import java.security.Principal;
 import java.util.Collections;

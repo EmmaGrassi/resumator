@@ -2,6 +2,7 @@ package io.sytac.resumator;
 
 import com.google.common.eventbus.AsyncEventBus;
 import io.sytac.resumator.http.UriRewriteSupportFilter;
+import io.sytac.resumator.security.Oauth2AuthenticationFilter;
 import org.eclipse.jetty.server.Server;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.jetty.JettyHttpContainerFactory;
@@ -52,7 +53,12 @@ public class ResumatorApp {
         rc = registerEventBus(rc, configuration);
         rc = registerJSONSupport(rc);
         rc = registerUriRewriteSupport(rc);
+        rc = registerSecurity(rc);
         return rc;
+    }
+
+    private ResourceConfig registerSecurity(ResourceConfig rc) {
+        return rc.register(Oauth2AuthenticationFilter.class);
     }
 
     private ResourceConfig registerUriRewriteSupport(ResourceConfig rc) {

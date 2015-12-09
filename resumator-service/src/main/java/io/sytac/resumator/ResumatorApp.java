@@ -7,6 +7,7 @@ import org.eclipse.jetty.server.Server;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.jetty.JettyHttpContainerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
+import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,7 +59,8 @@ public class ResumatorApp {
     }
 
     private ResourceConfig registerSecurity(ResourceConfig rc) {
-        return rc.register(Oauth2AuthenticationFilter.class);
+        return rc.register(Oauth2AuthenticationFilter.class)
+                 .register(RolesAllowedDynamicFeature.class);
     }
 
     private ResourceConfig registerUriRewriteSupport(ResourceConfig rc) {

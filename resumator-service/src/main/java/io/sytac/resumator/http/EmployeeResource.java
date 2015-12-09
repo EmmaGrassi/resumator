@@ -4,6 +4,7 @@ import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import org.eclipse.jetty.http.HttpStatus;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 
 /**
@@ -12,7 +13,8 @@ import javax.ws.rs.*;
  * @author Carlo Sciolla
  * @since 0.1
  */
-@Path("employee")
+@Path("employee/{id}")
+@RolesAllowed("user")
 public class EmployeeResource {
 
     @POST

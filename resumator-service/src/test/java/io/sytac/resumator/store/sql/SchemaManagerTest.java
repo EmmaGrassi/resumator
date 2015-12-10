@@ -5,7 +5,7 @@ import io.sytac.resumator.Configuration;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static io.sytac.resumator.ConfigurationEntries.*;
 
 /**
  * Test the handling of DB schemas
@@ -16,7 +16,7 @@ public class SchemaManagerTest extends AbstractResumatorTest {
 
     @Before
     public void setUp() throws Exception {
-        System.setProperty(SchemaManager.SQL_FILES_DIR_CONFIG, "classpath:db/h2/migration");
+        System.setProperty(SQL_FILES_DIR_CONFIG, "classpath:db/h2/migration");
         Configuration properties = new Configuration();
         manager = new SchemaManager(properties, new SqlStore(properties));
     }

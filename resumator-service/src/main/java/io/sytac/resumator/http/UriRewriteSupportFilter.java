@@ -46,13 +46,17 @@ public class UriRewriteSupportFilter implements ContainerRequestFilter {
 
     protected URI appendContextPath(URI uri) {
         final String path = getRewrittenContextPath();
-        final String uriString = uri.toString();
-        try {
-            return new URI(uriString + path);
-        } catch (URISyntaxException e) {
-            LOGGER.error("Wrong value for config entry resumator.http.context.path, ignoring: {}", path);
-            return uri;
+        if(!"".equals(path)) {
+            final String uriString = uri.toString();
+            try {
+                return new URI(uriString + path);
+            } catch (URISyntaxException e) {
+                LOGGER.error("Wrong value for config entry resumator.http.context.path, ignoring: {}", path);
+                return uri;
+            }
         }
+
+        return uri;
     }
 
     private String getRewrittenContextPath() {

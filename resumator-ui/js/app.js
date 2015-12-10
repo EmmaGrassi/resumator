@@ -34,6 +34,15 @@ var EventModel = Backbone.Model.extend({
 var ExperienceModel = Backbone.Model.extend({
 });
 
+var ResumeModel = Backbone.Model.extend({
+});
+
+var UserModel = Backbone.Model.extend({
+  defaults: {
+    icon: 'images/user_icon.svg'
+  }
+});
+
 // Views
 var View = Backbone.View.extend({
   initialize: function(options) {
@@ -57,7 +66,8 @@ var NavigationView = View.extend({
   template: _.template($('script.navigationTemplate').html()),
 
   events: {
-    'click nav a': 'handleLinkClick'
+    'click nav a': 'handleLinkClick',
+    'hide.bs.dropdown': 'handleAvatarInactive'
   },
 
   handleLinkClick: function(event) {
@@ -66,6 +76,11 @@ var NavigationView = View.extend({
     this
       .deselectAllSiblingMenuItemsByLink(target)
       .selectMenuItemByLink(target);
+  },
+
+  handleAvatarInactive: function(event){
+    var target = event.target;
+    $(target).removeClass('active');
   },
 
   deselectAllSiblingMenuItemsByLink: function(clickedMenuItem) {
@@ -106,6 +121,13 @@ var NavigationView = View.extend({
     this
       .deselectAllSiblingMenuItemsByClass(className)
       .selectMenuItemByClass(className);
+
+    return this;
+  },
+
+  render: function() {
+    var htmlOutput = this.template(this.model.toJSON());
+    this.$el.html(htmlOutput);
 
     return this;
   }
@@ -295,9 +317,11 @@ var ApplicationRouter = Backbone.Router.extend({
   }
 });
 
+var user = new UserModel({});
+
 // Initialize the app.
 var applicationView = new ApplicationView();
-var navigationView = new NavigationView();
+var navigationView = new NavigationView({model: user});
 var router = new ApplicationRouter();
 
 // When the DOM is ready

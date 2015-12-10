@@ -25,6 +25,18 @@ body {
   color: #ffffff;
 }
 
+#navigationContainer .avatar-small {
+  width: 25px;
+}
+
+#navigationContainer .avatar .dropdown-menu {
+  background: #E67E1F;
+}
+
+#navigationContainer .dropdown-menu>li>a:hover {
+  background: black;
+}
+
 /*
   search interface
   add button

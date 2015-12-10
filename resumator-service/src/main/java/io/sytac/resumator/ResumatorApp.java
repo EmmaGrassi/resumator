@@ -1,11 +1,16 @@
 package io.sytac.resumator;
 
 import com.google.common.eventbus.AsyncEventBus;
+import com.google.common.eventbus.EventBus;
 import io.sytac.resumator.http.UriRewriteSupportFilter;
+import io.sytac.resumator.security.Oauth2AuthenticationFilter;
+import io.sytac.resumator.security.Oauth2SecurityService;
+import io.sytac.resumator.security.Oauth2SecurityServiceFactory;
 import org.eclipse.jetty.server.Server;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.jetty.JettyHttpContainerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
+import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,7 +57,19 @@ public class ResumatorApp {
         rc = registerEventBus(rc, configuration);
         rc = registerJSONSupport(rc);
         rc = registerUriRewriteSupport(rc);
+        rc = registerSecurity(rc);
         return rc;
+    }
+
+    private ResourceConfig registerSecurity(ResourceConfig rc) {
+        return rc.register(Oauth2AuthenticationFilter.class)
+                 .register(RolesAllowedDynamicFeature.class)
+                 .register(new AbstractBinder() {
+                     @Override
+                     protected void configure() {
+                         bindFactory(Oauth2SecurityServiceFactory.class).to(Oauth2SecurityService.class);
+                     }
+                 });
     }
 
     private ResourceConfig registerUriRewriteSupport(ResourceConfig rc) {
@@ -70,7 +87,7 @@ public class ResumatorApp {
         return rc.register(new AbstractBinder() {
             @Override
             protected void configure() {
-                bind(eventBus);
+                bind(eventBus).to(EventBus.class);
             }
         });
     }

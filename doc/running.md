@@ -28,7 +28,7 @@ java -Dresumator.http.context.path=api/ -jar resumator-${version}.jar
 
 ## Running the Frontend application
 
-TBD
+You just need to point a frontend web server like nginx to the `resumator-ui/src` folder.
 
 ## Putting it all together
 
@@ -57,23 +57,19 @@ You can then take that IP and write the following nginx configuration:
 
 ```
 server {
-    server_name resumator-api.sytac.io;
+    server_name resumator.sytac.io;
     listen 80;
 
+    root /path/to/resumator-ui/src;
+
     location / {
+    }
+
+    location /api/ {
         proxy_pass http://${docker-machine IP}:9090/;
         proxy_set_header  X-Real-IP $remote_addr;
         proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header  Host $http_host;
-    }
-}
-
-# TODO: fix the frontend
-server {
-    server_name resumator.sytac.io;
-
-    location / {
-        root ${path to the resumator-ui src folder};
     }
 }
 ```

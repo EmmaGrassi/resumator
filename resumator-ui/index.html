@@ -13,7 +13,25 @@
     <script src="jspm_packages/system.js"></script>
     <script src="config.js"></script>
     <script>
-      System.import('js/app');
+      System.config({
+        /*
+        bundles: {
+          'lib': [
+            // Apparently this one needs to be here?
+            'js/app.js',
+
+            'jquery',
+            'react',
+            'react-dom'
+          ]
+        }
+        */
+      });
+
+      System.import('js/app.bundle')
+        .then(function(m) {
+          console.log('Loading Complete', m);
+        });
     </script>
   </body>
 </html>

@@ -6,6 +6,7 @@ import io.sytac.resumator.http.BaseResource;
 import io.sytac.resumator.model.Employee;
 import io.sytac.resumator.model.EmployeeId;
 import io.sytac.resumator.store.EmployeeRepository;
+import org.eclipse.jetty.http.HttpStatus;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
@@ -24,19 +25,31 @@ import java.util.Optional;
 @RolesAllowed({"user"})
 public class EmployeeQuery extends BaseResource {
 
-    private final EmployeeRepository repository;
-
-    @Inject
-    public EmployeeQuery(final EmployeeRepository repository) {
-        this.repository = repository;
-    }
+//    private final EmployeeRepository repository;
+//
+//    @Inject
+//    public EmployeeQuery(final EmployeeRepository repository) {
+//        this.repository = repository;
+//    }
+//
+//    @GET
+//    @Produces(RepresentationFactory.HAL_JSON)
+//    public Representation getEmployee(@PathParam("id") final String id, @Context final UriInfo uriInfo) {
+//        final EmployeeId employeeId = new EmployeeId(id);
+//        final Employee employee = repository.find(employeeId).orElseThrow(() -> new WebApplicationException(404));
+//        return represent(employee, uriInfo);
+//    }
 
     @GET
     @Produces(RepresentationFactory.HAL_JSON)
-    public Representation getEmployee(@PathParam("id") final String id, @Context final UriInfo uriInfo) {
-        final EmployeeId employeeId = new EmployeeId(id);
-        final Employee employee = repository.find(employeeId).orElseThrow(() -> new WebApplicationException(404));
-        return represent(employee, uriInfo);
+    public Representation fakeEmployee(@PathParam("id") final String id) {
+        if ("666".equals(id)) {
+            return rest.newRepresentation()
+                    .withProperty("name", "foo")
+                    .withProperty("surname", "bar");
+        }
+
+        throw new WebApplicationException("Cannot get an employee yet, sorry!", HttpStatus.NOT_IMPLEMENTED_501);
     }
 
     /**

@@ -3,6 +3,7 @@
 .project
 .classpath
 .settings
+resumator-ui/build
 node_modules
 jspm_packages
 target

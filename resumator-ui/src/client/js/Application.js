@@ -5,8 +5,6 @@ import promiseFromCallback from '../../common/lib/promise/promiseFromCallback';
 import Router from './Router';
 import log from '../../common/lib/log';
 
-// import levelDBStore from '../../common/lib/event-flux/store';
-
 import actions from './actions';
 import store from './store';
 import reducers from './reducers';

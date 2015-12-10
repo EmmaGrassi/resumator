@@ -8,8 +8,24 @@ package io.sytac.resumator.security;
  */
 public interface Roles {
 
+    /**
+     * Super user, admin of all communities. Currently unused as we only support just one community
+     */
+    String SYSADMIN = "root";
+
+    /**
+     * Community administrator
+     */
     String ADMIN = "admin";
-    String USER  = "user";
-    String ANON  = "anonymous";
+
+    /**
+     * Regular user within the community
+     */
+    String USER = "user";
+
+    /**
+     * A roaming anonymous
+     */
+    String ANON = "anonymous";
 
 }

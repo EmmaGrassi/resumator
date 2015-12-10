@@ -1,0 +1,145 @@
+// Core variables and mixins
+@import "./bootstrap/variables.less";
+
+// OWN VARS HERE
+//@import "./bootswatch/flatly/variables.less";
+//@import "./bootswatch/flatly/bootswatch.less";
+
+@brand-primary: #336699;
+@brand-success: #669933;
+@brand-info:    #339999;
+@brand-warning: #ff9900;
+@brand-danger:  #dd0000;
+
+@brand-primary-dark: darken(@brand-primary, 5%);
+@brand-success-dark: darken(@brand-success, 5%);
+@brand-info-dark: darken(@brand-info, 5%);
+@brand-warning-dark: darken(@brand-warning, 5%);
+@brand-danger-dark: darken(@brand-danger, 5%);
+
+@navbar-default-color:  #666666;
+@navbar-default-bg:     #eeeeee;
+@navbar-default-border: #cccccc;
+
+// Navbar links
+@navbar-default-link-color:          @brand-primary;
+@navbar-default-link-hover-color:    #ffffff;
+@navbar-default-link-hover-bg:       @brand-primary-dark;
+@navbar-default-link-active-color:   #ffffff;
+@navbar-default-link-active-bg:      @brand-primary;
+@navbar-default-link-disabled-color: #cccccc;
+@navbar-default-link-disabled-bg:    transparent;
+
+// Navbar brand label
+@navbar-default-brand-color:       @navbar-default-link-color;
+@navbar-default-brand-hover-color: darken(@navbar-default-brand-color, 10%);
+@navbar-default-brand-hover-bg:    transparent;
+
+// Navbar toggle
+@navbar-default-toggle-hover-bg:     #ccc;
+@navbar-default-toggle-icon-bar-bg:  #999;
+@navbar-default-toggle-border-color: #ccc;
+
+@import "./bootstrap/mixins.less";
+
+// Reset and dependencies
+@import "./bootstrap/normalize.less";
+@import "./bootstrap/print.less";
+@import "./bootstrap/glyphicons.less";
+
+// Core CSS
+@import "./bootstrap/scaffolding.less";
+@import "./bootstrap/type.less";
+@import "./bootstrap/code.less";
+@import "./bootstrap/grid.less";
+@import "./bootstrap/tables.less";
+@import "./bootstrap/forms.less";
+@import "./bootstrap/buttons.less";
+
+// Components
+@import "./bootstrap/component-animations.less";
+@import "./bootstrap/dropdowns.less";
+@import "./bootstrap/button-groups.less";
+@import "./bootstrap/input-groups.less";
+@import "./bootstrap/navs.less";
+@import "./bootstrap/navbar.less";
+@import "./bootstrap/breadcrumbs.less";
+@import "./bootstrap/pagination.less";
+@import "./bootstrap/pager.less";
+@import "./bootstrap/labels.less";
+@import "./bootstrap/badges.less";
+@import "./bootstrap/jumbotron.less";
+@import "./bootstrap/thumbnails.less";
+@import "./bootstrap/alerts.less";
+@import "./bootstrap/progress-bars.less";
+@import "./bootstrap/media.less";
+@import "./bootstrap/list-group.less";
+@import "./bootstrap/panels.less";
+@import "./bootstrap/responsive-embed.less";
+@import "./bootstrap/wells.less";
+@import "./bootstrap/close.less";
+
+// Components w/ JavaScript
+@import "./bootstrap/modals.less";
+@import "./bootstrap/tooltip.less";
+@import "./bootstrap/popovers.less";
+@import "./bootstrap/carousel.less";
+
+// Utility classes
+@import "./bootstrap/utilities.less";
+@import "./bootstrap/responsive-utilities.less";
+
+
+//.panel.loading {
+//  .panel-body {
+//    height: 100px;
+//    padding: 0;
+//
+//    .spinner {
+//      width: 100%;
+//      height: 100%;
+//    }
+//  }
+//}
+
+body {
+  background: url(/images/irongrip.png);
+}
+
+// Center bootstrap column divs with this
+.col-center {
+   display: block;
+   margin-left: auto;
+   margin-right: auto;
+}
+
+.Card {
+  margin-top: 10px;
+
+  &:first-child {
+    margin-top: 0;
+  }
+}
+
+/*
+.ListPage {
+  .table {
+    tbody {
+      tr {
+        :hover {
+          cursor: pointer;
+        }
+
+        td {
+          vertical-align: middle;
+        }
+      }
+    }
+  }
+}
+
+.Toolbar {
+  margin-bottom: 20px;
+}
+*/
+

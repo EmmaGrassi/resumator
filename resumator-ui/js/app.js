@@ -1,3 +1,15 @@
+import Application from './Application';
+
+import log from 'loglevel';
+
+log.setLevel('debug');
+
+const app = window.app = new Application({
+});
+
+app.start();
+
+/*
 // Configuration
 var apiHostname = 'localhost';
 var apiPort = 80;
@@ -295,3 +307,4 @@ $(document).ready(function() {
 
   Backbone.history.start();
 });
+*/

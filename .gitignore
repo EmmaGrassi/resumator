@@ -1,6 +1,9 @@
 **/resources/client_secret.json
+.idea
 .project
 .classpath
 .settings
+node_modules
+jspm_packages
 target
 resumator.log

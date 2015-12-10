@@ -1,0 +1,33 @@
+{
+  "jspm": {
+    "dependencies": {
+      "babel-polyfill": "npm:babel-polyfill@^6.3.14",
+      "color": "npm:color@^0.10.1",
+      "domready": "npm:domready@^1.0.8",
+      "flat": "npm:flat@^1.6.0",
+      "jquery": "github:components/jquery@^2.1.4",
+      "lodash": "npm:lodash@^3.10.1",
+      "loglevel": "npm:loglevel@^1.4.0",
+      "material-ui": "npm:material-ui@^0.14.0-rc1",
+      "newforms": "npm:newforms@^0.13.2",
+      "newforms-bootstrap": "npm:newforms-bootstrap@^2.0.0",
+      "react": "npm:react@^0.14.3",
+      "react-bootstrap": "npm:react-bootstrap@^0.28.1",
+      "react-dom": "npm:react-dom@^0.14.3",
+      "react-loader": "npm:react-loader@^2.0.0",
+      "react-redux": "npm:react-redux@^4.0.0",
+      "react-router": "npm:react-router@^1.0.2",
+      "redux": "npm:redux@^3.0.4",
+      "redux-logger": "npm:redux-logger@^2.1.4",
+      "redux-thunk": "npm:redux-thunk@^1.0.0",
+      "request": "npm:request@^2.67.0"
+    },
+    "devDependencies": {
+      "babel": "npm:babel-core@^5.8.24",
+      "babel-runtime": "npm:babel-runtime@^5.8.24",
+      "core-js": "npm:core-js@^1.1.4",
+      "traceur": "github:jmcriffey/bower-traceur@0.0.92",
+      "traceur-runtime": "github:jmcriffey/bower-traceur-runtime@0.0.92"
+    }
+  }
+}

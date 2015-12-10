@@ -1,5 +1,6 @@
 package io.sytac.resumator;
 
+import com.google.common.collect.Sets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -8,8 +9,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;
-import java.util.Optional;
-import java.util.Properties;
+import java.util.*;
 
 import static io.sytac.resumator.ConfigurationEntries.*;
 
@@ -166,5 +166,17 @@ public class Configuration {
                 return null;
             }
         });
+    }
+
+    /**
+     * Returns the list of colon-separated values found as the configuration options for the provided key
+     *
+     * @param key The key of the configuration to retrieve as a List
+     * @return The list of values found at key, or an empty list
+     */
+    public Set<String> getListProperty(final String key) {
+        return getProperty(key)
+                .<Set<String>>map(str -> Sets.newHashSet(str.split(":")))
+                .orElse(Collections.emptySet());
     }
 }

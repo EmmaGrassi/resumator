@@ -15,12 +15,11 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.util.Collections;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Supplier;
 
-import static io.sytac.resumator.ConfigurationEntries.GOOGLE_APPS_DOMAIN_NAME;
-import static io.sytac.resumator.ConfigurationEntries.GOOGLE_CLIENT_ID;
+import static io.sytac.resumator.ConfigurationEntries.*;
+import static io.sytac.resumator.security.Roles.*;
 
 /**
  * Authentication service that validates Google JWT tokens
@@ -48,8 +47,13 @@ public class Oauth2SecurityService {
     }
 
     private User toUser(Optional<GoogleIdToken> idToken) {
-        return idToken.map(token -> new User(token.getPayload().getEmail(), Sets.newHashSet("user")))
-                .orElse(new User(null, Sets.newHashSet("anonymous")));
+        return idToken.map(token -> new User(token.getPayload().getEmail(), getRoles(token.getPayload().getEmail())))
+                .orElse(new User(null, Sets.newHashSet(ANON)));
+    }
+
+    private HashSet<String> getRoles(final String user) {
+        final Set<String> admins = config.getListProperty(ADMIN_ACCOUNT_LIST);
+        return admins.contains(user) ? Sets.newHashSet(ADMIN) : Sets.newHashSet(USER);
     }
 
     private Optional<GoogleIdToken> verify(GoogleIdTokenVerifier verifier, String idtoken) {

@@ -162,7 +162,7 @@ public class Configuration {
         final Optional<String> string = getProperty(key);
         return string.map(value -> {
             try {
-                return Integer.valueOf(key);
+                return Integer.valueOf(value);
             } catch (NumberFormatException e) {
                 LOGGER.warn("Cannot parse config entry {} as integer, ignoring: {}", key, value);
                 return null;

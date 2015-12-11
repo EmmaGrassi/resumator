@@ -14,7 +14,6 @@ import static io.sytac.resumator.ConfigurationEntries.BASE_URI;
 import static io.sytac.resumator.ConfigurationEntries.SERVICE_NAME;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Test class for {@link Configuration}

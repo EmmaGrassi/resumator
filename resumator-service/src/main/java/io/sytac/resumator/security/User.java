@@ -30,10 +30,14 @@ public class User implements Principal {
     }
 
     public boolean hasRole(String role) {
-        return roles.contains(role);
+        return isSuperUser() || roles.contains(role);
     }
 
     public String getOrganizationId() {
         return organizationId;
+    }
+
+    public boolean isSuperUser() {
+        return roles.contains(Roles.SYSADMIN);
     }
 }

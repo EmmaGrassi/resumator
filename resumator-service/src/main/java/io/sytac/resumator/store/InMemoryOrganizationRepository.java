@@ -31,8 +31,12 @@ public class InMemoryOrganizationRepository implements OrganizationRepository {
 
     @Override
     public Organization register(final Organization org) {
-        Optional.ofNullable(organizations.putIfAbsent(org.getId(), org))
-                .ifPresent(old -> LOGGER.warn("Replacing existing organization: {}", old));
+        final Optional<Organization> stored = Optional.ofNullable(organizations.putIfAbsent(org.getId(), org));
+        if(stored.isPresent()) {
+            LOGGER.warn("Replacing existing organization: {}", stored);
+            return stored.get();
+        }
+
         return org;
     }
 }

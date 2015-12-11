@@ -1,4 +1,4 @@
-import promiseFromNodeCallback from '../../lib/promise/promiseFromNodeCallback';
+import promiseFromNodeCallback from '../promise/promiseFromNodeCallback';
 import httpRequest from 'request';
 
 import log from 'loglevel';

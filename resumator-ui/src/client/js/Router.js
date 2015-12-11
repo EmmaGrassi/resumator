@@ -13,7 +13,7 @@ import {
 } from 'react-router';
 import { Provider } from 'react-redux';
 
-import log from '../../common/lib/log';
+import log from '../lib/log';
 
 import PublicContainerComponent from './components/public/PublicContainerComponent';
 import PublicEmployeesIndexPageComponent from './components/public/PublicEmployeesIndexPageComponent';

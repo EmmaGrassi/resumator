@@ -1,9 +1,9 @@
 import _ from 'lodash';
 import domready from 'domready';
 
-import promiseFromCallback from '../../common/lib/promise/promiseFromCallback';
+import promiseFromCallback from '../lib/promise/promiseFromCallback';
 import Router from './Router';
-import log from '../../common/lib/log';
+import log from '../lib/log';
 
 import actions from './actions';
 import store from './store';

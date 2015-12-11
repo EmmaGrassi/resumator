@@ -1,4 +1,4 @@
-import log from '../../../common/lib/log';
+import log from '../log';
 
 export default function promiseFromNodeCallback(cb, ...args) {
   return new Promise((resolve, reject) => {

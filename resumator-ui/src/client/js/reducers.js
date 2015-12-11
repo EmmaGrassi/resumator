@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 
-import log from '../../common/lib/log';
+import log from '../lib/log';
 
 const defaults = {
   authentication: {

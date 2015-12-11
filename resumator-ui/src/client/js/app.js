@@ -1,7 +1,7 @@
 import 'babel-polyfill';
 
 import Application from './Application';
-import log from '../../common/lib/log';
+import log from '../lib/log';
 
 log.setLevel('debug');
 

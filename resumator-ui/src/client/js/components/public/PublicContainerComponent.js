@@ -1,6 +1,6 @@
 import React from 'react';
 
-import _ContainerComponent from '../../../../common/lib/react/ContainerComponent';
+import _ContainerComponent from '../../../lib/react/ContainerComponent';
 
 import PublicNavigationComponent from './PublicNavigationComponent';
 

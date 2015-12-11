@@ -14,11 +14,11 @@
  */
 
 import log from 'loglevel';
-import * as store from '../../common/lib/store';
+import * as store from '../lib/store';
 
 // import { promiseFromNodeCallback } from '../../../common/lib/promise';
 
-import { request } from '../../common/lib/redux/actions';
+import { request } from '../lib/redux/actions';
 
 function clearAuthentication() {
   localStorage.setItem('authentication', null);

@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -12,6 +13,8 @@ import static io.sytac.resumator.ConfigTestUtils.withConfig;
 import static io.sytac.resumator.ConfigurationEntries.BASE_URI;
 import static io.sytac.resumator.ConfigurationEntries.SERVICE_NAME;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Test class for {@link Configuration}
@@ -75,6 +78,34 @@ public class ConfigurationTest {
             assertEquals("Wrong list property handling", listPropVal, prop);
             return true;
         }, listPropKey, listPropVal);
+    }
+
+    @Test
+    public void canGetIntegerOutOfConfig() {
+        final String propKey = "some.int";
+        final String propVal = "42";
+
+        withConfig(() -> {
+            final Integer prop = configuration.getIntegerProperty(propKey).get();
+            assertEquals("Wrong list property handling", new Integer(42), prop);
+
+            final Optional<Integer> empty = configuration.getIntegerProperty("nonexistent");
+            assertFalse("Nonexistent property did not result in an empty integer config", empty.isPresent());
+
+            return true;
+        }, propKey, propVal);
+    }
+
+    @Test
+    public void malformedIntegerAreDetected() {
+        final String propKey = "some.int";
+        final String propVal = "42-wooot!";
+
+        withConfig(() -> {
+            final Optional<Integer> nonexistent = configuration.getIntegerProperty("nonexistent");
+            assertFalse("Malformed number property did not result in an empty config", nonexistent.isPresent());
+            return true;
+        }, propKey, propVal);
     }
 
 }

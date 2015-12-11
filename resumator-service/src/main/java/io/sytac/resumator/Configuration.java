@@ -1,6 +1,5 @@
 package io.sytac.resumator;
 
-import com.google.common.collect.Sets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,7 +10,7 @@ import java.net.URL;
 import java.nio.file.Paths;
 import java.util.*;
 
-import static io.sytac.resumator.ConfigurationEntries.*;
+import static io.sytac.resumator.ConfigurationEntries.USER_CONFIG_FILE_LOCATION;
 
 /**
  * A simple interface towards the application configuration. Will look for configuration entries in the following

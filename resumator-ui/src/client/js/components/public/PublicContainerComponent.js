@@ -1,12 +1,13 @@
 import React from 'react';
 
-import PublicNavigationComponent from './PublicNavigationComponent';
+// import PublicNavigationComponent from './PublicNavigationComponent';
+import TopBar from './navigation/top-bar';
 
 export default class PublicContainerComponent extends React.Component {
   render() {
     return (
-      <div className="PublicContainerComponent">
-        <PublicNavigationComponent
+      <div>
+        <TopBar
           history={this.props.history}
           location={this.props.location}
           params={this.props.params}

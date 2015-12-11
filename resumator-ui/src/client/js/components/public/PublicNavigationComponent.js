@@ -1,6 +1,5 @@
 import _ from 'lodash';
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 
 import log from 'loglevel';
@@ -118,7 +117,11 @@ class PublicNavigationComponent extends React.Component {
   }
 
   getAppBar() {
-    return <AppBar title="Code9" iconElementLeft={this.getAppBarLeftButton()} iconElementRight={this.getIconMenu()}/>;
+    return <AppBar
+      title="Resumator"
+      iconElementLeft={this.getAppBarLeftButton()}
+      iconElementRight={this.getIconMenu()}
+    />;
   }
 
   render() {

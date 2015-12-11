@@ -3,11 +3,9 @@ import CardText from 'material-ui/lib/card/card-text';
 import CardTitle from 'material-ui/lib/card/card-title';
 import React from 'react';
 
-import log from '../../../../common/lib/log';
+import log from '../../../lib/log';
 
-import RoutedPageComponent from '../../../../common/lib/react/components/page/RoutedPageComponent';
-
-class PublicHomePageComponent extends RoutedPageComponent {
+class PublicHomePageComponent extends React.Component {
   render() {
     return <Card>
       <CardTitle

@@ -13,24 +13,14 @@ import {
 } from 'react-router';
 import { Provider } from 'react-redux';
 
-import log from '../../common/lib/log';
-
-import BreadcrumbsComponent from './components/BreadcrumbsComponent';
+import log from '../lib/log';
 
 import PublicContainerComponent from './components/public/PublicContainerComponent';
-import PublicAboutPageComponent from './components/public/PublicAboutPageComponent';
-import PublicContactPageComponent from './components/public/PublicContactPageComponent';
+import PublicEmployeesIndexPageComponent from './components/public/PublicEmployeesIndexPageComponent';
+import PublicEmployeesNewPageComponent from './components/public/PublicEmployeesNewPageComponent';
+import PublicEmployeesResumeIndexPageComponent from './components/public/PublicEmployeesResumeIndexPageComponent';
+import PublicEmployeesShowPageComponent from './components/public/PublicEmployeesShowPageComponent';
 import PublicHomePageComponent from './components/public/PublicHomePageComponent';
-import PublicLoginPageComponent from './components/public/PublicLoginPageComponent';
-import PublicLogoutPageComponent from './components/public/PublicLogoutPageComponent';
-
-import CMSContainerComponent from './components/cms/CMSContainerComponent';
-import CMSDashboardPageComponent from './components/cms/CMSDashboardPageComponent';
-import CMSUsersDestroyPageComponent from './components/cms/users/destroy/DestroyPageComponent';
-import CMSUsersEditPageComponent from './components/cms/users/edit/CMSUsersEditPageComponent';
-import CMSUsersListPageComponent from './components/cms/users/list/CMSUsersListPageComponent';
-import CMSUsersNewPageComponent from './components/cms/users/new/NewPageComponent';
-import CMSUsersShowPageComponent from './components/cms/users/show/ShowPageComponent';
 
 export default class Router {
   constructor(options) {
@@ -43,37 +33,22 @@ export default class Router {
   }
 
   getRouter() {
-    // /
-    // /about
-    // /contact
-
-    // /login
-    // /logout
-
-    // /cms
-    // /cms/users
-    // /cms/users/:id
-    // /cms/users/:id/edit
-
     return (
       <Provider store={this.store}>
         <ReactRouter>
           <Route path="/" component={ PublicContainerComponent }>
             <IndexRoute component={ PublicHomePageComponent }/>
-            <Route path="about" components={ PublicAboutPageComponent }/>
-            <Route path="contact" components={ PublicContactPageComponent }/>
-            <Route path="login" components={ PublicLoginPageComponent }/>
-            <Route path="logout" components={ PublicLogoutPageComponent }/>
-          </Route>
 
-          <Route path="cms" component={ CMSContainerComponent }>
-            <IndexRoute component={ CMSDashboardPageComponent }/>
+            <Route path="employees">
+              <IndexRoute component={ PublicEmployeesIndexPageComponent }/>
 
-            <Route path="users">
-              <IndexRoute component={ CMSUsersListPageComponent }/>
-              <Route path="new" component={ CMSUsersNewPageComponent }/>
-              <Route path=":id" component={ CMSUsersShowPageComponent }/>
-              <Route path=":id/edit" component={ CMSUsersEditPageComponent }/>
+              <Route path="new" component={ PublicEmployeesNewPageComponent }/>
+
+              <Route path=":id">
+                <IndexRoute component={ PublicEmployeesShowPageComponent }/>
+
+                <Route path="resume" component={ PublicEmployeesResumeIndexPageComponent }/>
+              </Route>
             </Route>
           </Route>
         </ReactRouter>

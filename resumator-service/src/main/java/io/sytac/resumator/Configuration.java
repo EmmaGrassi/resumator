@@ -28,6 +28,8 @@ public class Configuration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Configuration.class);
 
+    public static final String LIST_SEPARATOR = ":";
+
     private static final String STATIC_CONFIG_LOCATION = "resumator.properties";
     private static final File DEFAULT_CONFIG_LOCATION = Paths.get(System.getProperty("user.home"), ".resumator", "config.properties").toFile();
     private final Properties defaultProperties;
@@ -174,9 +176,9 @@ public class Configuration {
      * @param key The key of the configuration to retrieve as a List
      * @return The list of values found at key, or an empty list
      */
-    public Set<String> getListProperty(final String key) {
+    public List<String> getListProperty(final String key) {
         return getProperty(key)
-                .<Set<String>>map(str -> Sets.newHashSet(str.split(":")))
-                .orElse(Collections.emptySet());
+                .map(str -> Arrays.asList(str.split(LIST_SEPARATOR)))
+                .orElse(Collections.emptyList());
     }
 }

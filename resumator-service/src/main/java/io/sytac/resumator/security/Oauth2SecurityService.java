@@ -17,6 +17,7 @@ import javax.inject.Inject;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
@@ -61,7 +62,7 @@ public class Oauth2SecurityService {
     }
 
     private Set<String> getRoles(final String user) {
-        final Set<String> admins = config.getListProperty(ADMIN_ACCOUNT_LIST);
+        final Set<String> admins = new HashSet<>(config.getListProperty(ADMIN_ACCOUNT_LIST));
         return admins.contains(user) ? Sets.newHashSet(ADMIN) : Sets.newHashSet(USER);
     }
 

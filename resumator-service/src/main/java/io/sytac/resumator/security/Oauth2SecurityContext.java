@@ -31,7 +31,7 @@ class Oauth2SecurityContext implements SecurityContext {
 
     @Override
     public boolean isSecure() {
-        return true;
+        return false;
     }
 
     @Override

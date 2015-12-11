@@ -1,10 +1,8 @@
 import React from 'react';
 
-import _ContainerComponent from '../../../lib/react/ContainerComponent';
-
 import PublicNavigationComponent from './PublicNavigationComponent';
 
-export default class PublicContainerComponent extends _ContainerComponent {
+export default class PublicContainerComponent extends React.Component {
   render() {
     return (
       <div className="PublicContainerComponent">

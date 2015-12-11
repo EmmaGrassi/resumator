@@ -5,9 +5,7 @@ import React from 'react';
 
 import log from '../../../lib/log';
 
-import RoutedPageComponent from '../../../lib/react/components/page/RoutedPageComponent';
-
-class PublicHomePageComponent extends RoutedPageComponent {
+class PublicHomePageComponent extends React.Component {
   render() {
     return <Card>
       <CardTitle

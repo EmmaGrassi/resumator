@@ -41,11 +41,10 @@ public class UriRewriteSupportFilterTest {
     }
 
     @Test
-    @Ignore("For some reason, it fails badly but it succeeds when debugging O_o")
     public void configuredContextPathAltersRequestContext() throws URISyntaxException, IOException {
         try {
             System.setProperty("resumator.http.context.path", "foobar/");
-            final URI original = new URI("http://www.sytac.nl/resumator/api");
+            final URI original = new URI("http://www.sytac.nl/resumator/api/");
 
             final UriInfo info = mock(UriInfo.class);
             when(info.getBaseUri()).thenReturn(original);
@@ -56,7 +55,7 @@ public class UriRewriteSupportFilterTest {
 
             filter.filter(ctx);
 
-            verify(ctx).setRequestUri(eq(new URI("http://www.sytac.nl/resumator/api/foobar/")), eq(info.getRequestUri()));
+            verify(ctx).setRequestUri(new URI("http://www.sytac.nl/resumator/api/foobar/"), info.getRequestUri());
         } finally {
             System.clearProperty("resumator.http.context.path");
         }

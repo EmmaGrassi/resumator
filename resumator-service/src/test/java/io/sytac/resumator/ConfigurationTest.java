@@ -5,14 +5,13 @@ import org.junit.Test;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
 import static io.sytac.resumator.ConfigTestUtils.withConfig;
-import static org.junit.Assert.*;
-
-import static io.sytac.resumator.ConfigurationEntries.*;
+import static io.sytac.resumator.ConfigurationEntries.BASE_URI;
+import static io.sytac.resumator.ConfigurationEntries.SERVICE_NAME;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Test class for {@link Configuration}

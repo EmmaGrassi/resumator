@@ -28,4 +28,11 @@ public interface OrganizationRepository {
      */
     Optional<Organization> fromDomain(String domain);
 
+    /**
+     * Registers a new {@link Organization}
+     *
+     * @param org The organization to register
+     * @return The registered organization
+     */
+    Organization register(Organization org);
 }

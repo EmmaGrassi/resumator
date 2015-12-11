@@ -7,19 +7,23 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.common.collect.Sets;
-import com.google.common.eventbus.EventBus;
 import io.sytac.resumator.Configuration;
+import io.sytac.resumator.model.Organization;
+import io.sytac.resumator.store.OrganizationRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.util.*;
+import java.util.Collections;
+import java.util.Optional;
+import java.util.Set;
 import java.util.function.Supplier;
 
 import static io.sytac.resumator.ConfigurationEntries.*;
-import static io.sytac.resumator.security.Roles.*;
+import static io.sytac.resumator.security.Roles.ADMIN;
+import static io.sytac.resumator.security.Roles.USER;
 
 /**
  * Authentication service that validates Google JWT tokens
@@ -32,12 +36,12 @@ public class Oauth2SecurityService {
     private static final Logger LOGGER = LoggerFactory.getLogger(Oauth2SecurityService.class);
 
     private final Configuration config;
-    private final EventBus eventBus;
+    private final OrganizationRepository organizations;
 
     @Inject
-    public Oauth2SecurityService(Configuration config, EventBus eventBus) {
+    public Oauth2SecurityService(final Configuration config, final OrganizationRepository organizations) {
         this.config = config;
-        this.eventBus = eventBus;
+        this.organizations = organizations;
     }
 
     public User authenticateUser(final String idtoken) {
@@ -46,17 +50,22 @@ public class Oauth2SecurityService {
         return toUser(idToken);
     }
 
-    private User toUser(Optional<GoogleIdToken> idToken) {
-        return idToken.map(token -> new User(token.getPayload().getEmail(), getRoles(token.getPayload().getEmail())))
-                .orElse(new User(null, Sets.newHashSet(ANON)));
+    private User toUser(final Optional<GoogleIdToken> idToken) {
+        return idToken.map(token -> {
+            final Optional<Organization> organization = organizations.fromDomain(token.getPayload().getHostedDomain());
+            return organization.map(org -> new User(org.getId(),
+                                                    token.getPayload().getEmail(),
+                                                    getRoles(token.getPayload().getEmail())))
+                        .orElse(User.ANONYMOUS);
+        }).orElse(User.ANONYMOUS);
     }
 
-    private HashSet<String> getRoles(final String user) {
+    private Set<String> getRoles(final String user) {
         final Set<String> admins = config.getListProperty(ADMIN_ACCOUNT_LIST);
         return admins.contains(user) ? Sets.newHashSet(ADMIN) : Sets.newHashSet(USER);
     }
 
-    private Optional<GoogleIdToken> verify(GoogleIdTokenVerifier verifier, String idtoken) {
+    private Optional<GoogleIdToken> verify(final GoogleIdTokenVerifier verifier, final String idtoken) {
         final GoogleIdToken token;
         try {
             token = verifier.verify(idtoken);
@@ -68,7 +77,7 @@ public class Oauth2SecurityService {
         return Optional.empty();
     }
 
-    private Optional<GoogleIdToken> validate(GoogleIdToken token) {
+    private Optional<GoogleIdToken> validate(final GoogleIdToken token) {
         if (token != null) {
             GoogleIdToken.Payload payload = token.getPayload();
             if (assertCondition("Wrong Google domain", () ->

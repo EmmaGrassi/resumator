@@ -1,11 +1,13 @@
 package io.sytac.resumator;
 
-import com.google.common.eventbus.AsyncEventBus;
-import com.google.common.eventbus.EventBus;
+import io.sytac.resumator.events.EventPublisher;
+import io.sytac.resumator.events.LocalEventPublisher;
 import io.sytac.resumator.http.UriRewriteSupportFilter;
 import io.sytac.resumator.security.Oauth2AuthenticationFilter;
 import io.sytac.resumator.security.Oauth2SecurityService;
 import io.sytac.resumator.security.Oauth2SecurityServiceFactory;
+import io.sytac.resumator.store.InMemoryOrganizationRepository;
+import io.sytac.resumator.store.OrganizationRepository;
 import org.eclipse.jetty.server.Server;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.jetty.JettyHttpContainerFactory;
@@ -18,10 +20,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Optional;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
-import static io.sytac.resumator.ConfigurationEntries.*;
+import static io.sytac.resumator.ConfigurationEntries.BASE_URI;
 
 /**
  *  ╔╦╗┬ ┬┌─┐  ╦═╗┌─┐┌─┐┬ ┬┌┬┐┌─┐┌┬┐┌─┐┬─┐TM
@@ -37,7 +37,7 @@ public class ResumatorApp {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ResumatorApp.class);
 
-	public static void main(String[] args) throws IOException {
+	public static void main(final String[] args) throws IOException {
         final ResumatorApp app = new ResumatorApp();
         app.banner();
 
@@ -54,14 +54,24 @@ public class ResumatorApp {
     protected ResourceConfig constructConfig(final Configuration configuration) {
         ResourceConfig rc = registerApplicationResorces(new ResourceConfig());
         rc = registerConfiguration(rc, configuration);
-        rc = registerEventBus(rc, configuration);
+        rc = registerEventPublisher(rc);
         rc = registerJSONSupport(rc);
         rc = registerUriRewriteSupport(rc);
         rc = registerSecurity(rc);
+        rc = registerRepositories(rc);
         return rc;
     }
 
-    private ResourceConfig registerSecurity(ResourceConfig rc) {
+    private ResourceConfig registerRepositories(final ResourceConfig rc) {
+        return rc.register(new AbstractBinder() {
+                    @Override
+                    protected void configure() {
+                        bind(InMemoryOrganizationRepository.class).to(OrganizationRepository.class);
+                    }
+                });
+    }
+
+    private ResourceConfig registerSecurity(final ResourceConfig rc) {
         return rc.register(Oauth2AuthenticationFilter.class)
                  .register(RolesAllowedDynamicFeature.class)
                  .register(new AbstractBinder() {
@@ -72,29 +82,21 @@ public class ResumatorApp {
                  });
     }
 
-    private ResourceConfig registerUriRewriteSupport(ResourceConfig rc) {
+    private ResourceConfig registerUriRewriteSupport(final ResourceConfig rc) {
         return rc.register(UriRewriteSupportFilter.class);
     }
 
-    private ResourceConfig registerJSONSupport(ResourceConfig rc) {
+    private ResourceConfig registerJSONSupport(final ResourceConfig rc) {
         return rc.register(ObjectMapperResolver.class);
     }
 
-    protected ResourceConfig registerEventBus(final ResourceConfig rc, final Configuration configuration) {
-        final String id = configuration.getProperty(LOG_TAG).orElse("resumator");
-        final ExecutorService executor = createExecutorService(configuration);
-        final AsyncEventBus eventBus = new AsyncEventBus(id, executor);
+    protected ResourceConfig registerEventPublisher(final ResourceConfig rc) {
         return rc.register(new AbstractBinder() {
             @Override
             protected void configure() {
-                bind(eventBus).to(EventBus.class);
+                bind(LocalEventPublisher.class).to(EventPublisher.class);
             }
         });
-    }
-
-    protected ExecutorService createExecutorService(Configuration configuration) {
-        final Integer concurrency = configuration.getIntegerProperty(THREAD_POOL_SIZE).orElse(1);
-        return Executors.newFixedThreadPool(concurrency);
     }
 
     protected ResourceConfig registerConfiguration(final ResourceConfig rc, final Configuration configuration) {
@@ -108,7 +110,7 @@ public class ResumatorApp {
 
     protected ResourceConfig registerApplicationResorces(final ResourceConfig rc) {
         return rc.packages(
-                "io.sytac.resumator.http",                // Resumator
+                "io.sytac.resumator.http",                // Resumator HTTP resources
                 "com.theoryinpractise.halbuilder.jaxrs"); // HAL support
     }
 

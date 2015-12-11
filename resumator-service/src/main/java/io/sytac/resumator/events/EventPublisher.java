@@ -11,6 +11,11 @@ import io.sytac.resumator.model.Event;
  */
 public interface EventPublisher {
 
-
+    /**
+     * A new employee was added to the system
+     *
+     * @param command The command describing the added employee
+     * @return The {@link Event} that was broadcasted
+     */
     Event publish(NewEmployeeCommand command);
 }

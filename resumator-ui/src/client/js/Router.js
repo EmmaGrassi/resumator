@@ -15,12 +15,12 @@ import { Provider } from 'react-redux';
 
 import log from '../lib/log';
 
-import PublicContainerComponent from './components/public/PublicContainerComponent';
-import PublicEmployeesIndexPageComponent from './components/public/PublicEmployeesIndexPageComponent';
-import PublicEmployeesNewPageComponent from './components/public/PublicEmployeesNewPageComponent';
-import PublicEmployeesResumeIndexPageComponent from './components/public/PublicEmployeesResumeIndexPageComponent';
-import PublicEmployeesShowPageComponent from './components/public/PublicEmployeesShowPageComponent';
-import PublicHomePageComponent from './components/public/PublicHomePageComponent';
+import Container from './components/public/container';
+import EmployeesList from './components/public/employees/list';
+import EmployeesNew from './components/public/employees/new';
+import EmployeesResumeShow from './components/public/employees/resume/show';
+import EmployeesShow from './components/public/employees/show';
+import Home from './components/public/home';
 
 export default class Router {
   constructor(options) {
@@ -36,18 +36,18 @@ export default class Router {
     return (
       <Provider store={this.store}>
         <ReactRouter>
-          <Route path="/" component={ PublicContainerComponent }>
-            <IndexRoute component={ PublicHomePageComponent }/>
+          <Route path="/" component={ Container }>
+            <IndexRoute component={ Home }/>
 
             <Route path="employees">
-              <IndexRoute component={ PublicEmployeesIndexPageComponent }/>
+              <IndexRoute component={ EmployeesList }/>
 
-              <Route path="new" component={ PublicEmployeesNewPageComponent }/>
+              <Route path="new" component={ EmployeesNew }/>
 
               <Route path=":id">
-                <IndexRoute component={ PublicEmployeesShowPageComponent }/>
+                <IndexRoute component={ EmployeesShow }/>
 
-                <Route path="resume" component={ PublicEmployeesResumeIndexPageComponent }/>
+                <Route path="resume" component={ EmployeesResumeShow }/>
               </Route>
             </Route>
           </Route>
@@ -56,17 +56,9 @@ export default class Router {
     );
   }
 
-  handleError(error) {
-    log.error(error.stack || error.message || error);
-  }
-
   start() {
     log.debug('Router#start');
 
-    try {
-      ReactDOM.render(this.reactRouter, this.rootElement);
-    } catch(error) {
-      this.handleError(error);
-    }
+    ReactDOM.render(this.reactRouter, this.rootElement);
   }
 }

@@ -3,7 +3,7 @@ import React from 'react';
 // import PublicNavigationComponent from './PublicNavigationComponent';
 import TopBar from './navigation/top-bar';
 
-export default class PublicContainerComponent extends React.Component {
+export default class Container extends React.Component {
   render() {
     return (
       <div>
@@ -21,4 +21,4 @@ export default class PublicContainerComponent extends React.Component {
   }
 }
 
-PublicContainerComponent.displayName = 'PublicContainerComponent';
+Container.displayName = 'Container';

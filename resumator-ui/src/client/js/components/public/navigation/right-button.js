@@ -1,22 +1,30 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import IconMenu from 'material-ui/lib/menus/icon-menu';
-import MenuItem from 'material-ui/lib/menus/menu-item';
-import NavigationMoreVertIcon from 'material-ui/lib/menu/';
+import NavItem from 'react-bootstrap/lib/NavItem';
 
-// import LeftButton from './left-button';
-// iconElementLeft={<LeftButton/>}
-
+// TODO: Add checking logged in state through flux.
 class RightButton extends React.Component {
   render() {
-    return <IconMenu
-      iconButtonElement={<NavigationMoreVertIcon/>}
-    >
-      <MenuItem primaryText="One" />
-      <MenuItem primaryText="Two" />
-      <MenuItem primaryText="Three" />
-    </IconMenu>;
+    return <NavItem eventKey={2} href="#" id="login-button">Log In</NavItem>;
+  }
+
+  componentDidMount() {
+    gapi.signin2.render('login-button', {
+      scope: 'https://www.googleapis.com/auth/plus.login',
+      width: 150,
+      height: 50,
+      longtitle: false,
+      theme: 'light',
+      onsuccess: () => {
+        console.log('success!');
+        debugger;
+      },
+      onfailure: (error) => {
+        console.log(error);
+        debugger;
+      }
+    });
   }
 }
 

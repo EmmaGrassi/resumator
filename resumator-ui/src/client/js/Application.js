@@ -27,7 +27,9 @@ export default class Application {
   }
 
   handleError(error) {
-    console.error(error.stack || error.message || error);
+    const { message, stack } = error;
+
+    console.error(message && stack && `${message} ${stack}` || stack || error);
   }
 
   async domIsReady() {

@@ -5,11 +5,15 @@ import org.junit.Test;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Optional;
 import java.util.Random;
+import java.util.stream.Collectors;
 
-import static org.junit.Assert.*;
-
-import static io.sytac.resumator.ConfigurationEntries.*;
+import static io.sytac.resumator.ConfigTestUtils.withConfig;
+import static io.sytac.resumator.ConfigurationEntries.BASE_URI;
+import static io.sytac.resumator.ConfigurationEntries.SERVICE_NAME;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 /**
  * Test class for {@link Configuration}
@@ -25,30 +29,82 @@ public class ConfigurationTest {
 
     @Test
     public void canReadSystemProperties(){
-        String random = "resumator-" + Long.toString(new Random().nextLong());
-        System.setProperty(random, "Check!");
+        final String random = "resumator-" + Long.toString(new Random().nextLong());
+        final String value = "Check!";
 
-        String property = configuration.getProperty(random).get();
-        assertEquals("System properties are not read properly", "Check!", property);
+        withConfig(() -> {
+            String property = configuration.getProperty(random).get();
+            assertEquals("System properties are not read properly", value, property);
+            return true;
+        }, random, value);
     }
 
     @Test
     public void systemPropertiesWinOverDefault(){
-        String serviceName = configuration.getProperty(SERVICE_NAME).get();
+        final String serviceName = configuration.getProperty(SERVICE_NAME).get();
         assertEquals("Static configuration was not found", "The Resumator", serviceName);
 
-        System.setProperty("resumator.service.name", "foobar");
-        serviceName = configuration.getProperty(SERVICE_NAME).get();
-        assertEquals("System properties don't override static default properties", "foobar", serviceName);
-        System.clearProperty(SERVICE_NAME);
+        final String override = "foobar";
+        withConfig(() -> {
+            final String overridden = configuration.getProperty(SERVICE_NAME).get();
+            assertEquals("System properties don't override static default properties", override, overridden);
+            return true;
+        }, "resumator.service.name", override);
     }
 
     @Test
-    public void canGetURIsOutOfConfig() throws URISyntaxException {
-        System.setProperty(BASE_URI, "http://1.1.1.1:8080/resumator");
-        URI uri = configuration.getURIProperty(BASE_URI).get();
-        assertEquals("URIs are not properly supported", new URI("http://1.1.1.1:8080/resumator"), uri);
-        System.clearProperty(BASE_URI);
+    public void canGetURIsOutOfConfig() {
+        final String fakeUrl = "http://1.1.1.1:8080/resumator";
+
+        withConfig(() -> {
+            URI uri = configuration.getURIProperty(BASE_URI).get();
+            try {
+                assertEquals("URIs are not properly supported", new URI(fakeUrl), uri);
+            } catch (URISyntaxException e) {
+                throw new RuntimeException(e);
+            }
+            return true;
+        }, BASE_URI, "http://1.1.1.1:8080/resumator");
+    }
+
+    @Test
+    public void canGetListOutOfConfig() {
+        final String listPropKey = "some.list";
+        final String listPropVal = "one;two;three";
+
+        withConfig(() -> {
+            final String prop = configuration.getListProperty(listPropKey).stream().collect(Collectors.joining(":"));
+            assertEquals("Wrong list property handling", listPropVal, prop);
+            return true;
+        }, listPropKey, listPropVal);
+    }
+
+    @Test
+    public void canGetIntegerOutOfConfig() {
+        final String propKey = "some.int";
+        final String propVal = "42";
+
+        withConfig(() -> {
+            final Integer prop = configuration.getIntegerProperty(propKey).get();
+            assertEquals("Wrong list property handling", new Integer(42), prop);
+
+            final Optional<Integer> empty = configuration.getIntegerProperty("nonexistent");
+            assertFalse("Nonexistent property did not result in an empty integer config", empty.isPresent());
+
+            return true;
+        }, propKey, propVal);
+    }
+
+    @Test
+    public void malformedIntegerAreDetected() {
+        final String propKey = "some.int";
+        final String propVal = "42-wooot!";
+
+        withConfig(() -> {
+            final Optional<Integer> nonexistent = configuration.getIntegerProperty("nonexistent");
+            assertFalse("Malformed number property did not result in an empty config", nonexistent.isPresent());
+            return true;
+        }, propKey, propVal);
     }
 
 }

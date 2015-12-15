@@ -2,6 +2,7 @@ package io.sytac.resumator.security;
 
 import javax.ws.rs.core.SecurityContext;
 import java.security.Principal;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -14,8 +15,8 @@ class Oauth2SecurityContext implements SecurityContext {
 
     private final User principal;
 
-    Oauth2SecurityContext(Set<String> roles, String principal) {
-        this.principal = principal == null ? null : new User(principal, roles);
+    public Oauth2SecurityContext(final Optional<User> maybeUser) {
+        this.principal = maybeUser.orElse(User.ANONYMOUS);
     }
 
     @Override
@@ -30,7 +31,7 @@ class Oauth2SecurityContext implements SecurityContext {
 
     @Override
     public boolean isSecure() {
-        return true;
+        return false;
     }
 
     @Override

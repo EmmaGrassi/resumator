@@ -32,6 +32,20 @@ public class BaseResource {
     }
 
     /**
+     * Build the URI for the link connected to the provided resource
+     *
+     * @param uriInfo  The base URI for the service
+     * @param resource The resource for which to build the link
+     * @param params   The parameters to set to the URI
+     * @return The link to the provided resoruce
+     */
+    protected URI resourceLink(final UriInfo uriInfo, final Class<?> resource, final String... params) {
+        return UriBuilder.fromUri(uriInfo.getBaseUri())
+                .path(resource)
+                .build(params);
+    }
+
+    /**
      * Helper method to create a new {@link Link}
      *
      * @param rel The link relationship

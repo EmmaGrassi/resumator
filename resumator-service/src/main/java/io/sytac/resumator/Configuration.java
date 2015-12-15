@@ -1,6 +1,5 @@
 package io.sytac.resumator;
 
-import com.google.common.collect.Sets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,7 +10,7 @@ import java.net.URL;
 import java.nio.file.Paths;
 import java.util.*;
 
-import static io.sytac.resumator.ConfigurationEntries.*;
+import static io.sytac.resumator.ConfigurationEntries.USER_CONFIG_FILE_LOCATION;
 
 /**
  * A simple interface towards the application configuration. Will look for configuration entries in the following
@@ -27,6 +26,8 @@ import static io.sytac.resumator.ConfigurationEntries.*;
 public class Configuration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Configuration.class);
+
+    public static final String LIST_SEPARATOR = ":";
 
     private static final String STATIC_CONFIG_LOCATION = "resumator.properties";
     private static final File DEFAULT_CONFIG_LOCATION = Paths.get(System.getProperty("user.home"), ".resumator", "config.properties").toFile();
@@ -157,12 +158,13 @@ public class Configuration {
      * @param key The key of the configuration to retrieve as an Integer
      * @return The Integer property if found
      */
-    public Optional<Integer> getIntegerProperty(String key) {
+    public Optional<Integer> getIntegerProperty(final String key) {
         final Optional<String> string = getProperty(key);
         return string.map(value -> {
             try {
-                return Integer.valueOf(key);
+                return Integer.valueOf(value);
             } catch (NumberFormatException e) {
+                LOGGER.warn("Cannot parse config entry {} as integer, ignoring: {}", key, value);
                 return null;
             }
         });
@@ -174,9 +176,9 @@ public class Configuration {
      * @param key The key of the configuration to retrieve as a List
      * @return The list of values found at key, or an empty list
      */
-    public Set<String> getListProperty(final String key) {
+    public List<String> getListProperty(final String key) {
         return getProperty(key)
-                .<Set<String>>map(str -> Sets.newHashSet(str.split(":")))
-                .orElse(Collections.emptySet());
+                .map(str -> Arrays.asList(str.split(LIST_SEPARATOR)))
+                .orElse(Collections.emptyList());
     }
 }

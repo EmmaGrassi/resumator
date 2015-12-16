@@ -3,6 +3,7 @@ import _ from 'lodash';
 import React from 'react';
 
 import {
+  ButtonInput,
   Col,
   Grid,
   Input,
@@ -220,8 +221,7 @@ class Employee extends React.Component {
     return <form className="form-horizontal">
       <Grid>
         <Row>
-          <Col xs={2}></Col>
-          <Col xs={10}>
+          <Col xsOffset={2} xs={10}>
             <h3>Personal Details</h3>
           </Col>
 
@@ -231,52 +231,46 @@ class Employee extends React.Component {
           </Col>
 
           <Col xs={2}>
-            {/* TODO: Label */}
           </Col>
           <Col xs={10}>
             <DateTimeInput
               dateTime={moment().format('YY/MM/DD')}
               format='YY/MM/DD'
               inputFormat='YY/MM/DD'
-              showToday="true"
-              mode="days"
               label="Date of birth"
+              mode="date"
+              showToday={true}
             />
           </Col>
 
           <Col xs={2}>
-            {/* TODO: Label */}
           </Col>
           <Col xs={10}>
             <Select
               name="countryOfBirth"
-              value="3"
               options={this.countries}
             />
           </Col>
 
           <Col xs={12}>
-            <Input type="date" label="Current residence" labelClassName="col-xs-2" wrapperClassName="col-xs-10" />
+            <Input type="text" label="Current residence" labelClassName="col-xs-2" wrapperClassName="col-xs-10" />
           </Col>
 
-          <Col xs={2}></Col>
-          <Col xs={10}>
+          <Col xsOffset={2} xs={10}>
             <h3>Education</h3>
           </Col>
           <Col xs={12}>
             <Education/>
           </Col>
 
-          <Col xs={2}></Col>
-          <Col xs={10}>
+          <Col xsOffset={2} xs={10}>
             <h3>Courses</h3>
           </Col>
           <Col xs={12}>
             <Courses/>
           </Col>
 
-          <Col xs={2}></Col>
-          <Col xs={10}>
+          <Col xsOffset={2} xs={10}>
             <h3>Experience</h3>
           </Col>
           <Col xs={12}>

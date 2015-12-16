@@ -11,7 +11,7 @@ import { compileCopy } from './lib/copy';
 import { compileImages } from './lib/images';
 import { compileLess } from './lib/less';
 import { run } from './lib/run';
-import { runServer } from './lib/server';
+import { runServer, runStaticServer } from './lib/server';
 import { runTests, watchTests } from './lib/tests';
 import { watchCompilers } from './lib/watch';
 
@@ -38,6 +38,7 @@ export default function start(gulp) {
   gulp.task('default', [ 'run' ]);
   gulp.task('run', wrap(run));
   gulp.task('run-server', wrap(runServer));
+  gulp.task('run-static-server', wrap(runStaticServer));
   gulp.task('run-tests', wrap(runTests));
   gulp.task('watch-browserify', wrap(watchBrowserify));
   gulp.task('watch-compilers', wrap(watchCompilers));

@@ -20,7 +20,8 @@ export function run(gulp, plugins, defaults) {
 
       [
         'run-server',
-        'browsersync-server',
+        // 'run-static-server',
+        //'browsersync-server',
         'watch-browserify',
         'watch-tests',
         'watch-compilers'

@@ -18,7 +18,7 @@ class Education extends React.Component {
     super(options);
 
     this.state = {
-      mode: 'off',
+      mode: 'on',
 
       entries: [
       ],
@@ -56,7 +56,7 @@ class Education extends React.Component {
         </span>
         <strong>Degree:</strong> <span>{data.degree}</span><br/>
         <strong>Field of Study:</strong> <span>{data.fieldOfStudy}</span><br/>
-        <strong>School:</strong> <span>{data.school}</span><br/>
+        <strong>University:</strong> <span>{data.university}</span><br/>
         <strong>Graduated:</strong> <span>{graduated}</span><br/>
         <strong>Graduation Year:</strong> <span>{data.graduationYear}</span><br/>
       </li>
@@ -164,11 +164,12 @@ class Education extends React.Component {
           <div>
             <Row>
               <Col xs={12}>
-                <Input onChange={this.handleAddValueChange} data-key="degree" type="text" label="Degree" labelClassName="col-xs-2" wrapperClassName="col-xs-10"/>
-                <Input onChange={this.handleAddValueChange} data-key="fieldOfStudy" type="text" label="Field of Study" labelClassName="col-xs-2" wrapperClassName="col-xs-10"/>
-                <Input onChange={this.handleAddValueChange} data-key="school" type="text" label="School" labelClassName="col-xs-2" wrapperClassName="col-xs-10"/>
-                <Input onChange={this.handleAddValueChange} data-key="graduated" type="checkbox" label="Graduated" wrapperClassName="col-xs-offset-2 col-xs-10" rows="5"/>
-                <Input onChange={this.handleAddValueChange} data-key="graduationYear" type="date" label="Graduation Year" labelClassName="col-xs-2" wrapperClassName="col-xs-10"/>
+                <pre>DEGREE DROPDOWN SEE BACKEND</pre>
+                <Input onChange={this.handleAddValueChange} data-key="degree" type="text" label="Degree" labelClassName="col-xs-2" wrapperClassName="col-xs-10" />
+                <Input onChange={this.handleAddValueChange} data-key="fieldOfStudy" type="text" label="Field of Study" labelClassName="col-xs-2" wrapperClassName="col-xs-10" />
+                <Input onChange={this.handleAddValueChange} data-key="university" type="text" label="University" labelClassName="col-xs-2" wrapperClassName="col-xs-10" />
+                <Input onChange={this.handleAddValueChange} data-key="graduated" type="checkbox" label="Graduated" wrapperClassName="col-xs-offset-2 col-xs-10" rows="5" />
+                <Input onChange={this.handleAddValueChange} data-key="graduationYear" type="date" label="Graduation Year" labelClassName="col-xs-2" wrapperClassName="col-xs-10" />
               </Col>
             </Row>
             <Row>
@@ -191,11 +192,11 @@ class Education extends React.Component {
           <div>
             <Row>
               <Col xs={12}>
-                <Input onChange={this.handleEditValueChange} value={data.degree} data-key="degree" type="text" label="Degree" labelClassName="col-xs-2" wrapperClassName="col-xs-10"/>
-                <Input onChange={this.handleEditValueChange} value={data.fieldOfStudy} data-key="fieldOfStudy" type="text" label="Field of Study" labelClassName="col-xs-2" wrapperClassName="col-xs-10"/>
-                <Input onChange={this.handleEditValueChange} value={data.school} data-key="school" type="text" label="School" labelClassName="col-xs-2" wrapperClassName="col-xs-10"/>
-                <Input onChange={this.handleEditValueChange} value={data.graduated} data-key="graduated" type="checkbox" label="Graduated" wrapperClassName="col-xs-offset-2 col-xs-10" rows="5"/>
-                <Input onChange={this.handleEditValueChange} value={data.graduationYear} data-key="graduationYear" type="date" label="Graduation Year" labelClassName="col-xs-2" wrapperClassName="col-xs-10"/>
+                <Input onChange={this.handleEditValueChange} value={data.degree} data-key="degree" type="text" label="Degree" labelClassName="col-xs-2" wrapperClassName="col-xs-10" />
+                <Input onChange={this.handleEditValueChange} value={data.fieldOfStudy} data-key="fieldOfStudy" type="text" label="Field of Study" labelClassName="col-xs-2" wrapperClassName="col-xs-10" />
+                <Input onChange={this.handleEditValueChange} value={data.university} data-key="university" type="text" label="University" labelClassName="col-xs-2" wrapperClassName="col-xs-10" />
+                <Input onChange={this.handleEditValueChange} value={data.graduated} data-key="graduated" type="checkbox" label="Graduated" wrapperClassName="col-xs-offset-2 col-xs-10" rows="5" />
+                <Input onChange={this.handleEditValueChange} value={data.graduationYear} data-key="graduationYear" type="date" label="Graduation Year" labelClassName="col-xs-2" wrapperClassName="col-xs-10" />
               </Col>
             </Row>
             <Row>

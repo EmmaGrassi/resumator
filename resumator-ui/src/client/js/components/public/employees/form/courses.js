@@ -18,7 +18,7 @@ class Courses extends React.Component {
     super(options);
 
     this.state = {
-      mode: 'off',
+      mode: 'on',
 
       entries: [
       ],
@@ -160,9 +160,9 @@ class Courses extends React.Component {
           <div>
             <Row>
               <Col xs={12}>
-                <Input onChange={this.handleAddValueChange} data-key="name" type="text" label="Name" labelClassName="col-xs-2" wrapperClassName="col-xs-10"/>
-                <Input onChange={this.handleAddValueChange} data-key="description" type="text" label="Description" labelClassName="col-xs-2" wrapperClassName="col-xs-10"/>
-                <Input onChange={this.handleAddValueChange} data-key="date" type="date" label="Date" labelClassName="col-xs-2" wrapperClassName="col-xs-10"/>
+                <Input onChange={this.handleAddValueChange} data-key="name" type="text" label="Name" labelClassName="col-xs-2" wrapperClassName="col-xs-10" />
+                <Input onChange={this.handleAddValueChange} data-key="description" type="text" label="Description" labelClassName="col-xs-2" wrapperClassName="col-xs-10" />
+                <Input onChange={this.handleAddValueChange} data-key="date" type="date" label="Date" labelClassName="col-xs-2" wrapperClassName="col-xs-10" />
               </Col>
             </Row>
             <Row>
@@ -185,9 +185,9 @@ class Courses extends React.Component {
           <div>
             <Row>
               <Col xs={12}>
-                <Input onChange={this.handleEditValueChange} value={data.name} data-key="name" type="text" label="Name" labelClassName="col-xs-2" wrapperClassName="col-xs-10"/>
-                <Input onChange={this.handleEditValueChange} value={data.description} data-key="description" type="text" label="Description" labelClassName="col-xs-2" wrapperClassName="col-xs-10"/>
-                <Input onChange={this.handleEditValueChange} value={data.date} data-key="date" type="date" label="Date" labelClassName="col-xs-2" wrapperClassName="col-xs-10"/>
+                <Input onChange={this.handleEditValueChange} value={data.name} data-key="name" type="text" label="Name" labelClassName="col-xs-2" wrapperClassName="col-xs-10" />
+                <Input onChange={this.handleEditValueChange} value={data.description} data-key="description" type="text" label="Description" labelClassName="col-xs-2" wrapperClassName="col-xs-10" />
+                <Input onChange={this.handleEditValueChange} value={data.date} data-key="date" type="date" label="Date" labelClassName="col-xs-2" wrapperClassName="col-xs-10" />
               </Col>
             </Row>
             <Row>

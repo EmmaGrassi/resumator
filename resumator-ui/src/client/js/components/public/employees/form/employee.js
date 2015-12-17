@@ -1,9 +1,11 @@
-import moment from 'moment';
-import _ from 'lodash';
 import React from 'react';
+import moment from 'moment';
+import qwest from 'qwest';
+import { bindAll, map } from 'lodash';
 
 import {
-  ButtonInput,
+  Button,
+  ButtonGroup,
   Col,
   Grid,
   Input,
@@ -21,6 +23,7 @@ class Employee extends React.Component {
     super(options);
 
     this.countries = [
+      { value: '', label: '' },
       { value: 'AFGHAN', label: 'Afghan' },
       { value: 'ALBANIAN', label: 'Albanian' },
       { value: 'ALGERIAN', label: 'Algerian' },
@@ -215,6 +218,10 @@ class Employee extends React.Component {
       { value: 'ZAMBIAN', label: 'Zambian' },
       { value: 'ZIMBABWEAN', label: 'Zimbabwean' }
     ];
+
+    bindAll(this, [
+      'handleSaveButtonClick'
+    ]);
   }
 
   render() {
@@ -226,59 +233,113 @@ class Employee extends React.Component {
           </Col>
 
           <Col xs={12}>
-            <Input type="text" label="Name" labelClassName="col-xs-2" wrapperClassName="col-xs-10" />
-            <Input type="text" label="Surname" labelClassName="col-xs-2" wrapperClassName="col-xs-10" />
-          </Col>
+            <Input type="text" label="Name" id="name" labelClassName="col-xs-2" wrapperClassName="col-xs-10" />
+            <Input type="text" label="Surname" id="surname" labelClassName="col-xs-2" wrapperClassName="col-xs-10" />
+            <pre>EMAIL</pre>
+            <pre>PHONENUMBER</pre>
+            <pre>GITHUB</pre>
+            <pre>LINKEDIN</pre>
+            <Input type="date" label="Date of Birth" id="dateOfBirth" labelClassName="col-xs-2" wrapperClassName="col-xs-10" />
+            {
+              // <DateTimeInput
+              //   dateTime={moment().format('YY/MM/DD')}
+              //   format='YY/MM/DD'
+              //   inputFormat='YY/MM/DD'
+              //   label="Date of birth"
+              //   mode="date"
+              //   showToday={true}
+              //   id="dateOfBirth"
+              // />
+            }
+            <Input type="select" label="Country of Birth" id="countryOfBirth" labelClassName="col-xs-2" wrapperClassName="col-xs-10">
+              { map(this.countries, (country) => <option value={country.value}>{country.label}</option>) }
+            </Input>
 
-          <Col xs={2}>
-          </Col>
-          <Col xs={10}>
-            <DateTimeInput
-              dateTime={moment().format('YY/MM/DD')}
-              format='YY/MM/DD'
-              inputFormat='YY/MM/DD'
-              label="Date of birth"
-              mode="date"
-              showToday={true}
+            {
+              // <Select id="countryOfBirth" name="countryOfBirth" options={this.countries} />
+            }
+            <Input
+              type="text"
+              label="Current residence"
+              labelClassName="col-xs-2"
+              wrapperClassName="col-xs-10"
+              id="currentResidence"
             />
-          </Col>
-
-          <Col xs={2}>
-          </Col>
-          <Col xs={10}>
-            <Select
-              name="countryOfBirth"
-              options={this.countries}
-            />
-          </Col>
-
-          <Col xs={12}>
-            <Input type="text" label="Current residence" labelClassName="col-xs-2" wrapperClassName="col-xs-10" />
           </Col>
 
           <Col xsOffset={2} xs={10}>
             <h3>Education</h3>
           </Col>
           <Col xs={12}>
-            <Education/>
+            <Education ref={(c) => this.educationComponent = c}/>
           </Col>
 
           <Col xsOffset={2} xs={10}>
-            <h3>Courses</h3>
+            <h3>Certificates</h3>
+            <pre>OVERAL VERANDEREN</pre>
           </Col>
           <Col xs={12}>
-            <Courses/>
+            <Courses ref={(c) => this.coursesComponent = c}/>
           </Col>
 
           <Col xsOffset={2} xs={10}>
-            <h3>Experience</h3>
+            <h3>Working Experience</h3>
           </Col>
           <Col xs={12}>
-            <Experience/>
+            <Experience ref={(c) => this.experienceComponent = c}/>
+          </Col>
+        </Row>
+
+        <Row
+          style={{
+            marginTop: 25
+          }}
+        >
+          <Col xsOffset={2} xs={10}>
+            <ButtonGroup>
+              <Button type="reset" onClick={this.handleSaveButtonClick} bsStyle="default">Reset</Button>
+              <Button type="submit" onClick={this.handleSaveButtonClick} bsStyle="primary">Save</Button>
+            </ButtonGroup>
           </Col>
         </Row>
       </Grid>
     </form>;
+  }
+
+  handleSaveButtonClick(event) {
+    const button = event.target;
+
+    const name = document.querySelector('#name').value;
+    const surname = document.querySelector('#surname').value;
+    const dateOfBirth = document.querySelector('#dateOfBirth').value;
+    const countryOfBirth = document.querySelector('#countryOfBirth').value;
+    const currentResidence = document.querySelector('#currentResidence').value;
+
+    const courses = this.coursesComponent.state.entries;
+    const education = this.educationComponent.state.entries;
+    const experience = this.experienceComponent.state.entries;
+
+    const data = {
+      name,
+      surname,
+      dateOfBirth,
+      countryOfBirth,
+      currentResidence,
+      courses,
+      education,
+      experience
+    };
+
+    debugger;
+
+    qwest
+    .post('http://localhost:3000', data)
+      .then((xhr, response) => {
+        debugger;
+      })
+      .catch((xhr, response, error) => {
+        debugger;
+      })
   }
 }
 

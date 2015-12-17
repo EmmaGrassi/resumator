@@ -18,7 +18,7 @@ class Experience extends React.Component {
     super(options);
 
     this.state = {
-      mode: 'off',
+      mode: 'on',
 
       entries: [
       ],
@@ -53,10 +53,11 @@ class Experience extends React.Component {
           </ButtonGroup>
         </span>
         <strong>Company Name:</strong> <span>{data.companyName}</span><br/>
-        <strong>Title:</strong> <span>{data.title}</span><br/>
+        <strong>Job Title:</strong> <span>{data.title}</span><br/>
         <strong>Location:</strong> <span>{data.location}</span><br/>
+        <strong>Start Date:</strong> <span>{data.startDate}</span><br/>
+        <strong>End Date:</strong> <span>{data.endDate}</span><br/>
         <strong>Short Description:</strong> <span>{data.shortDescription}</span><br/>
-        <strong>Roles:</strong> <span>{data.roles}</span><br/>
         <strong>Technologies:</strong> <span>{data.technologies}</span><br/>
         <strong>Methodologies:</strong> <span>{data.methodologies}</span><br/>
       </li>
@@ -164,13 +165,15 @@ class Experience extends React.Component {
           <div>
             <Row>
               <Col xs={12}>
-                <Input onChange={this.handleAddValueChange} data-key="companyName" type="text" label="Company Name" labelClassName="col-xs-2" wrapperClassName="col-xs-10"/>
-                <Input onChange={this.handleAddValueChange} data-key="title" type="text" label="Title" labelClassName="col-xs-2" wrapperClassName="col-xs-10"/>
-                <Input onChange={this.handleAddValueChange} data-key="location" type="text" label="Location" labelClassName="col-xs-2" wrapperClassName="col-xs-10"/>
-                <Input onChange={this.handleAddValueChange} data-key="shortDescription" type="textarea" label="Short Description" labelClassName="col-xs-2" wrapperClassName="col-xs-10" rows="5"/>
-                <Input onChange={this.handleAddValueChange} data-key="roles" type="text" label="Roles" labelClassName="col-xs-2" wrapperClassName="col-xs-10"/>
-                <Input onChange={this.handleAddValueChange} data-key="technologies" type="text" label="Technologies" labelClassName="col-xs-2" wrapperClassName="col-xs-10"/>
-                <Input onChange={this.handleAddValueChange} data-key="methodologies" type="text" label="Methodologies" labelClassName="col-xs-2" wrapperClassName="col-xs-10"/>
+                <Input onChange={this.handleAddValueChange} data-key="companyName" type="text" label="Company Name" labelClassName="col-xs-2" wrapperClassName="col-xs-10" />
+                <pre>CHANGE INTO MULTIPLE DROPDOWNS LISTING ALL JOB TITLES</pre>
+                <Input onChange={this.handleAddValueChange} data-key="title" type="text" label="Job Title" labelClassName="col-xs-2" wrapperClassName="col-xs-10" />
+                <Input onChange={this.handleAddValueChange} data-key="location" type="text" label="Location" labelClassName="col-xs-2" wrapperClassName="col-xs-10" />
+                <Input onChange={this.handleAddValueChange} data-key="startDate" type="date" label="Start Date" labelClassName="col-xs-2" wrapperClassName="col-xs-10" />
+                <Input onChange={this.handleAddValueChange} data-key="endDate" type="date" label="End Date" labelClassName="col-xs-2" wrapperClassName="col-xs-10" />
+                <Input onChange={this.handleAddValueChange} data-key="shortDescription" type="textarea" label="Short Description" labelClassName="col-xs-2" wrapperClassName="col-xs-10" rows="5" />
+                <Input onChange={this.handleAddValueChange} data-key="technologies" type="text" label="Technologies" labelClassName="col-xs-2" wrapperClassName="col-xs-10" />
+                <Input onChange={this.handleAddValueChange} data-key="methodologies" type="text" label="Methodologies" labelClassName="col-xs-2" wrapperClassName="col-xs-10" />
               </Col>
             </Row>
             <Row>
@@ -193,13 +196,14 @@ class Experience extends React.Component {
           <div>
             <Row>
               <Col xs={12}>
-                <Input onChange={this.handleEditValueChange} value={data.companyName} data-key="companyName" type="text" label="Company Name" labelClassName="col-xs-2" wrapperClassName="col-xs-10"/>
-                <Input onChange={this.handleEditValueChange} value={data.title} data-key="title" type="text" label="Title" labelClassName="col-xs-2" wrapperClassName="col-xs-10"/>
-                <Input onChange={this.handleEditValueChange} value={data.location} data-key="location" type="text" label="Location" labelClassName="col-xs-2" wrapperClassName="col-xs-10"/>
-                <Input onChange={this.handleEditValueChange} value={data.shortDescription} data-key="shortDescription" type="textarea" label="Short Description" labelClassName="col-xs-2" wrapperClassName="col-xs-10" rows="5"/>
-                <Input onChange={this.handleEditValueChange} value={data.roles} data-key="roles" type="text" label="Roles" labelClassName="col-xs-2" wrapperClassName="col-xs-10"/>
-                <Input onChange={this.handleEditValueChange} value={data.technologies} data-key="technologies" type="text" label="Technologies" labelClassName="col-xs-2" wrapperClassName="col-xs-10"/>
-                <Input onChange={this.handleEditValueChange} value={data.methodologies} data-key="methodologies" type="text" label="Methodologies" labelClassName="col-xs-2" wrapperClassName="col-xs-10"/>
+                <Input onChange={this.handleEditValueChange} value={data.companyName} data-key="companyName" type="text" label="Company Name" labelClassName="col-xs-2" wrapperClassName="col-xs-10" />
+                <Input onChange={this.handleEditValueChange} value={data.title} data-key="title" type="text" label="Job Title" labelClassName="col-xs-2" wrapperClassName="col-xs-10" />
+                <Input onChange={this.handleEditValueChange} value={data.location} data-key="location" type="text" label="Location" labelClassName="col-xs-2" wrapperClassName="col-xs-10" />
+                <Input onChange={this.handleEditValueChange} value={data.startDate} data-key="startDate" type="date" label="Start Date" labelClassName="col-xs-2" wrapperClassName="col-xs-10" />
+                <Input onChange={this.handleEditValueChange} value={data.endDate} data-key="endDate" type="date" label="End Date" labelClassName="col-xs-2" wrapperClassName="col-xs-10" />
+                <Input onChange={this.handleEditValueChange} value={data.shortDescription} data-key="shortDescription" type="textarea" label="Short Description" labelClassName="col-xs-2" wrapperClassName="col-xs-10" rows="5" />
+                <Input onChange={this.handleEditValueChange} value={data.technologies} data-key="technologies" type="text" label="Technologies" labelClassName="col-xs-2" wrapperClassName="col-xs-10" />
+                <Input onChange={this.handleEditValueChange} value={data.methodologies} data-key="methodologies" type="text" label="Methodologies" labelClassName="col-xs-2" wrapperClassName="col-xs-10" />
               </Col>
             </Row>
             <Row>

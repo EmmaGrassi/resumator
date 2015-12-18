@@ -1,10 +1,13 @@
 package io.sytac.resumator.store.sql;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.sytac.resumator.ConfigurationException;
+import io.sytac.resumator.events.EventPublisher;
 import io.sytac.resumator.model.Event;
 import io.sytac.resumator.store.IllegalInsertOrderException;
 import io.sytac.resumator.store.EventStore;
 import io.sytac.resumator.store.IllegalStreamOrderException;
+import io.sytac.resumator.store.sql.mapper.CommandTypeHandler;
 import io.sytac.resumator.store.sql.mapper.EventMapper;
 import org.apache.ibatis.datasource.pooled.PooledDataSource;
 import org.apache.ibatis.mapping.Environment;
@@ -14,7 +17,9 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
+import org.apache.ibatis.type.JdbcType;
 
+import javax.inject.Inject;
 import javax.sql.DataSource;
 import java.util.List;
 
@@ -32,13 +37,16 @@ public class SqlStore implements EventStore {
     private final SqlSessionFactory sessionFactory;
     private final DataSource dataSource;
 
-    public SqlStore(final io.sytac.resumator.Configuration properties){
-        dataSource = createDataSource(properties);
+    @Inject
+    public SqlStore(final io.sytac.resumator.Configuration config, final EventPublisher events, final ObjectMapper json){
+        dataSource = createDataSource(config);
         TransactionFactory transactionFactory = new JdbcTransactionFactory();
         Environment environment = new Environment("resumator", transactionFactory, dataSource);
         Configuration configuration = new Configuration(environment);
+        configuration.getTypeHandlerRegistry().register("io.sytac.resumator.store.sql.mapper");
         configuration.addMapper(EventMapper.class);
         sessionFactory = new SqlSessionFactoryBuilder().build(configuration);
+        events.subscribe(this::put, Event.class);
     }
 
     private PooledDataSource createDataSource(final io.sytac.resumator.Configuration properties) {

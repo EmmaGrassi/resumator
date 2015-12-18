@@ -3,7 +3,9 @@ package io.sytac.resumator.http.command.model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import io.sytac.resumator.employee.NewEmployeeCommand;
+import io.sytac.resumator.employee.NewEmployeeCommandDeserializer;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,6 +25,9 @@ public class NewEmployeeCommandTest {
     public void setUp() throws Exception {
         mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        final SimpleModule module = new SimpleModule();
+        module.addDeserializer(NewEmployeeCommand.class, new NewEmployeeCommandDeserializer());
+        mapper.registerModule(module);
     }
 
     @Test

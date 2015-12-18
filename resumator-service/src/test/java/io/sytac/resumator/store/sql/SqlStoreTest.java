@@ -5,6 +5,7 @@ import io.sytac.resumator.Configuration;
 import io.sytac.resumator.command.Command;
 import io.sytac.resumator.command.CommandHeader;
 import io.sytac.resumator.command.CommandPayload;
+import io.sytac.resumator.events.EventPublisher;
 import io.sytac.resumator.model.Event;
 import io.sytac.resumator.store.IllegalInsertOrderException;
 import io.sytac.resumator.store.IllegalStreamOrderException;
@@ -19,6 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import static io.sytac.resumator.ConfigurationEntries.*;
+import static org.mockito.Mockito.mock;
 
 /**
  * Test SQL connections
@@ -34,7 +36,7 @@ public class SqlStoreTest extends AbstractResumatorTest {
     @Before
     public void setUp() throws Exception {
         configuration = new Configuration();
-        store = new SqlStore(configuration);
+        store = new SqlStore(configuration, mock(EventPublisher.class), null);
         new SchemaManager(configuration, store).migrate();
     }
 

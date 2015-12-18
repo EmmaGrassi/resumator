@@ -1,9 +1,12 @@
 package io.sytac.resumator;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import io.sytac.resumator.employee.EmployeeIdSerializer;
+import io.sytac.resumator.employee.NewEmployeeCommand;
+import io.sytac.resumator.employee.NewEmployeeCommandDeserializer;
 
 import javax.ws.rs.ext.ContextResolver;
 import javax.ws.rs.ext.Provider;
@@ -21,15 +24,16 @@ public class ObjectMapperResolver implements ContextResolver<ObjectMapper> {
     private final ObjectMapper mapper;
 
     public ObjectMapperResolver() {
-        final SimpleModule resumator = initResumatorSerializers();
         mapper = new ObjectMapper();
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
-        mapper.registerModule(resumator);
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        mapper.registerModule(initResumatorSerializers());
     }
 
     protected SimpleModule initResumatorSerializers() {
         final SimpleModule resumator = new SimpleModule("Resumator");
         resumator.addSerializer(new EmployeeIdSerializer());
+        resumator.addDeserializer(NewEmployeeCommand.class, new NewEmployeeCommandDeserializer());
         return resumator;
     }
 

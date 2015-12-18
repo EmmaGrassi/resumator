@@ -2,6 +2,9 @@ package io.sytac.resumator.store.sql;
 
 import io.sytac.resumator.AbstractResumatorTest;
 import io.sytac.resumator.Configuration;
+import io.sytac.resumator.command.Command;
+import io.sytac.resumator.command.CommandHeader;
+import io.sytac.resumator.command.CommandPayload;
 import io.sytac.resumator.model.Event;
 import io.sytac.resumator.store.IllegalInsertOrderException;
 import io.sytac.resumator.store.IllegalStreamOrderException;
@@ -47,15 +50,34 @@ public class SqlStoreTest extends AbstractResumatorTest {
     }
 
     private Event createRandomEvent() {
-        return new Event(UUID.randomUUID().toString(), "stream", 1L, 1L, "test".getBytes(), new Timestamp(0), "test");
+        return new Event(UUID.randomUUID().toString(), "stream", 1L, 1L, command(), new Timestamp(0), "test");
     }
 
     private Event createRandomEvent(final Long insertSequence) {
-        return new Event(UUID.randomUUID().toString(), "stream", insertSequence, 1L, "test".getBytes(), new Timestamp(0), "test");
+        return new Event(UUID.randomUUID().toString(), "stream", insertSequence, 1L, command(), new Timestamp(0), "test");
     }
 
     private Event createRandomEvent(final Long insertSequence, final String streamId, final Long streamOrder) {
-        return new Event(UUID.randomUUID().toString(), streamId, insertSequence, streamOrder, "test".getBytes(), new Timestamp(0), "test");
+        return new Event(UUID.randomUUID().toString(), streamId, insertSequence, streamOrder, command(), new Timestamp(0), "test");
+    }
+
+    private Command command() {
+        return new Command() {
+            @Override
+            public CommandHeader getHeader() {
+                return null;
+            }
+
+            @Override
+            public CommandPayload getPayload() {
+                return null;
+            }
+
+            @Override
+            public String getType() {
+                return "Test";
+            }
+        };
     }
 
     @Test

@@ -19,7 +19,13 @@ public class CommandFactory {
     }
 
     public NewEmployeeCommand newEmployeeCommand(final MultivaluedMap<String, String> formParams, final String organizationId) {
-        final NewEmployeeCommand newEmployeeCommand = new NewEmployeeCommand(formParams, organizationId);
+        final String name = formParams.getFirst("name");
+        final String surname = formParams.getFirst("name");
+        final String yearOfBirth = formParams.getFirst("name");
+        final String nationality = formParams.getFirst("name");
+        final String currentResident = formParams.getFirst("name");
+        final String timestamp = formParams.getFirst("timestamp");
+        final NewEmployeeCommand newEmployeeCommand = new NewEmployeeCommand(organizationId, name, surname, yearOfBirth, nationality, currentResident, timestamp);
         events.publish(newEmployeeCommand);
         return newEmployeeCommand;
     }

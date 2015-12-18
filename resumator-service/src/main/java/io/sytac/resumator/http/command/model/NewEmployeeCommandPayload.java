@@ -1,5 +1,8 @@
 package io.sytac.resumator.http.command.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Defines the payload of a new Employee command
  *
@@ -15,27 +18,19 @@ public class NewEmployeeCommandPayload extends CommandPayload {
     private final String nationality;
     private final String currentResidence;
 
-    public NewEmployeeCommandPayload(final String organizationId,
-                                     final String name,
-                                     final String surname,
-                                     final String yearOfBirth,
-                                     final String nationality,
-                                     final String currentResidence) {
+    @JsonCreator
+    /* package */ NewEmployeeCommandPayload(@JsonProperty("organizationId") final String organizationId,
+                                            @JsonProperty("name") final String name,
+                                            @JsonProperty("surname") final String surname,
+                                            @JsonProperty("yearOfBirth") final String yearOfBirth,
+                                            @JsonProperty("nationality") final String nationality,
+                                            @JsonProperty("currentResidence") final String currentResidence) {
         this.organizationId = organizationId;
         this.name = name;
         this.surname = surname;
         this.yearOfBirth = yearOfBirth;
         this.nationality = nationality;
         this.currentResidence = currentResidence;
-    }
-
-    public NewEmployeeCommandPayload() {
-        this.organizationId = null;
-        this.name = null;
-        this.surname = null;
-        this.yearOfBirth = null;
-        this.nationality = null;
-        this.currentResidence = null;
     }
 
     public String getOrganizationId() {

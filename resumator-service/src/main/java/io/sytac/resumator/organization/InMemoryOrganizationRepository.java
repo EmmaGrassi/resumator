@@ -1,6 +1,5 @@
-package io.sytac.resumator.store;
+package io.sytac.resumator.organization;
 
-import io.sytac.resumator.model.Organization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

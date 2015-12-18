@@ -2,12 +2,13 @@ package io.sytac.resumator.employee;
 
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
+import io.sytac.resumator.events.EventPublisher;
 import io.sytac.resumator.http.BaseResource;
 import io.sytac.resumator.command.CommandFactory;
-import io.sytac.resumator.model.Organization;
+import io.sytac.resumator.organization.Organization;
 import io.sytac.resumator.model.exceptions.InvalidOrganizationException;
 import io.sytac.resumator.security.User;
-import io.sytac.resumator.store.OrganizationRepository;
+import io.sytac.resumator.organization.OrganizationRepository;
 import org.eclipse.jetty.http.HttpHeader;
 import org.eclipse.jetty.http.HttpStatus;
 import org.slf4j.Logger;
@@ -41,11 +42,13 @@ public class NewEmployee extends BaseResource {
 
     private final OrganizationRepository organizations;
     private final CommandFactory descriptors;
+    private final EventPublisher events;
 
     @Inject
-    public NewEmployee(OrganizationRepository organizations, CommandFactory descriptors) {
+    public NewEmployee(final OrganizationRepository organizations, final CommandFactory descriptors, final EventPublisher events) {
         this.organizations = organizations;
         this.descriptors = descriptors;
+        this.events = events;
     }
 
     @POST
@@ -57,9 +60,12 @@ public class NewEmployee extends BaseResource {
                                       @Context final SecurityContext securityContext){
         final String orgId = getOrgId(securityContext);
         final NewEmployeeCommand descriptor = descriptors.newEmployeeCommand(formParams, orgId);
-        final Organization organization = organizations.get(orgId)
-                                                       .orElseThrow(InvalidOrganizationException::new);
-        final Employee employee = organization.addEmployee(descriptor);
+        final Employee employee = addEmployee(orgId, descriptor);
+        events.publish(descriptor);
+        return buildRepresentation(uriInfo, response, employee);
+    }
+
+    private Representation buildRepresentation(@Context UriInfo uriInfo, @Context HttpServletResponse response, Employee employee) {
         final URI employeeLink = resourceLink(uriInfo, EmployeeQuery.class, employee.getId().toString());
 
         response.setStatus(HttpStatus.CREATED_201);
@@ -68,6 +74,12 @@ public class NewEmployee extends BaseResource {
                 .withProperty("status", "created")
                 .withProperty("id", employee.getId().toString())
                 .withLink("employee", employeeLink);
+    }
+
+    private Employee addEmployee(String orgId, NewEmployeeCommand descriptor) {
+        final Organization organization = organizations.get(orgId)
+                                                       .orElseThrow(InvalidOrganizationException::new);
+        return organization.addEmployee(descriptor);
     }
 
     private String getOrgId(SecurityContext securityContext) {

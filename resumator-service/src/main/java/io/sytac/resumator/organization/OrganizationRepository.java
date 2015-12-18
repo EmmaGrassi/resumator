@@ -1,6 +1,4 @@
-package io.sytac.resumator.store;
-
-import io.sytac.resumator.model.Organization;
+package io.sytac.resumator.organization;
 
 import java.util.Optional;
 

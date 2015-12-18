@@ -1,6 +1,7 @@
 package io.sytac.resumator.store;
 
-import io.sytac.resumator.model.Organization;
+import io.sytac.resumator.organization.Organization;
+import io.sytac.resumator.organization.InMemoryOrganizationRepository;
 import org.junit.Before;
 import org.junit.Test;
 

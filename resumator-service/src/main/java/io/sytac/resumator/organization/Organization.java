@@ -1,4 +1,4 @@
-package io.sytac.resumator.model;
+package io.sytac.resumator.organization;
 
 import io.sytac.resumator.employee.Employee;
 import io.sytac.resumator.employee.EmployeeId;

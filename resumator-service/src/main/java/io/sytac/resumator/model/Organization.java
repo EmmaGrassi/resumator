@@ -18,7 +18,7 @@ public class Organization {
     private final String domain;
     private final ConcurrentHashSet<EmployeeId> employees = new ConcurrentHashSet<>();
 
-    public Organization(String id, String name, String domain) {
+    public Organization(final String id, final String name, final String domain) {
         this.id = id;
         this.name = name;
         this.domain = domain;

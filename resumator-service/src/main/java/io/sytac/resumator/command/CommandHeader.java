@@ -1,4 +1,4 @@
-package io.sytac.resumator.http.command.model;
+package io.sytac.resumator.command;
 
 import java.util.Date;
 

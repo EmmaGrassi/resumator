@@ -1,4 +1,4 @@
-package io.sytac.resumator.http.command.model;
+package io.sytac.resumator.command;
 
 /**
  * Describes the contents of a {@link Command}

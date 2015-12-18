@@ -1,12 +1,9 @@
-package io.sytac.resumator.http.command;
+package io.sytac.resumator.employee;
 
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import io.sytac.resumator.http.BaseResource;
-import io.sytac.resumator.http.command.model.CommandFactory;
-import io.sytac.resumator.http.command.model.NewEmployeeCommand;
-import io.sytac.resumator.http.query.EmployeeQuery;
-import io.sytac.resumator.model.Employee;
+import io.sytac.resumator.command.CommandFactory;
 import io.sytac.resumator.model.Organization;
 import io.sytac.resumator.model.exceptions.InvalidOrganizationException;
 import io.sytac.resumator.security.User;

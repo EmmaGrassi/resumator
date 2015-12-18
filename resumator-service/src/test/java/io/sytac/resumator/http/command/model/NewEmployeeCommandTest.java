@@ -3,6 +3,7 @@ package io.sytac.resumator.http.command.model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.sytac.resumator.employee.NewEmployeeCommand;
 import org.junit.Before;
 import org.junit.Test;
 

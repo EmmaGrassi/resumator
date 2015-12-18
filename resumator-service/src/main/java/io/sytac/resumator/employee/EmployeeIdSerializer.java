@@ -1,9 +1,8 @@
-package io.sytac.resumator.http;
+package io.sytac.resumator.employee;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import io.sytac.resumator.model.EmployeeId;
 
 import java.io.IOException;
 

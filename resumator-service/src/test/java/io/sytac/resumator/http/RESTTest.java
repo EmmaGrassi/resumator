@@ -6,8 +6,8 @@ import com.theoryinpractise.halbuilder.jaxrs.JaxRsHalBuilderReaderSupport;
 import com.theoryinpractise.halbuilder.jaxrs.JaxRsHalBuilderSupport;
 import io.sytac.resumator.Configuration;
 import io.sytac.resumator.ObjectMapperResolver;
-import io.sytac.resumator.model.Employee;
-import io.sytac.resumator.model.EmployeeId;
+import io.sytac.resumator.employee.Employee;
+import io.sytac.resumator.employee.EmployeeId;
 import io.sytac.resumator.model.enums.Nationality;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -36,7 +36,8 @@ public class RESTTest extends JerseyTest {
     public Application configure() {
         final ResourceConfig resourceConfig = new ResourceConfig();
         return resourceConfig
-                .packages("io.sytac.resumator.http")
+                .packages("io.sytac.resumator.employee",
+                          "io.sytac.resumator.service")
                 .register(new ConfigurationBinder())
                 .register(new ObjectMapperResolver())
                 .register(JaxRsHalBuilderSupport.class)

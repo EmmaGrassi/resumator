@@ -1,5 +1,6 @@
 package io.sytac.resumator.model;
 
+import io.sytac.resumator.employee.Employee;
 import io.sytac.resumator.model.enums.LangSkill;
 
 import java.util.List;

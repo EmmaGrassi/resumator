@@ -3,7 +3,7 @@ package io.sytac.resumator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import io.sytac.resumator.http.EmployeeIdSerializer;
+import io.sytac.resumator.employee.EmployeeIdSerializer;
 
 import javax.ws.rs.ext.ContextResolver;
 import javax.ws.rs.ext.Provider;

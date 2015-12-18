@@ -3,7 +3,7 @@ package io.sytac.resumator.events;
 import com.google.common.base.Charsets;
 import com.google.common.eventbus.EventBus;
 import io.sytac.resumator.Configuration;
-import io.sytac.resumator.http.command.model.NewEmployeeCommand;
+import io.sytac.resumator.employee.NewEmployeeCommand;
 import io.sytac.resumator.model.Event;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

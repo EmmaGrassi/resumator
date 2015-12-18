@@ -1,8 +1,10 @@
-package io.sytac.resumator.http.command.model;
+package io.sytac.resumator.employee;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.sytac.resumator.command.Command;
+import io.sytac.resumator.command.CommandHeader;
 
 import java.util.Date;
 import java.util.Optional;
@@ -19,7 +21,7 @@ public class NewEmployeeCommand implements Command<CommandHeader, NewEmployeeCom
     private final CommandHeader header;
     private final NewEmployeeCommandPayload payload;
 
-    /* package */  NewEmployeeCommand(final String organizationId,
+    public NewEmployeeCommand(final String organizationId,
                                       final String name,
                                       final String surname,
                                       final String yearOfBirth,

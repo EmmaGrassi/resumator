@@ -1,4 +1,4 @@
-package io.sytac.resumator.http.query;
+package io.sytac.resumator.employee;
 
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;

@@ -1,5 +1,6 @@
-package io.sytac.resumator.http.command.model;
+package io.sytac.resumator.command;
 
+import io.sytac.resumator.employee.NewEmployeeCommand;
 import io.sytac.resumator.events.EventPublisher;
 
 import javax.ws.rs.core.MultivaluedMap;

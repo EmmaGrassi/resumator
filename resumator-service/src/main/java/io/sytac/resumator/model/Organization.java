@@ -1,7 +1,9 @@
 package io.sytac.resumator.model;
 
-import io.sytac.resumator.http.command.model.NewEmployeeCommand;
-import io.sytac.resumator.http.command.model.NewEmployeeCommandPayload;
+import io.sytac.resumator.employee.Employee;
+import io.sytac.resumator.employee.EmployeeId;
+import io.sytac.resumator.employee.NewEmployeeCommand;
+import io.sytac.resumator.employee.NewEmployeeCommandPayload;
 import io.sytac.resumator.model.enums.Nationality;
 import org.eclipse.jetty.util.ConcurrentHashSet;
 

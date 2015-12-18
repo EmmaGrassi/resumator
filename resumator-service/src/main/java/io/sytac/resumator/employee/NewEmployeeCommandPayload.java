@@ -1,7 +1,8 @@
-package io.sytac.resumator.http.command.model;
+package io.sytac.resumator.employee;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.sytac.resumator.command.CommandPayload;
 
 /**
  * Defines the payload of a new Employee command

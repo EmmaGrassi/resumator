@@ -1,4 +1,4 @@
-package io.sytac.resumator.http.command.model;
+package io.sytac.resumator.command;
 
 /**
  * Describes a command that alters the state of the system

@@ -110,7 +110,8 @@ public class ResumatorApp {
 
     protected ResourceConfig registerApplicationResorces(final ResourceConfig rc) {
         return rc.packages(
-                "io.sytac.resumator.http",                // Resumator HTTP resources
+                "io.sytac.resumator.employee",
+                "io.sytac.resumator.service",
                 "com.theoryinpractise.halbuilder.jaxrs"); // HAL support
     }
 

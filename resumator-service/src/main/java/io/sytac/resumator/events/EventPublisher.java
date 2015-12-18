@@ -1,6 +1,6 @@
 package io.sytac.resumator.events;
 
-import io.sytac.resumator.http.command.model.NewEmployeeCommand;
+import io.sytac.resumator.employee.NewEmployeeCommand;
 import io.sytac.resumator.model.Event;
 
 /**

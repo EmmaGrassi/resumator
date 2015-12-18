@@ -1,12 +1,14 @@
 package io.sytac.resumator.command;
 
+import io.sytac.resumator.model.Event;
+
 /**
  * Describes a command that alters the state of the system
  *
  * @author Carlo Sciolla
  * @since 0.1
  */
-public interface Command<H extends CommandHeader, P extends CommandPayload> {
+public interface Command<H extends CommandHeader, P extends CommandPayload, THIS extends Command> {
 
     /**
      * Returns the {@link CommandHeader} of the command
@@ -29,4 +31,11 @@ public interface Command<H extends CommandHeader, P extends CommandPayload> {
      * @return The type of the command
      */
     String getType();
+
+    /**
+     * Translates this command into an event
+     *
+     * @return The command as an event
+     */
+    Event<THIS> asEvent();
 }

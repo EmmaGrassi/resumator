@@ -77,6 +77,11 @@ public class SqlStoreTest extends AbstractResumatorTest {
             public String getType() {
                 return "Test";
             }
+
+            @Override
+            public Event asEvent() {
+                return null;
+            }
         };
     }
 

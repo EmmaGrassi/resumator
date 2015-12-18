@@ -5,9 +5,11 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.sytac.resumator.command.Command;
 import io.sytac.resumator.command.CommandHeader;
+import io.sytac.resumator.model.Event;
 
 import java.util.Date;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Describes the intent to create a new Employee
@@ -16,7 +18,7 @@ import java.util.Optional;
  * @since 0.1
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class NewEmployeeCommand implements Command<CommandHeader, NewEmployeeCommandPayload> {
+public class NewEmployeeCommand implements Command<CommandHeader, NewEmployeeCommandPayload, NewEmployeeCommand> {
 
     private final CommandHeader header;
     private final NewEmployeeCommandPayload payload;
@@ -42,6 +44,7 @@ public class NewEmployeeCommand implements Command<CommandHeader, NewEmployeeCom
         header = new CommandHeader(time);
     }
 
+    @SuppressWarnings("unused")
     @JsonCreator
         /* package */ NewEmployeeCommand(@JsonProperty("header") final CommandHeader header,
                                          @JsonProperty("payload") final NewEmployeeCommandPayload payload) {
@@ -62,5 +65,10 @@ public class NewEmployeeCommand implements Command<CommandHeader, NewEmployeeCom
     @Override
     public String getType() {
         return "newEmployee";
+    }
+
+    @Override
+    public Event<NewEmployeeCommand> asEvent() {
+        return new NewEmployeeEvent(UUID.randomUUID().toString(), "streamId", this);
     }
 }

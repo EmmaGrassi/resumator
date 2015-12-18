@@ -4,16 +4,11 @@ import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import io.sytac.resumator.http.BaseResource;
 import io.sytac.resumator.model.Employee;
-import io.sytac.resumator.model.EmployeeId;
-import io.sytac.resumator.store.EmployeeRepository;
 import org.eclipse.jetty.http.HttpStatus;
 
 import javax.annotation.security.RolesAllowed;
-import javax.inject.Inject;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
-import java.util.Optional;
 
 /**
  * Retrieve information about one employee

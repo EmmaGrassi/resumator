@@ -48,7 +48,7 @@ public class SqlStoreTest extends AbstractResumatorTest {
     }
 
     private Event createRandomEvent() {
-        return new Event(UUID.randomUUID().toString(), "stream", 1L, 1L, "bogus", new Timestamp(0), "NewEmployeeCommand");
+        return new Event(UUID.randomUUID().toString(), "stream", 1L, 1L, "bogus: 汉语 / 漢語", new Timestamp(0), "NewEmployeeCommand");
     }
 
     private Event createRandomEvent(final Long insertSequence) {
@@ -66,6 +66,7 @@ public class SqlStoreTest extends AbstractResumatorTest {
         store.put(event);
         Event retrieved = store.getAll().get(0);
         assertEquals("Retrieved event doesn't match with the stored event", event.getId(), retrieved.getId());
+        assertEquals("Retrieved event payload is wrong!", event.getPayload(), retrieved.getPayload());
     }
 
     @Test(expected = IllegalInsertOrderException.class)

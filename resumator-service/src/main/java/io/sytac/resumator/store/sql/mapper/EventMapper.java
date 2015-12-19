@@ -2,6 +2,8 @@ package io.sytac.resumator.store.sql.mapper;
 
 import io.sytac.resumator.model.Event;
 import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.type.ClobTypeHandler;
+import org.apache.ibatis.type.JdbcType;
 
 import java.util.List;
 
@@ -21,10 +23,10 @@ public interface EventMapper {
             @Result(property = "streamId", column = "stream_id"),
             @Result(property = "insertOrder", column = "insert_order"),
             @Result(property = "streamOrder", column = "stream_order"),
+            @Result(property = "payload", column="payload", typeHandler = ClobTypeHandler.class), // not working!
             @Result(property = "created", column = "created_at"),
             @Result(property = "type", column = "event_type")
     })
-
     @Select("SELECT * FROM resumator_events")
     List<Event>getAll();
 

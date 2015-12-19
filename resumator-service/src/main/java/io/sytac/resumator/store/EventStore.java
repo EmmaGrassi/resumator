@@ -35,4 +35,12 @@ public interface EventStore {
      * @since 0.1
      */
     void removeAll();
+
+    /**
+     * Controls whether the store accepts new events or not. When set to true the system will reject any new event
+     *
+     * @param mode The status of the read-only mode
+     * @since 0.1
+     */
+    void setReadOnly(boolean mode);
 }

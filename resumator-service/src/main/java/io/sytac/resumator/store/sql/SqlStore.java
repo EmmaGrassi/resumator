@@ -20,6 +20,7 @@ import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 import javax.inject.Inject;
 import javax.sql.DataSource;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static io.sytac.resumator.ConfigurationEntries.*;
 
@@ -34,6 +35,7 @@ public class SqlStore implements EventStore {
     private final ThreadLocal<SqlSession> session = new ThreadLocal<>();
     private final SqlSessionFactory sessionFactory;
     private final DataSource dataSource;
+    private final AtomicBoolean readOnly = new AtomicBoolean(true);
 
     @Inject
     public SqlStore(final io.sytac.resumator.Configuration config, final EventPublisher events){
@@ -66,6 +68,7 @@ public class SqlStore implements EventStore {
 
     @Override
     public void put(Event event) {
+        assertWriteAllowed();
         if(session.get() == null) {
             session.set(sessionFactory.openSession());
         }
@@ -74,6 +77,10 @@ public class SqlStore implements EventStore {
         checkStreamOrder(event, mapper);
         mapper.put(event);
         session.get().commit();
+    }
+
+    private void assertWriteAllowed() {
+        if(readOnly.get()) throw new IllegalStateException("The system is in read only mode");
     }
 
     private void checkStreamOrder(Event event, EventMapper mapper) {
@@ -116,5 +123,9 @@ public class SqlStore implements EventStore {
         EventMapper mapper = session.get().getMapper(EventMapper.class);
         mapper.removeAll();
         session.get().commit();
+    }
+
+    public void setReadOnly(boolean b) {
+        this.readOnly.set(b);
     }
 }

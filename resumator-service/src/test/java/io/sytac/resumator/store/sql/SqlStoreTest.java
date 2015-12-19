@@ -33,6 +33,7 @@ public class SqlStoreTest extends AbstractResumatorTest {
     public void setUp() throws Exception {
         configuration = new Configuration();
         store = new SqlStore(configuration, mock(EventPublisher.class));
+        store.setReadOnly(false);
         new SchemaManager(configuration, store).migrate();
     }
 
@@ -86,6 +87,13 @@ public class SqlStoreTest extends AbstractResumatorTest {
         store.put(event1);
         store.put(event2);
     }
+
+    @Test(expected = IllegalStateException.class)
+    public void cannotStoreInReadOnlyMode(){
+        store.setReadOnly(true);
+        store.put(createRandomEvent());
+    }
+
 
     @After
     public void cleanDB(){

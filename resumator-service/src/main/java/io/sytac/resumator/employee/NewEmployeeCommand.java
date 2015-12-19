@@ -3,10 +3,13 @@ package io.sytac.resumator.employee;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.sytac.resumator.command.Command;
 import io.sytac.resumator.command.CommandHeader;
 import io.sytac.resumator.model.Event;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
@@ -18,8 +21,9 @@ import java.util.UUID;
  * @since 0.1
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class NewEmployeeCommand implements Command<CommandHeader, NewEmployeeCommandPayload, NewEmployeeCommand> {
+public class NewEmployeeCommand implements Command<CommandHeader, NewEmployeeCommandPayload> {
 
+    public static final String EVENT_TYPE = "newEmployee";
     private final CommandHeader header;
     private final NewEmployeeCommandPayload payload;
 
@@ -64,11 +68,22 @@ public class NewEmployeeCommand implements Command<CommandHeader, NewEmployeeCom
 
     @Override
     public String getType() {
-        return "newEmployee";
+        return EVENT_TYPE;
     }
 
     @Override
-    public Event<NewEmployeeCommand> asEvent() {
-        return new NewEmployeeEvent(UUID.randomUUID().toString(), "streamId", this);
+    public Event asEvent(final ObjectMapper json) {
+        final String asJson;
+        try {
+            asJson = json.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            throw new IllegalArgumentException(e);
+        }
+
+        return new Event(UUID.randomUUID().toString(), "streamId", Event.ORDER_UNSET, Event.ORDER_UNSET, asJson, asTimestamp(this), getType());
+    }
+
+    private static Timestamp asTimestamp(NewEmployeeCommand command) {
+        return new Timestamp(command.getHeader().getTimestamp().getTime());
     }
 }

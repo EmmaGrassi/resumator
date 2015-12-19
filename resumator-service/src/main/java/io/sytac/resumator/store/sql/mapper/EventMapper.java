@@ -1,6 +1,5 @@
 package io.sytac.resumator.store.sql.mapper;
 
-import io.sytac.resumator.employee.NewEmployeeEvent;
 import io.sytac.resumator.model.Event;
 import org.apache.ibatis.annotations.*;
 
@@ -12,7 +11,6 @@ import java.util.List;
  * @author Carlo Sciolla
  * @since 0.1
  */
-@SuppressWarnings("unused")
 public interface EventMapper {
 
     @Insert("INSERT into resumator_events(event_id, stream_id, insert_order, stream_order, payload, created_at, event_type) VALUES (#{id}, #{streamId}, #{insertOrder}, #{streamOrder}, #{payload}, #{created}, #{type})")
@@ -27,13 +25,8 @@ public interface EventMapper {
             @Result(property = "type", column = "event_type")
     })
 
-    @TypeDiscriminator(column = "event_type",
-        javaType = String.class,
-        cases = {
-                @Case(type = NewEmployeeEvent.class, value = "NewEmployeeEvent")
-        })
     @Select("SELECT * FROM resumator_events")
-    List getAll();
+    List<Event>getAll();
 
     @Delete("DELETE FROM resumator_events")
     void removeAll();

@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 import static io.sytac.resumator.ConfigurationEntries.LOG_TAG;
@@ -36,31 +37,50 @@ public class LocalEventPublisher implements EventPublisher {
 
     @Override
     public <T extends Command> Event publish(final T command) {
-        final Event<T> event = command.asEvent();
+        final Event event = command.asEvent(json);
         eventBus.post(event);
         return event;
     }
 
     @Override
-    public <T extends Event> void subscribe(final Consumer<T> consumer, final Class<T> clazz) {
-        eventBus.register(new Listener<>(consumer, clazz));
+    public void subscribe(final Consumer<Event> consumer, final String type) {
+        eventBus.register(new Listener(consumer, type));
     }
 
-    private class Listener<T extends Event> {
+    @Override
+    public void subscribe(Consumer<Event> consumer) {
+        eventBus.register(new Listener(consumer));
+    }
 
-        private final Consumer<T> delegate;
-        private final Class<T> type;
+    private class Listener {
 
-        private Listener(Consumer<T> delegate, Class<T> type) {
+        private final Consumer<Event> delegate;
+        private final Optional<String> type;
+
+        private Listener(final Consumer<Event> delegate, final String type) {
             this.delegate = delegate;
-            this.type = type;
+            this.type = Optional.ofNullable(type);
+            if(!this.type.isPresent()) {
+                LOGGER.warn("Trying to register an event listener for a specific type, but the type is null: {}", delegate.getClass());
+            }
         }
 
+        private Listener(final Consumer<Event> delegate) {
+            this.delegate = delegate;
+            this.type = Optional.empty();
+        }
+
+        @SuppressWarnings("unused")
         @Subscribe
-        public void accept(final T event) {
-            if(type.isAssignableFrom(event.getClass())) {
+        public void accept(final Event event) {
+            if(applies(event)) {
                 delegate.accept(event);
             }
+        }
+
+        private boolean applies(final Event event) {
+            return type.map(type -> type.equals(event.getType()))
+                       .orElse(true);
         }
     }
 }

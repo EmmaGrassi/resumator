@@ -25,6 +25,14 @@ public interface EventPublisher {
      * Register a new event listener for a given type of events
      *
      * @param consumer The listener that will receive new events
+     * @param type     The type of events that the listener is interested into
      */
-    <T extends Event> void subscribe(Consumer<T> consumer, Class<T> type);
+    void subscribe(Consumer<Event> consumer, String type);
+
+    /**
+     * Register a new event listener for all events
+     *
+     * @param consumer The listener that will receive new events
+     */
+    void subscribe(Consumer<Event> consumer);
 }

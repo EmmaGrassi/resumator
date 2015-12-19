@@ -1,5 +1,6 @@
 package io.sytac.resumator.command;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.sytac.resumator.model.Event;
 
 /**
@@ -8,7 +9,7 @@ import io.sytac.resumator.model.Event;
  * @author Carlo Sciolla
  * @since 0.1
  */
-public interface Command<H extends CommandHeader, P extends CommandPayload, THIS extends Command> {
+public interface Command<H extends CommandHeader, P extends CommandPayload> {
 
     /**
      * Returns the {@link CommandHeader} of the command
@@ -37,5 +38,5 @@ public interface Command<H extends CommandHeader, P extends CommandPayload, THIS
      *
      * @return The command as an event
      */
-    Event<THIS> asEvent();
+    Event asEvent(ObjectMapper json);
 }

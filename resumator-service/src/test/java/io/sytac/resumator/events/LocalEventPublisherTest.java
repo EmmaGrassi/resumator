@@ -6,11 +6,11 @@ import io.sytac.resumator.command.Command;
 import io.sytac.resumator.command.CommandHeader;
 import io.sytac.resumator.command.CommandPayload;
 import io.sytac.resumator.employee.NewEmployeeCommand;
-import io.sytac.resumator.employee.NewEmployeeEvent;
 import io.sytac.resumator.model.Event;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
@@ -35,9 +35,9 @@ public class LocalEventPublisherTest {
     @Test
     public void canReceiveSpecificEvents() {
         AtomicInteger invoked = new AtomicInteger(0);
-        final Consumer<NewEmployeeEvent> consumer = newEmployeeEvent -> invoked.incrementAndGet();
+        final Consumer<Event> consumer = newEmployeeEvent -> invoked.incrementAndGet();
 
-        events.subscribe(consumer, NewEmployeeEvent.class);
+        events.subscribe(consumer, NewEmployeeCommand.EVENT_TYPE);
 
         final NewEmployeeCommand command = new NewEmployeeCommand("org", "name", "surname", "1984", "ITALIAN", "Amsterdam", Long.toString(new Date().getTime()));
         Event event = events.publish(command);
@@ -68,8 +68,8 @@ public class LocalEventPublisherTest {
         }
 
         @Override
-        public Event asEvent() {
-            return new Event("id", "stream", Event.ORDER_UNSET, Event.ORDER_UNSET, null, null, "bogus");
+        public Event asEvent(ObjectMapper json) {
+            return new Event("id", "stream", Event.ORDER_UNSET, Event.ORDER_UNSET, "bogus", new Timestamp(1L), "bogus");
         }
     }
 }

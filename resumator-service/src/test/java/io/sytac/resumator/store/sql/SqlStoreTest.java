@@ -32,7 +32,7 @@ public class SqlStoreTest extends AbstractResumatorTest {
     @Before
     public void setUp() throws Exception {
         configuration = new Configuration();
-        store = new SqlStore(configuration, mock(EventPublisher.class), null);
+        store = new SqlStore(configuration, mock(EventPublisher.class));
         new SchemaManager(configuration, store).migrate();
     }
 

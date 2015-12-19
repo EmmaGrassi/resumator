@@ -20,7 +20,7 @@ public class SchemaManagerTest extends AbstractResumatorTest {
     public void setUp() throws Exception {
         System.setProperty(SQL_FILES_DIR_CONFIG, "classpath:db/h2/migration");
         Configuration properties = new Configuration();
-        manager = new SchemaManager(properties, new SqlStore(properties, mock(LocalEventPublisher.class), null));
+        manager = new SchemaManager(properties, new SqlStore(properties, mock(LocalEventPublisher.class)));
     }
 
     @Test

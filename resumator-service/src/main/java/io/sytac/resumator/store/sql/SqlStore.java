@@ -1,14 +1,12 @@
 package io.sytac.resumator.store.sql;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.sytac.resumator.ConfigurationException;
 import io.sytac.resumator.employee.NewEmployeeCommand;
 import io.sytac.resumator.events.EventPublisher;
 import io.sytac.resumator.model.Event;
-import io.sytac.resumator.store.IllegalInsertOrderException;
 import io.sytac.resumator.store.EventStore;
+import io.sytac.resumator.store.IllegalInsertOrderException;
 import io.sytac.resumator.store.IllegalStreamOrderException;
-import io.sytac.resumator.store.sql.mapper.CommandTypeHandler;
 import io.sytac.resumator.store.sql.mapper.EventMapper;
 import org.apache.ibatis.datasource.pooled.PooledDataSource;
 import org.apache.ibatis.mapping.Environment;
@@ -18,7 +16,6 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
-import org.apache.ibatis.type.JdbcType;
 
 import javax.inject.Inject;
 import javax.sql.DataSource;
@@ -39,7 +36,7 @@ public class SqlStore implements EventStore {
     private final DataSource dataSource;
 
     @Inject
-    public SqlStore(final io.sytac.resumator.Configuration config, final EventPublisher events, final ObjectMapper json){
+    public SqlStore(final io.sytac.resumator.Configuration config, final EventPublisher events){
         dataSource = createDataSource(config);
         TransactionFactory transactionFactory = new JdbcTransactionFactory();
         Environment environment = new Environment("resumator", transactionFactory, dataSource);

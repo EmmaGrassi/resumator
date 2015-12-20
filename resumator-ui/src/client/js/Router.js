@@ -22,7 +22,7 @@ const EmployeesResumeShow = require('./components/public/employees/resume/show')
 const EmployeesShow = require('./components/public/employees/show');
 const Home = require('./components/public/home');
 
-module.exports = class Router {
+class Router {
   constructor(options) {
     log.debug('Router#constructor');
 
@@ -62,3 +62,5 @@ module.exports = class Router {
     ReactDOM.render(this.reactRouter, this.rootElement);
   }
 }
+
+module.exports = Router;

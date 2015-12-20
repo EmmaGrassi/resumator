@@ -52,7 +52,9 @@
     "serve-favicon": "^2.3.0",
     "store.js": "^1.0.4",
     "superagent": "^1.4.0",
-    "typewise": "^1.0.3"
+    "tcomb-form": "^0.7.10",
+    "typewise": "^1.0.3",
+    "validator": "^4.4.0"
   },
   "devDependencies": {
     "babel": "^6.3.13",

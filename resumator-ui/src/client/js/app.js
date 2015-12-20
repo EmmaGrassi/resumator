@@ -1,7 +1,7 @@
 import 'babel-polyfill';
 
-import Application from './Application';
-import log from '../lib/log';
+const Application = require('./Application');
+const log = require('../lib/log');
 
 log.setLevel('debug');
 

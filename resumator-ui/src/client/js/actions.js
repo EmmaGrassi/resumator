@@ -13,12 +13,12 @@
  * action events
  */
 
-import log from 'loglevel';
-import * as store from '../lib/store';
+const log = require('loglevel');
+const store = require('../lib/store');
 
-// import { promiseFromNodeCallback } from '../../../common/lib/promise';
+// const { promiseFromNodeCallback } = require('../../../common/lib/promise');
 
-import { request } from '../lib/redux/actions';
+const { request } = require('../lib/redux/actions');
 
 function clearAuthentication() {
   localStorage.setItem('authentication', null);
@@ -143,7 +143,7 @@ const cmsUpdate = request({
   }
 });
 
-export default Object.assign(
+module.exports = Object.assign(
   {
     clearAuthentication,
     getAuthentication,

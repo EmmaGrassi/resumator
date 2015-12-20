@@ -3,7 +3,7 @@ const shoe = require('shoe');
 const dnode = require('dnode');
 const muxDemux = require('mux-demux');
 
-export const install = function(server, dnodeInterface) {
+const install = function(server, dnodeInterface) {
   const shoeStream = shoe(function(shoeClientStream) {
     const mdmStream = muxDemux(function(mdmClientStream){
       debug('mdm-client-stream', mdmClientStream);
@@ -26,4 +26,8 @@ export const install = function(server, dnodeInterface) {
   shoeStream.install(server, '/ws');
 
   server.shoeStream = shoeStream;
+};
+
+module.exports = {
+  install
 };

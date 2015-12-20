@@ -1,6 +1,6 @@
-import { combineReducers } from 'redux';
+const { combineReducers } = require('redux');
 
-import log from '../lib/log';
+const log = require('../lib/log');
 
 const defaults = {
   authentication: {
@@ -193,7 +193,7 @@ const cms = combineReducers({
   schemas: cmsSchemas
 });
 
-export default combineReducers({
+module.exports = combineReducers({
   authentication,
   user,
   cms

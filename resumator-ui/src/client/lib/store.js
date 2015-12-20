@@ -1,6 +1,6 @@
-import _ from 'lodash';
+const _ = require('lodash');
 
-export function get(k) {
+function get(k) {
   let v = localStorage.getItem(k);
 
   if (v) {
@@ -10,7 +10,7 @@ export function get(k) {
   return v;
 }
 
-export function set(k, _v) {
+function set(k, _v) {
   let v = _v;
 
   if (_.isArray(v) || _.isObject(v)) {
@@ -20,6 +20,12 @@ export function set(k, _v) {
   localStorage.setItem(k, v);
 }
 
-export function del(k) {
+function del(k) {
   localStorage.setItem(k, null);
+}
+
+module.exports = {
+  get,
+  set,
+  del
 }

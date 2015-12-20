@@ -1,4 +1,4 @@
-import _ from 'lodash';
+const _ = require('lodash');
 
 const message = { message: 'Should contain unique elements.' };
 
@@ -17,4 +17,4 @@ function containsUnique(instance, property) {
   instance.validate(property, fn(property), message);
 }
 
-export default containsUnique;
+module.exports = containsUnique;

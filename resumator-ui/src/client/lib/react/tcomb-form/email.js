@@ -1,5 +1,5 @@
-import t from 'tcomb-form';
+const t = require('tcomb-form');
 
-export default email = t.refinement(t.String, validator.isEmail);
+module.exports = email = t.refinement(t.String, validator.isEmail);
 
 email.getValidationErrorMessage = (value, path, context) => 'Invalid Email';

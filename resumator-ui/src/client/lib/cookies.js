@@ -1,17 +1,23 @@
-import cookies from 'cookies-js';
+const cookies = require('cookies-js');
 
-export function getToken() {
+function getToken() {
   return cookies('token');
 }
 
-export function setToken(token, ttl) {
+function setToken(token, ttl) {
   cookies('token', token, {
     expires: ttl
   });
 }
 
-export function clearToken() {
+function clearToken() {
   cookies('token', '', {
     expires: new Date(0)
   });
 }
+
+module.exports = {
+  getToken,
+  setToken,
+  clearToken
+};

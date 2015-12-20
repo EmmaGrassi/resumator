@@ -1,12 +1,12 @@
-export function isLowerCase(character) {
+function isLowerCase(character) {
   return character === character.toLowerCase();
 }
 
-export function isUpperCase(character) {
+function isUpperCase(character) {
   return character === character.toUpperCase();
 }
 
-export function getEventNameFromSnakeCaseFunctionName(functionName) {
+function getEventNameFromSnakeCaseFunctionName(functionName) {
   if (isUpperCase(functionName)) {
     return functionName.toLowerCase();
   }
@@ -22,10 +22,17 @@ export function getEventNameFromSnakeCaseFunctionName(functionName) {
   return eventName;
 }
 
-export function getSnakeCaseFunctionNameFromEventName(eventName) {
+function getSnakeCaseFunctionNameFromEventName(eventName) {
   return eventName
     .replace(/:([a-z])/g, (a, l) => {
       return l.toUpperCase();
     })
     .replace(/:/g, '');
+}
+
+module.exports = {
+  isLowerCase,
+  isUpperCase,
+  getEventNameFromSnakeCaseFunctionName,
+  getSnakeCaseFunctionNameFromEventName
 }

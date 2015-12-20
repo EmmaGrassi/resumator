@@ -1,4 +1,4 @@
-import React from 'react';
+const React = require('react');
 
 import {
   Button,
@@ -28,4 +28,4 @@ class Home extends React.Component {
 
 Home.displayName = 'Home';
 
-export default Home;
+module.exports = Home;

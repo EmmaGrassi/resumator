@@ -1,9 +1,9 @@
-import promiseFromNodeCallback from '../promise/promiseFromNodeCallback';
-import httpRequest from 'request';
+const promiseFromNodeCallback = require('../promise/promiseFromNodeCallback');
+const httpRequest = require('request');
 
-import log from 'loglevel';
+const log = require('loglevel');
 
-import * as strings from '../strings';
+const strings = require('../strings');
 
 function requestError(options, event) {
   return (error) => {
@@ -35,7 +35,7 @@ function requestResponse(options, event) {
 //       - beforeError
 //       - afterError
 
-export function request(options = {}) {
+function request(options = {}) {
   const exported = {};
   const eventName = `request:${strings.getEventNameFromSnakeCaseFunctionName(options.name)}`;
 
@@ -69,3 +69,6 @@ export function request(options = {}) {
   return exported;
 }
 
+module.exports = {
+  request
+};

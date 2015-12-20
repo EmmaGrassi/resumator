@@ -1,15 +1,15 @@
-import _ from 'lodash';
-import domready from 'domready';
+const _ = require('lodash');
+const domready = require('domready');
 
-import promiseFromCallback from '../lib/promise/promiseFromCallback';
-import Router from './Router';
-import log from '../lib/log';
+const promiseFromCallback = require('../lib/promise/promiseFromCallback');
+const Router = require('./Router');
+const log = require('../lib/log');
 
-import actions from './actions';
-import store from './store';
-import reducers from './reducers';
+const actions = require('./actions');
+const store = require('./store');
+const reducers = require('./reducers');
 
-export default class Application {
+module.exports = class Application {
   constructor(options = {}) {
     log.debug('Application#constructor');
 

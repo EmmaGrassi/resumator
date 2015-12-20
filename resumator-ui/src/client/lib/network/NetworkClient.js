@@ -1,9 +1,9 @@
-import { EventEmitter } from 'events';
+const { EventEmitter } = require('events');
 
-import Adapter from 'strong-pubsub-redis';
-import Client from 'strong-pubsub';
-// import PrimusTransport from 'strong-pubsub-primus';
-import log from 'loglevel';
+const Adapter = require('strong-pubsub-redis');
+const Client = require('strong-pubsub');
+// const PrimusTransport = require('strong-pubsub-primus');
+const log = require('loglevel');
 
 class NetworkClient extends EventEmitter {
   constructor(options) {
@@ -69,4 +69,4 @@ class NetworkClient extends EventEmitter {
   }
 }
 
-export default NetworkClient;
+module.exports = NetworkClient;

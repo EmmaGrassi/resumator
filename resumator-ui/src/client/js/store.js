@@ -1,12 +1,12 @@
-import { createStore, applyMiddleware } from 'redux';
-import thunkMiddleware from 'redux-thunk';
-import loggerMiddleware from 'redux-logger';
+const { createStore, applyMiddleware } = require('redux');
+const thunkMiddleware = require('redux-thunk');
+const loggerMiddleware = require('redux-logger');
 
 const store = applyMiddleware(
   thunkMiddleware
   // loggerMiddleware
 )(createStore);
 
-export default store;
+module.exports = store;
 
-// export default createStore;
+// module.exports = createStore;

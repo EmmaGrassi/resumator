@@ -29,7 +29,7 @@ public class NewEmployeeCommandDeserializer extends JsonDeserializer<NewEmployee
 
     private NewEmployeeCommandPayload parsePayload(final JsonNode root) {
         final JsonNode payloadJson = root.get("payload");
-        final String org = nullable(payloadJson, "organizationId");
+        final String org = nullable(payloadJson, "organizationDomain");
         final String name = nullable(payloadJson, "name");
         final String surname = nullable(payloadJson, "surname");
         final String year = nullable(payloadJson, "yearOfBirth");

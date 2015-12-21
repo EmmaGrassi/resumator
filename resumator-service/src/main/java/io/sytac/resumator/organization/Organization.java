@@ -7,6 +7,7 @@ import io.sytac.resumator.employee.NewEmployeeCommandPayload;
 import io.sytac.resumator.model.enums.Nationality;
 
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -26,6 +27,10 @@ public class Organization {
         this.id = id;
         this.name = name;
         this.domain = domain;
+    }
+
+    public Organization(final String name, final String domain) {
+        this(UUID.randomUUID().toString(), name, domain);
     }
 
     public Employee addEmployee(final NewEmployeeCommand command) {

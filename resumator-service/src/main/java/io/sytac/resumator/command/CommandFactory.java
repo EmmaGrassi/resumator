@@ -2,8 +2,10 @@ package io.sytac.resumator.command;
 
 import io.sytac.resumator.employee.NewEmployeeCommand;
 import io.sytac.resumator.events.EventPublisher;
+import io.sytac.resumator.organization.NewOrganizationCommand;
 
 import javax.ws.rs.core.MultivaluedMap;
+import java.util.Map;
 
 /**
  * Creates command descriptors and publishes the related event
@@ -29,5 +31,13 @@ public class CommandFactory {
         final NewEmployeeCommand newEmployeeCommand = new NewEmployeeCommand(organizationId, name, surname, yearOfBirth, nationality, currentResident, timestamp);
         events.publish(newEmployeeCommand);
         return newEmployeeCommand;
+    }
+
+    public NewOrganizationCommand newOrganizationCommand(final Map<String, String> input) {
+        final String name = input.get("name");
+        final String domain = input.get("domain");
+        final String timestamp = input.get("timestamp");
+
+        return new NewOrganizationCommand(name, domain, timestamp);
     }
 }

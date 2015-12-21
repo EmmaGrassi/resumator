@@ -27,14 +27,14 @@ public class NewEmployeeCommand implements Command<CommandHeader, NewEmployeeCom
     private final CommandHeader header;
     private final NewEmployeeCommandPayload payload;
 
-    public NewEmployeeCommand(final String organizationId,
+    public NewEmployeeCommand(final String organizationDomain,
                                       final String name,
                                       final String surname,
                                       final String yearOfBirth,
                                       final String nationality,
                                       final String currentResidence,
                                       final String timestamp) {
-        payload = new NewEmployeeCommandPayload(organizationId,
+        payload = new NewEmployeeCommandPayload(organizationDomain,
                                                 name,
                                                 surname,
                                                 yearOfBirth,

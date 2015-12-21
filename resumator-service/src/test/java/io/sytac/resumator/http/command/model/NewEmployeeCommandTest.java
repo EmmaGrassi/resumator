@@ -44,7 +44,7 @@ public class NewEmployeeCommandTest {
                 "{\"header\":" +
                         "{\"timestamp\":" + timestamp.getTime() + "}," +
                  "\"payload\":" +
-                        "{\"organizationId\":\"ACME\"," +
+                        "{\"organizationDomain\":\"ACME\"," +
                         "\"name\":\"Foo\"," +
                         "\"surname\":\"Bar\"," +
                         "\"yearOfBirth\":\"1984\"," +
@@ -61,13 +61,13 @@ public class NewEmployeeCommandTest {
                         "{\"header\":" +
                             "{\"timestamp\":" + new Date().getTime() + "}," +
                         "\"payload\":" +
-                            "{\"organizationId\":\"foobar\"," +
+                            "{\"organizationDomain\":\"foobar\"," +
                             "\"name\":\"Foo\"," +
                             "\"surname\":\"Bar\"," +
                             "\"yearOfBirth\":\"1984\"," +
                             "\"nationality\":\"ITALY\"}," +
                             "\"type\":\"newEmployee\"}";
         final NewEmployeeCommand command = mapper.readValue(expected.getBytes("UTF-8"), NewEmployeeCommand.class);
-        assertEquals("Wrong deserialization", "foobar", command.getPayload().getOrganizationId());
+        assertEquals("Wrong deserialization", "foobar", command.getPayload().getOrganizationDomain());
     }
 }

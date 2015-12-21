@@ -6,5 +6,5 @@ package io.sytac.resumator.command;
  * @author Carlo Sciolla
  * @since 0.1
  */
-public class CommandPayload {
+public interface CommandPayload {
 }

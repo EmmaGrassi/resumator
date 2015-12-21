@@ -29,8 +29,8 @@ public interface OrganizationRepository {
     /**
      * Registers a new {@link Organization}
      *
-     * @param org The organization to register
+     * @param command The descriptor of the new organization to create
      * @return The registered organization
      */
-    Organization register(Organization org);
+    Organization register(NewOrganizationCommand command);
 }

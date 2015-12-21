@@ -66,7 +66,7 @@ public class Bootstrap {
         switch (event.getType()) {
             case "newEmployee":
                 final NewEmployeeCommand command = json.readValue(event.getPayload(), NewEmployeeCommand.class);
-                orgs.get(command.getPayload().getOrganizationId())
+                orgs.fromDomain(command.getPayload().getOrganizationDomain())
                         .orElseThrow(() -> new IllegalArgumentException("Cannot replay new employee for unknown organization"))
                         .addEmployee(command);
                 return true;

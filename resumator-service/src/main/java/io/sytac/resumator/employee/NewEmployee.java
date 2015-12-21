@@ -66,7 +66,7 @@ public class NewEmployee extends BaseResource {
         return buildRepresentation(uriInfo, response, employee);
     }
 
-    private Representation buildRepresentation(@Context UriInfo uriInfo, @Context HttpServletResponse response, Employee employee) {
+    private Representation buildRepresentation(final @Context UriInfo uriInfo, final @Context HttpServletResponse response, final Employee employee) {
         final URI employeeLink = resourceLink(uriInfo, EmployeeQuery.class, employee.getId().toString());
 
         response.setStatus(HttpStatus.CREATED_201);

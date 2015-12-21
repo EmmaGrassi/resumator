@@ -7,7 +7,7 @@ CREATE TABLE resumator_events (
        stream_id VARCHAR(512) NOT NULL,
        insert_order BIGINT DEFAULT resumator_events_insert_order_seq.nextval,
        stream_order BIGINT NOT NULL,
-       payload BYTEA NOT NULL,
+       payload CLOB NOT NULL,
        created_at TIMESTAMP NOT NULL,
        event_type VARCHAR(512) NOT NULL,
        UNIQUE(stream_id, stream_order)

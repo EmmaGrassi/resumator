@@ -8,8 +8,8 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.common.collect.Sets;
 import io.sytac.resumator.Configuration;
-import io.sytac.resumator.model.Organization;
-import io.sytac.resumator.store.OrganizationRepository;
+import io.sytac.resumator.organization.Organization;
+import io.sytac.resumator.organization.OrganizationRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

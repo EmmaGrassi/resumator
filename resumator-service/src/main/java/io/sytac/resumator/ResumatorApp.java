@@ -6,8 +6,8 @@ import io.sytac.resumator.http.UriRewriteSupportFilter;
 import io.sytac.resumator.security.Oauth2AuthenticationFilter;
 import io.sytac.resumator.security.Oauth2SecurityService;
 import io.sytac.resumator.security.Oauth2SecurityServiceFactory;
-import io.sytac.resumator.store.InMemoryOrganizationRepository;
-import io.sytac.resumator.store.OrganizationRepository;
+import io.sytac.resumator.organization.InMemoryOrganizationRepository;
+import io.sytac.resumator.organization.OrganizationRepository;
 import org.eclipse.jetty.server.Server;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.jetty.JettyHttpContainerFactory;
@@ -110,7 +110,8 @@ public class ResumatorApp {
 
     protected ResourceConfig registerApplicationResorces(final ResourceConfig rc) {
         return rc.packages(
-                "io.sytac.resumator.http",                // Resumator HTTP resources
+                "io.sytac.resumator.employee",
+                "io.sytac.resumator.service",
                 "com.theoryinpractise.halbuilder.jaxrs"); // HAL support
     }
 

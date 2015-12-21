@@ -2,6 +2,7 @@ package io.sytac.resumator.store.sql.mapper;
 
 import io.sytac.resumator.model.Event;
 import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.type.ClobTypeHandler;
 
 import java.util.List;
 
@@ -11,7 +12,6 @@ import java.util.List;
  * @author Carlo Sciolla
  * @since 0.1
  */
-@SuppressWarnings("unused")
 public interface EventMapper {
 
     @Insert("INSERT into resumator_events(event_id, stream_id, insert_order, stream_order, payload, created_at, event_type) VALUES (#{id}, #{streamId}, #{insertOrder}, #{streamOrder}, #{payload}, #{created}, #{type})")
@@ -22,12 +22,12 @@ public interface EventMapper {
             @Result(property = "streamId", column = "stream_id"),
             @Result(property = "insertOrder", column = "insert_order"),
             @Result(property = "streamOrder", column = "stream_order"),
+            @Result(property = "payload", column="payload", typeHandler = ClobTypeHandler.class), // not working!
             @Result(property = "created", column = "created_at"),
             @Result(property = "type", column = "event_type")
     })
-
-    @Select("SELECT * FROM resumator_events")
-    List<Event> getAll();
+    @Select("SELECT * FROM resumator_events ORDER BY created_at ASC")
+    List<Event>getAll();
 
     @Delete("DELETE FROM resumator_events")
     void removeAll();

@@ -1,9 +1,11 @@
 package io.sytac.resumator.store.sql;
 
 import io.sytac.resumator.ConfigurationException;
+import io.sytac.resumator.employee.NewEmployeeCommand;
+import io.sytac.resumator.events.EventPublisher;
 import io.sytac.resumator.model.Event;
-import io.sytac.resumator.store.IllegalInsertOrderException;
 import io.sytac.resumator.store.EventStore;
+import io.sytac.resumator.store.IllegalInsertOrderException;
 import io.sytac.resumator.store.IllegalStreamOrderException;
 import io.sytac.resumator.store.sql.mapper.EventMapper;
 import org.apache.ibatis.datasource.pooled.PooledDataSource;
@@ -15,8 +17,10 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 
+import javax.inject.Inject;
 import javax.sql.DataSource;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static io.sytac.resumator.ConfigurationEntries.*;
 
@@ -31,14 +35,18 @@ public class SqlStore implements EventStore {
     private final ThreadLocal<SqlSession> session = new ThreadLocal<>();
     private final SqlSessionFactory sessionFactory;
     private final DataSource dataSource;
+    private final AtomicBoolean readOnly = new AtomicBoolean(true);
 
-    public SqlStore(final io.sytac.resumator.Configuration properties){
-        dataSource = createDataSource(properties);
+    @Inject
+    public SqlStore(final io.sytac.resumator.Configuration config, final EventPublisher events){
+        dataSource = createDataSource(config);
         TransactionFactory transactionFactory = new JdbcTransactionFactory();
         Environment environment = new Environment("resumator", transactionFactory, dataSource);
         Configuration configuration = new Configuration(environment);
+        configuration.getTypeHandlerRegistry().register("io.sytac.resumator.store.sql.mapper");
         configuration.addMapper(EventMapper.class);
         sessionFactory = new SqlSessionFactoryBuilder().build(configuration);
+        events.subscribe(this::put, NewEmployeeCommand.EVENT_TYPE);
     }
 
     private PooledDataSource createDataSource(final io.sytac.resumator.Configuration properties) {
@@ -60,6 +68,7 @@ public class SqlStore implements EventStore {
 
     @Override
     public void put(Event event) {
+        assertWriteAllowed();
         if(session.get() == null) {
             session.set(sessionFactory.openSession());
         }
@@ -68,6 +77,10 @@ public class SqlStore implements EventStore {
         checkStreamOrder(event, mapper);
         mapper.put(event);
         session.get().commit();
+    }
+
+    private void assertWriteAllowed() {
+        if(readOnly.get()) throw new IllegalStateException("The system is in read only mode");
     }
 
     private void checkStreamOrder(Event event, EventMapper mapper) {
@@ -110,5 +123,9 @@ public class SqlStore implements EventStore {
         EventMapper mapper = session.get().getMapper(EventMapper.class);
         mapper.removeAll();
         session.get().commit();
+    }
+
+    public void setReadOnly(boolean b) {
+        this.readOnly.set(b);
     }
 }

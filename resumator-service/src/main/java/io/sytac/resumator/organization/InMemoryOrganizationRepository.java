@@ -1,6 +1,5 @@
-package io.sytac.resumator.store;
+package io.sytac.resumator.organization;
 
-import io.sytac.resumator.model.Organization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,7 +20,10 @@ public class InMemoryOrganizationRepository implements OrganizationRepository {
 
     @Override
     public Optional<Organization> get(final String id) {
-        return Optional.ofNullable(organizations.get(id));
+        return organizations.values()
+                            .stream()
+                            .filter(org -> id.equals(org.getId()))
+                            .findFirst();
     }
 
     @Override
@@ -30,9 +32,10 @@ public class InMemoryOrganizationRepository implements OrganizationRepository {
     }
 
     @Override
-    public Organization register(final Organization org) {
-        final Optional<Organization> stored = Optional.ofNullable(organizations.putIfAbsent(org.getId(), org));
-        if(stored.isPresent()) {
+    public Organization register(final NewOrganizationCommand command) {
+        final Organization org = new Organization(command.getPayload().getName(), command.getPayload().getDomain());
+        final Optional<Organization> stored = Optional.ofNullable(organizations.putIfAbsent(org.getDomain(), org));
+        if (stored.isPresent()) {
             LOGGER.warn("Replacing existing organization: {}", stored);
             return stored.get();
         }

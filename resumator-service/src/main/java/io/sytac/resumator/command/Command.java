@@ -1,4 +1,7 @@
-package io.sytac.resumator.http.command.model;
+package io.sytac.resumator.command;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.sytac.resumator.model.Event;
 
 /**
  * Describes a command that alters the state of the system
@@ -29,4 +32,11 @@ public interface Command<H extends CommandHeader, P extends CommandPayload> {
      * @return The type of the command
      */
     String getType();
+
+    /**
+     * Translates this command into an event
+     *
+     * @return The command as an event
+     */
+    Event asEvent(ObjectMapper json);
 }

@@ -1,4 +1,4 @@
-package io.sytac.resumator.model;
+package io.sytac.resumator.employee;
 
 import io.sytac.resumator.model.enums.Nationality;
 

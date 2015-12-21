@@ -2,6 +2,7 @@ package io.sytac.resumator.store.sql;
 
 import io.sytac.resumator.AbstractResumatorTest;
 import io.sytac.resumator.Configuration;
+import io.sytac.resumator.events.EventPublisher;
 import io.sytac.resumator.model.Event;
 import io.sytac.resumator.store.IllegalInsertOrderException;
 import io.sytac.resumator.store.IllegalStreamOrderException;
@@ -12,10 +13,10 @@ import org.junit.Test;
 import java.sql.Timestamp;
 import java.util.UUID;
 
+import static io.sytac.resumator.ConfigurationEntries.SQL_DB_USER;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-
-import static io.sytac.resumator.ConfigurationEntries.*;
+import static org.mockito.Mockito.mock;
 
 /**
  * Test SQL connections
@@ -31,7 +32,8 @@ public class SqlStoreTest extends AbstractResumatorTest {
     @Before
     public void setUp() throws Exception {
         configuration = new Configuration();
-        store = new SqlStore(configuration);
+        store = new SqlStore(configuration, mock(EventPublisher.class));
+        store.setReadOnly(false);
         new SchemaManager(configuration, store).migrate();
     }
 
@@ -47,15 +49,15 @@ public class SqlStoreTest extends AbstractResumatorTest {
     }
 
     private Event createRandomEvent() {
-        return new Event(UUID.randomUUID().toString(), "stream", 1L, 1L, "test".getBytes(), new Timestamp(0), "test");
+        return new Event(UUID.randomUUID().toString(), "stream", 1L, 1L, "bogus: 汉语 / 漢語", new Timestamp(0), "NewEmployeeCommand");
     }
 
     private Event createRandomEvent(final Long insertSequence) {
-        return new Event(UUID.randomUUID().toString(), "stream", insertSequence, 1L, "test".getBytes(), new Timestamp(0), "test");
+        return new Event(UUID.randomUUID().toString(), "stream", insertSequence, 1L, "bogus", new Timestamp(0), "test");
     }
 
     private Event createRandomEvent(final Long insertSequence, final String streamId, final Long streamOrder) {
-        return new Event(UUID.randomUUID().toString(), streamId, insertSequence, streamOrder, "test".getBytes(), new Timestamp(0), "test");
+        return new Event(UUID.randomUUID().toString(), streamId, insertSequence, streamOrder, "bogus", new Timestamp(0), "test");
     }
 
     @Test
@@ -65,6 +67,7 @@ public class SqlStoreTest extends AbstractResumatorTest {
         store.put(event);
         Event retrieved = store.getAll().get(0);
         assertEquals("Retrieved event doesn't match with the stored event", event.getId(), retrieved.getId());
+        assertEquals("Retrieved event payload is wrong!", event.getPayload(), retrieved.getPayload());
     }
 
     @Test(expected = IllegalInsertOrderException.class)
@@ -84,6 +87,13 @@ public class SqlStoreTest extends AbstractResumatorTest {
         store.put(event1);
         store.put(event2);
     }
+
+    @Test(expected = IllegalStateException.class)
+    public void cannotStoreInReadOnlyMode(){
+        store.setReadOnly(true);
+        store.put(createRandomEvent());
+    }
+
 
     @After
     public void cleanDB(){

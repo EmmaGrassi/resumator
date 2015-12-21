@@ -1,8 +1,9 @@
-package io.sytac.resumator.http.query;
+package io.sytac.resumator.service;
 
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import io.sytac.resumator.Configuration;
+import io.sytac.resumator.employee.EmployeesQuery;
 import io.sytac.resumator.http.BaseResource;
 
 import javax.inject.Inject;

@@ -1,4 +1,4 @@
-package io.sytac.resumator.http.command.model;
+package io.sytac.resumator.command;
 
 /**
  * Describes the contents of a {@link Command}
@@ -6,5 +6,5 @@ package io.sytac.resumator.http.command.model;
  * @author Carlo Sciolla
  * @since 0.1
  */
-public class CommandPayload {
+public interface CommandPayload {
 }

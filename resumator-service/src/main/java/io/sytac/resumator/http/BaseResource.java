@@ -46,6 +46,20 @@ public class BaseResource {
     }
 
     /**
+     * Build the URI for the method on the provided resource
+     *
+     * @param uriInfo The base URI for the service
+     * @param resource The resource to which to create a link
+     * @param method The method on the resource to which to create a link
+     * @param params Parameters to fill in in case the URI to link to is parametrized
+     */
+    protected URI resourceMethodLink(final UriInfo uriInfo, final Class<?> resource, final String method, final String... params) {
+        return UriBuilder.fromUri(uriInfo.getBaseUri())
+                .path(resource, method)
+                .build(params);
+    }
+
+    /**
      * Helper method to create a new {@link Link}
      *
      * @param rel The link relationship

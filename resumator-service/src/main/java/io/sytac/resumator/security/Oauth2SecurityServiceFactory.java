@@ -1,7 +1,7 @@
 package io.sytac.resumator.security;
 
 import io.sytac.resumator.Configuration;
-import io.sytac.resumator.store.OrganizationRepository;
+import io.sytac.resumator.organization.OrganizationRepository;
 import org.glassfish.hk2.api.Factory;
 
 import javax.inject.Inject;

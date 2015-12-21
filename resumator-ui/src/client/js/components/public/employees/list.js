@@ -1,5 +1,5 @@
-import _ from 'lodash';
-import React from 'react';
+const _ = require('lodash');
+const React = require('react');
 
 import {
   Button,
@@ -86,4 +86,4 @@ class List extends React.Component {
 
 List.displayName = 'List';
 
-export default List;
+module.exports = List;

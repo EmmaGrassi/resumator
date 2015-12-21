@@ -1,15 +1,15 @@
-import React from 'react';
-import { connect } from 'react-redux';
+const React = require('react');
+const { connect } = require('react-redux');
 
-import Nav from 'react-bootstrap/lib/Nav';
-import Navbar from 'react-bootstrap/lib/Navbar';
-import NavbarBrand from 'react-bootstrap/lib/NavbarBrand';
-import NavbarCollapse from 'react-bootstrap/lib/NavbarCollapse';
-import NavbarHeader from 'react-bootstrap/lib/NavbarHeader';
-import NavbarToggle from 'react-bootstrap/lib/NavbarToggle';
-import NavItem from 'react-bootstrap/lib/NavItem';
+const Nav = require('react-bootstrap/lib/Nav');
+const Navbar = require('react-bootstrap/lib/Navbar');
+const NavbarBrand = require('react-bootstrap/lib/NavbarBrand');
+const NavbarCollapse = require('react-bootstrap/lib/NavbarCollapse');
+const NavbarHeader = require('react-bootstrap/lib/NavbarHeader');
+const NavbarToggle = require('react-bootstrap/lib/NavbarToggle');
+const NavItem = require('react-bootstrap/lib/NavItem');
 
-import RightButton from './right-button';
+const RightButton = require('./right-button');
 
 class TopBar extends React.Component {
   render() {
@@ -40,4 +40,4 @@ TopBar.mapStateToProps = function mapStateToProps(state) {
   };
 };
 
-export default connect(TopBar.mapStateToProps)(TopBar);
+module.exports = connect(TopBar.mapStateToProps)(TopBar);

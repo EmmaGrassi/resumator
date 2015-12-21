@@ -1,6 +1,6 @@
-import log from '../log';
+const log = require('../log');
 
-export default function promiseFromNodeCallback(cb, ...args) {
+module.exports = function promiseFromNodeCallback(cb, ...args) {
   return new Promise((resolve, reject) => {
     cb(...args, (error, ...args) => {
       if (error) {

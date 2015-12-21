@@ -1,287 +1,160 @@
-import moment from 'moment';
-import _ from 'lodash';
-import React from 'react';
+const React = require('react');
+const qwest = require('qwest');
+const tcombForm = require('tcomb-form');
+const tcombFormTypes = require('tcomb-form-types');
+const { Button, Col, Grid, Input, Row } = require('react-bootstrap');
+const { bindAll, map, each } = require('lodash');
 
-import {
-  ButtonInput,
-  Col,
-  Grid,
-  Input,
-  Row
-} from 'react-bootstrap';
-import DateTimeInput from 'react-bootstrap-datetimepicker';
-import Select from 'react-select';
+// const DateTimeInput = require('react-bootstrap-datetimepicker');
+// const Select = require('react-select');
 
-import Experience from './experience';
-import Education from './education';
-import Courses from './courses';
+const nationalities = require('./nationalities');
+
+const { Form } = tcombForm.form;
+
+const nationalitiesObject = {};
+
+each(nationalities, (c) => {
+  nationalitiesObject[c.value] = c.label;
+});
+
+const CoursesSchema = tcombForm.struct({
+  name: tcombForm.String,
+  description: tcombForm.String,
+  date: tcombForm.Date,
+});
+
+const EducationSchema = tcombForm.struct({
+  degree: tcombForm.String,
+  fieldOfStudy: tcombForm.String,
+  university: tcombForm.String,
+  graduated: tcombForm.Boolean,
+
+  // TODO: Support this type in tcomb-form-types.
+  graduationYear: tcombForm.Number
+});
+
+const ExperienceSchema = tcombForm.struct({
+  companyName: tcombForm.String,
+  title: tcombForm.String,
+  location: tcombForm.String,
+  startDate: tcombForm.Date,
+  endDate: tcombForm.Date,
+
+  // TODO: Text input
+  shortDescription: tcombForm.String,
+
+  // TODO: Sub schema.
+  technologies: tcombForm.list(tcombForm.String),
+  methodologies: tcombForm.list(tcombForm.String)
+});
+
+
+const EmployeeSchema = tcombForm.struct({
+  name: tcombForm.String,
+  surname: tcombForm.String,
+
+  email: tcombFormTypes.String.Email,
+  phonenumber: tcombForm.String,
+
+  github: tcombForm.maybe(tcombForm.String),
+  linkedin: tcombForm.maybe(tcombForm.String),
+
+  dateOfBirth: tcombForm.Date,
+  nationality: tcombForm.enums(nationalitiesObject),
+
+  education: tcombForm.list(EducationSchema),
+  courses: tcombForm.list(CoursesSchema),
+  experience: tcombForm.list(ExperienceSchema)
+});
 
 class Employee extends React.Component {
   constructor(options) {
     super(options);
 
-    this.countries = [
-      { value: 'AFGHAN', label: 'Afghan' },
-      { value: 'ALBANIAN', label: 'Albanian' },
-      { value: 'ALGERIAN', label: 'Algerian' },
-      { value: 'AMERICAN', label: 'American' },
-      { value: 'ANDORRAN', label: 'Andorran' },
-      { value: 'ANGOLAN', label: 'Angolan' },
-      { value: 'ANTIGUANS', label: 'Antiguans' },
-      { value: 'ARGENTINEAN', label: 'Argentinean' },
-      { value: 'ARMENIAN', label: 'Armenian' },
-      { value: 'AUSTRALIAN', label: 'Australian' },
-      { value: 'AUSTRIAN', label: 'Austrian' },
-      { value: 'AZERBAIJANI', label: 'Azerbaijani' },
-      { value: 'BAHAMIAN', label: 'Bahamian' },
-      { value: 'BAHRAINI', label: 'Bahraini' },
-      { value: 'BANGLADESHI', label: 'Bangladeshi' },
-      { value: 'BARBADIAN', label: 'Barbadian' },
-      { value: 'BARBUDANS', label: 'Barbudans' },
-      { value: 'BATSWANA', label: 'Batswana' },
-      { value: 'BELARUSIAN', label: 'Belarusian' },
-      { value: 'BELGIAN', label: 'Belgian' },
-      { value: 'BELIZEAN', label: 'Belizean' },
-      { value: 'BENINESE', label: 'Beninese' },
-      { value: 'BHUTANESE', label: 'Bhutanese' },
-      { value: 'BOLIVIAN', label: 'Bolivian' },
-      { value: 'BOSNIAN', label: 'Bosnian' },
-      { value: 'BRAZILIAN', label: 'Brazilian' },
-      { value: 'BRITISH', label: 'British' },
-      { value: 'BRUNEIAN', label: 'Bruneian' },
-      { value: 'BULGARIAN', label: 'Bulgarian' },
-      { value: 'BURKINABE', label: 'Burkinabe' },
-      { value: 'BURMESE', label: 'Burmese' },
-      { value: 'BURUNDIAN', label: 'Burundian' },
-      { value: 'CAMBODIAN', label: 'Cambodian' },
-      { value: 'CAMEROONIAN', label: 'Cameroonian' },
-      { value: 'CANADIAN', label: 'Canadian' },
-      { value: 'CAPE_VERDEAN', label: 'Cape Verdean' },
-      { value: 'CENTRAL_AFRICAN', label: 'Central African' },
-      { value: 'CHADIAN', label: 'Chadian' },
-      { value: 'CHILEAN', label: 'Chilean' },
-      { value: 'CHINESE', label: 'Chinese' },
-      { value: 'COLOMBIAN', label: 'Colombian' },
-      { value: 'COMORAN', label: 'Comoran' },
-      { value: 'CONGOLESE', label: 'Congolese' },
-      { value: 'COSTA_RICAN', label: 'Costa Rican' },
-      { value: 'CROATIAN', label: 'Croatian' },
-      { value: 'CUBAN', label: 'Cuban' },
-      { value: 'CYPRIOT', label: 'Cypriot' },
-      { value: 'CZECH', label: 'Czech' },
-      { value: 'DANISH', label: 'Danish' },
-      { value: 'DJIBOUTI', label: 'Djibouti' },
-      { value: 'DOMINICAN', label: 'Dominican' },
-      { value: 'DUTCH', label: 'Dutch' },
-      { value: 'EAST_TIMORESE', label: 'East Timorese' },
-      { value: 'ECUADOREAN', label: 'Ecuadorean' },
-      { value: 'EGYPTIAN', label: 'Egyptian' },
-      { value: 'EMIRIAN', label: 'Emirian' },
-      { value: 'EQUATORIAL_GUINEAN', label: 'Equatorial Guinean' },
-      { value: 'ERITREAN', label: 'Eritrean' },
-      { value: 'ESTONIAN', label: 'Estonian' },
-      { value: 'ETHIOPIAN', label: 'Ethiopian' },
-      { value: 'FIJIAN', label: 'Fijian' },
-      { value: 'FILIPINO', label: 'Filipino' },
-      { value: 'FINNISH', label: 'Finnish' },
-      { value: 'FRENCH', label: 'French' },
-      { value: 'GABONESE', label: 'Gabonese' },
-      { value: 'GAMBIAN', label: 'Gambian' },
-      { value: 'GEORGIAN', label: 'Georgian' },
-      { value: 'GERMAN', label: 'German' },
-      { value: 'GHANAIAN', label: 'Ghanaian' },
-      { value: 'GREEK', label: 'Greek' },
-      { value: 'GRENADIAN', label: 'Grenadian' },
-      { value: 'GUATEMALAN', label: 'Guatemalan' },
-      { value: 'GUINEA_BISSAUAN', label: 'Guinea Bissauan' },
-      { value: 'GUINEAN', label: 'Guinean' },
-      { value: 'GUYANESE', label: 'Guyanese' },
-      { value: 'HAITIAN', label: 'Haitian' },
-      { value: 'HERZEGOVINIAN', label: 'Herzegovinian' },
-      { value: 'HONDURAN', label: 'Honduran' },
-      { value: 'HUNGARIAN', label: 'Hungarian' },
-      { value: 'I_KIRIBATI', label: 'I Kiribati' },
-      { value: 'ICELANDER', label: 'Icelander' },
-      { value: 'INDIAN', label: 'Indian' },
-      { value: 'INDONESIAN', label: 'Indonesian' },
-      { value: 'IRANIAN', label: 'Iranian' },
-      { value: 'IRAQI', label: 'Iraqi' },
-      { value: 'IRISH', label: 'Irish' },
-      { value: 'ISRAELI', label: 'Israeli' },
-      { value: 'ITALIAN', label: 'Italian' },
-      { value: 'IVORIAN', label: 'Ivorian' },
-      { value: 'JAMAICAN', label: 'Jamaican' },
-      { value: 'JAPANESE', label: 'Japanese' },
-      { value: 'JORDANIAN', label: 'Jordanian' },
-      { value: 'KAZAKHSTANI', label: 'Kazakhstani' },
-      { value: 'KENYAN', label: 'Kenyan' },
-      { value: 'KITTIAN_AND_NEVISIAN', label: 'Kittian and Nevisian' },
-      { value: 'KUWAITI', label: 'Kuwaiti' },
-      { value: 'KYRGYZ', label: 'Kyrgyz' },
-      { value: 'LAOTIAN', label: 'Laotian' },
-      { value: 'LATVIAN', label: 'Latvian' },
-      { value: 'LEBANESE', label: 'Lebanese' },
-      { value: 'LIBERIAN', label: 'Liberian' },
-      { value: 'LIBYAN', label: 'Libyan' },
-      { value: 'LIECHTENSTEINER', label: 'Liechtensteiner' },
-      { value: 'LITHUANIAN', label: 'Lithuanian' },
-      { value: 'LUXEMBOURGER', label: 'Luxembourger' },
-      { value: 'MACEDONIAN', label: 'Macedonian' },
-      { value: 'MALAGASY', label: 'Malagasy' },
-      { value: 'MALAWIAN', label: 'Malawian' },
-      { value: 'MALAYSIAN', label: 'Malaysian' },
-      { value: 'MALDIVAN', label: 'Maldivan' },
-      { value: 'MALIAN', label: 'Malian' },
-      { value: 'MALTESE', label: 'Maltese' },
-      { value: 'MARSHALLESE', label: 'Marshallese' },
-      { value: 'MAURITANIAN', label: 'Mauritanian' },
-      { value: 'MAURITIAN', label: 'Mauritian' },
-      { value: 'MEXICAN', label: 'Mexican' },
-      { value: 'MICRONESIAN', label: 'Micronesian' },
-      { value: 'MOLDOVAN', label: 'Moldovan' },
-      { value: 'MONACAN', label: 'Monacan' },
-      { value: 'MONGOLIAN', label: 'Mongolian' },
-      { value: 'MOROCCAN', label: 'Moroccan' },
-      { value: 'MOSOTHO', label: 'Mosotho' },
-      { value: 'MOTSWANA', label: 'Motswana' },
-      { value: 'MOZAMBICAN', label: 'Mozambican' },
-      { value: 'NAMIBIAN', label: 'Namibian' },
-      { value: 'NAURUAN', label: 'Nauruan' },
-      { value: 'NEPALESE', label: 'Nepalese' },
-      { value: 'NEW_ZEALANDER', label: 'New Zealander' },
-      { value: 'NICARAGUAN', label: 'Nicaraguan' },
-      { value: 'NIGERIAN', label: 'Nigerian' },
-      { value: 'NIGERIEN', label: 'Nigerien' },
-      { value: 'NORTH_KOREAN', label: 'North Korean' },
-      { value: 'NORTHERN_IRISH', label: 'Northern Irish' },
-      { value: 'NORWEGIAN', label: 'Norwegian' },
-      { value: 'OMANI', label: 'Omani' },
-      { value: 'PAKISTANI', label: 'Pakistani' },
-      { value: 'PALAUAN', label: 'Palauan' },
-      { value: 'PANAMANIAN', label: 'Panamanian' },
-      { value: 'PAPUA_NEW_GUINEAN', label: 'Papua new Guinean' },
-      { value: 'PARAGUAYAN', label: 'Paraguayan' },
-      { value: 'PERUVIAN', label: 'Peruvian' },
-      { value: 'POLISH', label: 'Polish' },
-      { value: 'PORTUGUESE', label: 'Portuguese' },
-      { value: 'QATARI', label: 'Qatari' },
-      { value: 'ROMANIAN', label: 'Romanian' },
-      { value: 'RUSSIAN', label: 'Russian' },
-      { value: 'RWANDAN', label: 'Rwandan' },
-      { value: 'SAINT_LUCIAN', label: 'Saint Lucian' },
-      { value: 'SALVADORAN', label: 'Salvadoran' },
-      { value: 'SAMOAN', label: 'Samoan' },
-      { value: 'SAN_MARINESE', label: 'San Marinese' },
-      { value: 'SAO_TOMEAN', label: 'Sao Tomean' },
-      { value: 'SAUDI', label: 'Saudi' },
-      { value: 'SCOTTISH', label: 'Scottish' },
-      { value: 'SENEGALESE', label: 'Senegalese' },
-      { value: 'SERBIAN', label: 'Serbian' },
-      { value: 'SEYCHELLOIS', label: 'Seychellois' },
-      { value: 'SIERRA_LEONEAN', label: 'Sierra Leonean' },
-      { value: 'SINGAPOREAN', label: 'Singaporean' },
-      { value: 'SLOVAKIAN', label: 'Slovakian' },
-      { value: 'SLOVENIAN', label: 'Slovenian' },
-      { value: 'SOLOMON_ISLANDER', label: 'Solomon Islander' },
-      { value: 'SOMALI', label: 'Somali' },
-      { value: 'SOUTH_AFRICAN', label: 'South African' },
-      { value: 'SOUTH_KOREAN', label: 'South Korean' },
-      { value: 'SPANISH', label: 'Spanish' },
-      { value: 'SRI_LANKAN', label: 'Sri Lankan' },
-      { value: 'SUDANESE', label: 'Sudanese' },
-      { value: 'SURINAMER', label: 'Surinamer' },
-      { value: 'SWAZI', label: 'Swazi' },
-      { value: 'SWEDISH', label: 'Swedish' },
-      { value: 'SWISS', label: 'Swiss' },
-      { value: 'SYRIAN', label: 'Syrian' },
-      { value: 'TAIWANESE', label: 'Taiwanese' },
-      { value: 'TAJIK', label: 'Tajik' },
-      { value: 'TANZANIAN', label: 'Tanzanian' },
-      { value: 'THAI', label: 'Thai' },
-      { value: 'TOGOLESE', label: 'Togolese' },
-      { value: 'TONGAN', label: 'Tongan' },
-      { value: 'TRINIDADIAN', label: 'Trinidadian' },
-      { value: 'TUNISIAN', label: 'Tunisian' },
-      { value: 'TURKISH', label: 'Turkish' },
-      { value: 'TUVALUAN', label: 'Tuvaluan' },
-      { value: 'UGANDAN', label: 'Ugandan' },
-      { value: 'UKRAINIAN', label: 'Ukrainian' },
-      { value: 'URUGUAYAN', label: 'Uruguayan' },
-      { value: 'UZBEKISTANI', label: 'Uzbekistani' },
-      { value: 'VENEZUELAN', label: 'Venezuelan' },
-      { value: 'VIETNAMESE', label: 'Vietnamese' },
-      { value: 'WELSH', label: 'Welsh' },
-      { value: 'YEMENITE', label: 'Yemenite' },
-      { value: 'ZAMBIAN', label: 'Zambian' },
-      { value: 'ZIMBABWEAN', label: 'Zimbabwean' }
-    ];
+    bindAll(this, [
+      'handleSaveButtonClick',
+      'handleSubmit'
+    ]);
   }
 
   render() {
-    return <form className="form-horizontal">
-      <Grid>
-        <Row>
-          <Col xsOffset={2} xs={10}>
-            <h3>Personal Details</h3>
-          </Col>
+    return (
+      <div>
+        <Grid>
+          <Row>
+            <Col xs={10}>
+              <form onSubmit={this.handleSubmit}>
+                <Form
+                  ref="form"
+                  type={EmployeeSchema}
+                />
+                <Button type="submit" bsStyle="primary">Save</Button>
+              </form>
+            </Col>
+          </Row>
+        </Grid>
+      </div>
+    );
+  }
 
-          <Col xs={12}>
-            <Input type="text" label="Name" labelClassName="col-xs-2" wrapperClassName="col-xs-10" />
-            <Input type="text" label="Surname" labelClassName="col-xs-2" wrapperClassName="col-xs-10" />
-          </Col>
+  handleSubmit(event) {
+    event.preventDefault();
 
-          <Col xs={2}>
-          </Col>
-          <Col xs={10}>
-            <DateTimeInput
-              dateTime={moment().format('YY/MM/DD')}
-              format='YY/MM/DD'
-              inputFormat='YY/MM/DD'
-              label="Date of birth"
-              mode="date"
-              showToday={true}
-            />
-          </Col>
+    const value = this.refs.form.getValue();
 
-          <Col xs={2}>
-          </Col>
-          <Col xs={10}>
-            <Select
-              name="countryOfBirth"
-              options={this.countries}
-            />
-          </Col>
+    if (!value) {
+      return;
+    }
 
-          <Col xs={12}>
-            <Input type="text" label="Current residence" labelClassName="col-xs-2" wrapperClassName="col-xs-10" />
-          </Col>
+    debugger;
+  }
 
-          <Col xsOffset={2} xs={10}>
-            <h3>Education</h3>
-          </Col>
-          <Col xs={12}>
-            <Education/>
-          </Col>
+  handleSaveButtonClick(event) {
+    const button = event.target;
 
-          <Col xsOffset={2} xs={10}>
-            <h3>Courses</h3>
-          </Col>
-          <Col xs={12}>
-            <Courses/>
-          </Col>
+    const name = document.querySelector('#name').value;
+    const surname = document.querySelector('#surname').value;
+    const email = document.querySelector('#email').value;
+    const phonenumber = document.querySelector('#phonenumber').value;
+    const github = document.querySelector('#github').value;
+    const linkedin = document.querySelector('#linkedin').value;
+    const dateOfBirth = document.querySelector('#dateOfBirth').value;
+    const countryOfBirth = document.querySelector('#countryOfBirth').value;
+    const currentResidence = document.querySelector('#currentResidence').value;
 
-          <Col xsOffset={2} xs={10}>
-            <h3>Experience</h3>
-          </Col>
-          <Col xs={12}>
-            <Experience/>
-          </Col>
-        </Row>
-      </Grid>
-    </form>;
+    const courses = this.coursesComponent.state.entries;
+    const education = this.educationComponent.state.entries;
+    const experience = this.experienceComponent.state.entries;
+
+    const data = {
+      name,
+      surname,
+      email,
+      phonenumber,
+      github,
+      linkedin,
+      dateOfBirth,
+      countryOfBirth,
+      currentResidence,
+      courses,
+      education,
+      experience
+    };
+
+    debugger;
+
+    qwest
+    .post('http://localhost:3000', data)
+      .then((xhr, response) => {
+        debugger;
+      })
+      .catch((xhr, response, error) => {
+        debugger;
+      })
   }
 }
 
 Employee.displayName = 'Empoyee';
 
-export default Employee;
+module.exports = Employee;

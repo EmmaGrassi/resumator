@@ -1,9 +1,9 @@
-import React from 'react';
+const React = require('react');
 
-// import PublicNavigationComponent from './PublicNavigationComponent';
-import TopBar from './navigation/top-bar';
+// const PublicNavigationComponent = require('./PublicNavigationComponent');
+const TopBar = require('./navigation/top-bar');
 
-export default class Container extends React.Component {
+module.exports = class Container extends React.Component {
   render() {
     return (
       <div>

@@ -1,3 +1,3 @@
-import log from 'loglevel';
+const log = require('loglevel');
 
-export default log;
+module.exports = log;

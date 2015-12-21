@@ -14,4 +14,4 @@ function iso(instance, property) {
   instance.validate(property, fn(property), message);
 }
 
-export default iso;
+module.exports = iso;

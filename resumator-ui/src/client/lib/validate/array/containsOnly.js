@@ -1,4 +1,4 @@
-import _ from 'lodash';
+const _ = require('lodash');
 
 function fn(propertyName) {
   return (fail) => {
@@ -15,4 +15,4 @@ function containsOnly(instance, property, elements) {
   instance.validate(property, fn(property, elements), { message: `Should only contain the elements "${elements.join('", "')}".` });
 }
 
-export default containsOnly;
+module.exports = containsOnly;

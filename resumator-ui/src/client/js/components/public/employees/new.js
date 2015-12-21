@@ -1,6 +1,6 @@
-import React from 'react';
+const React = require('react');
 
-import EmployeeForm from './form/employee';
+const EmployeeForm = require('./form/employee');
 
 class New extends React.Component {
   render() {
@@ -12,4 +12,4 @@ class New extends React.Component {
 
 New.displayName = 'New';
 
-export default New;
+module.exports = New;

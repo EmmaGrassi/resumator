@@ -1,7 +1,7 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import _ from 'lodash';
-import reactRouter from 'react-router';
+const React = require('react');
+const ReactDOM = require('react-dom');
+const _ = require('lodash');
+const reactRouter = require('react-router');
 import {
   DefaultRoute,
   HistoryLocation,
@@ -11,18 +11,18 @@ import {
   Router as ReactRouter,
   create,
 } from 'react-router';
-import { Provider } from 'react-redux';
+const { Provider } = require('react-redux');
 
-import log from '../lib/log';
+const log = require('../lib/log');
 
-import Container from './components/public/container';
-import EmployeesList from './components/public/employees/list';
-import EmployeesNew from './components/public/employees/new';
-import EmployeesResumeShow from './components/public/employees/resume/show';
-import EmployeesShow from './components/public/employees/show';
-import Home from './components/public/home';
+const Container = require('./components/public/container');
+const EmployeesList = require('./components/public/employees/list');
+const EmployeesNew = require('./components/public/employees/new');
+const EmployeesResumeShow = require('./components/public/employees/resume/show');
+const EmployeesShow = require('./components/public/employees/show');
+const Home = require('./components/public/home');
 
-export default class Router {
+module.exports = class Router {
   constructor(options) {
     log.debug('Router#constructor');
 

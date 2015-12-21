@@ -2,6 +2,7 @@ package io.sytac.resumator;
 
 import io.sytac.resumator.command.CommandFactory;
 import io.sytac.resumator.events.EventPublisher;
+import org.glassfish.hk2.api.Factory;
 
 import javax.inject.Inject;
 import javax.ws.rs.ext.ContextResolver;
@@ -14,7 +15,7 @@ import javax.ws.rs.ext.Provider;
  * @since 0.1
  */
 @Provider
-public class CommandFactoryResolver implements ContextResolver<CommandFactory> {
+public class CommandFactoryResolver implements Factory<CommandFactory> {
 
     private final EventPublisher events;
 
@@ -24,7 +25,12 @@ public class CommandFactoryResolver implements ContextResolver<CommandFactory> {
     }
 
     @Override
-    public CommandFactory getContext(Class<?> type) {
+    public CommandFactory provide() {
         return new CommandFactory(events);
+    }
+
+    @Override
+    public void dispose(CommandFactory instance) {
+        // NOP
     }
 }

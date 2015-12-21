@@ -98,7 +98,7 @@ public class ResumatorApp {
         return rc.register(new AbstractBinder() {
             @Override
             protected void configure() {
-                bind(ObjectMapperResolver.class).to(ObjectMapper.class).in(Singleton.class);
+                bindFactory(ObjectMapperResolver.class).to(ObjectMapper.class).in(Singleton.class);
             }
         });
     }
@@ -107,7 +107,7 @@ public class ResumatorApp {
         return rc.register(new AbstractBinder() {
             @Override
             protected void configure() {
-                bind(EventPublisherFactory.class).to(EventPublisher.class);
+                bindFactory(EventPublisherFactory.class).to(EventPublisher.class).in(Singleton.class);
             }
         });
     }
@@ -116,7 +116,7 @@ public class ResumatorApp {
         return rc.register(new AbstractBinder() {
             @Override
             protected void configure() {
-                bind(CommandFactoryResolver.class).to(CommandFactory.class).in(Singleton.class);
+                bindFactory(CommandFactoryResolver.class).to(CommandFactory.class).in(Singleton.class);
             }
         });
     }

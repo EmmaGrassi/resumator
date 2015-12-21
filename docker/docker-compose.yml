@@ -1,0 +1,20 @@
+service:
+  image: resumator-service
+  command: -Dresumator.http.context.path=api/
+  links:
+    - db
+db:
+  image: postgres
+  environment:
+    - POSTGRES_USER=resumator
+    - POSTGRES_PASSWORD=resumator
+    - POSTGRES_DB=resumator
+ui:
+  image: resumator-ui
+lb:
+  image: resumator-load-balancer
+  ports:
+    - "8000:80"
+  links:
+    - ui
+    - service

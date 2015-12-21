@@ -58,7 +58,7 @@
                     <dockerDirectory>docker</dockerDirectory>
                     <resources>
                         <resource>
-                            <targetPath>/</targetPath>
+                            <targetPath>/resumator</targetPath>
                             <directory>build/client</directory>
                         </resource>
                         <resource>

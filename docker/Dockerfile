@@ -8,6 +8,7 @@
 # http://sytac.io
 
 FROM nginx
-MAINTAINER Tom Wieland <tom.wieland@sytac.io>
+MAINTAINER Carlo Sciolla <carlo.sciolla@sytac.io>
 
-COPY resumator/ /usr/share/nginx/html/
+RUN rm /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/conf.d/resumator.conf

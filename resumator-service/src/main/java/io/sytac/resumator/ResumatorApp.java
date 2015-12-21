@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.Optional;
 
 import static io.sytac.resumator.ConfigurationEntries.BASE_URI;
@@ -41,6 +42,9 @@ public class ResumatorApp {
 	public static void main(final String[] args) throws IOException {
         final ResumatorApp app = new ResumatorApp();
         app.banner();
+        for(String arg : Arrays.asList(args)) {
+            LOGGER.info("Started with: " + arg);
+        }
 
         final Configuration configuration = app.loadConfiguration();
         final ResourceConfig rc = app.constructConfig(configuration);

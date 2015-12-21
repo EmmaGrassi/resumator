@@ -9,7 +9,7 @@ const actions = require('./actions');
 const store = require('./store');
 const reducers = require('./reducers');
 
-module.exports = class Application {
+class Application {
   constructor(options = {}) {
     log.debug('Application#constructor');
 
@@ -62,3 +62,5 @@ module.exports = class Application {
     }
   }
 }
+
+module.exports = Application;

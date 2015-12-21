@@ -3,7 +3,7 @@ const React = require('react');
 // const PublicNavigationComponent = require('./PublicNavigationComponent');
 const TopBar = require('./navigation/top-bar');
 
-module.exports = class Container extends React.Component {
+class Container extends React.Component {
   render() {
     return (
       <div>
@@ -22,3 +22,5 @@ module.exports = class Container extends React.Component {
 }
 
 Container.displayName = 'Container';
+
+module.exports = Container;

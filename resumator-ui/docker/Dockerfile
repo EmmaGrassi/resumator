@@ -10,4 +10,4 @@
 FROM nginx
 MAINTAINER Tom Wieland <tom.wieland@sytac.io>
 
-COPY * /usr/share/nginx/html
+COPY * /usr/share/nginx/html/

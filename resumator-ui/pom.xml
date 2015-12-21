@@ -54,13 +54,16 @@
                 <artifactId>docker-maven-plugin</artifactId>
                 <version>0.3.8</version>
                 <configuration>
-                    <imageName>resumator-service</imageName>
+                    <imageName>resumator-ui</imageName>
                     <dockerDirectory>docker</dockerDirectory>
                     <resources>
                         <resource>
                             <targetPath>/</targetPath>
-                            <directory>${project.directory}/build/client</directory>
-                            <include>**./*</include>
+                            <directory>build/client</directory>
+                        </resource>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>docker</directory>
                         </resource>
                     </resources>
                 </configuration>

@@ -7,6 +7,7 @@ import io.sytac.resumator.http.BaseResource;
 import io.sytac.resumator.command.CommandFactory;
 import io.sytac.resumator.organization.Organization;
 import io.sytac.resumator.model.exceptions.InvalidOrganizationException;
+import io.sytac.resumator.security.Roles;
 import io.sytac.resumator.security.User;
 import io.sytac.resumator.organization.OrganizationRepository;
 import org.eclipse.jetty.http.HttpHeader;
@@ -35,7 +36,7 @@ import java.security.Principal;
  * @since 0.1
  */
 @Path("employee")
-@RolesAllowed({"admin"})
+@RolesAllowed({Roles.USER})
 public class NewEmployee extends BaseResource {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NewEmployee.class);

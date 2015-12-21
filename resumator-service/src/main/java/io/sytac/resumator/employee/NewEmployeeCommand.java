@@ -80,10 +80,16 @@ public class NewEmployeeCommand implements Command<CommandHeader, NewEmployeeCom
             throw new IllegalArgumentException(e);
         }
 
-        return new Event(UUID.randomUUID().toString(), "streamId", Event.ORDER_UNSET, Event.ORDER_UNSET, asJson, asTimestamp(this), getType());
+        return new Event(header.getId().orElse(randomId()),
+                        "streamId",
+                        header.getInsertOrder().orElse(Event.ORDER_UNSET),
+                        header.getStreamOrder().orElse(Event.ORDER_UNSET),
+                        asJson,
+                        new Timestamp(header.getTimestamp().getTime()),
+                        getType());
     }
 
-    private static Timestamp asTimestamp(NewEmployeeCommand command) {
-        return new Timestamp(command.getHeader().getTimestamp().getTime());
+    private String randomId() {
+        return UUID.randomUUID().toString();
     }
 }

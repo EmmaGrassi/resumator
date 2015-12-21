@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import io.sytac.resumator.employee.EmployeeIdSerializer;
 import io.sytac.resumator.employee.NewEmployeeCommand;
 import io.sytac.resumator.employee.NewEmployeeCommandDeserializer;
@@ -26,8 +27,9 @@ public class ObjectMapperResolver implements ContextResolver<ObjectMapper> {
     public ObjectMapperResolver() {
         mapper = new ObjectMapper();
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
         mapper.registerModule(initResumatorSerializers());
+        mapper.registerModule(new Jdk8Module());
     }
 
     protected SimpleModule initResumatorSerializers() {

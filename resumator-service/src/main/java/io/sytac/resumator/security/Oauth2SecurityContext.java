@@ -3,7 +3,6 @@ package io.sytac.resumator.security;
 import javax.ws.rs.core.SecurityContext;
 import java.security.Principal;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * Security context for an Oauth2 scheme

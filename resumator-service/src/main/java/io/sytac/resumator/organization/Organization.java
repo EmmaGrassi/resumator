@@ -5,7 +5,9 @@ import io.sytac.resumator.employee.EmployeeId;
 import io.sytac.resumator.employee.NewEmployeeCommand;
 import io.sytac.resumator.employee.NewEmployeeCommandPayload;
 import io.sytac.resumator.model.enums.Nationality;
-import org.eclipse.jetty.util.ConcurrentHashSet;
+
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Models a company, or organization
@@ -18,7 +20,7 @@ public class Organization {
     private final String id;
     private final String name;
     private final String domain;
-    private final ConcurrentHashSet<EmployeeId> employees = new ConcurrentHashSet<>();
+    private final ConcurrentHashMap<EmployeeId, Employee> employees = new ConcurrentHashMap<>();
 
     public Organization(final String id, final String name, final String domain) {
         this.id = id;
@@ -28,7 +30,10 @@ public class Organization {
 
     public Employee addEmployee(final NewEmployeeCommand command) {
         final Employee employee = fromCommand(command);
-        employees.add(employee.getId());
+        final Employee previous = employees.putIfAbsent(employee.getId(), employee);
+        if(previous != null) {
+            throw new IllegalArgumentException("Duplicate employee:" + employee);
+        }
 
         return employee;
     }
@@ -50,5 +55,17 @@ public class Organization {
 
     public String getDomain() {
         return domain;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Optional<Employee> findEmployeeByName(String name, String surname) {
+        return employees.values()
+                        .stream()
+                        .filter(employee -> name.equals(employee.getName()) &&
+                                            surname.equals(employee.getSurname()))
+                        .findFirst();
     }
 }

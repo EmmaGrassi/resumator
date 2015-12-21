@@ -4,13 +4,12 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import io.sytac.resumator.employee.NewEmployeeCommand;
 import io.sytac.resumator.employee.NewEmployeeCommandDeserializer;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.ws.rs.core.MultivaluedHashMap;
-import javax.ws.rs.core.MultivaluedMap;
 import java.io.IOException;
 import java.util.Date;
 
@@ -24,10 +23,11 @@ public class NewEmployeeCommandTest {
     @Before
     public void setUp() throws Exception {
         mapper = new ObjectMapper();
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         final SimpleModule module = new SimpleModule();
         module.addDeserializer(NewEmployeeCommand.class, new NewEmployeeCommandDeserializer());
         mapper.registerModule(module);
+        mapper.registerModule(new Jdk8Module());
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
     }
 
     @Test
@@ -38,11 +38,6 @@ public class NewEmployeeCommandTest {
 
     @Test
     public void JSONisPredictable() throws JsonProcessingException {
-        final MultivaluedMap<String, String> params = new MultivaluedHashMap<>();
-        params.putSingle("name", "Foo");
-        params.putSingle("surname", "Bar");
-        params.putSingle("yearOfBirth", "1984");
-        params.putSingle("nationality", "ITALY");
         final NewEmployeeCommand foobar = new NewEmployeeCommand("ACME", "Foo", "Bar", "1984", "ITALY", null, null);
         final Date timestamp = foobar.getHeader().getTimestamp();
         final String expected =
@@ -63,15 +58,15 @@ public class NewEmployeeCommandTest {
     @Test
     public void canRestoreFromString() throws IOException {
         final String expected =
-                "{\"header\":" +
-                        "{\"timestamp\":" + new Date().getTime() + "}," +
+                        "{\"header\":" +
+                            "{\"timestamp\":" + new Date().getTime() + "}," +
                         "\"payload\":" +
-                        "{\"organizationId\":\"foobar\"," +
-                        "\"name\":\"Foo\"," +
-                        "\"surname\":\"Bar\"," +
-                        "\"yearOfBirth\":\"1984\"," +
-                        "\"nationality\":\"ITALY\"}," +
-                        "\"type\":\"newEmployee\"}";
+                            "{\"organizationId\":\"foobar\"," +
+                            "\"name\":\"Foo\"," +
+                            "\"surname\":\"Bar\"," +
+                            "\"yearOfBirth\":\"1984\"," +
+                            "\"nationality\":\"ITALY\"}," +
+                            "\"type\":\"newEmployee\"}";
         final NewEmployeeCommand command = mapper.readValue(expected.getBytes("UTF-8"), NewEmployeeCommand.class);
         assertEquals("Wrong deserialization", "foobar", command.getPayload().getOrganizationId());
     }

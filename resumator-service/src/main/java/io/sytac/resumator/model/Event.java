@@ -89,4 +89,17 @@ public class Event {
     public String getPayload() {
         return payload;
     }
+
+    @Override
+    public String toString() {
+        return "Event{" +
+                "id='" + id + '\'' +
+                ", streamId='" + streamId + '\'' +
+                ", insertOrder=" + insertOrder +
+                ", streamOrder=" + streamOrder +
+                ", payload='" + payload + '\'' +
+                ", created=" + created +
+                ", type='" + type + '\'' +
+                '}';
+    }
 }

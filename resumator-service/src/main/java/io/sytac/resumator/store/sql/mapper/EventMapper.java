@@ -3,7 +3,6 @@ package io.sytac.resumator.store.sql.mapper;
 import io.sytac.resumator.model.Event;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.ClobTypeHandler;
-import org.apache.ibatis.type.JdbcType;
 
 import java.util.List;
 
@@ -27,7 +26,7 @@ public interface EventMapper {
             @Result(property = "created", column = "created_at"),
             @Result(property = "type", column = "event_type")
     })
-    @Select("SELECT * FROM resumator_events")
+    @Select("SELECT * FROM resumator_events ORDER BY created_at ASC")
     List<Event>getAll();
 
     @Delete("DELETE FROM resumator_events")

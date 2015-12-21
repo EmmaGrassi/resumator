@@ -164,6 +164,15 @@
                 <groupId>com.spotify</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
                 <version>0.3.8</version>
+                <executions>
+                    <execution>
+                        <id>build</id>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                        <phase>install</phase>
+                    </execution>
+                </executions>
                 <configuration>
                     <imageName>resumator-service</imageName>
                     <dockerDirectory>docker</dockerDirectory>

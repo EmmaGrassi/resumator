@@ -19,7 +19,7 @@ import java.util.Optional;
 @Priority(Priorities.AUTHENTICATION)
 public class Oauth2AuthenticationFilter implements ContainerRequestFilter {
 
-    private static final String AUTHENTICATION_COOKIE = "resumatorJWT";
+    public static final String AUTHENTICATION_COOKIE = "resumatorJWT";
 
     final Oauth2SecurityService security;
 
@@ -30,14 +30,16 @@ public class Oauth2AuthenticationFilter implements ContainerRequestFilter {
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
-        final SecurityContext securityContext = defineSecurityContext(Optional.ofNullable(requestContext.getCookies()
-                                                                              .get(AUTHENTICATION_COOKIE)));
-        requestContext.setSecurityContext(securityContext);
+        defineSecurityContext(Optional.ofNullable(requestContext.getCookies()
+                .get(AUTHENTICATION_COOKIE)))
+                .ifPresent(requestContext::setSecurityContext);
     }
 
-    private SecurityContext defineSecurityContext(final Optional<Cookie> maybeCookie) {
-        final Optional<User> maybeUser = maybeCookie.map(cookie -> security.authenticateUser(cookie.getValue()));
-        return maybeUser.map(user -> new Oauth2SecurityContext(maybeUser)).get();
+    private Optional<SecurityContext> defineSecurityContext(final Optional<Cookie> maybeCookie) {
+        return maybeCookie.map(cookie -> {
+            final Optional<User> maybeUser = Optional.ofNullable(security.authenticateUser(cookie.getValue()));
+            return new Oauth2SecurityContext(maybeUser);
+        });
     }
 
 }

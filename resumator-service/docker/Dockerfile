@@ -15,10 +15,10 @@ RUN mkdir -p /usr/local/resumator
 WORKDIR /usr/local/resumator
 
 # Install the app
-COPY target/resumator-0.1-SNAPSHOT.jar /usr/local/resumator/resumator.jar
+COPY resumator-0.1-SNAPSHOT.jar /usr/local/resumator/resumator.jar
 
 # Install the startup script
-COPY docker/resumator.sh /usr/local/resumator
+COPY resumator.sh /usr/local/resumator
 RUN chmod +x /usr/local/resumator/resumator.sh
 
 EXPOSE 9090

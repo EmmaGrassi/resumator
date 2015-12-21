@@ -25,11 +25,11 @@
                 <version>0.3.8</version>
                 <configuration>
                     <imageName>resumator-ui</imageName>
-                    <dockerDirectory>docker</dockerDirectory>
+                    <dockerDirectory>${project.basedir}/docker</dockerDirectory>
                     <resources>
                         <resource>
                             <targetPath>/resumator</targetPath>
-                            <directory>build/client</directory>
+                            <directory>${project.basedir}/build/client</directory>
                         </resource>
                         <resource>
                             <targetPath>/</targetPath>

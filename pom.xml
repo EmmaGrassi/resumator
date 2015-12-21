@@ -10,7 +10,7 @@
     <name>The Resumator -- making consulting life easier</name>
 
     <modules>
-        <!-- <module>resumator-ui</module> -->
+         <module>resumator-ui</module>
         <module>resumator-service</module>
     </modules>
 

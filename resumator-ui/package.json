@@ -53,6 +53,7 @@
     "store.js": "^1.0.4",
     "superagent": "^1.4.0",
     "tcomb-form": "^0.7.10",
+    "tcomb-form-types": "^1.1.0",
     "typewise": "^1.0.3",
     "validator": "^4.4.0"
   },

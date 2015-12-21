@@ -2,18 +2,11 @@ package io.sytac.resumator.organization;
 
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
-import io.sytac.resumator.command.Command;
 import io.sytac.resumator.command.CommandFactory;
-import io.sytac.resumator.employee.Employee;
-import io.sytac.resumator.employee.EmployeeQuery;
-import io.sytac.resumator.employee.NewEmployeeCommand;
-import io.sytac.resumator.events.EventPublisher;
 import io.sytac.resumator.http.BaseResource;
 import io.sytac.resumator.security.Roles;
 import org.eclipse.jetty.http.HttpHeader;
 import org.eclipse.jetty.http.HttpStatus;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
@@ -23,7 +16,6 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
@@ -39,29 +31,24 @@ import java.util.Map;
 @RolesAllowed({Roles.SYSADMIN})
 public class NewOrganization extends BaseResource {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(NewOrganization.class);
-
     private final OrganizationRepository organizations;
     private final CommandFactory descriptors;
-    private final EventPublisher events;
 
     @Inject
-    public NewOrganization(OrganizationRepository organizations, CommandFactory descriptors, EventPublisher events) {
+    public NewOrganization(final OrganizationRepository organizations, final CommandFactory descriptors) {
         this.organizations = organizations;
         this.descriptors = descriptors;
-        this.events = events;
     }
 
     @POST
     @Consumes("application/json")
-    @Produces(RepresentationFactory.HAL_JSON)
+    @Produces({RepresentationFactory.HAL_JSON, "application/json"})
     public Representation createOrganization(final Map<String, String> input,
                                              @Context final UriInfo uriInfo,
                                              @Context final HttpServletResponse response,
                                              @Context final SecurityContext securityContext) {
         final NewOrganizationCommand command = descriptors.newOrganizationCommand(input);
         final Organization org = organizations.register(command);
-        events.publish(command);
         return buildRepresentation(uriInfo, response, org);
     }
 

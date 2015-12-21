@@ -1,5 +1,6 @@
 package io.sytac.resumator;
 
+import io.sytac.resumator.command.CommandFactory;
 import io.sytac.resumator.events.EventPublisher;
 import io.sytac.resumator.events.LocalEventPublisher;
 import io.sytac.resumator.http.UriRewriteSupportFilter;
@@ -55,6 +56,7 @@ public class ResumatorApp {
         ResourceConfig rc = registerApplicationResorces(new ResourceConfig());
         rc = registerConfiguration(rc, configuration);
         rc = registerEventPublisher(rc);
+        rc = registerCommandFactory(rc);
         rc = registerJSONSupport(rc);
         rc = registerUriRewriteSupport(rc);
         rc = registerSecurity(rc);
@@ -99,6 +101,10 @@ public class ResumatorApp {
         });
     }
 
+    protected ResourceConfig registerCommandFactory(final ResourceConfig rc) {
+        return rc.register(CommandFactoryResolver.class);
+    }
+
     protected ResourceConfig registerConfiguration(final ResourceConfig rc, final Configuration configuration) {
         return rc.register(new AbstractBinder() {
             @Override
@@ -111,6 +117,7 @@ public class ResumatorApp {
     protected ResourceConfig registerApplicationResorces(final ResourceConfig rc) {
         return rc.packages(
                 "io.sytac.resumator.employee",
+                "io.sytac.resumator.organization",
                 "io.sytac.resumator.service",
                 "com.theoryinpractise.halbuilder.jaxrs"); // HAL support
     }

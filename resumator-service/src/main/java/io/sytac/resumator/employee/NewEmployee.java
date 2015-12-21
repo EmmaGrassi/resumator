@@ -54,7 +54,7 @@ public class NewEmployee extends BaseResource {
 
     @POST
     @Consumes("application/x-www-form-urlencoded")
-    @Produces(RepresentationFactory.HAL_JSON)
+    @Produces({RepresentationFactory.HAL_JSON, "application/json"})
     public Representation newEmployee(final MultivaluedMap<String, String> formParams,
                                       @Context final UriInfo uriInfo,
                                       @Context final HttpServletResponse response,

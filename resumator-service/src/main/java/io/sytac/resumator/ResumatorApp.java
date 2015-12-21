@@ -1,14 +1,15 @@
 package io.sytac.resumator;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.sytac.resumator.command.CommandFactory;
 import io.sytac.resumator.events.EventPublisher;
-import io.sytac.resumator.events.LocalEventPublisher;
+import io.sytac.resumator.events.EventPublisherFactory;
 import io.sytac.resumator.http.UriRewriteSupportFilter;
+import io.sytac.resumator.organization.InMemoryOrganizationRepository;
+import io.sytac.resumator.organization.OrganizationRepository;
 import io.sytac.resumator.security.Oauth2AuthenticationFilter;
 import io.sytac.resumator.security.Oauth2SecurityService;
 import io.sytac.resumator.security.Oauth2SecurityServiceFactory;
-import io.sytac.resumator.organization.InMemoryOrganizationRepository;
-import io.sytac.resumator.organization.OrganizationRepository;
 import org.eclipse.jetty.server.Server;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.jetty.JettyHttpContainerFactory;
@@ -17,6 +18,7 @@ import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Singleton;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -93,20 +95,30 @@ public class ResumatorApp {
     }
 
     private ResourceConfig registerJSONSupport(final ResourceConfig rc) {
-        return rc.register(ObjectMapperResolver.class);
+        return rc.register(new AbstractBinder() {
+            @Override
+            protected void configure() {
+                bind(ObjectMapperResolver.class).to(ObjectMapper.class).in(Singleton.class);
+            }
+        });
     }
 
     protected ResourceConfig registerEventPublisher(final ResourceConfig rc) {
         return rc.register(new AbstractBinder() {
             @Override
             protected void configure() {
-                bind(LocalEventPublisher.class).to(EventPublisher.class);
+                bind(EventPublisherFactory.class).to(EventPublisher.class);
             }
         });
     }
 
     protected ResourceConfig registerCommandFactory(final ResourceConfig rc) {
-        return rc.register(CommandFactoryResolver.class);
+        return rc.register(new AbstractBinder() {
+            @Override
+            protected void configure() {
+                bind(CommandFactoryResolver.class).to(CommandFactory.class).in(Singleton.class);
+            }
+        });
     }
 
     protected ResourceConfig registerConfiguration(final ResourceConfig rc, final Configuration configuration) {

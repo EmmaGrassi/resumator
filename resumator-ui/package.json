@@ -59,6 +59,6 @@
   },
   "devDependencies": {
     "gulp": "^3.9.0",
-    "id-builder": "^3.3.0"
+    "id-builder": "^3.3.1"
   }
 }

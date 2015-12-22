@@ -37,7 +37,8 @@ public class CommandFactory {
         final String name = input.get("name");
         final String domain = input.get("domain");
         final String timestamp = input.get("timestamp");
-
-        return new NewOrganizationCommand(name, domain, timestamp);
+        final NewOrganizationCommand newOrganizationCommand = new NewOrganizationCommand(name, domain, timestamp);
+        events.publish(newOrganizationCommand);
+        return newOrganizationCommand;
     }
 }

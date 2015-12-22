@@ -13,10 +13,6 @@ idBuilder(gulp, {
       enabled: false
     },
 
-    compileBrowserify: {
-      enabled: false
-    },
-
     runTests: {
       enabled: false
     },

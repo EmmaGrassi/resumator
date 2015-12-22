@@ -1,23 +1,7 @@
-/*
- * Actions should emit events, so they should be methods of a class that is an
- * EventEmitter.
- * The Store is an EventEmitter with a data property. There's supposed to be
- * only one in the app and it houses all the data/state.
- * The store needs a way to translate action events into data changes and it
- * needs a way to communicate these changes in the data. Since the data is a
- * tree, one way to do this could be to emit an event in the form of
- * `'level.sublevel.prop[0].etc', ...args`. This way a querying/subscription
- * DSL can be made with wildcards to receive updates over ranges of the tree.
- *
- * Since the source of the
- * action events
- */
-
 const log = require('loglevel');
 const store = require('../lib/store');
 
 // const { promiseFromNodeCallback } = require('../../../common/lib/promise');
-
 const { request } = require('../lib/redux/actions');
 
 function clearAuthentication() {

@@ -15,7 +15,6 @@ const { Provider } = require('react-redux');
 
 const log = require('../lib/log');
 
-
 const PublicContainer = require('./components/public/container');
 const PublicHome = require('./components/public/home');
 const PublicLogin = require('./components/public/login');

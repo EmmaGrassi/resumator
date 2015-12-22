@@ -1,11 +1,21 @@
 const React = require('react');
 
+import {
+  Col,
+  Grid,
+  Row
+} from 'react-bootstrap';
+
 class Login extends React.Component {
   render() {
     return (
-      <div>
-        Public Login
-      </div>
+      <Grid>
+        <Row>
+          <Col xs={12}>
+            Login!
+          </Col>
+        </Row>
+      </Grid>
     );
   }
 }

@@ -45,10 +45,24 @@ public class Oauth2SecurityService {
         this.organizations = organizations;
     }
 
+    /**
+     * Authenticate the token Id against the GoogleId verifier, and return the associated user if authenticated.
+     * If security is disabled, return an explicitly fake user.
+     * @param idtoken the Id token provided by the Google Authentication on Front End
+     * @return the associated user
+     */
     public User authenticateUser(final String idtoken) {
-        final GoogleIdTokenVerifier verifier = buildVerifier();
-        final Optional<GoogleIdToken> idToken = verify(verifier, idtoken);
-        return toUser(idToken);
+        boolean securityDisabled = config.getProperty(SECURITY_DISABLED)
+                                         .map(Boolean::parseBoolean)
+                                         .orElse(false);
+        if (!securityDisabled) {
+            final GoogleIdTokenVerifier verifier = buildVerifier();
+            final Optional<GoogleIdToken> idToken = verify(verifier, idtoken);
+            return toUser(idToken);
+        } else {
+            return new User("Fake Organization Id", "Fake User", Sets.newHashSet("user"));
+        }
+
     }
 
     private User toUser(final Optional<GoogleIdToken> idToken) {

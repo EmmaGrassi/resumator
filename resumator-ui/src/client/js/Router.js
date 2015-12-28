@@ -90,16 +90,20 @@ class Router {
             <Route path="login" component={ PublicLogin } />
             <Route path="logout" component={ PublicLogout } />
 
-            <Route path=":userId" component={ PublicProfileShow } >
-              <Route path="edit" component={ PublicProfileEdit } />
-            </Route>
+            <Route path="admin" component={ AdminContainer } >
+              <IndexRoute component={ AdminHome } />
 
-            <Route path="admin" component={ AdminHome } >
               <Route path="employees" component={ AdminEmployeesList } >
                 <Route path=":userId" component={ AdminEmployeesShow } >
                   <Route path="edit" component={ AdminEmployeesEdit } />
                 </Route>
               </Route>
+            </Route>
+
+            <Route path=":userId">
+              <IndexRoute component={ PublicProfileShow } />
+
+              <Route path="edit" component={ PublicProfileEdit } />
             </Route>
           </Route>
         </ReactRouter>

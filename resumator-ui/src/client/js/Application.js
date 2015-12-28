@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const domready = require('domready');
+const Cookies = require('cookies-js');
 
 const promiseFromCallback = require('../lib/promise/promiseFromCallback');
 const Router = require('./Router');
@@ -52,6 +53,8 @@ class Application {
 
   async start() {
     log.debug('Application#start');
+
+    Cookies.set('resumator-JWT', 'value', { expires: Infinity });
 
     try {
       this.getTokenFromCookie();

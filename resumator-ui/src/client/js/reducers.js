@@ -15,32 +15,94 @@ const defaults = {
   user: {
     isFetching: false,
 
-    id: null,
-    item: { },
-    lastUpdated: null
-  },
+    id: '123',
+    item: {
+      name: 'Tom',
+      surname: 'Wieland',
+      email: 'tom.wieland@gmail.com',
+      phonenumber: '+31642116830',
+      github: 'https://github.com/Industrial',
+      linkedin: null,
+      dateOfBirth: '1987-04-22T00:00:00.000Z',
+      nationality: 'DUTCH',
 
-  cms: {
-    schemas: {
-      items: [],
-      isFetching: false,
-      lastUpdated: null
+      education: [
+        {
+          degree: 'Bachelor of ICT',
+          fieldOfStudy: 'ICT',
+          university: 'Hogeschool van Amsterdam',
+          graduated: true,
+          graduationYear: 1999
+        },
+        {
+          degree: 'Bachelor of ICT',
+          fieldOfStudy: 'ICT',
+          university: 'Hogeschool van Amsterdam',
+          graduated: true,
+          graduationYear: 1999
+        },
+        {
+          degree: 'Bachelor of ICT',
+          fieldOfStudy: 'ICT',
+          university: 'Hogeschool van Amsterdam',
+          graduated: true,
+          graduationYear: 1999
+        }
+      ],
+
+      courses: [
+        {
+          name: 'Some',
+          description: 'Description',
+          date: '1976-02-01T00:00:00.000Z'
+        },
+        {
+          name: 'Some',
+          description: 'Description',
+          date: '1976-02-01T00:00:00.000Z'
+        },
+        {
+          name: 'Some',
+          description: 'Description',
+          date: '1976-02-01T00:00:00.000Z'
+        }
+      ],
+
+      experience: [
+        {
+          companyName: 'Sytac',
+          title: 'Engineer',
+          location: 'Haarlem',
+          startDate: '2015-12-02T00:00:00.000Z',
+          endDate: '2016-12-31T00:00:00.000Z',
+          shortDescription: 'Some Description',
+          technologies: ['Jquery', 'MSSQL', 'Word', 'QUICKBASIC'],
+          methodologies: ['Waterfall', 'Pray n Spray']
+        },
+        {
+          companyName: 'Sytac',
+          title: 'Engineer',
+          location: 'Haarlem',
+          startDate: '2015-12-02T00:00:00.000Z',
+          endDate: '2016-12-31T00:00:00.000Z',
+          shortDescription: 'Some Description',
+          technologies: ['Jquery', 'MSSQL', 'Word', 'QUICKBASIC'],
+          methodologies: ['Waterfall', 'Pray n Spray']
+        },
+        {
+          companyName: 'Sytac',
+          title: 'Engineer',
+          location: 'Haarlem',
+          startDate: '2015-12-02T00:00:00.000Z',
+          endDate: '2016-12-31T00:00:00.000Z',
+          shortDescription: 'Some Description',
+          technologies: ['Jquery', 'MSSQL', 'Word', 'QUICKBASIC'],
+          methodologies: ['Waterfall', 'Pray n Spray']
+        }
+      ]
     },
 
-    models: {
-      current: {
-        id: null,
-        item: { },
-        isFetching: false,
-        lastUpdated: null
-      },
-
-      list: {
-        items: [],
-        isFetching: false,
-        lastUpdated: null
-      }
-    }
+    lastUpdated: null
   }
 };
 
@@ -87,114 +149,15 @@ function user(state = defaults.user, action = {}) {
     // case USER:
     //   return state;
 
-    case 'request:logout':
-      return Object.assign({}, state, defaults.user);
+    //case 'request:logout':
+    //  return Object.assign({}, state, defaults.user);
 
     default:
       return state;
   }
 }
-
-function cmsSchemas(state = defaults.cms.schemas, action = {}) {
-  switch (action.type) {
-    // case 'cms:schemas':
-    //   return Object.assign({}, state, action.schemas);
-
-    default:
-      return state;
-  }
-}
-
-function cmsModelsCurrent(state = defaults.cms.models.current, action = {}) {
-  let response;
-
-  switch (action.type) {
-    case 'request:cms:show:request':
-      return Object.assign({}, state, {
-        isFetching: true
-      });
-
-    case 'request:cms:show:response':
-      response = action.args[0];
-
-      return Object.assign({}, state, {
-        id: response.body.id,
-        item: response.body,
-        isFetching: false
-      });
-
-    case 'request:cms:show:error':
-      return Object.assign({}, defaults.cms.models.show);
-
-    // case 'cms:create:error':
-    // case 'cms:create:timeout':
-    // case 'cms:create:request':
-    // case 'cms:create:response':
-
-    // case 'cms:destroy:error':
-    // case 'cms:destroy:timeout':
-    // case 'cms:destroy:request':
-    // case 'cms:destroy:response':
-
-    case 'request:cms:update:request':
-      return Object.assign({}, state, {
-        isFetching: true
-      });
-
-    case 'request:cms:update:response':
-      response = action.args[0];
-
-      return Object.assign({}, state, {
-        id: response.body.id,
-        item: response.body,
-        isFetching: false
-      });
-
-    case 'request:cms:update:error':
-      return Object.assign({}, defaults.cms.models.show);
-
-    default:
-      return state;
-  }
-}
-
-function cmsModelsList(state = defaults.cms.models.list, action = {}) {
-  let response;
-
-  switch (action.type) {
-    case 'request:cms:list:request':
-      return Object.assign({}, state, {
-        isFetching: true
-      });
-
-    case 'request:cms:list:response':
-      response = action.args[0];
-
-      return Object.assign({}, state, {
-        items: response.body,
-        isFetching: false
-      });
-
-    case 'request:cms:list:error':
-      return Object.assign({}, defaults.cms.models.list);
-
-    default:
-      return state;
-  }
-}
-
-const cmsModels = combineReducers({
-  current: cmsModelsCurrent,
-  list: cmsModelsList
-});
-
-const cms = combineReducers({
-  models: cmsModels,
-  schemas: cmsSchemas
-});
 
 module.exports = combineReducers({
   authentication,
-  user,
-  cms
+  user
 });

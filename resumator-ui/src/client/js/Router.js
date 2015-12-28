@@ -84,12 +84,7 @@ class Router {
     return (
       <Provider store={this.store}>
         <ReactRouter>
-          <Route path="/" component={ PublicContainer }>
-            <IndexRoute component={ PublicHome } />
-
-            <Route path="login" component={ PublicLogin } />
-            <Route path="logout" component={ PublicLogout } />
-
+          <Route path="/">
             <Route path="admin" component={ AdminContainer } >
               <IndexRoute component={ AdminHome } />
 
@@ -100,10 +95,17 @@ class Router {
               </Route>
             </Route>
 
-            <Route path=":userId">
-              <IndexRoute component={ PublicProfileShow } />
+            <Route path="/" component={ PublicContainer }>
+              <IndexRoute component={ PublicHome } />
 
-              <Route path="edit" component={ PublicProfileEdit } />
+              <Route path="login" component={ PublicLogin } />
+              <Route path="logout" component={ PublicLogout } />
+
+              <Route path=":userId">
+                <IndexRoute component={ PublicProfileShow } />
+
+                <Route path="edit" component={ PublicProfileEdit } />
+              </Route>
             </Route>
           </Route>
         </ReactRouter>

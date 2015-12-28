@@ -16,6 +16,7 @@ const defaults = {
     isFetching: false,
 
     id: '123',
+
     item: {
       name: 'Tom',
       surname: 'Wieland',
@@ -23,7 +24,9 @@ const defaults = {
       phonenumber: '+31642116830',
       github: 'https://github.com/Industrial',
       linkedin: null,
+
       dateOfBirth: '1987-04-22T00:00:00.000Z',
+
       nationality: 'DUTCH',
 
       education: [

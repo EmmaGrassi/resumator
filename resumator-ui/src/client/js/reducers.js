@@ -1,17 +1,6 @@
 const { combineReducers } = require('redux');
 
-const log = require('../lib/log');
-
 const defaults = {
-  authentication: {
-    isFetching: false,
-
-    token: null,
-    userId: null,
-    ttl: null,
-    created: null
-  },
-
   user: {
     isFetching: false,
 
@@ -195,44 +184,6 @@ const defaults = {
   }
 };
 
-function authentication(state = defaults.authentication, action = {}) {
-  let response;
-
-  switch (action.type) {
-    case 'authentication:get':
-      return Object.assign({}, defaults.authentication, action.authentication);
-
-    case 'request:login:request':
-      return Object.assign({}, state, {
-        isFetching: true
-      });
-
-    case 'request:login:response':
-      response = action.args[0];
-
-      return Object.assign({}, state, {
-        isFetching: false,
-
-        token: response.body.id,
-        userId: response.body.userId,
-        ttl: response.body.ttl,
-        created: response.body.created
-      });
-
-    case 'request:login:error':
-      return Object.assign({}, defaults.authentication);
-
-    case 'request:logout:request':
-      return Object.assign({}, defaults.authentication);
-
-    case 'request:logout:error':
-      return Object.assign({}, defaults.authentication);
-
-    default:
-      return state;
-  }
-}
-
 function user(state = defaults.user, action = {}) {
   switch (action.type) {
     case 'employee:new':
@@ -252,6 +203,5 @@ function user(state = defaults.user, action = {}) {
 }
 
 module.exports = combineReducers({
-  authentication,
   user
 });

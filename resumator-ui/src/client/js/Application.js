@@ -1,10 +1,7 @@
-const _ = require('lodash');
 const domready = require('domready');
-const Cookies = require('cookies-js');
 
-const promiseFromCallback = require('../lib/promise/promiseFromCallback');
-const Router = require('./Router');
-const log = require('../lib/log');
+const promiseFromCallback = require('./lib/promise/promiseFromCallback');
+const Router = require('./router');
 
 const actions = require('./actions');
 const store = require('./store');
@@ -12,8 +9,6 @@ const reducers = require('./reducers');
 
 class Application {
   constructor(options = {}) {
-    log.debug('Application#constructor');
-
     this.actions = actions;
     this.reducers = reducers;
 
@@ -34,28 +29,18 @@ class Application {
   }
 
   async domIsReady() {
-    log.debug('Application#domIsReady');
-
     return promiseFromCallback(domready);
   }
 
   async startRouter() {
-    log.debug('Application#startRouter');
-
     this.router.start();
   }
 
   getTokenFromCookie() {
-    log.debug('Application#getTokenFromCookie');
-
     this.store.dispatch(this.actions.getAuthentication());
   }
 
   async start() {
-    log.debug('Application#start');
-
-    Cookies.set('resumator-JWT', 'value', { expires: Infinity });
-
     try {
       this.getTokenFromCookie();
       await this.domIsReady();

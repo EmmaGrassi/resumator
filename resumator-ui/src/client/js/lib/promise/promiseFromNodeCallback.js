@@ -1,5 +1,3 @@
-const log = require('../log');
-
 module.exports = function promiseFromNodeCallback(cb, ...args) {
   return new Promise((resolve, reject) => {
     cb(...args, (error, ...args) => {
@@ -10,4 +8,4 @@ module.exports = function promiseFromNodeCallback(cb, ...args) {
       resolve(args);
     });
   });
-}
+};

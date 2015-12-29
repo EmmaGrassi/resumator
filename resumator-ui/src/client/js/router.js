@@ -10,8 +10,6 @@ const {
 const createHistory = require('history/lib/createHashHistory');
 const { Provider } = require('react-redux');
 
-const log = require('../lib/log');
-
 const PublicContainer = require('./components/public/container');
 const PublicHome = require('./components/public/home');
 const PublicLogin = require('./components/public/login');
@@ -29,8 +27,6 @@ const AdminEmployeesEdit = require('./components/admin/employees/edit');
 
 class Router {
   constructor(options) {
-    log.debug('Router#constructor');
-
     this.store = options.store;
     this.rootElement = options.rootElement || document.body;
 
@@ -123,8 +119,6 @@ class Router {
   }
 
   start() {
-    log.debug('Router#start');
-
     ReactDOM.render(this.router, this.rootElement);
   }
 }

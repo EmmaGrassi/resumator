@@ -174,19 +174,6 @@ class Preview extends React.Component {
   createPDF() {
     const data = this.props.user.new;
     const content = this.refs.content;
-
-    debugger;
-
-    html2canvas(content, {
-      onrendered: (canvas) => {
-        const dataURL = canvas.toDataURL('image/png');
-        const pdfDocument = new JsPDF('p', 'mm');
-
-        pdfDocument.addImage(dataURL, 'PNG', 0, 0);
-
-        pdfDocument.save(`${data.name} ${data.surname}.pdf`);
-      }
-    })
   }
 }
 

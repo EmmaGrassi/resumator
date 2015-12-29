@@ -17,17 +17,16 @@ const defaults = {
 
     id: '123',
 
-    item: {
+    new: {
       name: 'Tom',
       surname: 'Wieland',
       email: 'tom.wieland@gmail.com',
       phonenumber: '+31642116830',
       github: 'https://github.com/Industrial',
       linkedin: null,
-
-      dateOfBirth: '1987-04-22T00:00:00.000Z',
-
+      dateOfBirth: new Date('1987-04-22T00:00:00.000Z'),
       nationality: 'DUTCH',
+      aboutMe: 'This is a little text about me etc 123.',
 
       education: [
         {
@@ -57,17 +56,17 @@ const defaults = {
         {
           name: 'Some',
           description: 'Description',
-          date: '1976-02-01T00:00:00.000Z'
+          date: new Date('1976-02-01T00:00:00.000Z')
         },
         {
           name: 'Some',
           description: 'Description',
-          date: '1976-02-01T00:00:00.000Z'
+          date: new Date('1976-02-01T00:00:00.000Z')
         },
         {
           name: 'Some',
           description: 'Description',
-          date: '1976-02-01T00:00:00.000Z'
+          date: new Date('1976-02-01T00:00:00.000Z')
         }
       ],
 
@@ -76,8 +75,8 @@ const defaults = {
           companyName: 'Sytac',
           title: 'Engineer',
           location: 'Haarlem',
-          startDate: '2015-12-02T00:00:00.000Z',
-          endDate: '2016-12-31T00:00:00.000Z',
+          startDate: new Date('2015-12-02T00:00:00.000Z'),
+          endDate: new Date('2016-12-31T00:00:00.000Z'),
           shortDescription: 'Some Description',
           technologies: ['Jquery', 'MSSQL', 'Word', 'QUICKBASIC'],
           methodologies: ['Waterfall', 'Pray n Spray']
@@ -86,8 +85,8 @@ const defaults = {
           companyName: 'Sytac',
           title: 'Engineer',
           location: 'Haarlem',
-          startDate: '2015-12-02T00:00:00.000Z',
-          endDate: '2016-12-31T00:00:00.000Z',
+          startDate: new Date('2015-12-02T00:00:00.000Z'),
+          endDate: new Date('2016-12-31T00:00:00.000Z'),
           shortDescription: 'Some Description',
           technologies: ['Jquery', 'MSSQL', 'Word', 'QUICKBASIC'],
           methodologies: ['Waterfall', 'Pray n Spray']
@@ -96,8 +95,95 @@ const defaults = {
           companyName: 'Sytac',
           title: 'Engineer',
           location: 'Haarlem',
-          startDate: '2015-12-02T00:00:00.000Z',
-          endDate: '2016-12-31T00:00:00.000Z',
+          startDate: new Date('2015-12-02T00:00:00.000Z'),
+          endDate: new Date('2016-12-31T00:00:00.000Z'),
+          shortDescription: 'Some Description',
+          technologies: ['Jquery', 'MSSQL', 'Word', 'QUICKBASIC'],
+          methodologies: ['Waterfall', 'Pray n Spray']
+        }
+      ]
+    },
+
+    item: {
+      name: 'Tom',
+      surname: 'Wieland',
+      email: 'tom.wieland@gmail.com',
+      phonenumber: '+31642116830',
+      github: 'https://github.com/Industrial',
+      linkedin: null,
+      dateOfBirth: new Date('1987-04-22T00:00:00.000Z'),
+      nationality: 'DUTCH',
+      aboutMe: 'This is a little text about me etc 123.',
+
+      education: [
+        {
+          degree: 'Bachelor of ICT',
+          fieldOfStudy: 'ICT',
+          university: 'Hogeschool van Amsterdam',
+          graduated: true,
+          graduationYear: 1999
+        },
+        {
+          degree: 'Bachelor of ICT',
+          fieldOfStudy: 'ICT',
+          university: 'Hogeschool van Amsterdam',
+          graduated: true,
+          graduationYear: 1999
+        },
+        {
+          degree: 'Bachelor of ICT',
+          fieldOfStudy: 'ICT',
+          university: 'Hogeschool van Amsterdam',
+          graduated: true,
+          graduationYear: 1999
+        }
+      ],
+
+      courses: [
+        {
+          name: 'Some',
+          description: 'Description',
+          date: new Date('1976-02-01T00:00:00.000Z')
+        },
+        {
+          name: 'Some',
+          description: 'Description',
+          date: new Date('1976-02-01T00:00:00.000Z')
+        },
+        {
+          name: 'Some',
+          description: 'Description',
+          date: new Date('1976-02-01T00:00:00.000Z')
+        }
+      ],
+
+      experience: [
+        {
+          companyName: 'Sytac',
+          title: 'Engineer',
+          location: 'Haarlem',
+          startDate: new Date('2015-12-02T00:00:00.000Z'),
+          endDate: new Date('2016-12-31T00:00:00.000Z'),
+          shortDescription: 'Some Description',
+          technologies: ['Jquery', 'MSSQL', 'Word', 'QUICKBASIC'],
+          methodologies: ['Waterfall', 'Pray n Spray']
+        },
+        {
+          companyName: 'Sytac',
+          title: 'Engineer',
+          location: 'Haarlem',
+          startDate: new Date('2015-12-02T00:00:00.000Z'),
+          endDate: new Date('2016-12-31T00:00:00.000Z'),
+          shortDescription: 'Some Description',
+          technologies: ['Jquery', 'MSSQL', 'Word', 'QUICKBASIC'],
+          methodologies: ['Waterfall', 'Pray n Spray']
+        },
+        {
+          companyName: 'Sytac',
+          title: 'Engineer',
+          location: 'Haarlem',
+          startDate: new Date('2015-12-02T00:00:00.000Z'),
+          endDate: new Date('2016-12-31T00:00:00.000Z'),
           shortDescription: 'Some Description',
           technologies: ['Jquery', 'MSSQL', 'Word', 'QUICKBASIC'],
           methodologies: ['Waterfall', 'Pray n Spray']
@@ -149,6 +235,11 @@ function authentication(state = defaults.authentication, action = {}) {
 
 function user(state = defaults.user, action = {}) {
   switch (action.type) {
+    case 'employee:new':
+      return Object.assign({}, state, {
+        new: action.data
+      });
+
     // case USER:
     //   return state;
 

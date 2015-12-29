@@ -2,15 +2,12 @@ const React = require('react');
 const ReactDOM = require('react-dom');
 const _ = require('lodash');
 const reactRouter = require('react-router');
-import {
-  DefaultRoute,
-  HistoryLocation,
+const ReactRouter = reactRouter.Router;
+const {
   IndexRoute,
-  Redirect,
-  Route,
-  Router as ReactRouter,
-  create,
-} from 'react-router';
+  Route
+} = reactRouter;
+const createHistory = require('history/lib/createHashHistory');
 const { Provider } = require('react-redux');
 
 const log = require('../lib/log');
@@ -19,8 +16,10 @@ const PublicContainer = require('./components/public/container');
 const PublicHome = require('./components/public/home');
 const PublicLogin = require('./components/public/login');
 const PublicLogout = require('./components/public/logout');
-const PublicProfileShow = require('./components/public/profile/show');
 const PublicProfileEdit = require('./components/public/profile/edit');
+const PublicProfileNew = require('./components/public/profile/new');
+const PublicProfilePreview = require('./components/public/profile/preview');
+const PublicProfileShow = require('./components/public/profile/show');
 
 const AdminContainer = require('./components/admin/container')
 const AdminHome = require('./components/admin/home');
@@ -35,7 +34,7 @@ class Router {
     this.store = options.store;
     this.rootElement = options.rootElement || document.body;
 
-    this.reactRouter = this.getRouter();
+    this.router = this.getRouter();
   }
 
   // - /
@@ -81,9 +80,15 @@ class Router {
   //   - If the user is logged in and is a normal user, redirect to /:userId.
   //   - If the user is logged in and is an admin user, show the page.
   getRouter() {
+    const history = createHistory({
+      queryKey: false
+    });
+
     return (
       <Provider store={this.store}>
-        <ReactRouter>
+        <ReactRouter
+          history={history}
+        >
           <Route path="/">
             <Route path="admin" component={ AdminContainer } >
               <IndexRoute component={ AdminHome } />
@@ -97,6 +102,10 @@ class Router {
 
             <Route path="/" component={ PublicContainer }>
               <IndexRoute component={ PublicHome } />
+
+              <Route path="new" component={ PublicProfileNew } />
+
+              <Route path="preview" component={ PublicProfilePreview } />
 
               <Route path="login" component={ PublicLogin } />
               <Route path="logout" component={ PublicLogout } />
@@ -116,7 +125,7 @@ class Router {
   start() {
     log.debug('Router#start');
 
-    ReactDOM.render(this.reactRouter, this.rootElement);
+    ReactDOM.render(this.router, this.rootElement);
   }
 }
 

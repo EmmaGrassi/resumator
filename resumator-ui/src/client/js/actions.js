@@ -4,6 +4,10 @@ const store = require('../lib/store');
 // const { promiseFromNodeCallback } = require('../../../common/lib/promise');
 const { request } = require('../lib/redux/actions');
 
+function newEmployee(data) {
+  return { type: 'employee:new', data };
+};
+
 function clearAuthentication() {
   localStorage.setItem('authentication', null);
 
@@ -129,6 +133,7 @@ const cmsUpdate = request({
 
 module.exports = Object.assign(
   {
+    newEmployee,
     clearAuthentication,
     getAuthentication,
     setAuthentication

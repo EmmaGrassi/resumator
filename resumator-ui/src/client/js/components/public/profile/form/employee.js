@@ -24,8 +24,17 @@ const CoursesSchema = tcombForm.struct({
   date: tcombForm.Date,
 });
 
+const DegreeSchema = tcombForm.enums({
+  ASSOCIATE_DEGREE: 'Associate Degree',
+  BACHELOR_DEGREE: 'Bachelor Degree',
+  MASTER_DEGREE: 'Master Degree',
+  ENGINEER_DEGREE: 'Engineer Degree',
+  DOCTORAL: 'Doctoral',
+  OTHER: 'Other'
+});
+
 const EducationSchema = tcombForm.struct({
-  degree: tcombForm.String,
+  degree: DegreeSchema,
   fieldOfStudy: tcombForm.String,
   university: tcombForm.String,
   graduated: tcombForm.Boolean,
@@ -41,10 +50,10 @@ const ExperienceSchema = tcombForm.struct({
   startDate: tcombForm.Date,
   endDate: tcombForm.Date,
 
-  // TODO: Text input
+  // TODO: Textarea input
   shortDescription: tcombForm.String,
 
-  // TODO: Sub schema.
+  // TODO: Tag text input
   technologies: tcombForm.list(tcombForm.String),
   methodologies: tcombForm.list(tcombForm.String)
 });
@@ -63,6 +72,8 @@ const EmployeeSchema = tcombForm.struct({
   dateOfBirth: tcombForm.Date,
   nationality: tcombForm.enums(nationalitiesObject),
 
+  aboutMe: tcombForm.String,
+
   education: tcombForm.list(EducationSchema),
   courses: tcombForm.list(CoursesSchema),
   experience: tcombForm.list(ExperienceSchema)
@@ -79,6 +90,24 @@ class Employee extends React.Component {
   }
 
   render() {
+    const options = {
+      fields: {
+        aboutMe: {
+          type: 'textarea'
+        },
+
+        experience: {
+          item: {
+            fields: {
+              shortDescription: {
+                type: 'textarea'
+              }
+            }
+          }
+        }
+      }
+    };
+
     return (
       <div>
         <Grid>
@@ -88,7 +117,7 @@ class Employee extends React.Component {
                 <Form
                   ref="form"
                   type={EmployeeSchema}
-                  options={this.props.options}
+                  options={options}
                   value={this.props.value}
                 />
                 <Button type="submit" bsStyle="primary">Save</Button>
@@ -105,11 +134,9 @@ class Employee extends React.Component {
 
     const value = this.refs.form.getValue();
 
-    if (!value) {
-      return;
+    if (value) {
+      this.props.handleSubmit(value);
     }
-
-    debugger;
   }
 
   handleSaveButtonClick(event) {

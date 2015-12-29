@@ -3,7 +3,7 @@ const moment = require('moment');
 const { bindAll, map } = require('lodash');
 const { connect } = require('react-redux');
 
-import {
+const {
   Button,
   Col,
   Grid,
@@ -11,7 +11,7 @@ import {
   ListGroup,
   ListGroupItem,
   Row
-} from 'react-bootstrap';
+} = require('react-bootstrap');
 
 class Show extends React.Component {
   constructor(options) {

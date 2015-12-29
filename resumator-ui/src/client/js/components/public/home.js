@@ -10,6 +10,8 @@ import {
 
 class Home extends React.Component {
   render() {
+    debugger;
+
     return (
       <Grid>
         <Row>

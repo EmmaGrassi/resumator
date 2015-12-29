@@ -1,4 +1,3 @@
-const JsPDF = require('jspdf');
 const React = require('react');
 const moment = require('moment');
 const { bindAll, map } = require('lodash');

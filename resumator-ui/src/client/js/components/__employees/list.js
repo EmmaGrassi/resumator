@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const React = require('react');
 
-import {
+const {
   Button,
   ButtonInput,
   Col,
@@ -10,7 +10,7 @@ import {
   Jumbotron,
   Row,
   Table
-} from 'react-bootstrap';
+} = require('react-bootstrap');
 
 class List extends React.Component {
   constructor(options) {

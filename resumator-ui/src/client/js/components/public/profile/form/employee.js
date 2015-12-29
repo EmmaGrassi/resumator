@@ -171,15 +171,11 @@ class Employee extends React.Component {
       experience
     };
 
-    debugger;
-
     qwest
     .post('http://localhost:3000', data)
       .then((xhr, response) => {
-        debugger;
       })
       .catch((xhr, response, error) => {
-        debugger;
       })
   }
 }

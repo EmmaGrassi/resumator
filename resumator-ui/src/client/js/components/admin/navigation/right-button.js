@@ -18,11 +18,9 @@ class RightButton extends React.Component {
       theme: 'light',
       onsuccess: () => {
         console.log('success!');
-        debugger;
       },
       onfailure: (error) => {
         console.log(error);
-        debugger;
       }
     });
   }

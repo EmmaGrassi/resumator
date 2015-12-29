@@ -1,10 +1,10 @@
 const React = require('react');
 
-import {
+const {
   Col,
   Grid,
   Row
-} from 'react-bootstrap';
+} = require('react-bootstrap');
 
 class Login extends React.Component {
   render() {

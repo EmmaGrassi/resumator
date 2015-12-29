@@ -19,7 +19,6 @@ class RightButton extends React.Component {
   }
 
   onSignIn() {
-    debugger;
   }
 
   componentDidMount() {
@@ -39,7 +38,6 @@ class RightButton extends React.Component {
       onsuccess: this.onSignIn,
 
       onfailure: () => {
-        debugger;
       }
     });
   }

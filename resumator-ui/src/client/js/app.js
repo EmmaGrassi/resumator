@@ -36,32 +36,30 @@ const history = createHistory({
 const router = (
   <Provider store={store} >
     <Router history={history} >
-      <Route path="/">
-        <Route path="admin" component={ AdminContainer } >
-          <IndexRoute component={ AdminHome } />
+      <Route path="admin" component={ AdminContainer } >
+        <IndexRoute component={ AdminHome } />
 
-          <Route path="employees" component={ AdminEmployeesList } >
-            <Route path=":userId" component={ AdminEmployeesShow } >
-              <Route path="edit" component={ AdminEmployeesEdit } />
-            </Route>
+        <Route path="employees" component={ AdminEmployeesList } >
+          <Route path=":userId" component={ AdminEmployeesShow } >
+            <Route path="edit" component={ AdminEmployeesEdit } />
           </Route>
         </Route>
+      </Route>
 
-        <Route path="/" component={ PublicContainer }>
-          <IndexRoute component={ PublicHome } />
+      <Route path="/" component={ PublicContainer }>
+        <IndexRoute component={ PublicHome } />
 
-          <Route path="new" component={ PublicProfileNew } />
+        <Route path="new" component={ PublicProfileNew } />
 
-          <Route path="preview" component={ PublicProfilePreview } />
+        <Route path="preview" component={ PublicProfilePreview } />
 
-          <Route path="login" component={ PublicLogin } />
-          <Route path="logout" component={ PublicLogout } />
+        <Route path="login" component={ PublicLogin } />
+        <Route path="logout" component={ PublicLogout } />
 
-          <Route path=":userId">
-            <IndexRoute component={ PublicProfileShow } />
+        <Route path=":userId">
+          <IndexRoute component={ PublicProfileShow } />
 
-            <Route path="edit" component={ PublicProfileEdit } />
-          </Route>
+          <Route path="edit" component={ PublicProfileEdit } />
         </Route>
       </Route>
     </Router>

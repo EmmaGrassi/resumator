@@ -9,7 +9,7 @@ const {
 class Login extends React.Component {
   render() {
     return (
-      <Grid>
+      <Grid fluid={true}>
         <Row>
           <Col xs={12}>
             Login!

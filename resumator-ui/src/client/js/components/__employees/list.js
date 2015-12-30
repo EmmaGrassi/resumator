@@ -29,9 +29,8 @@ class List extends React.Component {
   }
 
   render() {
-
     return (
-      <Grid>
+      <Grid fluid={true}>
         <Row>
           <Col xs={6}>
             <ButtonInput type="submit" value="New" bsStyle="success" onClick={this.handleNewButtonClick}/>

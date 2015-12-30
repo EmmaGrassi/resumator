@@ -5,24 +5,9 @@ const EmployeeEditForm = require('./form/employee');
 
 class Edit extends React.Component {
   render() {
-    const options = {
-      item: {
-        dateOfBirth: {
-          type: 'datetime'
-        },
-
-        education: {
-          graduationYear: {
-            type: 'number'
-          }
-        }
-      }
-    };
-
     return (
       <div>
         <EmployeeEditForm
-          options={options}
           value={this.props.user.item}
         />
       </div>

@@ -7,6 +7,8 @@ const defaults = {
     id: '123',
 
     new: {
+      title: 'IT Consultant',
+
       name: 'Tom',
       surname: 'Wieland',
       email: 'tom.wieland@gmail.com',
@@ -89,11 +91,24 @@ const defaults = {
           shortDescription: 'Some Description',
           technologies: ['Jquery', 'MSSQL', 'Word', 'QUICKBASIC'],
           methodologies: ['Waterfall', 'Pray n Spray']
+        }
+      ],
+
+      languages: [
+        {
+          name: 'Dutch',
+          proficiency: 'NATIVE'
+        },
+        {
+          name: 'English',
+          proficiency: 'FULL_PROFESSIONAL'
         }
       ]
     },
 
     item: {
+      title: 'IT Consultant',
+
       name: 'Tom',
       surname: 'Wieland',
       email: 'tom.wieland@gmail.com',
@@ -176,6 +191,17 @@ const defaults = {
           shortDescription: 'Some Description',
           technologies: ['Jquery', 'MSSQL', 'Word', 'QUICKBASIC'],
           methodologies: ['Waterfall', 'Pray n Spray']
+        }
+      ],
+
+      languages: [
+        {
+          name: 'Dutch',
+          proficiency: 'NATIVE'
+        },
+        {
+          name: 'English',
+          proficiency: 'FULL_PROFESSIONAL'
         }
       ]
     },

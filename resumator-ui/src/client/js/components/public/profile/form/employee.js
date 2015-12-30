@@ -9,6 +9,7 @@ const { bindAll, map, each } = require('lodash');
 // const Select = require('react-select');
 
 const nationalities = require('./nationalities');
+const TagsComponent = require('../../../../lib/components/tcomb-form/tags');
 
 const { Form } = tcombForm.form;
 
@@ -58,8 +59,23 @@ const ExperienceSchema = tcombForm.struct({
   methodologies: tcombForm.list(tcombForm.String)
 });
 
+const LanguageProficiencySchema = tcombForm.enums({
+  ELEMENTARY: 'Elementary',
+  LIMITED_WORKING: 'Limited Working Experience',
+  PROFESSIONAL_WORKING: 'Professional Working Experience',
+  FULL_PROFESSIONAL: 'Full Professional',
+  NATIVE: 'Native'
+})
+
+const LanguageSkillSchema = tcombForm.struct({
+  name: tcombForm.String,
+
+  proficiency: LanguageProficiencySchema
+});
 
 const EmployeeSchema = tcombForm.struct({
+  title: tcombForm.String,
+
   name: tcombForm.String,
   surname: tcombForm.String,
 
@@ -76,7 +92,8 @@ const EmployeeSchema = tcombForm.struct({
 
   education: tcombForm.list(EducationSchema),
   courses: tcombForm.list(CoursesSchema),
-  experience: tcombForm.list(ExperienceSchema)
+  experience: tcombForm.list(ExperienceSchema),
+  languages: tcombForm.list(LanguageSkillSchema)
 });
 
 class Employee extends React.Component {
@@ -101,6 +118,10 @@ class Employee extends React.Component {
             fields: {
               shortDescription: {
                 type: 'textarea'
+              },
+
+              technologies: {
+                factory: TagsComponent
               }
             }
           }
@@ -109,23 +130,21 @@ class Employee extends React.Component {
     };
 
     return (
-      <div>
-        <Grid>
-          <Row>
-            <Col xs={10}>
-              <form onSubmit={this.handleSubmit}>
-                <Form
-                  ref="form"
-                  type={EmployeeSchema}
-                  options={options}
-                  value={this.props.value}
-                />
-                <Button type="submit" bsStyle="primary">Save</Button>
-              </form>
-            </Col>
-          </Row>
-        </Grid>
-      </div>
+      <Grid fluid={true}>
+        <Row>
+          <Col xs={12}>
+            <form onSubmit={this.handleSubmit}>
+              <Form
+                ref="form"
+                type={EmployeeSchema}
+                options={options}
+                value={this.props.value}
+              />
+              <Button type="submit" bsStyle="primary">Save</Button>
+            </form>
+          </Col>
+        </Row>
+      </Grid>
     );
   }
 

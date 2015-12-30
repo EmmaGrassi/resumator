@@ -89,13 +89,30 @@ class Preview extends React.Component {
     );
   }
 
+  getLanguages() {
+    const items = this.props.user.item.languages;
+    const listItems = map(items, (v) => {
+      return (
+        <ListGroupItem>
+          <strong>{v.name} ({v.proficiency})</strong><br/>
+        </ListGroupItem>
+      );
+    });
+
+    return (
+      <ListGroup>
+        {listItems}
+      </ListGroup>
+    );
+  }
+
   render() {
     const data = this.props.user.new;
 
     const nationality = `${data.nationality.substring(0, 1)}${data.nationality.substring(1).toLowerCase()}`;
 
     return (
-      <Grid>
+      <Grid fluid={true}>
         <Row>
           <Col xs={12}>
             <div className="pull-right">
@@ -110,9 +127,10 @@ class Preview extends React.Component {
         </Row>
         <Row>
           <Col xs={12} ref="content">
-            <h1>{data.name} {data.surname}</h1>
+            <h1>{data.title}</h1>
 
             <h2>Details</h2>
+            <strong>Name:</strong> {data.name} {data.surname}<br/>
             <strong>Email:</strong> {data.email}<br/>
             <strong>Phone:</strong> {data.phonenumber}<br/>
             <strong>Github:</strong> {data.github}<br/>
@@ -164,6 +182,9 @@ class Preview extends React.Component {
 
             <h2>Courses</h2>
             {this.getCourses()}
+
+            <h2>Languages</h2>
+            {this.getLanguages()}
           </Col>
         </Row>
       </Grid>

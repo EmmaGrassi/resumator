@@ -87,15 +87,38 @@ class Show extends React.Component {
     );
   }
 
+  getLanguages() {
+    const items = this.props.user.item.languages;
+    const listItems = map(items, (v) => {
+      const words = v.proficiency.split('_');
+      const casedWords = map(words, (w) => {
+        return `${w.substring(0, 1)}${s.substring(1).toLowerCase()}`;
+      });
+
+      return (
+        <ListGroupItem>
+          <strong>{v.name} ({v.proficiency})</strong><br/>
+        </ListGroupItem>
+      );
+    });
+
+    return (
+      <ListGroup>
+        {listItems}
+      </ListGroup>
+    );
+  }
+
   render() {
-    const { item } = this.props.user;
+    const data = this.props.user.item;
 
     const experience = this.getExperience();
     const education = this.getEducation();
     const courses = this.getCourses();
+    const languages = this.getLanguages();
 
     return (
-      <Grid>
+      <Grid fluid={true}>
         <Row>
           <Col xs={4}>
             <Image src="/images/thumbnail.png" circle />
@@ -106,14 +129,15 @@ class Show extends React.Component {
               <Button bsStyle="primary" onClick={this.handleEditButtonClick}>Edit</Button>
             </span>
 
-            <h1>{item.name} {item.surname}</h1>
+            <h1>{data.title}</h1>
 
-            <strong>Nationality:</strong> {item.nationality}<br/>
-            <strong>Date of Birth:</strong> {moment(item.dateOfBirth).format('YYYY-MM-DD')}<br/>
-            <strong>Email:</strong> {item.email}<br/>
-            <strong>Phone:</strong> {item.phonenumber}<br/>
-            <strong>Github:</strong> {item.github}<br/>
-            <strong>Linkedin:</strong> {item.linkedin}<br/>
+            <strong>Name:</strong> {data.name} {data.surname}<br/>
+            <strong>Nationality:</strong> {data.nationality}<br/>
+            <strong>Date of Birth:</strong> {moment(data.dateOfBirth).format('YYYY-MM-DD')}<br/>
+            <strong>Email:</strong> {data.email}<br/>
+            <strong>Phone:</strong> {data.phonenumber}<br/>
+            <strong>Github:</strong> {data.github}<br/>
+            <strong>Linkedin:</strong> {data.linkedin}<br/>
           </Col>
         </Row>
 
@@ -138,6 +162,14 @@ class Show extends React.Component {
             <h3>Courses</h3>
 
             {courses}
+          </Col>
+        </Row>
+
+        <Row>
+          <Col xsOffset={4} xs={8}>
+            <h3>Languages</h3>
+
+            {languages}
           </Col>
         </Row>
       </Grid>

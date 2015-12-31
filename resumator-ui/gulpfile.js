@@ -110,7 +110,7 @@ gulp.task('runLiveServer', function runLiveServer(cb) {
 });
 
 gulp.task('runServer', function runServer(cb) {
-  var path = `build/server/app.js`;
+  var path = `${__dirname}/build/server/app.js`;
 
   fs.exists(path, function(doesExist) {
     if (!doesExist) {
@@ -198,7 +198,6 @@ gulp.task('develop', function(cb) {
       'compileLess'
     ],
 
-    'compileBrowserify',
     'runTests',
 
     [

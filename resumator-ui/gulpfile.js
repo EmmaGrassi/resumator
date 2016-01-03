@@ -5,12 +5,12 @@ var fs = require('fs');
 var gulp = require('gulp');
 var plugins = require('gulp-load-plugins')();
 var gulpHelp = require('gulp-help');
+var gutil = require('gulp-util');
 gulp = gulpHelp(gulp);
 
 // Gulp plugins
 var browserify = require('browserify');
 var buffer = require('vinyl-buffer');
-var cssNano = require('gulp-cssnano');
 var del = require('del');
 var gutil = require('gulp-util');
 var liveServer = require('live-server');
@@ -21,8 +21,13 @@ var uglify = require('gulp-uglify');
 var watchify = require('watchify');
 
 // Error handling
-function handleError(error) {
-  console.error(error.message && error.stack && error.message + '\n\n' + error.stack || error.message || error.stack || error);
+function handleError(taskName, error) {
+  throw new gutil.PluginError(taskName, error, {
+    showStack: true
+  });
+
+  //gutil.log(error)
+  //console.error(error.message && error.stack && error.message + '\n\n' + error.stack || error.message || error.stack || error);
 }
 
 // Browserify
@@ -55,7 +60,7 @@ gulp.task('compileBabel', 'Compiles all JavaScript files from ES2015 to ES5 with
       presets: [ 'es2015', 'react', 'stage-0' ]
     }))
     .on('error', function(error) {
-      handleError(error);
+      handleError('compileBabel', error);
       cb();
     })
     .pipe(plugins.sourcemaps.write())
@@ -137,10 +142,11 @@ gulp.task('runLiveServer', 'Runs a `live-server` HTTP server, serving all of the
 });
 
 gulp.task('runServer', 'Runs the API server.', function runServer(cb) {
-  var path = '${__dirname}/build/server/app.js';
+  var path = __dirname + '/build/server/app.js';
 
   fs.exists(path, function(doesExist) {
     if (!doesExist) {
+      gutil.log('runServer', 'Path `' + path + '` does not exist, skipping task.');
       return cb();
     }
 

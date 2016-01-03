@@ -254,5 +254,3 @@ gulp.task('compile', function(cb) {
     cb
   );
 });
-
-gulp.task('default', [ 'compile' ]);

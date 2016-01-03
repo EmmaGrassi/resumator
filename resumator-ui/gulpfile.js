@@ -107,6 +107,20 @@ gulp.task('minifyJavaScript', 'Minifies the client javascript bundle generated b
     .pipe(gulp.dest('build/client/js'));
 });
 
+gulp.task('minifyHTML', 'Minifies all HTML files and puts them in the build directory.', function minifyJavaScript() {
+  return gulp.src('build/**/*.html')
+    .pipe(plugins.htmlmin({
+      removeComments: true,
+      removeCommentsFromCDATA: true,
+      removeCDATASectionsFromCDATA: true,
+      removeAttributeQuotes: true,
+      removeRedundantAttributes: true,
+      useShortDoctype: true,
+      collapseWhitespace: true
+    }))
+    .pipe(gulp.dest('build'));
+});
+
 // TODO: Allow a way to use this HTTP server to serve the frontend and also
 // proxy any requests that are not static files to a configured API server.
 gulp.task('runLiveServer', 'Runs a `live-server` HTTP server, serving all of the client side files from the build directory.', function runLiveServer(cb) {
@@ -237,7 +251,11 @@ gulp.task('production', 'Runs all tasks required for production.', function(cb) 
     ],
 
     'compileBrowserify',
-    'minifyJavaScript',
+
+    [
+      'minifyJavaScript',
+      'minifyHTML'
+    ],
 
     cb
   );

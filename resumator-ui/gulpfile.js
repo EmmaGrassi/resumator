@@ -21,7 +21,7 @@ var watchify = require('watchify');
 // Error handling
 function handleError(cb) {
   return function(error) {
-    console.error(error.message && error.stack && `${error.message}\n\n${error.stack}` || error.message || error.stack || error);
+    console.error(error.message && error.stack && error.message + '\n\n' + error.stack || error.message || error.stack || error);
     cb();
   };
 }
@@ -39,20 +39,20 @@ function runBundle() {
     bundle
       .bundle()
       .pipe(source('app.bundle.js'))
-      .pipe(gulp.dest(`build/client/js`))
+      .pipe(gulp.dest('build/client/js'))
       .on('end', cb);
   };
 }
 
 // Cleans the build directory, starting every run with a clean slate.
 gulp.task('cleanDirectory', function() {
-  return del([ `build/**/*` ]);
+  return del([ 'build/**/*' ]);
 });
 
 // Compiles all JavaScript files from ES2015 to ES5 with Babel.js from the
 // source directory to the build directory.
 gulp.task('compileBabel', function(cb) {
-  return gulp.src(`src/**/*.js`)
+  return gulp.src('src/**/*.js')
     .pipe(plugins.changed('build'))
     .pipe(plugins.sourcemaps.init())
     .pipe(plugins.babel({
@@ -66,7 +66,7 @@ gulp.task('compileBabel', function(cb) {
 // Compiles the client JavaScript code from the build directory into one file in
 // the build directory with Browserify.
 gulp.task('compileBrowserify', function compileBrowserify(cb) {
-  var path = `build/client/js/app.js`;
+  var path = 'build/client/js/app.js';
 
   fs.exists(path, function(doesExist) {
     if (!doesExist) {
@@ -82,7 +82,7 @@ gulp.task('compileBrowserify', function compileBrowserify(cb) {
 // Minifies all GIF, JPG, PNG and SVG images from the source directory into the
 // build directory.
 gulp.task('compileImages', function compileImages() {
-  return gulp.src(`src/**/*.@(gif|jpg|png|svg)`)
+  return gulp.src('src/**/*.@(gif|jpg|png|svg)')
     .pipe(plugins.changed('build'))
     .pipe(plugins.imagemin({
       progressive: true,
@@ -95,22 +95,22 @@ gulp.task('compileImages', function compileImages() {
 // Compiles all LESS files to CSS from the source directory to the build
 // directory.
 gulp.task('compileLess', function compileLess() {
-  return gulp.src(`src/client/styles/app.less`)
+  return gulp.src('src/client/styles/app.less')
     .pipe(plugins.changed('build'))
     .pipe(plugins.less())
     .pipe(plugins.minifyCss())
-    .pipe(gulp.dest(`build/client/css`));
+    .pipe(gulp.dest('build/client/css'));
 });
 
 // Copies over all files that are not compiled by another task from the source
 // directory to the build directory.
 gulp.task('compileCopy', function compileCopy() {
-  return gulp.src(`src/**/*.!(gif|jpg|png|svg|less|js)`)
+  return gulp.src('src/**/*.!(gif|jpg|png|svg|less|js)')
     .pipe(plugins.changed('build'))
     .pipe(gulp.dest('build'));
 });
 
-// Runs a `live-server` HTTP server, serving all of the client side files from
+// Runs a 'live-server' HTTP server, serving all of the client side files from
 // the build directory.
 // TODO: Allow a way to use this HTTP server to serve the frontend and also
 // proxy any requests that are not static files to a configured API server.
@@ -129,7 +129,7 @@ gulp.task('runLiveServer', function runLiveServer(cb) {
 
 // Runs the API server.
 gulp.task('runServer', function runServer(cb) {
-  var path = `${__dirname}/build/server/app.js`;
+  var path = '${__dirname}/build/server/app.js';
 
   fs.exists(path, function(doesExist) {
     if (!doesExist) {
@@ -140,7 +140,7 @@ gulp.task('runServer', function runServer(cb) {
       path: path
     });
 
-    plugins.saneWatch(`build/server/**/*`, { debounce: 300 }, function() {
+    plugins.saneWatch('build/server/**/*', { debounce: 300 }, function() {
       plugins.developServer.restart();
     });
 
@@ -150,7 +150,7 @@ gulp.task('runServer', function runServer(cb) {
 
 // Runs all tests from the source directory with Mocha.
 gulp.task('runTests', function runTests() {
-  return gulp.src(`src/test/**/*.js`, { read: false })
+  return gulp.src('src/test/**/*.js', { read: false })
     .pipe(plugins.mocha({
       recursive: true,
       reporter: 'spec'
@@ -160,7 +160,7 @@ gulp.task('runTests', function runTests() {
 // Watches the build directory for new files that get compiled to there and
 // re-compiles the client code with browserify when that happens.
 gulp.task('watchBrowserify', function watchBrowserify(cb) {
-  var path = `build/client/js/app.js`;
+  var path = 'build/client/js/app.js';
 
   fs.exists(path, function(doesExist) {
     if (!doesExist) {
@@ -183,7 +183,7 @@ gulp.task('watchBrowserify', function watchBrowserify(cb) {
 
 // Watches the source directory and runs compile tasks when changes happen.
 gulp.task('watchCompilers', function watchCompilers(cb) {
-  plugins.saneWatch(`src/**/*`, { debounce: 300 }, function(filename, path, stat) {
+  plugins.saneWatch('src/**/*', { debounce: 300 }, function(filename, path, stat) {
     if (filename.match(/^.*\.js$/)) {
       gulp.start('compileBabel');
     }
@@ -206,7 +206,7 @@ gulp.task('watchCompilers', function watchCompilers(cb) {
 
 // Watches the source tests directory and re-runs tests when changes happen.
 gulp.task('watchTests', function watchTests(cb) {
-  gulp.watch(`src/**/*.js`, [ 'runTests' ]);
+  gulp.watch('src/**/*.js', [ 'runTests' ]);
 
   cb();
 });

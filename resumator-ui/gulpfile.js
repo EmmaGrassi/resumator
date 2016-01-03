@@ -246,7 +246,7 @@ gulp.task('develop', function(cb) {
 });
 
 // Runs all tasks required for production.
-gulp.task('compile', function(cb) {
+gulp.task('production', function(cb) {
   runSequence(
     'cleanDirectory',
 

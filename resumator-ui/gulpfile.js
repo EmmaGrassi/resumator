@@ -19,11 +19,8 @@ var source = require('vinyl-source-stream');
 var watchify = require('watchify');
 
 // Error handling
-function handleError(cb) {
-  return function(error) {
-    console.error(error.message && error.stack && error.message + '\n\n' + error.stack || error.message || error.stack || error);
-    cb();
-  };
+function handleError(error) {
+  console.error(error.message && error.stack && error.message + '\n\n' + error.stack || error.message || error.stack || error);
 }
 
 // Browserify
@@ -58,7 +55,10 @@ gulp.task('compileBabel', function(cb) {
     .pipe(plugins.babel({
       presets: [ 'es2015', 'react', 'stage-0' ]
     }))
-    .on('error', handleError(cb))
+    .on('error', function(error) {
+      handleError(error);
+      cb();
+    })
     .pipe(plugins.sourcemaps.write())
     .pipe(gulp.dest('build'))
 });

@@ -44,9 +44,6 @@ public class ResumatorApp {
 	public static void main(final String[] args) throws IOException {
         final ResumatorApp app = new ResumatorApp();
         app.banner();
-        for(String arg : Arrays.asList(args)) {
-            LOGGER.info("Started with: " + arg);
-        }
 
         final Configuration configuration = app.loadConfiguration();
         final ResourceConfig rc = app.constructConfig(configuration);

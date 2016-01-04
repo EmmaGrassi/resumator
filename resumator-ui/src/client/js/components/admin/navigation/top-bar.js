@@ -34,9 +34,10 @@ class TopBar extends React.Component {
 
 TopBar.displayName = 'TopBar';
 
-function select(state) {
+TopBar.mapStateToProps = function mapStateToProps(state) {
   return {
+    token: state.authentication.token
   };
 };
 
-module.exports = connect(select)(TopBar);
+module.exports = connect(TopBar.mapStateToProps)(TopBar);

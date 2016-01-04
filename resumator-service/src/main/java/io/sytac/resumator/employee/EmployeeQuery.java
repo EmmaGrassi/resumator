@@ -3,10 +3,12 @@ package io.sytac.resumator.employee;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import io.sytac.resumator.http.BaseResource;
+import io.sytac.resumator.model.enums.Nationality;
 import org.eclipse.jetty.http.HttpStatus;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 
 /**
@@ -21,8 +23,11 @@ public class EmployeeQuery extends BaseResource {
 
     @GET
     @Produces(RepresentationFactory.HAL_JSON)
-    public Representation fakeEmployee(@PathParam("id") final String id) {
-        throw new WebApplicationException("Cannot get an employee yet, sorry!", HttpStatus.NOT_IMPLEMENTED_501);
+    @Consumes("application/json")
+    public Representation fakeEmployee(@PathParam("id") final String id, @Context final UriInfo uriInfo) {
+        //throw new WebApplicationException("Cannot get an employee yet, sorry!", HttpStatus.NOT_IMPLEMENTED_501);
+        Employee res = new Employee("Jimi", "Hendrix", 1942, Nationality.AMERICAN, "Heaven");
+        return represent(res, uriInfo);
     }
 
     /**

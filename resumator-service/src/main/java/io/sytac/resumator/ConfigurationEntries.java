@@ -13,6 +13,7 @@ public interface ConfigurationEntries {
     String BASE_URI     = "resumator.http.uri";
 
     // Security
+    String SECURITY_DISABLED       = "resumator.sec.disabled";
     String GOOGLE_CLIENT_ID        = "resumator.sec.google.client.id";
     String GOOGLE_SECRET           = "resumator.sec.google.secret";
     String GOOGLE_APPS_DOMAIN_NAME = "resumator.sec.google.domain";

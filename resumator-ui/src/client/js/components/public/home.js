@@ -1,17 +1,17 @@
 const React = require('react');
 
-import {
+const {
   Button,
   Col,
   Grid,
   Jumbotron,
   Row
-} from 'react-bootstrap';
+} = require('react-bootstrap');
 
 class Home extends React.Component {
   render() {
     return (
-      <Grid>
+      <Grid fluid={true}>
         <Row>
           <Col xs={12}>
             <Jumbotron>

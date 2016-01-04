@@ -92,7 +92,7 @@ class Show extends React.Component {
     const listItems = map(items, (v) => {
       const words = v.proficiency.split('_');
       const casedWords = map(words, (w) => {
-        return `${w.substring(0, 1)}${s.substring(1).toLowerCase()}`;
+        return `${w.substring(0, 1)}${w.substring(1).toLowerCase()}`;
       });
 
       return (

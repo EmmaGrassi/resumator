@@ -9,7 +9,7 @@ const {
 class Logout extends React.Component {
   render() {
     return (
-      <Grid fluid={true}>
+      <Grid>
         <Row>
           <Col xs={12}>
             Logout!

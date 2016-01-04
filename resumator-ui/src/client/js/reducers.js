@@ -7,7 +7,7 @@ const defaults = {
     id: '123',
 
     new: {
-      title: 'IT Consultant',
+      title: 'Senior Node.js Developer',
 
       name: 'Tom',
       surname: 'Wieland',
@@ -17,7 +17,7 @@ const defaults = {
       linkedin: null,
       dateOfBirth: new Date('1987-04-22T00:00:00.000Z'),
       nationality: 'DUTCH',
-      aboutMe: 'This is a little text about me etc 123.',
+      aboutMe: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi magna ante, convallis vel auctor sed, tristique nec velit. In lacinia vitae massa at porttitor. In pretium justo urna, sit amet vulputate ipsum interdum vel. Morbi pretium diam ac leo laoreet, in aliquet mi iaculis. Donec a tempor neque.',
 
       education: [
         {
@@ -64,31 +64,31 @@ const defaults = {
       experience: [
         {
           companyName: 'Sytac',
-          title: 'Engineer',
+          title: 'Senior Engineer',
           location: 'Haarlem',
           startDate: new Date('2015-12-02T00:00:00.000Z'),
-          endDate: new Date('2016-12-31T00:00:00.000Z'),
-          shortDescription: 'Some Description',
+          endDate: new Date('2016-06-31T00:00:00.000Z'),
+          shortDescription: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi magna ante, convallis vel auctor sed, tristique nec velit. In lacinia vitae massa at porttitor. In pretium justo urna, sit amet vulputate ipsum interdum vel. Morbi pretium diam ac leo laoreet, in aliquet mi iaculis. Donec a tempor neque.',
           technologies: ['Jquery', 'MSSQL', 'Word', 'QUICKBASIC'],
           methodologies: ['Waterfall', 'Pray n Spray']
         },
         {
           companyName: 'Sytac',
-          title: 'Engineer',
+          title: 'Medior Engineer',
           location: 'Haarlem',
-          startDate: new Date('2015-12-02T00:00:00.000Z'),
-          endDate: new Date('2016-12-31T00:00:00.000Z'),
-          shortDescription: 'Some Description',
+          startDate: new Date('2015-01-02T00:00:00.000Z'),
+          endDate: new Date('2016-06-31T00:00:00.000Z'),
+          shortDescription: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi magna ante, convallis vel auctor sed, tristique nec velit. In lacinia vitae massa at porttitor. In pretium justo urna, sit amet vulputate ipsum interdum vel. Morbi pretium diam ac leo laoreet, in aliquet mi iaculis. Donec a tempor neque.',
           technologies: ['Jquery', 'MSSQL', 'Word', 'QUICKBASIC'],
           methodologies: ['Waterfall', 'Pray n Spray']
         },
         {
           companyName: 'Sytac',
-          title: 'Engineer',
+          title: 'Junior Engineer',
           location: 'Haarlem',
           startDate: new Date('2015-12-02T00:00:00.000Z'),
           endDate: new Date('2016-12-31T00:00:00.000Z'),
-          shortDescription: 'Some Description',
+          shortDescription: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi magna ante, convallis vel auctor sed, tristique nec velit. In lacinia vitae massa at porttitor. In pretium justo urna, sit amet vulputate ipsum interdum vel. Morbi pretium diam ac leo laoreet, in aliquet mi iaculis. Donec a tempor neque.',
           technologies: ['Jquery', 'MSSQL', 'Word', 'QUICKBASIC'],
           methodologies: ['Waterfall', 'Pray n Spray']
         }
@@ -117,7 +117,7 @@ const defaults = {
       linkedin: null,
       dateOfBirth: new Date('1987-04-22T00:00:00.000Z'),
       nationality: 'DUTCH',
-      aboutMe: 'This is a little text about me etc 123.',
+      aboutMe: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi magna ante, convallis vel auctor sed, tristique nec velit. In lacinia vitae massa at porttitor. In pretium justo urna, sit amet vulputate ipsum interdum vel. Morbi pretium diam ac leo laoreet, in aliquet mi iaculis. Donec a tempor neque.',
 
       education: [
         {
@@ -167,8 +167,18 @@ const defaults = {
           title: 'Engineer',
           location: 'Haarlem',
           startDate: new Date('2015-12-02T00:00:00.000Z'),
-          endDate: new Date('2016-12-31T00:00:00.000Z'),
-          shortDescription: 'Some Description',
+          endDate: new Date('2016-06-31T00:00:00.000Z'),
+          shortDescription: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi magna ante, convallis vel auctor sed, tristique nec velit. In lacinia vitae massa at porttitor. In pretium justo urna, sit amet vulputate ipsum interdum vel. Morbi pretium diam ac leo laoreet, in aliquet mi iaculis. Donec a tempor neque.',
+          technologies: ['Jquery', 'MSSQL', 'Word', 'QUICKBASIC'],
+          methodologies: ['Waterfall', 'Pray n Spray']
+        },
+        {
+          companyName: 'Sytac',
+          title: 'Engineer',
+          location: 'Haarlem',
+          startDate: new Date('2015-01-02T00:00:00.000Z'),
+          endDate: new Date('2016-06-31T00:00:00.000Z'),
+          shortDescription: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi magna ante, convallis vel auctor sed, tristique nec velit. In lacinia vitae massa at porttitor. In pretium justo urna, sit amet vulputate ipsum interdum vel. Morbi pretium diam ac leo laoreet, in aliquet mi iaculis. Donec a tempor neque.',
           technologies: ['Jquery', 'MSSQL', 'Word', 'QUICKBASIC'],
           methodologies: ['Waterfall', 'Pray n Spray']
         },
@@ -178,17 +188,7 @@ const defaults = {
           location: 'Haarlem',
           startDate: new Date('2015-12-02T00:00:00.000Z'),
           endDate: new Date('2016-12-31T00:00:00.000Z'),
-          shortDescription: 'Some Description',
-          technologies: ['Jquery', 'MSSQL', 'Word', 'QUICKBASIC'],
-          methodologies: ['Waterfall', 'Pray n Spray']
-        },
-        {
-          companyName: 'Sytac',
-          title: 'Engineer',
-          location: 'Haarlem',
-          startDate: new Date('2015-12-02T00:00:00.000Z'),
-          endDate: new Date('2016-12-31T00:00:00.000Z'),
-          shortDescription: 'Some Description',
+          shortDescription: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi magna ante, convallis vel auctor sed, tristique nec velit. In lacinia vitae massa at porttitor. In pretium justo urna, sit amet vulputate ipsum interdum vel. Morbi pretium diam ac leo laoreet, in aliquet mi iaculis. Donec a tempor neque.',
           technologies: ['Jquery', 'MSSQL', 'Word', 'QUICKBASIC'],
           methodologies: ['Waterfall', 'Pray n Spray']
         }

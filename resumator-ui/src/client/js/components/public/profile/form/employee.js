@@ -51,11 +51,11 @@ const ExperienceSchema = tcombForm.struct({
   startDate: tcombForm.Date,
   endDate: tcombForm.Date,
 
-  // TODO: Textarea input
   shortDescription: tcombForm.String,
 
-  // TODO: Tag text input
   technologies: tcombForm.list(tcombForm.String),
+
+  // TODO: Tag text input
   methodologies: tcombForm.list(tcombForm.String)
 });
 
@@ -122,6 +122,10 @@ class Employee extends React.Component {
 
               technologies: {
                 factory: TagsComponent
+              },
+
+              methodologies: {
+                factory: TagsComponent
               }
             }
           }
@@ -130,7 +134,7 @@ class Employee extends React.Component {
     };
 
     return (
-      <Grid fluid={true}>
+      <Grid>
         <Row>
           <Col xs={12}>
             <form onSubmit={this.handleSubmit}>

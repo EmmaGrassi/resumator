@@ -13,7 +13,7 @@ const reducers = require('./reducers');
 const store = require('./store')(reducers, {});
 
 // Components
-const AdminContainer = require('./components/admin/container')
+const AdminContainer = require('./components/admin/container');
 const AdminEmployeesEdit = require('./components/admin/employees/edit');
 const AdminEmployeesList = require('./components/admin/employees/list');
 const AdminEmployeesShow = require('./components/admin/employees/show');

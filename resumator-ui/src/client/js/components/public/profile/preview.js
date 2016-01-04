@@ -22,25 +22,29 @@ class Preview extends React.Component {
   getExperience() {
     const experience = this.props.user.new.experience;
     const listItems = map(experience, (v) => {
+      const startDate = moment(v.startDate);
+      const endDate = moment(v.endDate);
+
+      let difference = endDate.diff(startDate, 'years');
+
+      if (difference < 1) {
+        difference = `${endDate.diff(startDate, 'months')} months`;
+      } else {
+        difference = `${difference} years`;
+      }
+
       return (
         <div
           style={{
             marginTop: '20px'
           }}
         >
-          <h4>{v.companyName}</h4>
-          <strong>{v.title}</strong><br/>
-          {moment(v.startDate).format('YYYY')} - {moment(v.endDate).format('YYYY')} ({v.location})<br/>
-          <br/>
-          <strong>Technologies:</strong><br/>
-          <ul>
-            {map(v.technologies, (v) => <li>{v}</li>)}
-          </ul>
-          <br/>
-          <strong>Methodologies:</strong><br/>
-          <ul>
-            {map(v.methodologies, (v) => <li>{v}</li>)}
-          </ul>
+        <div className="pull-right">{moment(v.startDate).format('YYYY')} - {moment(v.endDate).format('YYYY')} ({difference})</div>
+          <h4>{v.title}</h4>
+          <h5>{v.companyName} - ({v.location})</h5>
+          <p>{v.shortDescription}</p>
+          <strong>Technologies:</strong> {v.technologies.join(', ')}<br/>
+          <strong>Methodologies:</strong> {v.methodologies.join(', ')}<br/>
         </div>
       );
     });
@@ -56,7 +60,11 @@ class Preview extends React.Component {
     const education = this.props.user.new.education;
     const listItems = map(education, (v) => {
       return (
-        <div>
+        <div
+          style={{
+            marginBottom: '10px'
+          }}
+        >
           <strong>{v.degree}</strong><br/>
           {v.university} ({v.fieldOfStudy})<br/>
           {v.graduated && `Graduated in ${v.graduationYear}`}
@@ -75,7 +83,11 @@ class Preview extends React.Component {
     const courses = this.props.user.new.courses;
     const listItems = map(courses, (v) => {
       return (
-        <div>
+        <div
+          style={{
+            marginBottom: '10px'
+          }}
+        >
           <strong>{v.name} ({moment(v.date).format('YYYY')})</strong><br/>
           {v.description}
         </div>
@@ -92,17 +104,23 @@ class Preview extends React.Component {
   getLanguages() {
     const items = this.props.user.item.languages;
     const listItems = map(items, (v) => {
+      const words = v.proficiency.split('_');
+      const casedWords = map(words, (w) => {
+        return `${w.substring(0, 1)}${w.substring(1).toLowerCase()}`;
+      });
+      const proficiency = casedWords.join(' ');
+
       return (
-        <ListGroupItem>
-          <strong>{v.name} ({v.proficiency})</strong><br/>
-        </ListGroupItem>
+        <div>
+          <strong>{v.name}</strong> ({proficiency})<br/>
+        </div>
       );
     });
 
     return (
-      <ListGroup>
+      <div>
         {listItems}
-      </ListGroup>
+      </div>
     );
   }
 
@@ -112,7 +130,7 @@ class Preview extends React.Component {
     const nationality = `${data.nationality.substring(0, 1)}${data.nationality.substring(1).toLowerCase()}`;
 
     return (
-      <Grid fluid={true}>
+      <Grid>
         <Row>
           <Col xs={12}>
             <div className="pull-right">
@@ -127,18 +145,33 @@ class Preview extends React.Component {
         </Row>
         <Row>
           <Col xs={12} ref="content">
-            <h1>{data.title}</h1>
+            <h1
+              style={{
+                textAlign: 'center'
+              }}
+            >
+              {data.title}
+            </h1>
 
-            <h2>Details</h2>
-            <strong>Name:</strong> {data.name} {data.surname}<br/>
-            <strong>Email:</strong> {data.email}<br/>
-            <strong>Phone:</strong> {data.phonenumber}<br/>
-            <strong>Github:</strong> {data.github}<br/>
-            <strong>Linkedin:</strong> {data.linkedin}<br/>
-            <strong>Date of Birth:</strong> {moment(data.dateOfBirth).format('YYYY-MM-DD')}<br/>
+            <hr
+              style={{
+                display: 'block',
+                height: '2px',
+                border: 0,
+                borderTop: '2px solid #e67e22',
+                margin: '1em 0',
+                padding: '0'
+              }}
+            />
+
+            <h3>Details</h3>
+            <strong>Name:</strong> {data.name}<br/>
+            <strong>Year of Birth:</strong> 1987<br/>
+            <strong>Current Residence:</strong> Amsterdam<br/>
             <strong>Nationality:</strong> {nationality}<br/>
+            <br/>
 
-            <h3>Summary</h3>
+
             <p>{data.aboutMe}</p>
 
             <hr
@@ -152,21 +185,7 @@ class Preview extends React.Component {
               }}
             />
 
-            <h2>Education</h2>
-            {this.getEducation()}
-
-            <hr
-              style={{
-                display: 'block',
-                height: '2px',
-                border: 0,
-                borderTop: '2px solid #e67e22',
-                margin: '1em 0',
-                padding: '0'
-              }}
-            />
-
-            <h2>Experience</h2>
+            <h3>Experience</h3>
             {this.getExperience()}
 
             <hr
@@ -180,10 +199,35 @@ class Preview extends React.Component {
               }}
             />
 
-            <h2>Courses</h2>
+            <h3>Education</h3>
+            {this.getEducation()}
+
+            <hr
+              style={{
+                display: 'block',
+                height: '2px',
+                border: 0,
+                borderTop: '2px solid #e67e22',
+                margin: '1em 0',
+                padding: '0'
+              }}
+            />
+
+            <h3>Courses</h3>
             {this.getCourses()}
 
-            <h2>Languages</h2>
+            <hr
+              style={{
+                display: 'block',
+                height: '2px',
+                border: 0,
+                borderTop: '2px solid #e67e22',
+                margin: '1em 0',
+                padding: '0'
+              }}
+            />
+
+            <h3>Languages</h3>
             {this.getLanguages()}
           </Col>
         </Row>

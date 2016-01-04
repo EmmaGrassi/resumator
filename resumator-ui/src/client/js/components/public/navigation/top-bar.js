@@ -22,7 +22,7 @@ class TopBar extends React.Component {
       </NavbarHeader>
       <NavbarCollapse>
         <Nav>
-          <NavItem eventKey={1} href="#/employees">Employees</NavItem>
+          <NavItem eventKey={1} href="#/123">Profile</NavItem>
         </Nav>
         <Nav pullRight>
           <RightButton/>
@@ -37,6 +37,6 @@ TopBar.displayName = 'TopBar';
 function select(state) {
   return {
   };
-};
+}
 
 module.exports = connect(select)(TopBar);

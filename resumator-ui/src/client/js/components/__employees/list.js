@@ -30,7 +30,7 @@ class List extends React.Component {
 
   render() {
     return (
-      <Grid fluid={true}>
+      <Grid>
         <Row>
           <Col xs={6}>
             <ButtonInput type="submit" value="New" bsStyle="success" onClick={this.handleNewButtonClick}/>

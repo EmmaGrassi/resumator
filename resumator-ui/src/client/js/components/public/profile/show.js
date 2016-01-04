@@ -24,21 +24,27 @@ class Show extends React.Component {
 
   getExperience() {
     const experience = this.props.user.item.experience;
+
     const listItems = map(experience, (v) => {
+      const startDate = moment(v.startDate);
+      const endDate = moment(v.endDate);
+
+      let difference = endDate.diff(startDate, 'years');
+
+      if (difference < 1) {
+        difference = `${endDate.diff(startDate, 'months')} months`;
+      } else {
+        difference = `${difference} years`;
+      }
+
       return (
         <ListGroupItem>
-          <strong>{v.title}</strong> at {v.companyName}<br/>
-          {moment(v.startDate).format('YYYY')} - {moment(v.endDate).format('YYYY')} ({v.location})<br/>
+          <strong>{v.title}</strong> at {v.companyName} ({v.location})<br/>
+          {startDate.format('YYYY')} - {endDate.format('YYYY')} ({difference})<br/>
           <br/>
-          <strong>Technologies:</strong><br/>
-          <ul>
-            {map(v.technologies, (v) => <li>{v}</li>)}
-          </ul>
-          <br/>
-          <strong>Methodologies:</strong><br/>
-          <ul>
-            {map(v.methodologies, (v) => <li>{v}</li>)}
-          </ul>
+          <p>{v.shortDescription}</p>
+          <strong>Technologies:</strong> {v.technologies.join(', ')}<br/>
+          <strong>Methodologies:</strong> {v.methodologies.join(', ')}<br/>
         </ListGroupItem>
       );
     });
@@ -92,12 +98,13 @@ class Show extends React.Component {
     const listItems = map(items, (v) => {
       const words = v.proficiency.split('_');
       const casedWords = map(words, (w) => {
-        return `${w.substring(0, 1)}${s.substring(1).toLowerCase()}`;
+        return `${w.substring(0, 1)}${w.substring(1).toLowerCase()}`;
       });
+      const proficiency = casedWords.join(' ');
 
       return (
         <ListGroupItem>
-          <strong>{v.name} ({v.proficiency})</strong><br/>
+          <strong>{v.name} ({proficiency})</strong><br/>
         </ListGroupItem>
       );
     });
@@ -118,7 +125,7 @@ class Show extends React.Component {
     const languages = this.getLanguages();
 
     return (
-      <Grid fluid={true}>
+      <Grid>
         <Row>
           <Col xs={4}>
             <Image src="/images/thumbnail.png" circle />

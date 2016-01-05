@@ -233,7 +233,6 @@ gulp.task('develop', 'Runs all tasks required for development.', function(cb) {
     'runTests',
 
     [
-      'runServer',
       'runLiveServer',
       'watchBrowserify',
       'watchTests',

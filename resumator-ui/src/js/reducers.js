@@ -2,10 +2,15 @@ const { combineReducers } = require('redux');
 
 const defaults = {
   user: {
-    isFetching: false,
+    token: null,
 
-    id: '123',
+    id: null,
+    name: null,
+    surname: null,
+    imageUrl: null,
+    email: null,
 
+    /*
     new: {
       title: 'Senior Node.js Developer',
 
@@ -205,23 +210,26 @@ const defaults = {
         }
       ]
     },
-
-    lastUpdated: null
+    */
   }
 };
 
 function user(state = defaults.user, action = {}) {
   switch (action.type) {
-    case 'employee:new':
+    case 'user:login:success':
+      // TODO: Use immutable.js
       return Object.assign({}, state, {
-        new: action.data
+        token: action.data.token,
+
+        id: action.data.id,
+        name: action.data.name,
+        surname: action.data.surname,
+        imageUrl: action.data.imageUrl,
+        email: action.data.email
       });
 
-    // case USER:
-    //   return state;
-
-    //case 'request:logout':
-    //  return Object.assign({}, state, defaults.user);
+    case 'user:login:error':
+      return defaults.user;
 
     default:
       return state;

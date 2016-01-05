@@ -11,7 +11,7 @@ class TagsComponent extends tcombForm.form.Component {
   static transformer = {
     format: (value) => value || [],
     parse: (value) => value
-  }
+  };
 
   getTemplate() {
     return template;

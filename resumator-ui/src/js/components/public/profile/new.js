@@ -5,8 +5,6 @@ const { connect } = require('react-redux');
 
 const EmployeeNewForm = require('./form/employee');
 
-const { newEmployee } = require('../../../actions');
-
 const actions = require('../../../actions');
 
 class New extends React.Component {
@@ -36,7 +34,7 @@ class New extends React.Component {
   }
 
   handleSubmit(data) {
-    this.props.dispatch(newEmployee(data));
+    this.props.dispatch(actions.employee.new(data));
 
     window.location.hash = `preview`;
   }

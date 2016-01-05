@@ -29,7 +29,7 @@
                     <resources>
                         <resource>
                             <targetPath>/resumator</targetPath>
-                            <directory>${project.basedir}/build/client</directory>
+                            <directory>${project.basedir}/build</directory>
                         </resource>
                         <resource>
                             <targetPath>/</targetPath>

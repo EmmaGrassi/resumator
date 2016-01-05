@@ -12,6 +12,8 @@ const NavItem = require('react-bootstrap/lib/NavItem');
 const RightButton = require('./right-button');
 
 class TopBar extends React.Component {
+  displayName = 'TopBar';
+
   render() {
     return <Navbar>
       <NavbarHeader>
@@ -31,8 +33,6 @@ class TopBar extends React.Component {
     </Navbar>;
   }
 }
-
-TopBar.displayName = 'TopBar';
 
 TopBar.mapStateToProps = function mapStateToProps(state) {
   return {

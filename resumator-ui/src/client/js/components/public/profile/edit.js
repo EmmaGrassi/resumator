@@ -4,6 +4,8 @@ const { connect } = require('react-redux');
 const EmployeeEditForm = require('./form/employee');
 
 class Edit extends React.Component {
+  displayName = 'Edit';
+
   render() {
     return (
       <div>
@@ -14,8 +16,6 @@ class Edit extends React.Component {
     );
   }
 }
-
-Edit.displayName = 'Edit';
 
 function select(state) {
   return {

@@ -1,6 +1,8 @@
 const React = require('react');
 
 class Home extends React.Component {
+  displayName = 'Home';
+
   render() {
     return (
       <div>
@@ -9,7 +11,5 @@ class Home extends React.Component {
     );
   }
 }
-
-Home.displayName = 'Home';
 
 module.exports = Home;

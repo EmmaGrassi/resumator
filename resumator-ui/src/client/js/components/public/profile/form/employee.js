@@ -97,6 +97,8 @@ const EmployeeSchema = tcombForm.struct({
 });
 
 class Employee extends React.Component {
+  displayName = 'Employee';
+
   constructor(options) {
     super(options);
 
@@ -202,7 +204,5 @@ class Employee extends React.Component {
       })
   }
 }
-
-Employee.displayName = 'Empoyee';
 
 module.exports = Employee;

@@ -14,6 +14,8 @@ const {
 } = require('react-bootstrap');
 
 class Show extends React.Component {
+  displayName = 'Show';
+
   constructor(options) {
     super(options);
 
@@ -189,8 +191,6 @@ class Show extends React.Component {
     window.location.hash = `${id}/edit`;
   }
 }
-
-Show.displayName = 'Show';
 
 function select(state) {
   return {

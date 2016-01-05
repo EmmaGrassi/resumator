@@ -7,6 +7,8 @@ const {
 } = require('react-bootstrap');
 
 class Logout extends React.Component {
+  displayName = 'Logout';
+
   render() {
     return (
       <Grid>
@@ -19,7 +21,5 @@ class Logout extends React.Component {
     );
   }
 }
-
-Logout.displayName = 'Logout';
 
 module.exports = Logout;

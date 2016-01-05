@@ -9,6 +9,8 @@ const {
 } = require('react-bootstrap');
 
 class Home extends React.Component {
+  displayName = 'Home';
+
   render() {
     return (
       <Grid>
@@ -25,7 +27,5 @@ class Home extends React.Component {
     );
   }
 }
-
-Home.displayName = 'Home';
 
 module.exports = Home;

@@ -3,6 +3,8 @@ const React = require('react');
 const TopBar = require('./navigation/top-bar');
 
 class Container extends React.Component {
+  displayName = 'Container';
+
   render() {
     return (
       <div>
@@ -19,7 +21,5 @@ class Container extends React.Component {
     );
   }
 }
-
-Container.displayName = 'Container';
 
 module.exports = Container;

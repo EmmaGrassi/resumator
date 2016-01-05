@@ -10,6 +10,8 @@ const { newEmployee } = require('../../../actions');
 const actions = require('../../../actions');
 
 class New extends React.Component {
+  displayName = 'New';
+
   constructor(options) {
     super(options);
 
@@ -39,8 +41,6 @@ class New extends React.Component {
     window.location.hash = `preview`;
   }
 }
-
-New.displayName = 'New';
 
 function select(state) {
   return {

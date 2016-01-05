@@ -11,6 +11,8 @@ const {
 } = require('react-bootstrap');
 
 class Preview extends React.Component {
+  displayName = 'Preview';
+
   constructor(options) {
     super(options);
 
@@ -240,8 +242,6 @@ class Preview extends React.Component {
     const content = this.refs.content;
   }
 }
-
-Preview.displayName = 'Preview';
 
 function select(state) {
   return {

@@ -1,6 +1,8 @@
 const React = require('react');
 
 class Edit extends React.Component {
+  displayName = 'Edit';
+
   render() {
     return (
       <div>
@@ -9,7 +11,5 @@ class Edit extends React.Component {
     );
   }
 }
-
-Edit.displayName = 'Edit';
 
 module.exports = Edit;

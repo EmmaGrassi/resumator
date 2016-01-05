@@ -6,6 +6,8 @@ const NavItem = require('react-bootstrap/lib/NavItem');
 
 // TODO: Add checking logged in state through flux.
 class RightButton extends React.Component {
+  displayName = 'RightButton';
+
   constructor() {
     super();
 
@@ -42,8 +44,6 @@ class RightButton extends React.Component {
     });
   }
 }
-
-RightButton.displayName = 'RightButton';
 
 RightButton.mapStateToProps = function mapStateToProps(state) {
   return {

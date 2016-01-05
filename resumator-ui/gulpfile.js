@@ -12,7 +12,6 @@ gulp = gulpHelp(gulp);
 var browserify = require('browserify');
 var buffer = require('vinyl-buffer');
 var del = require('del');
-var gutil = require('gulp-util');
 var liveServer = require('live-server');
 var pngquant = require('imagemin-pngquant');
 var runSequence = require('run-sequence');

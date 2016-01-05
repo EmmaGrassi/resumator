@@ -52,7 +52,7 @@ public class Bootstrap {
                 if(replayEvent(event)) {
                     result.successfullyReplayed.incrementAndGet();
                 } else {
-                    result.failures.put(event, new IllegalArgumentException("Unsopported event type: " + event.getType()));
+                    result.failures.put(event, new IllegalArgumentException("Unsupported event type: " + event.getType()));
                 }
             } catch (Exception e) {
                 result.failures.put(event, e);

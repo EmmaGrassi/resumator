@@ -5,7 +5,6 @@ import io.sytac.resumator.events.EventPublisher;
 import org.glassfish.hk2.api.Factory;
 
 import javax.inject.Inject;
-import javax.ws.rs.ext.ContextResolver;
 import javax.ws.rs.ext.Provider;
 
 /**

@@ -1,7 +1,6 @@
 package io.sytac.resumator;
 
 import com.google.common.io.Resources;
-import io.sytac.resumator.store.sql.SchemaManager;
 import org.junit.Before;
 
 import java.io.File;

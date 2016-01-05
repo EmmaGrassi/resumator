@@ -22,7 +22,6 @@ import javax.inject.Singleton;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Arrays;
 import java.util.Optional;
 
 import static io.sytac.resumator.ConfigurationEntries.BASE_URI;
@@ -32,7 +31,7 @@ import static io.sytac.resumator.ConfigurationEntries.BASE_URI;
  *   ║ ├─┤├┤   ╠╦╝├┤ └─┐│ ││││├─┤ │ │ │├┬┘
  *   ╩ ┴ ┴└─┘  ╩╚═└─┘└─┘└─┘┴ ┴┴ ┴ ┴ └─┘┴└─
  *
- * The entry point to the Resumator&trade;. Making consultanting life easier.
+ * The entry point to the Resumator&trade;. Making consulting life easier.
  *
  * @author Carlo Sciolla
  * @since 0.1
@@ -56,7 +55,7 @@ public class ResumatorApp {
     }
 
     protected ResourceConfig constructConfig(final Configuration configuration) {
-        ResourceConfig rc = registerApplicationResorces(new ResourceConfig());
+        ResourceConfig rc = registerApplicationResources(new ResourceConfig());
         rc = registerConfiguration(rc, configuration);
         rc = registerEventPublisher(rc);
         rc = registerCommandFactory(rc);
@@ -127,7 +126,7 @@ public class ResumatorApp {
         });
     }
 
-    protected ResourceConfig registerApplicationResorces(final ResourceConfig rc) {
+    protected ResourceConfig registerApplicationResources(final ResourceConfig rc) {
         return rc.packages(
                 "io.sytac.resumator.employee",
                 "io.sytac.resumator.organization",

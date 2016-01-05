@@ -26,7 +26,7 @@ The above is the only property that can be set exclusively as a System property.
 
 ## Configuration reference
 
-The following configuration entries are understood by the Restumator:
+The following configuration entries are understood by the Resumator:
 
                             Key | Description | Sample value
 --------------------------------|-------------|-------------

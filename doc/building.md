@@ -2,7 +2,7 @@ The Resumator can be build as a plain JAR file or as a Docker container (preferr
 
 ## Install Requirements
 
-These are the mimimum versions of the required software:
+These are the minimum versions of the required software:
 
 * JDK    8
 * Maven  3.1

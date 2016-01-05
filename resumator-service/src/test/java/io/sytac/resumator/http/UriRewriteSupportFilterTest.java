@@ -2,7 +2,6 @@ package io.sytac.resumator.http;
 
 import io.sytac.resumator.Configuration;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.ws.rs.container.ContainerRequestContext;

@@ -4,7 +4,6 @@ import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import io.sytac.resumator.http.BaseResource;
 import io.sytac.resumator.model.enums.Nationality;
-import org.eclipse.jetty.http.HttpStatus;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;

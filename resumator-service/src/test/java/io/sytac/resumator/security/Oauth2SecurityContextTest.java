@@ -1,7 +1,6 @@
 package io.sytac.resumator.security;
 
 import com.google.common.collect.Sets;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Optional;
@@ -9,7 +8,7 @@ import java.util.Optional;
 import static org.junit.Assert.*;
 
 /**
- * Test role acces levels
+ * Test role access levels
  */
 public class Oauth2SecurityContextTest {
 

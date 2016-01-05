@@ -10,7 +10,6 @@ import io.sytac.resumator.employee.NewEmployeeCommand;
 import io.sytac.resumator.employee.NewEmployeeCommandDeserializer;
 import org.glassfish.hk2.api.Factory;
 
-import javax.ws.rs.ext.ContextResolver;
 import javax.ws.rs.ext.Provider;
 
 

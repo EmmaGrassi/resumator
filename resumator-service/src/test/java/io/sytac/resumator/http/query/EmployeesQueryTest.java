@@ -7,8 +7,6 @@ import org.junit.Test;
 
 import javax.ws.rs.client.WebTarget;
 
-import java.util.Collections;
-
 import static org.junit.Assert.assertEquals;
 
 /**

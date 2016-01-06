@@ -13,13 +13,15 @@ class RightButton extends React.Component {
   constructor() {
     super();
 
+    this.auth2 = null;
+
     bindAll(this, [
-      'handleSignInError',
-      'handleSignInSuccess'
+      'handleLogInError',
+      'handleLogInSuccess'
     ]);
   }
 
-  handleSignInSuccess(user) {
+  handleLogInSuccess(user) {
     const token = user.getAuthResponse().id_token;
     const basicProfile = user.getBasicProfile();
 
@@ -39,26 +41,37 @@ class RightButton extends React.Component {
   }
 
   // TODO: Implement
-  handleSignInError() {
+  handleLogInError() {
     console.error(arguments);
+  }
+
+  handleLogOutButtonClick() {
+    debugger;
   }
 
   componentDidMount() {
     const loginButtonElement = document.getElementById('login-button');
-    let auth2;
 
     gapi.load('auth2', () => {
-      auth2 = gapi.auth2.init({
+      this.auth2 = gapi.auth2.init({
         client_id: '49560145160-80v99olfohmo0etbo6hugpo337p5d1nl.apps.googleusercontent.com',
         cookiepolicy: 'single_host_origin'
       });
 
-      auth2.attachClickHandler(loginButtonElement, {}, this.handleSignInSuccess, this.handleSignInError);
+      if (loginButtonElement) {
+        this.auth2.attachClickHandler(loginButtonElement, {}, this.handleLogInSuccess, this.handleLogInError);
+      }
     });
   }
 
   render() {
-    return <NavItem eventKey={2} href="#" id="login-button">Log In</NavItem>;
+    const user = this.props.user;
+
+    if (user && user.name) {
+      return <NavItem eventKey={2} href="#" onClick={this.handleLogoutButtonClick}>Log Out</NavItem>;
+    } else {
+      return <NavItem eventKey={2} href="#" id="login-button">Log In</NavItem>;
+    }
   }
 }
 

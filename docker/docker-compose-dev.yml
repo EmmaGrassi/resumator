@@ -12,7 +12,7 @@ db:
 ui:
   image: resumator-ui
   volumes: 
-    - ../resumator-ui/build/client:/usr/share/nginx/html/
+    - ../resumator-ui/build:/usr/share/nginx/html/
 lb:
   image: resumator-load-balancer
   ports:

@@ -11,6 +11,7 @@ db:
     - POSTGRES_DB=resumator
 ui:
   image: resumator-ui
+  volumes:
     - ../resumator-ui/build:/usr/share/nginx/html/
 lb:
   image: resumator-load-balancer

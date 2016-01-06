@@ -30,16 +30,14 @@ public class Oauth2AuthenticationFilter implements ContainerRequestFilter {
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
-        defineSecurityContext(Optional.ofNullable(requestContext.getCookies()
-                .get(AUTHENTICATION_COOKIE)))
-                .ifPresent(requestContext::setSecurityContext);
+        Optional<Cookie> authCookie = Optional.ofNullable(requestContext.getCookies().get(AUTHENTICATION_COOKIE));
+        SecurityContext securityContext = defineSecurityContext(authCookie);
+        requestContext.setSecurityContext(securityContext);
     }
 
-    private Optional<SecurityContext> defineSecurityContext(final Optional<Cookie> maybeCookie) {
-        return maybeCookie.map(cookie -> {
-            final Optional<User> maybeUser = Optional.ofNullable(security.authenticateUser(cookie.getValue()));
-            return new Oauth2SecurityContext(maybeUser);
-        });
+    private SecurityContext defineSecurityContext(final Optional<Cookie> maybeCookie) {
+        Optional<User> user = maybeCookie.flatMap(cookie -> security.authenticateUser(cookie.getValue()));
+        return new Oauth2SecurityContext(user);
     }
 
 }

@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 
@@ -45,6 +46,7 @@ public class Oauth2AuthenticationFilterTest {
 
         final ContainerRequestContext ctx = mock(ContainerRequestContext.class);
         when(ctx.getCookies()).thenReturn(wrongCookies);
+        when(service.authenticateUser(eq(cookie.getValue()))).thenReturn(Optional.empty());
 
         filter.filter(ctx);
         verify(ctx, times(1)).setSecurityContext(argThat(arg -> {

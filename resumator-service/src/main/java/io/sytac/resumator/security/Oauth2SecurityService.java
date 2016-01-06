@@ -47,32 +47,23 @@ public class Oauth2SecurityService {
 
     /**
      * Authenticate the token Id against the GoogleId verifier, and return the associated user if authenticated.
-     * If security is disabled, return an explicitly fake user.
-     * @param idtoken the Id token provided by the Google Authentication on Front End
+     *
+     * @param idToken the Id token provided by the Google Authentication on Front End
      * @return the associated user
      */
-    public User authenticateUser(final String idtoken) {
-        boolean securityDisabled = config.getProperty(SECURITY_DISABLED)
-                                         .map(Boolean::parseBoolean)
-                                         .orElse(false);
-        if (!securityDisabled) {
-            final GoogleIdTokenVerifier verifier = buildVerifier();
-            final Optional<GoogleIdToken> idToken = verify(verifier, idtoken);
-            return toUser(idToken);
-        } else {
-            return new User("Fake Organization Id", "Fake User", Sets.newHashSet("user"));
-        }
-
+    public Optional<User> authenticateUser(final String idToken) {
+        final GoogleIdTokenVerifier verifier = buildVerifier();
+        final Optional<GoogleIdToken> idtoken = verify(verifier, idToken);
+        return toUser(idtoken);
     }
 
-    private User toUser(final Optional<GoogleIdToken> idToken) {
-        return idToken.map(token -> {
+    private Optional<User> toUser(final Optional<GoogleIdToken> idToken) {
+        return idToken.flatMap(token -> {
             final Optional<Organization> organization = organizations.fromDomain(token.getPayload().getHostedDomain());
             return organization.map(org -> new User(org.getId(),
-                                                    token.getPayload().getEmail(),
-                                                    getRoles(token.getPayload().getEmail())))
-                        .orElse(User.ANONYMOUS);
-        }).orElse(User.ANONYMOUS);
+                    token.getPayload().getEmail(),
+                    getRoles(token.getPayload().getEmail())));
+        });
     }
 
     private Set<String> getRoles(final String user) {

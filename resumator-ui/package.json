@@ -12,8 +12,6 @@
     "lodash": "^3.10.1",
     "loglevel": "^1.4.0",
     "moment": "^2.10.6",
-    "mongodb": "^2.1.2",
-    "mongoose": "^4.3.4",
     "qwest": "^2.2.6",
     "react": "^0.14.2",
     "react-bootstrap": "^0.28.1",

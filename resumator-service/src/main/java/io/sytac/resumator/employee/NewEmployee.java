@@ -17,17 +17,14 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.SecurityContext;
-import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.*;
 import java.net.URI;
 import java.security.Principal;
+import java.util.Map;
 
 /**
  * Creates a new {@link Employee}
@@ -36,7 +33,7 @@ import java.security.Principal;
  * @since 0.1
  */
 @Path("employee")
-@RolesAllowed({Roles.USER})
+@RolesAllowed(Roles.USER)
 public class NewEmployee extends BaseResource {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NewEmployee.class);
@@ -53,33 +50,34 @@ public class NewEmployee extends BaseResource {
     }
 
     @POST
-    @Consumes("application/x-www-form-urlencoded")
+    @Consumes("application/json")
     @Produces({RepresentationFactory.HAL_JSON, "application/json"})
-    public Representation newEmployee(final MultivaluedMap<String, String> formParams,
+    public Response newEmployee(final Map<String, String> input,
                                       @Context final UriInfo uriInfo,
-                                      @Context final HttpServletResponse response,
-                                      @Context final SecurityContext securityContext){
-        final String orgId = getOrgId(securityContext);
-        final NewEmployeeCommand descriptor = descriptors.newEmployeeCommand(formParams, orgId);
-        final Employee employee = addEmployee(orgId, descriptor);
-        events.publish(descriptor);
-        return buildRepresentation(uriInfo, response, employee);
+                                      @Context final SecurityContext securityContext) {
+
+        final String organizationDomain = getOrgDomain(securityContext);
+        final NewEmployeeCommand command = descriptors.newEmployeeCommand(input, organizationDomain);
+        final Employee employee = addEmployee(organizationDomain, command);
+        events.publish(command);
+        return buildRepresentation(uriInfo, employee);
     }
 
-    private Representation buildRepresentation(final @Context UriInfo uriInfo, final @Context HttpServletResponse response, final Employee employee) {
+    private Response buildRepresentation(final UriInfo uriInfo, final Employee employee) {
         final URI employeeLink = resourceLink(uriInfo, EmployeeQuery.class, employee.getId().toString());
-
-        response.setStatus(HttpStatus.CREATED_201);
-        response.setHeader(HttpHeader.LOCATION.asString(), employeeLink.toString());
-        return rest.newRepresentation()
+        final Representation halResource = rest.newRepresentation()
                 .withProperty("status", "created")
                 .withProperty("id", employee.getId().toString())
                 .withLink("employee", employeeLink);
+
+        return Response.ok(halResource.toString(RepresentationFactory.HAL_JSON))
+                .status(HttpStatus.CREATED_201)
+                .header(HttpHeader.LOCATION.asString(), employeeLink.toString())
+                .build();
     }
 
-    private Employee addEmployee(String orgId, NewEmployeeCommand descriptor) {
-        final Organization organization = organizations.get(orgId)
-                                                       .orElseThrow(InvalidOrganizationException::new);
+    private Employee addEmployee(String orgDomain, NewEmployeeCommand descriptor) {
+        Organization organization = organizations.fromDomain(orgDomain).get();
         return organization.addEmployee(descriptor);
     }
 
@@ -91,5 +89,13 @@ public class NewEmployee extends BaseResource {
 
         LOGGER.warn("Tried to execute a command on a non-existing organization");
         throw new InvalidOrganizationException();
+    }
+
+    private String getOrgDomain(SecurityContext securityContext) {
+        String organizationId = getOrgId(securityContext);
+        Organization organization = organizations.get(organizationId)
+                .orElseThrow(InvalidOrganizationException::new);
+
+        return organization.getDomain();
     }
 }

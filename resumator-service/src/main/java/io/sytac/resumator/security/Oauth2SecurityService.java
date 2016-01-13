@@ -8,6 +8,7 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.common.collect.Sets;
 import io.sytac.resumator.Configuration;
+import io.sytac.resumator.organization.NewOrganizationCommand;
 import io.sytac.resumator.organization.Organization;
 import io.sytac.resumator.organization.OrganizationRepository;
 import org.slf4j.Logger;
@@ -16,10 +17,7 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Supplier;
 
 import static io.sytac.resumator.ConfigurationEntries.*;
@@ -58,6 +56,9 @@ public class Oauth2SecurityService {
     }
 
     private Optional<User> toUser(final Optional<GoogleIdToken> idToken) {
+        // Register organisation manually. Will be removed when NewOrganisation endpoint is implemented.
+        organizations.register(new NewOrganizationCommand("Sytac", "sytac.io", String.valueOf(new Date().getTime())));
+
         return idToken.flatMap(token -> {
             final Optional<Organization> organization = organizations.fromDomain(token.getPayload().getHostedDomain());
             return organization.map(org -> new User(org.getId(),

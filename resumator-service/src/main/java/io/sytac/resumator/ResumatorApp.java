@@ -1,17 +1,25 @@
 package io.sytac.resumator;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import io.sytac.resumator.command.CommandFactory;
 import io.sytac.resumator.events.EventPublisher;
 import io.sytac.resumator.events.EventPublisherFactory;
+import io.sytac.resumator.events.LocalEventPublisher;
 import io.sytac.resumator.http.UriRewriteSupportFilter;
 import io.sytac.resumator.organization.InMemoryOrganizationRepository;
 import io.sytac.resumator.organization.OrganizationRepository;
 import io.sytac.resumator.security.Oauth2AuthenticationFilter;
 import io.sytac.resumator.security.Oauth2SecurityService;
 import io.sytac.resumator.security.Oauth2SecurityServiceFactory;
+import io.sytac.resumator.store.Bootstrap;
+import io.sytac.resumator.store.EventStore;
+import io.sytac.resumator.store.sql.SchemaManager;
+import io.sytac.resumator.store.sql.SqlStore;
 import org.eclipse.jetty.server.Server;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
+import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.jetty.JettyHttpContainerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
@@ -22,6 +30,9 @@ import javax.inject.Singleton;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import static io.sytac.resumator.ConfigurationEntries.BASE_URI;
@@ -49,6 +60,17 @@ public class ResumatorApp {
 
         try {
             app.createServer(configuration, rc).start();
+
+
+            /*ObjectMapper objectMapper = new ObjectMapper().registerModule(new Jdk8Module());
+            EventPublisher eventPublisher = new LocalEventPublisher(configuration, objectMapper);
+            SqlStore store = new SqlStore(configuration, eventPublisher);
+//            store.setReadOnly(false);
+
+            new SchemaManager(configuration, store).migrate();
+
+            Bootstrap bootstrap = new Bootstrap(store, new InMemoryOrganizationRepository(), objectMapper);
+            bootstrap.start(result -> LOGGER.info("Bootstrap started"));*/
         } catch (Exception e) {
             e.printStackTrace();
         }

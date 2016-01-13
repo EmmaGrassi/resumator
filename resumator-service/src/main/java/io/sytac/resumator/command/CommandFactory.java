@@ -5,6 +5,8 @@ import io.sytac.resumator.events.EventPublisher;
 import io.sytac.resumator.organization.NewOrganizationCommand;
 
 import javax.ws.rs.core.MultivaluedMap;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -21,14 +23,14 @@ public class CommandFactory {
         this.events = eventPublisher;
     }
 
-    public NewEmployeeCommand newEmployeeCommand(final MultivaluedMap<String, String> formParams, final String organizationId) {
-        final String name = formParams.getFirst("name");
-        final String surname = formParams.getFirst("name");
-        final String yearOfBirth = formParams.getFirst("name");
-        final String nationality = formParams.getFirst("name");
-        final String currentResident = formParams.getFirst("name");
-        final String timestamp = formParams.getFirst("timestamp");
-        final NewEmployeeCommand newEmployeeCommand = new NewEmployeeCommand(organizationId, name, surname, yearOfBirth, nationality, currentResident, timestamp);
+    public NewEmployeeCommand newEmployeeCommand(final Map<String, String> input, final String organizationDomain) {
+        final String name = input.get("name");
+        final String surname = input.get("surname");
+        final String yearOfBirth = input.get("dateOfBirth");
+        final String nationality = input.get("nationality");
+        final String currentResident = input.get("nationality");
+        final String timestamp = String.valueOf(new Date().getTime());
+        final NewEmployeeCommand newEmployeeCommand = new NewEmployeeCommand(organizationDomain, name, surname, yearOfBirth, nationality, currentResident, timestamp);
         events.publish(newEmployeeCommand);
         return newEmployeeCommand;
     }

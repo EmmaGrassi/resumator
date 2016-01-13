@@ -10,14 +10,11 @@ import org.eclipse.jetty.http.HttpStatus;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.SecurityContext;
-import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.*;
 import java.net.URI;
 import java.util.Map;
 
@@ -41,25 +38,26 @@ public class NewOrganization extends BaseResource {
     }
 
     @POST
-    @Consumes("application/json")
-    @Produces({RepresentationFactory.HAL_JSON, "application/json"})
-    public Representation createOrganization(final Map<String, String> input,
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces({RepresentationFactory.HAL_JSON, MediaType.APPLICATION_JSON})
+    public Response createOrganization(final Map<String, String> input,
                                              @Context final UriInfo uriInfo,
-                                             @Context final HttpServletResponse response,
                                              @Context final SecurityContext securityContext) {
         final NewOrganizationCommand command = descriptors.newOrganizationCommand(input);
         final Organization org = organizations.register(command);
-        return buildRepresentation(uriInfo, response, org);
+        return buildRepresentation(uriInfo, org);
     }
 
-    private Representation buildRepresentation(final UriInfo uriInfo, final HttpServletResponse response, final Organization org) {
+    private Response buildRepresentation(final UriInfo uriInfo, final Organization org) {
         final URI orgLink = resourceLink(uriInfo, OrganizationQuery.class, org.getId());
-
-        response.setStatus(HttpStatus.CREATED_201);
-        response.setHeader(HttpHeader.LOCATION.asString(), orgLink.toString());
-        return rest.newRepresentation()
+        final Representation halResource = rest.newRepresentation()
                 .withProperty("status", "created")
                 .withProperty("id", org.getId())
-                .withLink("employee", orgLink);
+                .withLink("organisation", orgLink);
+
+        return Response.ok(halResource.toString(RepresentationFactory.HAL_JSON))
+                .status(HttpStatus.CREATED_201)
+                .header(HttpHeader.LOCATION.asString(), orgLink.toString())
+                .build();
     }
 }

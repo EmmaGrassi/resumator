@@ -35,6 +35,7 @@ public class SchemaManager {
 
     public void migrate(){
         // Start the migration
+//        flyway.clean();
         flyway.migrate();
     }
 

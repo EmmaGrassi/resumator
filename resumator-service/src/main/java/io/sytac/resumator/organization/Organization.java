@@ -66,6 +66,10 @@ public class Organization {
         return name;
     }
 
+    public Employee getEmployeeById(String id) {
+        return employees.get(new EmployeeId(id));
+    }
+
     public Optional<Employee> findEmployeeByName(String name, String surname) {
         return employees.values()
                         .stream()

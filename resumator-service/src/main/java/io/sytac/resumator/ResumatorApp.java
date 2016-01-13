@@ -63,7 +63,12 @@ public class ResumatorApp {
         rc = registerUriRewriteSupport(rc);
         rc = registerSecurity(rc);
         rc = registerRepositories(rc);
+        rc = registerGlobalExceptionHandler(rc);
         return rc;
+    }
+
+    private ResourceConfig registerGlobalExceptionHandler(final ResourceConfig rc) {
+        return rc.register(GlobalExceptionMapper.class);
     }
 
     private ResourceConfig registerRepositories(final ResourceConfig rc) {

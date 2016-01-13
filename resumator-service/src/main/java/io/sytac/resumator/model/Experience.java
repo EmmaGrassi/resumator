@@ -14,20 +14,20 @@ public class Experience {
 	
 	private final String companyName;
 	private final String title;
-	private final String location;
+	private final String city;
+	private final String country;
 	private final String shortDescription;
-	private final List<String> roles;
 	private final List<String> technologies;
 	private final List<String> methodologies;
 	private final Date startDate;
 	private final Date endDate;
 
-	public Experience(String companyName, String title, String location, String shortDescription, List<String> roles, List<String> technologies, List<String> methodologies, Date startDate, Date endDate) {
+	public Experience(String companyName, String title, String city, String country, String shortDescription, List<String> technologies, List<String> methodologies, Date startDate, Date endDate) {
 		this.companyName = companyName;
 		this.title = title;
-		this.location = location;
+		this.city = city;
+		this.country = country;
 		this.shortDescription = shortDescription;
-		this.roles = roles;
 		this.technologies = technologies;
 		this.methodologies = methodologies;
 		this.startDate = startDate;
@@ -43,17 +43,17 @@ public class Experience {
 	public String getShortDescription() {
 		return shortDescription;
 	}
-	public List<String> getRoles() {
-		return roles;
-	}
 	public Date getStartDate() {
 		return startDate;
 	}
 	public Date getEndDate() {
 		return endDate;
 	}
-	public String getLocation() {
-		return location;
+	public String getCity() {
+		return city;
+	}
+	public String getCountry() {
+		return country;
 	}
 	public List<String> getTechnologies() {
 		return technologies;

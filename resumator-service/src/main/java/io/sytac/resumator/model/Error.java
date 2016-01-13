@@ -1,7 +1,7 @@
 package io.sytac.resumator.model;
 
 /**
- * Created by jacktol on 13/01/16.
+ * Represents an error that occurred together with its details.
  */
 public class Error {
 

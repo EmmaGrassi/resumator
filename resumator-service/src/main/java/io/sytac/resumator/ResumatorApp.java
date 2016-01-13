@@ -2,6 +2,7 @@ package io.sytac.resumator;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.sytac.resumator.command.CommandFactory;
+import io.sytac.resumator.docx.DocxGenerator;
 import io.sytac.resumator.events.EventPublisher;
 import io.sytac.resumator.events.EventPublisherFactory;
 import io.sytac.resumator.http.UriRewriteSupportFilter;
@@ -63,12 +64,22 @@ public class ResumatorApp {
         rc = registerUriRewriteSupport(rc);
         rc = registerSecurity(rc);
         rc = registerRepositories(rc);
+        rc = registerDocxGenerator(rc);
         rc = registerGlobalExceptionHandler(rc);
         return rc;
     }
 
     private ResourceConfig registerGlobalExceptionHandler(final ResourceConfig rc) {
         return rc.register(GlobalExceptionMapper.class);
+    }
+
+    private ResourceConfig registerDocxGenerator(final ResourceConfig rc) {
+        return rc.register(new AbstractBinder() {
+            @Override
+            protected void configure() {
+                bind(DocxGenerator.class).to(DocxGenerator.class);
+            }
+        });
     }
 
     private ResourceConfig registerRepositories(final ResourceConfig rc) {

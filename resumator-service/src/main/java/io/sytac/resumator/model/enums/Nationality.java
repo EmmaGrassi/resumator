@@ -1,5 +1,7 @@
 package io.sytac.resumator.model.enums;
 
+import org.apache.commons.lang3.text.WordUtils;
+
 public enum Nationality {
 	AFGHAN,
 	ALBANIAN,
@@ -193,5 +195,10 @@ public enum Nationality {
 	WELSH,
 	YEMENITE,
 	ZAMBIAN,
-	ZIMBABWEAN
+	ZIMBABWEAN;
+
+	@Override
+	public String toString() {
+		return WordUtils.capitalizeFully(super.toString());
+	}
 }

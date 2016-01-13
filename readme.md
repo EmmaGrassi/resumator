@@ -23,11 +23,9 @@ Creation, storing, searching and exporting of Sytac Resumes:
 [docx4j](https://github.com/plutext/docx4j) for exporting in HTML, PDF, DOCX
 
 ## Usage
-1. Create a [config file](FIXME)
-2. Start the application with:
-
 ```
-java -jar resumator-${version}.jar -Dresumator.config=<path to the config file>
+$ mvn clean install;
+$ docker-compose -f ./docker/docker-compose-dev.yml up;
 ```
 
 3. Open your browser at `http://localhost:8080/resumator`

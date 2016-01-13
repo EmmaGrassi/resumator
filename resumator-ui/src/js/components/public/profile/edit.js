@@ -1,7 +1,7 @@
-const React = require('react');
-const { connect } = require('react-redux');
+import React from 'react';
+import { connect } from 'react-redux';
 
-const EmployeeEditForm = require('./form/employee');
+import EmployeeEditForm from './form/employee';
 
 class Edit extends React.Component {
   displayName = 'Edit';
@@ -23,4 +23,4 @@ function select(state) {
   };
 }
 
-module.exports = connect(select)(Edit);
+export default connect(select)(Edit);

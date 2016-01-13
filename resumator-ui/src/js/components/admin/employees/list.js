@@ -1,4 +1,4 @@
-const React = require('react');
+import React from 'react';
 
 class List extends React.Component {
   displayName = 'List';
@@ -12,4 +12,4 @@ class List extends React.Component {
   }
 }
 
-module.exports = List;
+export default List;

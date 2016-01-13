@@ -1,6 +1,6 @@
-const React = require('react');
-const tcombForm = require('tcomb-form');
-const TagsInput = require('react-tagsinput');
+import React from 'react';
+import tcombForm from 'tcomb-form';
+import TagsInput from 'react-tagsinput';
 
 const template = tcombForm.form.Form.templates.textbox.clone({
   // override just the textbox rendering...
@@ -18,4 +18,4 @@ class TagsComponent extends tcombForm.form.Component {
   }
 }
 
-module.exports = TagsComponent;
+export default TagsComponent;

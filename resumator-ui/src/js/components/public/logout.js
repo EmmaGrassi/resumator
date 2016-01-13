@@ -1,10 +1,5 @@
-const React = require('react');
-
-const {
-  Col,
-  Grid,
-  Row
-} = require('react-bootstrap');
+import { Col, Grid, Row } from 'react-bootstrap';
+import React from 'react';
 
 class Logout extends React.Component {
   displayName = 'Logout';
@@ -22,4 +17,4 @@ class Logout extends React.Component {
   }
 }
 
-module.exports = Logout;
+export default Logout;

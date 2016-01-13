@@ -1,15 +1,15 @@
-const React = require('react');
-const qwest = require('qwest');
-const tcombForm = require('tcomb-form');
-const tcombFormTypes = require('tcomb-form-types');
-const { Button, Col, Grid, Input, Row } = require('react-bootstrap');
-const { bindAll, map, each } = require('lodash');
+import React from 'react';
+import qwest from 'qwest';
+import tcombForm from 'tcomb-form';
+import tcombFormTypes from 'tcomb-form-types';
+import { Button, Col, Grid, Input, Row } from 'react-bootstrap';
+import { bindAll, map, each } from 'lodash';
 
-// const DateTimeInput = require('react-bootstrap-datetimepicker');
-// const Select = require('react-select');
+// import DateTimeInput from 'react-bootstrap-datetimepicker';
+// import Select from 'react-select';
 
-const nationalities = require('./nationalities');
-const TagsComponent = require('../../../../lib/components/tcomb-form/tags');
+import nationalities from './nationalities';
+import TagsComponent from '../../../../lib/components/tcomb-form/tags';
 
 const { Form } = tcombForm.form;
 
@@ -205,4 +205,4 @@ class Employee extends React.Component {
   }
 }
 
-module.exports = Employee;
+export default Employee;

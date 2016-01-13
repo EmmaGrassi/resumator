@@ -1,12 +1,5 @@
-const React = require('react');
-
-const {
-  Button,
-  Col,
-  Grid,
-  Jumbotron,
-  Row
-} = require('react-bootstrap');
+import { Button, Col, Grid, Jumbotron, Row } from 'react-bootstrap';
+import React from 'react';
 
 class Home extends React.Component {
   displayName = 'Home';
@@ -28,4 +21,4 @@ class Home extends React.Component {
   }
 }
 
-module.exports = Home;
+export default Home;

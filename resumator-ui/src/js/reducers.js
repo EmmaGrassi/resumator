@@ -1,4 +1,4 @@
-const { combineReducers } = require('redux');
+import { combineReducers } from 'redux';
 
 const defaults = {
   user: {
@@ -236,6 +236,6 @@ function user(state = defaults.user, action = {}) {
   }
 }
 
-module.exports = combineReducers({
+export default combineReducers({
   user
 });

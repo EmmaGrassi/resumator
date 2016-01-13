@@ -33,7 +33,7 @@ import java.util.Map;
  * @since 0.1
  */
 @Path("employee")
-@RolesAllowed(Roles.USER)
+//@RolesAllowed(Roles.USER)
 public class NewEmployee extends BaseResource {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NewEmployee.class);
@@ -50,8 +50,8 @@ public class NewEmployee extends BaseResource {
     }
 
     @POST
-    @Consumes("application/json")
-    @Produces({RepresentationFactory.HAL_JSON, "application/json"})
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces({RepresentationFactory.HAL_JSON, MediaType.APPLICATION_JSON})
     public Response newEmployee(final Map<String, String> input,
                                       @Context final UriInfo uriInfo,
                                       @Context final SecurityContext securityContext) {

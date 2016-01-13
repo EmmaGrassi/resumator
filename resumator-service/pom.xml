@@ -80,11 +80,11 @@
             <artifactId>halbuilder-jaxrs</artifactId>
             <version>${halbuilder.jaxrs.version}</version>
         </dependency>
-        <!--<dependency>
+        <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
             <version>${jackson.version}</version>
-        </dependency>-->
+        </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jdk8</artifactId>

@@ -1,11 +1,11 @@
-const React = require('react');
-const { bindAll } = require('lodash');
-const { connect } = require('react-redux');
+import React from 'react';
+import { bindAll } from 'lodash';
+import { connect } from 'react-redux';
 
 
-const EmployeeNewForm = require('./form/employee');
+import EmployeeNewForm from './form/employee';
 
-const actions = require('../../../actions');
+import actions from '../../../actions';
 
 class New extends React.Component {
   displayName = 'New';
@@ -46,4 +46,4 @@ function select(state) {
   };
 }
 
-module.exports = connect(select)(New);
+export default connect(select)(New);

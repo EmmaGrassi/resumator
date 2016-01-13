@@ -1,16 +1,6 @@
-const _ = require('lodash');
-const React = require('react');
-
-const {
-  Button,
-  ButtonInput,
-  Col,
-  Grid,
-  Input,
-  Jumbotron,
-  Row,
-  Table
-} = require('react-bootstrap');
+import { ButtonInput, Col, Grid, Input, Row, Table } from 'react-bootstrap';
+import React from 'react';
+import _ from 'lodash';
 
 class List extends React.Component {
   constructor(options) {
@@ -85,4 +75,4 @@ class List extends React.Component {
 
 List.displayName = 'List';
 
-module.exports = List;
+export default List;

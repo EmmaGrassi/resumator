@@ -1,10 +1,5 @@
-const React = require('react');
-
-const {
-  Col,
-  Grid,
-  Row
-} = require('react-bootstrap');
+import { Col, Grid, Row } from 'react-bootstrap';
+import React from 'react';
 
 class Login extends React.Component {
   displayName = 'Login';
@@ -22,4 +17,4 @@ class Login extends React.Component {
   }
 }
 
-module.exports = Login;
+export default Login;

@@ -1,7 +1,7 @@
-const React = require('react');
-const { connect } = require('react-redux');
+import React from 'react';
+import { connect } from 'react-redux';
 
-const NavItem = require('react-bootstrap/lib/NavItem');
+import NavItem from 'react-bootstrap/lib/NavItem';
 
 // TODO: Add checking logged in state through flux.
 class RightButton extends React.Component {
@@ -33,4 +33,4 @@ RightButton.mapStateToProps = function mapStateToProps(state) {
   };
 };
 
-module.exports = connect(RightButton.mapStateToProps)(RightButton);
+export default connect(RightButton.mapStateToProps)(RightButton);

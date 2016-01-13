@@ -1,6 +1,6 @@
-const React = require('react');
+import React from 'react';
 
-const TopBar = require('./navigation/top-bar');
+import TopBar from './navigation/top-bar';
 
 class Container extends React.Component {
   displayName = 'Container';
@@ -22,4 +22,4 @@ class Container extends React.Component {
   }
 }
 
-module.exports = Container;
+export default Container;

@@ -1,11 +1,11 @@
-const React = require('react');
-const qwest = require('qwest');
-const { bindAll } = require('lodash');
-const { connect } = require('react-redux');
+import React from 'react';
+import qwest from 'qwest';
+import { bindAll } from 'lodash';
+import { connect } from 'react-redux';
 
-const NavItem = require('react-bootstrap/lib/NavItem');
+import NavItem from 'react-bootstrap/lib/NavItem';
 
-const actions = require('../../../actions');
+import actions from '../../../actions';
 
 class RightButton extends React.Component {
   displayName = 'RightButton';
@@ -81,4 +81,4 @@ RightButton.mapStateToProps = function mapStateToProps(state) {
   };
 };
 
-module.exports = connect(RightButton.mapStateToProps)(RightButton);
+export default connect(RightButton.mapStateToProps)(RightButton);

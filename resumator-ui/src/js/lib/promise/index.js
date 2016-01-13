@@ -1,7 +1,7 @@
-const promiseFromCallback = require('./promiseFromCallback');
-const promiseFromNodeCallback = require('./promiseFromNodeCallback');
+import promiseFromCallback from './promiseFromCallback';
+import promiseFromNodeCallback from './promiseFromNodeCallback';
 
-module.exports = {
+export default {
   promiseFromCallback,
   promiseFromNodeCallback
 };

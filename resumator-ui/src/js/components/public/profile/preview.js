@@ -1,14 +1,8 @@
-const React = require('react');
-const moment = require('moment');
-const { bindAll, map } = require('lodash');
-const { connect } = require('react-redux');
-
-const {
-  Button,
-  Col,
-  Grid,
-  Row
-} = require('react-bootstrap');
+import React from 'react';
+import moment from 'moment';
+import { Button, Col, Grid, Row } from 'react-bootstrap';
+import { bindAll, map } from 'lodash';
+import { connect } from 'react-redux';
 
 class Preview extends React.Component {
   displayName = 'Preview';
@@ -249,4 +243,4 @@ function select(state) {
   };
 }
 
-module.exports = connect(select)(Preview);
+export default connect(select)(Preview);

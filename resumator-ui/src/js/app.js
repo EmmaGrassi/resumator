@@ -1,31 +1,32 @@
-require('babel-polyfill');
+import 'babel-polyfill';
 
-const React = require('react');
-const ReactDOM = require('react-dom');
-const createHistory = require('history/lib/createHashHistory');
-const domready = require('domready');
-const { IndexRoute, Route, Router } = require('react-router');
-const { Provider } = require('react-redux');
+import React from 'react';
+import ReactDOM from 'react-dom';
+import createHistory from 'history/lib/createHashHistory';
+import domready from 'domready';
+import { IndexRoute, Route, Router } from 'react-router';
+import { Provider } from 'react-redux';
 
 // Redux
-const actions = require('./actions');
-const reducers = require('./reducers');
-const store = require('./store')(reducers, {});
+import actions from './actions';
+import reducers from './reducers';
+import _store from './store';
+const store = _store(reducers, {});
 
 // Components
-const AdminContainer = require('./components/admin/container');
-const AdminEmployeesEdit = require('./components/admin/employees/edit');
-const AdminEmployeesList = require('./components/admin/employees/list');
-const AdminEmployeesShow = require('./components/admin/employees/show');
-const AdminHome = require('./components/admin/home');
-const PublicContainer = require('./components/public/container');
-const PublicHome = require('./components/public/home');
-const PublicLogin = require('./components/public/login');
-const PublicLogout = require('./components/public/logout');
-const PublicProfileEdit = require('./components/public/profile/edit');
-const PublicProfileNew = require('./components/public/profile/new');
-const PublicProfilePreview = require('./components/public/profile/preview');
-const PublicProfileShow = require('./components/public/profile/show');
+import AdminContainer from './components/admin/container';
+import AdminEmployeesEdit from './components/admin/employees/edit';
+import AdminEmployeesList from './components/admin/employees/list';
+import AdminEmployeesShow from './components/admin/employees/show';
+import AdminHome from './components/admin/home';
+import PublicContainer from './components/public/container';
+import PublicHome from './components/public/home';
+import PublicLogin from './components/public/login';
+import PublicLogout from './components/public/logout';
+import PublicProfileEdit from './components/public/profile/edit';
+import PublicProfileNew from './components/public/profile/new';
+import PublicProfilePreview from './components/public/profile/preview';
+import PublicProfileShow from './components/public/profile/show';
 
 const rootElement = document.getElementById('root');
 

@@ -1,7 +1,7 @@
-const { createStore, applyMiddleware } = require('redux');
-const loggerMiddleware = require('redux-logger');
-const promiseMiddleware = require('redux-promise');
-const thunkMiddleware = require('redux-thunk');
+import { createStore, applyMiddleware } from 'redux';
+import loggerMiddleware from 'redux-logger';
+import promiseMiddleware from 'redux-promise';
+import thunkMiddleware from 'redux-thunk';
 
 const store = applyMiddleware(
   thunkMiddleware,
@@ -9,4 +9,4 @@ const store = applyMiddleware(
   loggerMiddleware()
 )(createStore);
 
-module.exports = store;
+export default store;

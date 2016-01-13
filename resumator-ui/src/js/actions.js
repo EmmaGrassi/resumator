@@ -30,7 +30,7 @@ const employee = {
   }
 };
 
-module.exports = {
+export default {
   employee,
   user
 };

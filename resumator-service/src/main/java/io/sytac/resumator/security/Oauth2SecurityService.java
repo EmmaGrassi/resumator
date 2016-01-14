@@ -56,9 +56,6 @@ public class Oauth2SecurityService {
     }
 
     private Optional<User> toUser(final Optional<GoogleIdToken> idToken) {
-        // Register organisation manually. Will be removed when NewOrganisation endpoint is implemented.
-        organizations.register(new NewOrganizationCommand("Sytac", "sytac.io", String.valueOf(new Date().getTime())));
-
         return idToken.flatMap(token -> {
             final Optional<Organization> organization = organizations.fromDomain(token.getPayload().getHostedDomain());
             return organization.map(org -> new User(org.getId(),

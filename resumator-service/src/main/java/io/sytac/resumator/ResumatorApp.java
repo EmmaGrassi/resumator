@@ -10,7 +10,10 @@ import io.sytac.resumator.organization.OrganizationRepository;
 import io.sytac.resumator.security.Oauth2AuthenticationFilter;
 import io.sytac.resumator.security.Oauth2SecurityService;
 import io.sytac.resumator.security.Oauth2SecurityServiceFactory;
+import io.sytac.resumator.store.BootstrapRunner;
+import io.sytac.resumator.store.EventStore;
 import io.sytac.resumator.store.sql.SqlStore;
+import io.sytac.resumator.store.Bootstrap;
 import org.eclipse.jetty.server.Server;
 import org.glassfish.hk2.api.Immediate;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
@@ -51,17 +54,6 @@ public class ResumatorApp {
 
         try {
             app.createServer(configuration, rc).start();
-
-
-            /*ObjectMapper objectMapper = new ObjectMapper().registerModule(new Jdk8Module());
-            EventPublisher eventPublisher = new LocalEventPublisher(configuration, objectMapper);
-            SqlStore store = new SqlStore(configuration, eventPublisher);
-//            store.setReadOnly(false);
-
-            new SchemaManager(configuration, store).migrate();
-
-            Bootstrap bootstrap = new Bootstrap(store, new InMemoryOrganizationRepository(), objectMapper);
-            bootstrap.start(result -> LOGGER.info("Bootstrap started"));*/
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -76,7 +68,18 @@ public class ResumatorApp {
         rc = registerUriRewriteSupport(rc);
         rc = registerSecurity(rc);
         rc = registerRepositories(rc);
+        rc = registerBootstrap(rc);
         return rc;
+    }
+
+    private ResourceConfig registerBootstrap(final ResourceConfig rc) {
+        return rc.register(new AbstractBinder() {
+            @Override
+            protected void configure() {
+                bind(Bootstrap.class).to(Bootstrap.class).in(Singleton.class);
+                bind(BootstrapRunner.class).in(Immediate.class);
+            }
+        });
     }
 
     private ResourceConfig registerRepositories(final ResourceConfig rc) {
@@ -84,7 +87,7 @@ public class ResumatorApp {
                     @Override
                     protected void configure() {
                         bind(InMemoryOrganizationRepository.class).to(OrganizationRepository.class).in(Singleton.class);
-                        bind(SqlStore.class).to(SqlStore.class).in(Immediate.class);
+                        bind(SqlStore.class).to(EventStore.class).in(Immediate.class);
                     }
                 });
     }

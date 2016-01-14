@@ -3,12 +3,17 @@ package io.sytac.resumator.store;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.sytac.resumator.employee.NewEmployeeCommand;
 import io.sytac.resumator.model.Event;
+import io.sytac.resumator.organization.NewOrganizationCommand;
 import io.sytac.resumator.organization.OrganizationRepository;
+import org.glassfish.hk2.api.Factory;
+import org.glassfish.hk2.api.Immediate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,10 +35,13 @@ public class Bootstrap {
     private final ObjectMapper json;
 
     @Inject
-    public Bootstrap(EventStore store, OrganizationRepository orgs, ObjectMapper json) {
+    public Bootstrap(final EventStore store, final OrganizationRepository orgs, final ObjectMapper json) {
         this.store = store;
         this.orgs = orgs;
         this.json = json;
+
+        // Register organisation manually. Will be removed when NewOrganisation endpoint is implemented.
+        orgs.register(new NewOrganizationCommand("Sytac", "sytac.io", String.valueOf(new Date().getTime())));
     }
 
     public void start(final Consumer<BootstrapResult> callback) {

@@ -33,7 +33,7 @@ import java.util.Map;
  * @since 0.1
  */
 @Path("employee")
-//@RolesAllowed(Roles.USER)
+@RolesAllowed(Roles.USER)
 public class NewEmployee extends BaseResource {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NewEmployee.class);

@@ -5,13 +5,10 @@ import io.sytac.resumator.employee.NewEmployeeCommand;
 import io.sytac.resumator.model.Event;
 import io.sytac.resumator.organization.NewOrganizationCommand;
 import io.sytac.resumator.organization.OrganizationRepository;
-import org.glassfish.hk2.api.Factory;
-import org.glassfish.hk2.api.Immediate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;

@@ -77,7 +77,7 @@ public class ResumatorApp {
         return rc.register(new AbstractBinder() {
             @Override
             protected void configure() {
-                bind(Bootstrap.class).in(Singleton.class);
+                bind(Bootstrap.class).to(Bootstrap.class).in(Singleton.class);
                 bind(BootstrapRunner.class).in(Immediate.class);
             }
         });

@@ -2,6 +2,7 @@ package io.sytac.resumator.store;
 
 import io.sytac.resumator.model.Event;
 
+import javax.sql.DataSource;
 import java.util.List;
 
 /**
@@ -43,4 +44,6 @@ public interface EventStore {
      * @since 0.1
      */
     void setReadOnly(boolean mode);
+
+    DataSource getDataSource();
 }

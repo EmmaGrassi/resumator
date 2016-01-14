@@ -1,6 +1,7 @@
 package io.sytac.resumator.store.sql;
 
 import io.sytac.resumator.Configuration;
+import io.sytac.resumator.store.EventStore;
 import org.flywaydb.core.Flyway;
 
 import javax.inject.Inject;
@@ -19,7 +20,7 @@ public class SchemaManager {
     private final Flyway flyway;
 
     @Inject
-    public SchemaManager(final Configuration configuration, final SqlStore sqlStore){
+    public SchemaManager(final Configuration configuration, final EventStore sqlStore){
         // Create the Flyway instance
         flyway = new Flyway();
         flyway.setDataSource(sqlStore.getDataSource());

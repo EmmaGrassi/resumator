@@ -13,19 +13,16 @@ public class CommandHeader {
     private final Optional<String> id;
     private final Date timestamp;
     private final Optional<Long> insertOrder;
-    private final Optional<Long> streamOrder;
 
     public CommandHeader() {
         this.timestamp = new Date();
         insertOrder = Optional.empty();
-        streamOrder = Optional.empty();
         id = Optional.empty();
     }
 
     public CommandHeader(final Date date) {
         this.timestamp = date;
         insertOrder = Optional.empty();
-        streamOrder = Optional.empty();
         id = Optional.empty();
     }
 
@@ -33,7 +30,6 @@ public class CommandHeader {
         this.id = Optional.ofNullable(id);
         this.timestamp = date;
         this.insertOrder = Optional.ofNullable(insertOrder);
-        this.streamOrder = Optional.ofNullable(streamOrder);
     }
 
     public Date getTimestamp() {
@@ -42,10 +38,6 @@ public class CommandHeader {
 
     public Optional<Long> getInsertOrder() {
         return insertOrder;
-    }
-
-    public Optional<Long> getStreamOrder() {
-        return streamOrder;
     }
 
     public Optional<String> getId() {

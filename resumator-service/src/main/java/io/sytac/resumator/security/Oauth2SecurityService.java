@@ -66,7 +66,7 @@ public class Oauth2SecurityService {
 
     private Set<String> getRoles(final String user) {
         final Set<String> admins = new HashSet<>(config.getListProperty(ADMIN_ACCOUNT_LIST));
-        return admins.contains(user) ? Sets.newHashSet(ADMIN) : Sets.newHashSet(USER);
+        return admins.contains(user) ? Sets.newHashSet(ADMIN, USER) : Sets.newHashSet(USER);
     }
 
     private Optional<GoogleIdToken> verify(final GoogleIdTokenVerifier verifier, final String idtoken) {

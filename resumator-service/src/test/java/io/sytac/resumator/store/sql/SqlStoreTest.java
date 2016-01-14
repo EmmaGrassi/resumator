@@ -5,7 +5,6 @@ import io.sytac.resumator.Configuration;
 import io.sytac.resumator.events.EventPublisher;
 import io.sytac.resumator.model.Event;
 import io.sytac.resumator.store.IllegalInsertOrderException;
-import io.sytac.resumator.store.IllegalStreamOrderException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -70,15 +69,6 @@ public class SqlStoreTest extends AbstractResumatorTest {
     public void insertSequenceMustBeUnique(){
         Event event1 = createRandomEvent(1L);
         Event event2 = createRandomEvent(1L);
-
-        store.put(event1);
-        store.put(event2);
-    }
-
-    @Test(expected = IllegalStreamOrderException.class)
-    public void streamOrderMustBeUnique(){
-        Event event1 = createRandomEvent(1L);
-        Event event2 = createRandomEvent(2L);
 
         store.put(event1);
         store.put(event2);

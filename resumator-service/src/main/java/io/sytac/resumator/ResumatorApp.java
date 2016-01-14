@@ -1,25 +1,19 @@
 package io.sytac.resumator;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import io.sytac.resumator.command.CommandFactory;
 import io.sytac.resumator.events.EventPublisher;
 import io.sytac.resumator.events.EventPublisherFactory;
-import io.sytac.resumator.events.LocalEventPublisher;
 import io.sytac.resumator.http.UriRewriteSupportFilter;
 import io.sytac.resumator.organization.InMemoryOrganizationRepository;
 import io.sytac.resumator.organization.OrganizationRepository;
 import io.sytac.resumator.security.Oauth2AuthenticationFilter;
 import io.sytac.resumator.security.Oauth2SecurityService;
 import io.sytac.resumator.security.Oauth2SecurityServiceFactory;
-import io.sytac.resumator.store.Bootstrap;
-import io.sytac.resumator.store.EventStore;
-import io.sytac.resumator.store.sql.SchemaManager;
 import io.sytac.resumator.store.sql.SqlStore;
 import org.eclipse.jetty.server.Server;
+import org.glassfish.hk2.api.Immediate;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
-import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.jetty.JettyHttpContainerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
@@ -30,9 +24,6 @@ import javax.inject.Singleton;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 import static io.sytac.resumator.ConfigurationEntries.BASE_URI;
@@ -92,7 +83,8 @@ public class ResumatorApp {
         return rc.register(new AbstractBinder() {
                     @Override
                     protected void configure() {
-                        bind(InMemoryOrganizationRepository.class).to(OrganizationRepository.class);
+                        bind(InMemoryOrganizationRepository.class).to(OrganizationRepository.class).in(Singleton.class);
+                        bind(SqlStore.class).to(SqlStore.class).in(Immediate.class);
                     }
                 });
     }
@@ -153,7 +145,8 @@ public class ResumatorApp {
                 "io.sytac.resumator.employee",
                 "io.sytac.resumator.organization",
                 "io.sytac.resumator.service",
-                "com.theoryinpractise.halbuilder.jaxrs"); // HAL support
+                "com.theoryinpractise.halbuilder.jaxrs") // HAL support
+                .register(ImmediateScopeFeature.class);  // enable immediate instantiation of beans
     }
 
     protected Configuration loadConfiguration() {

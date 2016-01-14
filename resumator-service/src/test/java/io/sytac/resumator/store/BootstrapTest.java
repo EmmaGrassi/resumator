@@ -5,7 +5,6 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import io.sytac.resumator.command.CommandFactory;
 import io.sytac.resumator.employee.Employee;
 import io.sytac.resumator.employee.NewEmployeeCommand;
-import io.sytac.resumator.events.EventPublisher;
 import io.sytac.resumator.model.Event;
 import io.sytac.resumator.organization.InMemoryOrganizationRepository;
 import io.sytac.resumator.organization.OrganizationRepository;
@@ -37,7 +36,7 @@ public class BootstrapTest {
         orgDetails.put("domain", "acme.biz");
 
         orgs = new InMemoryOrganizationRepository();
-        orgs.register(new CommandFactory(mock(EventPublisher.class)).newOrganizationCommand(orgDetails));
+        orgs.register(new CommandFactory().newOrganizationCommand(orgDetails));
 
         bootstrap = new Bootstrap(store, orgs, json);
     }

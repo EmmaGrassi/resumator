@@ -69,7 +69,7 @@ public class LocalEventPublisherTest {
 
         @Override
         public Event asEvent(ObjectMapper json) {
-            return new Event("id", "stream", Event.ORDER_UNSET, Event.ORDER_UNSET, "bogus", new Timestamp(1L), "bogus");
+            return new Event("id", Event.ORDER_UNSET, "bogus", new Timestamp(1L), "bogus");
         }
     }
 }

@@ -1,18 +1,17 @@
 package io.sytac.resumator.store;
 
 import io.sytac.resumator.command.CommandFactory;
-import io.sytac.resumator.events.EventPublisher;
+import io.sytac.resumator.organization.InMemoryOrganizationRepository;
 import io.sytac.resumator.organization.NewOrganizationCommand;
 import io.sytac.resumator.organization.Organization;
-import io.sytac.resumator.organization.InMemoryOrganizationRepository;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 /**
  * Organizations must be available in memory
@@ -25,7 +24,7 @@ public class InMemoryOrganizationRepositoryTest {
     @Before
     public void setup() {
         repository = new InMemoryOrganizationRepository();
-        commands = new CommandFactory(mock(EventPublisher.class));
+        commands = new CommandFactory();
     }
 
     @Test

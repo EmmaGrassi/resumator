@@ -12,6 +12,7 @@ import io.sytac.resumator.security.Oauth2SecurityService;
 import io.sytac.resumator.security.Oauth2SecurityServiceFactory;
 import io.sytac.resumator.store.BootstrapRunner;
 import io.sytac.resumator.store.EventStore;
+import io.sytac.resumator.store.sql.SchemaManager;
 import io.sytac.resumator.store.sql.SqlStore;
 import io.sytac.resumator.store.Bootstrap;
 import org.eclipse.jetty.server.Server;
@@ -76,7 +77,7 @@ public class ResumatorApp {
         return rc.register(new AbstractBinder() {
             @Override
             protected void configure() {
-                bind(Bootstrap.class).to(Bootstrap.class).in(Singleton.class);
+                bind(Bootstrap.class).in(Singleton.class);
                 bind(BootstrapRunner.class).in(Immediate.class);
             }
         });
@@ -88,6 +89,7 @@ public class ResumatorApp {
                     protected void configure() {
                         bind(InMemoryOrganizationRepository.class).to(OrganizationRepository.class).in(Singleton.class);
                         bind(SqlStore.class).to(EventStore.class).in(Immediate.class);
+                        bind(SchemaManager.class).in(Immediate.class);
                     }
                 });
     }

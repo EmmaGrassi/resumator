@@ -81,9 +81,7 @@ public class NewEmployeeCommand implements Command<CommandHeader, NewEmployeeCom
         }
 
         return new Event(header.getId().orElse(randomId()),
-                        "streamId",
                         header.getInsertOrder().orElse(Event.ORDER_UNSET),
-                        header.getStreamOrder().orElse(Event.ORDER_UNSET),
                         asJson,
                         new Timestamp(header.getTimestamp().getTime()),
                         getType());

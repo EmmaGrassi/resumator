@@ -24,6 +24,7 @@ public class SchemaManager {
         flyway = new Flyway();
         flyway.setDataSource(sqlStore.getDataSource());
         monitorSQLFiles(configuration);
+        migrate();
     }
 
     private void monitorSQLFiles(final Configuration configuration) {

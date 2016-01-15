@@ -5,8 +5,6 @@ import NavItem from 'react-bootstrap/lib/NavItem';
 
 // TODO: Add checking logged in state through flux.
 class RightButton extends React.Component {
-  displayName = 'RightButton';
-
   render() {
     return <NavItem eventKey={2} href="#" id="login-button">Log In</NavItem>;
   }

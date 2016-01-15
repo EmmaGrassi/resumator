@@ -2,8 +2,6 @@ import { Col, Grid, Row } from 'react-bootstrap';
 import React from 'react';
 
 class Logout extends React.Component {
-  displayName = 'Logout';
-
   render() {
     return (
       <Grid>

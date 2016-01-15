@@ -73,6 +73,4 @@ class List extends React.Component {
   }
 }
 
-List.displayName = 'List';
-
 export default List;

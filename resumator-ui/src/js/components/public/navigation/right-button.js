@@ -8,8 +8,6 @@ import NavItem from 'react-bootstrap/lib/NavItem';
 import actions from '../../../actions';
 
 class RightButton extends React.Component {
-  displayName = 'RightButton';
-
   constructor() {
     super();
 
@@ -46,7 +44,6 @@ class RightButton extends React.Component {
   }
 
   handleLogOutButtonClick() {
-    debugger;
   }
 
   componentDidMount() {

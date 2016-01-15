@@ -1,8 +1,6 @@
 import React from 'react';
 
 class List extends React.Component {
-  displayName = 'List';
-
   render() {
     return (
       <div>

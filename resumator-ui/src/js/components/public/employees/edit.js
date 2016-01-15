@@ -1,15 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import EmployeeEditForm from './form/employee';
+import EmployeesEditForm from './form/employee';
 
 class Edit extends React.Component {
-  displayName = 'Edit';
-
   render() {
     return (
       <div>
-        <EmployeeEditForm
+        <EmployeesEditForm
           value={this.props.user.item}
         />
       </div>

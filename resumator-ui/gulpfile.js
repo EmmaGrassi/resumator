@@ -20,20 +20,18 @@ var uglify = require('gulp-uglify');
 var watchify = require('watchify');
 
 // Error handling
-function handleError(taskName, error) {
-  throw new gutil.PluginError(taskName, error, {
-    showStack: true
-  });
+function handleError(taskName, _error) {
+  const error = error.message && error.stack && error.message + '\n\n' + error.stack || error.message || error.stack || error;
 
-  //gutil.log(error)
-  //console.error(error.message && error.stack && error.message + '\n\n' + error.stack || error.message || error.stack || error);
+  gutil.log(error);
 }
 
 // Browserify
 function getBundle(path) {
   return browserify({
     entries: path,
-    // debug: true,
+    // TODO: Find a good way not to do this in production.
+    debug: true,
     transform: []
   });
 }
@@ -56,15 +54,18 @@ gulp.task('cleanDirectory', 'Cleans the build directory, starting every run with
 
 gulp.task('compileBabel', 'Compiles all JavaScript files from ES2015 to ES5 with Babel.js from the source directory to the build directory.', function(cb) {
   return gulp.src('src/**/*.js')
+    .pipe(plugins.plumber({
+      errorHandler: (error) => {
+        console.log(error);
+        this.emit('end');
+      }
+    }))
     .pipe(plugins.changed('build'))
+    // TODO: Doesn't work.
     .pipe(plugins.sourcemaps.init())
     .pipe(plugins.babel({
       presets: [ 'es2015', 'react', 'stage-0' ]
     }))
-    .on('error', function(error) {
-      handleError('compileBabel', error);
-      cb();
-    })
     .pipe(plugins.sourcemaps.write())
     .pipe(gulp.dest('build'))
 });

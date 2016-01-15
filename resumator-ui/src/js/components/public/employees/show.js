@@ -38,13 +38,13 @@ class Show extends React.Component {
 
     return (
       <ListGroup>
-        {courses.map(v => {
+        {courses.map((v, i) => {
           const name = v.get('name');
           const date = v.get('date') && moment(v.get(date)).format('YYYY');
           const description = v.get('description');
 
           return (
-            <ListGroupItem>
+            <ListGroupItem key={i}>
               <strong>{name} ({date}))</strong><br/>
               {description}
             </ListGroupItem>
@@ -60,9 +60,9 @@ class Show extends React.Component {
 
     return (
       <ListGroup>
-        {education.map(v => {
+        {education.map((v, i) => {
           return (
-            <ListGroupItem>
+            <ListGroupItem key={i}>
               <strong>{v.get('degree')}</strong><br/>
               {v.get('university')} ({v.get('fieldOfStudy')})<br/>
               {v.get('graduated') && `Graduated in ${v.get('graduationYear')}`}
@@ -79,7 +79,7 @@ class Show extends React.Component {
 
     return (
       <ListGroup>
-        {experience.map((v) => {
+        {experience.map((v, i) => {
           const startDate = moment(v.get('startDate'));
           const endDate = moment(v.get('endDate'));
 
@@ -92,7 +92,7 @@ class Show extends React.Component {
           }
 
           return (
-            <ListGroupItem>
+            <ListGroupItem key={i}>
               <strong>{v.get('title')}</strong> at {v.get('companyName')} ({v.get('location')})<br/>
               {startDate.format('YYYY')} - {endDate.format('YYYY')} ({difference})<br/>
               <br/>
@@ -112,7 +112,7 @@ class Show extends React.Component {
 
     return (
       <ListGroup>
-        {languages.map(v => {
+        {languages.map((v, i) => {
           const words = v.get('proficiency').split('_');
           const casedWords = map(words, (w) => {
             return `${w.substring(0, 1)}${w.substring(1).toLowerCase()}`;
@@ -120,7 +120,7 @@ class Show extends React.Component {
           const proficiency = casedWords.join(' ');
 
           return (
-            <ListGroupItem>
+            <ListGroupItem key={i}>
               <strong>{v.get('name')} ({proficiency})</strong><br/>
             </ListGroupItem>
           );

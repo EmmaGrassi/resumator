@@ -12,8 +12,6 @@ import NavItem from 'react-bootstrap/lib/NavItem';
 import RightButton from './right-button';
 
 class TopBar extends React.Component {
-  displayName = 'TopBar';
-
   render() {
     return <Navbar>
       <NavbarHeader>

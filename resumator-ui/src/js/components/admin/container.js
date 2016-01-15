@@ -3,8 +3,6 @@ import React from 'react';
 import TopBar from './navigation/top-bar';
 
 class Container extends React.Component {
-  displayName = 'Container';
-
   render() {
     return (
       <div>

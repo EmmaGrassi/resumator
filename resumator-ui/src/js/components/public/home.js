@@ -2,8 +2,6 @@ import { Button, Col, Grid, Jumbotron, Row } from 'react-bootstrap';
 import React from 'react';
 
 class Home extends React.Component {
-  displayName = 'Home';
-
   render() {
     return (
       <Grid>

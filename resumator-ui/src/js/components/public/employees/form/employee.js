@@ -65,7 +65,7 @@ const LanguageProficiencySchema = tcombForm.enums({
   PROFESSIONAL_WORKING: 'Professional Working Experience',
   FULL_PROFESSIONAL: 'Full Professional',
   NATIVE: 'Native'
-})
+});
 
 const LanguageSkillSchema = tcombForm.struct({
   name: tcombForm.String,
@@ -96,9 +96,7 @@ const EmployeeSchema = tcombForm.struct({
   languages: tcombForm.list(LanguageSkillSchema)
 });
 
-class Employee extends React.Component {
-  displayName = 'Employee';
-
+class EmployeeForm extends React.Component {
   constructor(options) {
     super(options);
 
@@ -205,4 +203,4 @@ class Employee extends React.Component {
   }
 }
 
-export default Employee;
+export default EmployeeForm;

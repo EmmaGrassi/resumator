@@ -6,12 +6,11 @@ import createHistory from 'history/lib/createHashHistory';
 import domready from 'domready';
 import { IndexRoute, Route, Router } from 'react-router';
 import { Provider } from 'react-redux';
+import { syncReduxAndRouter } from 'redux-simple-router';
 
 // Redux
 import actions from './actions';
-import reducers from './reducers';
-import _store from './store';
-const store = _store(reducers, {});
+import store from './store';
 
 // Components
 import AdminContainer from './components/admin/container';
@@ -23,16 +22,18 @@ import PublicContainer from './components/public/container';
 import PublicHome from './components/public/home';
 import PublicLogin from './components/public/login';
 import PublicLogout from './components/public/logout';
-import PublicProfileEdit from './components/public/profile/edit';
-import PublicProfileNew from './components/public/profile/new';
-import PublicProfilePreview from './components/public/profile/preview';
-import PublicProfileShow from './components/public/profile/show';
+import PublicEmployeesList from './components/public/employees/list';
+import PublicEmployeesEdit from './components/public/employees/edit';
+import PublicEmployeesCreate from './components/public/employees/create';
+import PublicEmployeesShow from './components/public/employees/show';
 
 const rootElement = document.getElementById('root');
 
 const history = createHistory({
   queryKey: false
 });
+
+syncReduxAndRouter(history, store);
 
 const router = (
   <Provider store={store} >
@@ -50,18 +51,20 @@ const router = (
       <Route path="/" component={ PublicContainer }>
         <IndexRoute component={ PublicHome } />
 
-        <Route path="new" component={ PublicProfileNew } />
+        <Route path="employees">
+          <IndexRoute component={ PublicEmployeesList } />
 
-        <Route path="preview" component={ PublicProfilePreview } />
+          <Route path="new" component={ PublicEmployeesCreate } />
+
+          <Route path=":userId">
+            <IndexRoute component={ PublicEmployeesShow } />
+
+            <Route path="edit" component={ PublicEmployeesEdit } />
+          </Route>
+        </Route>
 
         <Route path="login" component={ PublicLogin } />
         <Route path="logout" component={ PublicLogout } />
-
-        <Route path=":userId">
-          <IndexRoute component={ PublicProfileShow } />
-
-          <Route path="edit" component={ PublicProfileEdit } />
-        </Route>
       </Route>
     </Router>
   </Provider>

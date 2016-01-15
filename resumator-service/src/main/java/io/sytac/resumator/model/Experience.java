@@ -1,6 +1,9 @@
 package io.sytac.resumator.model;
 
-import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.sytac.resumator.utils.DateUtils;
+
 import java.util.List;
 
 /**
@@ -16,22 +19,40 @@ public class Experience {
 	private final String title;
 	private final String location;
 	private final String shortDescription;
-	private final List<String> roles;
 	private final List<String> technologies;
 	private final List<String> methodologies;
-	private final Date startDate;
-	private final Date endDate;
+	private final Long startDate;
+	private final Long endDate;
 
-	public Experience(String companyName, String title, String location, String shortDescription, List<String> roles, List<String> technologies, List<String> methodologies, Date startDate, Date endDate) {
+	public Experience(String companyName, String title, String location, String shortDescription,
+					  List<String> technologies, List<String> methodologies, Long startDate, Long endDate) {
 		this.companyName = companyName;
 		this.title = title;
 		this.location = location;
 		this.shortDescription = shortDescription;
-		this.roles = roles;
 		this.technologies = technologies;
 		this.methodologies = methodologies;
 		this.startDate = startDate;
 		this.endDate = endDate;
+	}
+
+	@JsonCreator
+	public Experience(@JsonProperty("companyName") String companyName,
+					  @JsonProperty("title") String title,
+					  @JsonProperty("location") String location,
+					  @JsonProperty("shortDescription") String shortDescription,
+					  @JsonProperty("technologies") List<String> technologies,
+					  @JsonProperty("methodologies") List<String> methodologies,
+					  @JsonProperty("startDate") String startDate,
+					  @JsonProperty("endDate") String endDate) {
+		this.companyName = companyName;
+		this.title = title;
+		this.location = location;
+		this.shortDescription = shortDescription;
+		this.technologies = technologies;
+		this.methodologies = methodologies;
+		this.startDate = DateUtils.convert(startDate);
+		this.endDate = DateUtils.convert(endDate);
 	}
 
 	public String getCompanyName() {
@@ -43,13 +64,10 @@ public class Experience {
 	public String getShortDescription() {
 		return shortDescription;
 	}
-	public List<String> getRoles() {
-		return roles;
-	}
-	public Date getStartDate() {
+	public Long getStartDate() {
 		return startDate;
 	}
-	public Date getEndDate() {
+	public Long getEndDate() {
 		return endDate;
 	}
 	public String getLocation() {

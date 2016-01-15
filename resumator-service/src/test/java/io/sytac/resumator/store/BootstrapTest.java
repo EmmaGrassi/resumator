@@ -5,6 +5,8 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import io.sytac.resumator.command.CommandFactory;
 import io.sytac.resumator.employee.Employee;
 import io.sytac.resumator.employee.NewEmployeeCommand;
+import io.sytac.resumator.employee.NewEmployeeCommandPayload;
+import io.sytac.resumator.events.EventPublisher;
 import io.sytac.resumator.model.Event;
 import io.sytac.resumator.organization.InMemoryOrganizationRepository;
 import io.sytac.resumator.organization.OrganizationRepository;
@@ -59,7 +61,9 @@ public class BootstrapTest {
     }
 
     private Event newEmployeeEvent() {
-        final NewEmployeeCommand command = new NewEmployeeCommand("acme.biz", "name", "surname", "1984", "ITALIAN", "Amsterdam", Long.toString(new Date().getTime()));
+        final NewEmployeeCommandPayload employeeCommandPayload = new NewEmployeeCommandPayload("acme.biz", "title", "name", "surname", "email",
+                "phonenumber", "github", "linkedin", "1984-04-22T00: 00: 00.000Z", "ITALIAN", "", null, null, null, null);
+        final NewEmployeeCommand command = new NewEmployeeCommand(employeeCommandPayload, Long.toString(new Date().getTime()));
         return command.asEvent(json);
     }
 

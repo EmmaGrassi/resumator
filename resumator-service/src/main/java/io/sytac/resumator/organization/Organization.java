@@ -5,6 +5,7 @@ import io.sytac.resumator.employee.EmployeeId;
 import io.sytac.resumator.employee.NewEmployeeCommand;
 import io.sytac.resumator.employee.NewEmployeeCommandPayload;
 import io.sytac.resumator.model.enums.Nationality;
+import io.sytac.resumator.utils.DateUtils;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -46,11 +47,20 @@ public class Organization {
     private Employee fromCommand(final NewEmployeeCommand command) {
         final NewEmployeeCommandPayload payload = command.getPayload();
 
-        return new Employee(payload.getName(),
+        return new Employee(payload.getTitle(),
+                payload.getName(),
                 payload.getSurname(),
-                Integer.parseInt(payload.getYearOfBirth()),
+                payload.getEmail(),
+                payload.getPhonenumber(),
+                payload.getGithub(),
+                payload.getLinkedin(),
+                DateUtils.convert(payload.getDateOfBirth()),
                 Nationality.valueOf(payload.getNationality()),
-                payload.getCurrentResidence());
+                payload.getAboutMe(),
+                payload.getEducation(),
+                payload.getCourses(),
+                payload.getExperience(),
+                payload.getLanguages());
 
     }
 

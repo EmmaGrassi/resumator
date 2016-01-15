@@ -20,7 +20,6 @@ public class EmployeeIdSerializer extends JsonSerializer<EmployeeId> {
 
     @Override
     public void serialize(EmployeeId value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
-        LOGGER.info("### " + value + " ###");
         jgen.writeString(value.toString());
     }
 

@@ -1,6 +1,8 @@
 package io.sytac.resumator.command;
 
 import io.sytac.resumator.employee.NewEmployeeCommand;
+import io.sytac.resumator.employee.NewEmployeeCommandPayload;
+import io.sytac.resumator.events.EventPublisher;
 import io.sytac.resumator.organization.NewOrganizationCommand;
 
 import java.util.Date;
@@ -14,14 +16,9 @@ import java.util.Map;
  */
 public class CommandFactory {
 
-    public NewEmployeeCommand newEmployeeCommand(final Map<String, String> input, final String organizationDomain) {
-        final String name = input.get("name");
-        final String surname = input.get("surname");
-        final String yearOfBirth = input.get("dateOfBirth");
-        final String nationality = input.get("nationality");
-        final String currentResident = input.get("nationality");
+    public NewEmployeeCommand newEmployeeCommand(final NewEmployeeCommandPayload payload, final String organizationDomain) {
         final String timestamp = String.valueOf(new Date().getTime());
-        return new NewEmployeeCommand(organizationDomain, name, surname, yearOfBirth, nationality, currentResident, timestamp);
+        return new NewEmployeeCommand(payload, timestamp);
     }
 
     public NewOrganizationCommand newOrganizationCommand(final Map<String, String> input) {

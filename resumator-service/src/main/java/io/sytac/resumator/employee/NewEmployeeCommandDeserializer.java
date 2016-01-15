@@ -30,12 +30,16 @@ public class NewEmployeeCommandDeserializer extends JsonDeserializer<NewEmployee
     private NewEmployeeCommandPayload parsePayload(final JsonNode root) {
         final JsonNode payloadJson = root.get("payload");
         final String org = nullable(payloadJson, "organizationDomain");
+        final String title = nullable(payloadJson, "title");
         final String name = nullable(payloadJson, "name");
         final String surname = nullable(payloadJson, "surname");
-        final String year = nullable(payloadJson, "yearOfBirth");
+        final String email = nullable(payloadJson, "email");
+        final String phonenumber = nullable(payloadJson, "phonenumber");
+        final String github = nullable(payloadJson, "github");
+        final String linkedin = nullable(payloadJson, "linkedin");
+        final String dateOfBirth = nullable(payloadJson, "dateOfBirth");
         final String nation = nullable(payloadJson, "nationality");
-        final String residence = nullable(payloadJson, "currentResidence");
-        return new NewEmployeeCommandPayload(org, name, surname, year, nation, residence);
+        return new NewEmployeeCommandPayload(org, title, name, surname, email, phonenumber, github, linkedin, dateOfBirth, nation, "", null, null, null, null);
     }
 
     private CommandHeader parseHeader(final JsonNode node) {

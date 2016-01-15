@@ -1,6 +1,17 @@
-function edit(data) {
+import qwest from 'qwest';
+
+function edit(id) {
   return (dispatch) => {
-    dispatch({ type: 'employees:edit', data });
+    dispatch({ type: 'employees:edit:start' });
+
+    qwest
+      .get(`/data/employees/${id}.json`)
+      .then((xhr, response) => {
+        dispatch({ type: 'employees:edit:success', response });
+      })
+      .catch((error) => {
+        dispatch({ type: 'employees:edit:failure', error });
+      });
   };
 }
 

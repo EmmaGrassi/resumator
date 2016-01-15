@@ -97,13 +97,14 @@ const EmployeeSchema = tcombForm.struct({
 });
 
 class EmployeeForm extends React.Component {
-  constructor(options) {
-    super(options);
+  handleSubmit(event) {
+    event.preventDefault();
 
-    bindAll(this, [
-      'handleSaveButtonClick',
-      'handleSubmit'
-    ]);
+    const value = this.refs.form.getValue();
+
+    if (value) {
+      this.props.onSubmit(value);
+    }
   }
 
   render() {
@@ -150,56 +151,6 @@ class EmployeeForm extends React.Component {
         </Row>
       </Grid>
     );
-  }
-
-  handleSubmit(event) {
-    event.preventDefault();
-
-    const value = this.refs.form.getValue();
-
-    if (value) {
-      this.props.handleSubmit(value);
-    }
-  }
-
-  handleSaveButtonClick(event) {
-    const button = event.target;
-
-    const name = document.querySelector('#name').value;
-    const surname = document.querySelector('#surname').value;
-    const email = document.querySelector('#email').value;
-    const phonenumber = document.querySelector('#phonenumber').value;
-    const github = document.querySelector('#github').value;
-    const linkedin = document.querySelector('#linkedin').value;
-    const dateOfBirth = document.querySelector('#dateOfBirth').value;
-    const countryOfBirth = document.querySelector('#countryOfBirth').value;
-    const currentResidence = document.querySelector('#currentResidence').value;
-
-    const courses = this.coursesComponent.state.entries;
-    const education = this.educationComponent.state.entries;
-    const experience = this.experienceComponent.state.entries;
-
-    const data = {
-      name,
-      surname,
-      email,
-      phonenumber,
-      github,
-      linkedin,
-      dateOfBirth,
-      countryOfBirth,
-      currentResidence,
-      courses,
-      education,
-      experience
-    };
-
-    qwest
-    .post('http://localhost:3000', data)
-      .then((xhr, response) => {
-      })
-      .catch((xhr, response, error) => {
-      })
   }
 }
 

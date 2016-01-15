@@ -71,6 +71,12 @@ const defaults = immutable.Map({
     item: item
   }),
 
+  preview: immutable.Map({
+    isFetching: false,
+
+    item: item
+  }),
+
   edit: immutable.Map({
     isFetching: false,
 
@@ -119,6 +125,20 @@ function list(state = defaults, action = {}) {
     case 'employees:show:failure':
       return state
         .setIn(['show', 'isFetching'], false);
+
+
+    case 'employees:preview:start':
+      return state
+        .setIn(['preview', 'isFetching'], true);
+
+    case 'employees:preview:success':
+      return state
+        .setIn(['preview', 'isFetching'], false)
+        .setIn(['preview', 'item'], immutable.fromJS(action.response));
+
+    case 'employees:preview:failure':
+      return state
+        .setIn(['preview', 'isFetching'], false);
 
 
     case 'employees:edit:start':

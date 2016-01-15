@@ -1,7 +1,7 @@
 import Loader from 'react-loader';
 import React from 'react';
 import moment from 'moment';
-import { Button, Col, Grid, Image, ListGroup, ListGroupItem, Row } from 'react-bootstrap';
+import { Button, ButtonGroup, Col, Grid, Image, ListGroup, ListGroupItem, Row } from 'react-bootstrap';
 import { bindAll, map } from 'lodash';
 import { connect } from 'react-redux';
 import { pushPath } from 'redux-simple-router';
@@ -17,7 +17,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     fetchEmployee: (id) => dispatch(actions.employees.show(id)),
-    navigateToEmployeesEdit: (id) => dispatch(pushPath(`/employees/${id}/edit`))
+    navigateToEmployeesEdit: (id) => dispatch(pushPath(`/employees/${id}/edit`)),
+    navigateToEmployeesPreview: (id) => dispatch(pushPath(`/employees/${id}/preview`))
   }
 }
 
@@ -30,6 +31,12 @@ class Show extends React.Component {
     const item = this.props.show.get('item');
 
     this.props.navigateToEmployeesEdit(item.get('id'));
+  }
+
+  handlePreviewButtonClick() {
+    const item = this.props.show.get('item');
+
+    this.props.navigateToEmployeesPreview(item.get('id'));
   }
 
   getCourses() {
@@ -160,7 +167,10 @@ class Show extends React.Component {
 
             <Col xs={8}>
               <span className="pull-right">
-                <Button bsStyle="primary" onClick={this.handleEditButtonClick.bind(this)}>Edit</Button>
+                <ButtonGroup>
+                  <Button bsStyle="primary" onClick={this.handleEditButtonClick.bind(this)}>Edit</Button>
+                  <Button bsStyle="default" onClick={this.handlePreviewButtonClick.bind(this)}>Preview</Button>
+                </ButtonGroup>
               </span>
 
               <h1>{title}</h1>

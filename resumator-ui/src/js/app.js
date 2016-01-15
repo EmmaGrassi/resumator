@@ -22,9 +22,10 @@ import PublicContainer from './components/public/container';
 import PublicHome from './components/public/home';
 import PublicLogin from './components/public/login';
 import PublicLogout from './components/public/logout';
-import PublicEmployeesList from './components/public/employees/list';
-import PublicEmployeesEdit from './components/public/employees/edit';
 import PublicEmployeesCreate from './components/public/employees/create';
+import PublicEmployeesEdit from './components/public/employees/edit';
+import PublicEmployeesList from './components/public/employees/list';
+import PublicEmployeesPreview from './components/public/employees/preview';
 import PublicEmployeesShow from './components/public/employees/show';
 
 const rootElement = document.getElementById('root');
@@ -60,6 +61,7 @@ const router = (
             <IndexRoute component={ PublicEmployeesShow } />
 
             <Route path="edit" component={ PublicEmployeesEdit } />
+            <Route path="preview" component={ PublicEmployeesPreview } />
           </Route>
         </Route>
 

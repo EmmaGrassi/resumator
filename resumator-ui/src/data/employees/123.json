@@ -14,43 +14,43 @@
 
   "education": [
     {
-      "degree": "Bachelor of ICT",
-      "fieldOfStudy": "ICT",
+      "degree": "Bachelor",
+      "fieldOfStudy": "Computer Science",
       "university": "Hogeschool van Amsterdam",
       "graduated": true,
-      "graduationYear": 1999
+      "graduationYear": 2010
     },
     {
-      "degree": "Bachelor of ICT",
-      "fieldOfStudy": "ICT",
+      "degree": "Bachelor",
+      "fieldOfStudy": "Computer Engineering",
       "university": "Hogeschool van Amsterdam",
       "graduated": true,
-      "graduationYear": 1999
+      "graduationYear": 2009
     },
     {
-      "degree": "Bachelor of ICT",
-      "fieldOfStudy": "ICT",
+      "degree": "Bachelor",
+      "fieldOfStudy": "Computer Engineering",
       "university": "Hogeschool van Amsterdam",
       "graduated": true,
-      "graduationYear": 1999
+      "graduationYear": 2008
     }
   ],
 
   "courses": [
     {
-      "name": "Some",
+      "name": "Scala",
       "description": "Description",
-      "date": "1976-02-01T00:00:00.000Z"
+      "date": "2015-02-01T00:00:00.000Z"
     },
     {
-      "name": "Some",
+      "name": "AngularJS",
       "description": "Description",
-      "date": "1976-02-01T00:00:00.000Z"
+      "date": "2012-02-01T00:00:00.000Z"
     },
     {
-      "name": "Some",
+      "name": "Javascript",
       "description": "Description",
-      "date": "1976-02-01T00:00:00.000Z"
+      "date": "2010-02-01T00:00:00.000Z"
     }
   ],
 
@@ -59,8 +59,8 @@
       "companyName": "Sytac",
       "title": "Senior Engineer",
       "location": "Haarlem",
-      "startDate": "2015-12-02T00:00:00.000Z",
-      "endDate": "2016-06-31T00:00:00.000Z",
+      "startDate": "2015-07-01T00:00:00.000Z",
+      "endDate": null,
       "shortDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi magna ante, convallis vel auctor sed, tristique nec velit. In lacinia vitae massa at porttitor. In pretium justo urna, sit amet vulputate ipsum interdum vel. Morbi pretium diam ac leo laoreet, in aliquet mi iaculis. Donec a tempor neque.",
       "technologies": ["Jquery", "MSSQL", "Word", "QUICKBASIC"],
       "methodologies": ["Waterfall", "Pray n Spray"]
@@ -69,8 +69,8 @@
       "companyName": "Sytac",
       "title": "Medior Engineer",
       "location": "Haarlem",
-      "startDate": "2015-01-02T00:00:00.000Z",
-      "endDate": "2016-06-31T00:00:00.000Z",
+      "startDate": "2013-01-02T00:00:00.000Z",
+      "endDate": "2015-06-30T00:00:00.000Z",
       "shortDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi magna ante, convallis vel auctor sed, tristique nec velit. In lacinia vitae massa at porttitor. In pretium justo urna, sit amet vulputate ipsum interdum vel. Morbi pretium diam ac leo laoreet, in aliquet mi iaculis. Donec a tempor neque.",
       "technologies": ["Jquery", "MSSQL", "Word", "QUICKBASIC"],
       "methodologies": ["Waterfall", "Pray n Spray"]
@@ -79,8 +79,18 @@
       "companyName": "Sytac",
       "title": "Junior Engineer",
       "location": "Haarlem",
-      "startDate": "2015-12-02T00:00:00.000Z",
-      "endDate": "2016-12-31T00:00:00.000Z",
+      "startDate": "2011-12-02T00:00:00.000Z",
+      "endDate": "2013-12-31T00:00:00.000Z",
+      "shortDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi magna ante, convallis vel auctor sed, tristique nec velit. In lacinia vitae massa at porttitor. In pretium justo urna, sit amet vulputate ipsum interdum vel. Morbi pretium diam ac leo laoreet, in aliquet mi iaculis. Donec a tempor neque.",
+      "technologies": ["Jquery", "MSSQL", "Word", "QUICKBASIC"],
+      "methodologies": ["Waterfall", "Pray n Spray"]
+    },
+    {
+      "companyName": "Sytac",
+      "title": "Intern",
+      "location": "Haarlem",
+      "startDate": "2010-12-02T00:00:00.000Z",
+      "endDate": "2011-12-31T00:00:00.000Z",
       "shortDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi magna ante, convallis vel auctor sed, tristique nec velit. In lacinia vitae massa at porttitor. In pretium justo urna, sit amet vulputate ipsum interdum vel. Morbi pretium diam ac leo laoreet, in aliquet mi iaculis. Donec a tempor neque.",
       "technologies": ["Jquery", "MSSQL", "Word", "QUICKBASIC"],
       "methodologies": ["Waterfall", "Pray n Spray"]

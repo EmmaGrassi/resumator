@@ -47,18 +47,23 @@ class Preview extends React.Component {
     return (
       <div>
         <Row>
-          <Col xs={3}>
+          <Col xs={4}>
             <h3
+              className="pull-right"
               style={{
-                marginTop: '0',
-                marginBottom: '0'
+                marginTop: '5px',
+                marginLeft: '10px'
               }}
             >
               Profile
             </h3>
+            <Image
+              src="/images/profile.png"
+              className="pull-right"
+            />
           </Col>
 
-          <Col xs={9}>
+          <Col xs={8}>
             <strong>Name:</strong> {name} {surname}<br/>
             <strong>Year of Birth:</strong> {yearOfBirth}<br/>
             <strong>Nationality:</strong> {nationality}<br/>
@@ -75,39 +80,39 @@ class Preview extends React.Component {
     return (
       <div>
         <Row>
-          <Col xs={3}>
+          <Col xs={4}>
             <h3
+              className="pull-right"
               style={{
-                marginTop: '0',
-                marginBottom: '0'
+                marginTop: '5px',
+                marginLeft: '10px'
               }}
             >
               Experience
             </h3>
+            <Image
+              src="/images/experience.png"
+              className="pull-right"
+            />
           </Col>
 
-          <Col xs={9}>
+          <Col xs={8}>
             {experience.map((v, i) => {
               const startDate = moment(v.get('startDate'));
               const endDate = moment(v.get('endDate'));
 
-              let difference = endDate.diff(startDate, 'years');
-
-              if (difference < 1) {
-                difference = `${endDate.diff(startDate, 'months')} months`;
-              } else {
-                difference = `${difference} years`;
-              }
+              const formatPattern = 'MMM. YYYY';
 
               return (
                 <div
                   key={i}
                   style={{
-                    marginBottom: '30px'
+                    marginBottom: '30px',
+                    pageBreakInside: 'avoid',
                   }}
                 >
                   <div className="pull-right">
-                    {startDate.format('YYYY')} - {endDate.format('YYYY')}
+                    {startDate.format(formatPattern)} - {isNaN(endDate) ? 'present' : endDate.format(formatPattern)}
                   </div>
                   <h4>{v.get('title')}</h4>
                   <h5>{v.get('companyName')} - {v.get('location')}</h5>
@@ -146,24 +151,30 @@ class Preview extends React.Component {
     return (
       <div>
         <Row>
-          <Col xs={3}>
+          <Col xs={4}>
             <h3
+              className="pull-right"
               style={{
-                marginTop: '0',
-                marginBottom: '0'
+                marginTop: '5px',
+                marginLeft: '10px'
               }}
             >
               Education
             </h3>
+            <Image
+              src="/images/education.png"
+              className="pull-right"
+            />
           </Col>
 
-          <Col xs={9}>
+          <Col xs={8}>
             {education.map((v, i) => {
               return (
                 <div
                   key={i}
                   style={{
-                    marginBottom: '30px'
+                    marginBottom: '30px',
+                    pageBreakInside: 'avoid'
                   }}
                 >
                   <div className="pull-right">
@@ -187,21 +198,26 @@ class Preview extends React.Component {
     return (
       <div>
         <Row>
-          <Col xs={3}>
+          <Col xs={4}>
             <h3
+              className="pull-right"
               style={{
-                marginTop: '0',
-                marginBottom: '0'
+                marginTop: '5px',
+                marginLeft: '10px'
               }}
             >
-              Courses / Workshops
+              Courses
             </h3>
+            <Image
+              src="/images/education.png"
+              className="pull-right"
+            />
           </Col>
 
-          <Col xs={9}>
+          <Col xs={8}>
             {courses.map((v, i) => {
               const name = v.get('name');
-              const date = v.get('date') && moment(v.get(date)).format('YYYY');
+              const date = moment(v.get('date')).format('YYYY');
               const description = v.get('description');
 
               return (
@@ -230,18 +246,23 @@ class Preview extends React.Component {
             marginBottom: '25px'
           }}
         >
-          <Col xs={3}>
+          <Col xs={4}>
             <h3
+              className="pull-right"
               style={{
-                marginTop: '0',
-                marginBottom: '0'
+                marginTop: '5px',
+                marginLeft: '10px'
               }}
             >
               Languages
             </h3>
+            <Image
+              src="/images/language.png"
+              className="pull-right"
+            />
           </Col>
 
-          <Col xs={9}>
+          <Col xs={8}>
             {languages.map((v, i) => {
               const name = v.get('name');
               const words = v.get('proficiency').split('_');
@@ -252,10 +273,7 @@ class Preview extends React.Component {
 
               return (
                 <div key={i}>
-                  <div className="pull-right">{proficiency}</div>
-                  <div>
-                    <strong>{name}</strong>
-                  </div>
+                  <strong>{name}</strong> ({proficiency})
                 </div>
               );
             })}
@@ -276,17 +294,17 @@ class Preview extends React.Component {
       >
         <Grid>
           <Row>
-            <Col xs={3}>
+            <Col xs={4}>
               <Image
                 src="/images/sytac.png"
                 className="pull-right"
                 style={{
-                  marginTop: '17px'
+                  marginTop: '20px'
                 }}
               />
             </Col>
 
-            <Col xs={9}>
+            <Col xs={8}>
               <h2>{title}</h2>
             </Col>
           </Row>

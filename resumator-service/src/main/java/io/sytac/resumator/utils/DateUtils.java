@@ -10,10 +10,9 @@ import java.util.Date;
  */
 public class DateUtils {
 
-    private static final String ISO_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.sss'Z'";
+    private static final String ISO_DATE_FORMAT = "yyyy-MM-dd";
 
     public static Date convert(String date) {
-        DateTimeFormatter fmt = DateTimeFormat.forPattern(ISO_DATE_FORMAT);
-        return fmt.parseDateTime(date).toDate();
+        return DateTimeFormat.forPattern(ISO_DATE_FORMAT).parseDateTime(date).toDate();
     }
 }

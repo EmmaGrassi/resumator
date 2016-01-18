@@ -54,7 +54,7 @@ public class NewEmployeeCommandTest {
                 technologies, methodologies, startDate, endDate));
         final List<Language> languages = Collections.singletonList(new Language("English", Language.Proficiency.FULL_PROFESSIONAL));
         final NewEmployeeCommandPayload payload = new NewEmployeeCommandPayload("sytac.io", "Title", "Foo", "Bar", "Email", "+31000999000",
-                "Github", "Linkedin", "1984-04-22T00:00:00.000Z", "ITALY", "N", "About ME", education, courses, experience, languages);
+                "Github", "Linkedin", "1984-04-22", "ITALY", "N", "About ME", education, courses, experience, languages);
         final NewEmployeeCommand foobar = new NewEmployeeCommand(payload, "sytac.io", Long.toString(new Date().getTime()));
 
         final Date timestamp = foobar.getHeader().getTimestamp();
@@ -71,7 +71,7 @@ public class NewEmployeeCommandTest {
                     "\"phonenumber\":\"+31000999000\"," +
                     "\"github\":\"Github\"," +
                     "\"linkedin\":\"Linkedin\"," +
-                    "\"dateOfBirth\":\"1984-04-22T00:00:00.000Z\"," +
+                    "\"dateOfBirth\":\"1984-04-22\"," +
                     "\"nationality\":\"ITALY\"," +
                     "\"currentResidence\":\"N\"," +
                     "\"aboutMe\":\"About ME\"," +
@@ -122,7 +122,7 @@ public class NewEmployeeCommandTest {
                             "\"phonenumber\":\"+31000999000\"," +
                             "\"github\":\"Gihub\"," +
                             "\"linkedin\":\"Linkedin\"," +
-                            "\"dateOfBirth\":\"1984-04-22T00:00:00.000Z\"," +
+                            "\"dateOfBirth\":\"1984-04-22\"," +
                             "\"nationality\":\"ITALY\"," +
                             "\"currentResidence\":\"N\"}," +
                             "\"type\":\"newEmployee\"}";

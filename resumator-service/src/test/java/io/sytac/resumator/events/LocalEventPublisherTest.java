@@ -62,7 +62,7 @@ public class LocalEventPublisherTest {
 
         final List<Language> languages = Arrays.asList(new Language("English", Language.Proficiency.FULL_PROFESSIONAL));
         final NewEmployeeCommandPayload payload = new NewEmployeeCommandPayload("ACME", "Title", "Foo", "Bar", "Email", "+31000999000",
-                "Github", "Linkedin", "1984-04-22T00:00:00.000Z", "ITALY", "N", "About ME", education, courses, experience, languages);
+                "Github", "Linkedin", "1984-04-22", "ITALY", "N", "About ME", education, courses, experience, languages);
 
         return new NewEmployeeCommand(payload, "ACME", Long.toString(new Date().getTime()));
     }

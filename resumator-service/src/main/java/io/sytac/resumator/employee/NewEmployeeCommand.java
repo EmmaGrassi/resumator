@@ -27,14 +27,14 @@ public class NewEmployeeCommand implements Command<CommandHeader, NewEmployeeCom
     private final CommandHeader header;
     private final NewEmployeeCommandPayload payload;
 
-    public NewEmployeeCommand(final NewEmployeeCommandPayload payload, final String timestamp) {
+    public NewEmployeeCommand(final NewEmployeeCommandPayload payload, final String domain, final String timestamp) {
         this.payload = payload;
         final Date time = Optional.ofNullable(timestamp)
                 .map(Long::decode)
                 .map(Date::new)
                 .orElse(new Date());
 
-        header = new CommandHeader(time);
+        header = new CommandHeader(domain, time);
     }
 
     @SuppressWarnings("unused")

@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import java.io.IOException;
+import java.util.Optional;
 
 /**
  * Replays events to build up the in-memory query state
@@ -47,10 +48,15 @@ public class Bootstrap {
             switch (event.getType()) {
                 case "newEmployee":
                     final NewEmployeeCommand command = json.readValue(event.getPayload(), NewEmployeeCommand.class);
-                    orgs.fromDomain(command.getPayload().getOrganizationDomain())
-                            .orElseThrow(() -> new IllegalStateException("Could not replay the following event because the organization is unknown: " + event))
-                            .addEmployee(command);
-                    break;
+                    final Optional<String> domain = command.getHeader().getDomain();
+                    if (domain.isPresent()) {
+                        orgs.fromDomain(domain.get())
+                                .orElseThrow(() -> new IllegalArgumentException("Cannot replay new employee for unknown organization"))
+                                .addEmployee(command);
+                    } else{
+                        LOGGER.error("Ignoring 'newEmployee' event without domain data in the header:\n{}", event);
+                    }
+                break;
 
                 case "newOrganization":
                     final NewOrganizationCommand organizationCommand = json.readValue(event.getPayload(), NewOrganizationCommand.class);

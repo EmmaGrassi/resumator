@@ -71,7 +71,7 @@ public class BootstrapTest {
     private Event newEmployeeEvent() {
         final NewEmployeeCommandPayload employeeCommandPayload = new NewEmployeeCommandPayload("acme.biz", "title", "name", "surname", "email",
                 "phonenumber", "github", "linkedin", "1984-04-22T00:00:00.000Z", "ITALIAN", "", null, null, null, null);
-        final NewEmployeeCommand command = new NewEmployeeCommand(employeeCommandPayload, Long.toString(new Date().getTime()));
+        final NewEmployeeCommand command = new NewEmployeeCommand(employeeCommandPayload, "acme.biz", Long.toString(new Date().getTime()));
         return command.asEvent(json);
     }
 

@@ -10,6 +10,8 @@ import io.sytac.resumator.model.Language;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.SecurityContext;
 import java.util.Date;
 import java.util.List;
 

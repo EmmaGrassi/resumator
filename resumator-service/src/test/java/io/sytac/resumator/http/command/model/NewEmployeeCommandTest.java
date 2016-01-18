@@ -56,7 +56,7 @@ public class NewEmployeeCommandTest {
         final List<Language> languages = Collections.singletonList(new Language("English", "FULL_PROFESSIONAL"));
         final NewEmployeeCommandPayload payload = new NewEmployeeCommandPayload("ACME", "Title", "Foo", "Bar", "Email", "+31000999000",
                 "Github", "Linkedin", "1984-04-22T00: 00: 00.000Z", "ITALY", "About ME", education, courses, experience, languages);
-        final NewEmployeeCommand foobar = new NewEmployeeCommand(payload, Long.toString(new Date().getTime()));
+        final NewEmployeeCommand foobar = new NewEmployeeCommand(payload, "ACME", Long.toString(new Date().getTime()));
 
         final Date timestamp = foobar.getHeader().getTimestamp();
         final String expected =

@@ -16,9 +16,9 @@ import java.util.Map;
  */
 public class CommandFactory {
 
-    public NewEmployeeCommand newEmployeeCommand(final NewEmployeeCommandPayload payload) {
+    public NewEmployeeCommand newEmployeeCommand(final NewEmployeeCommandPayload payload, String domain) {
         final String timestamp = String.valueOf(new Date().getTime());
-        return new NewEmployeeCommand(payload, timestamp);
+        return new NewEmployeeCommand(payload, domain, timestamp);
     }
 
     public NewOrganizationCommand newOrganizationCommand(final Map<String, String> input) {

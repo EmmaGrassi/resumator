@@ -46,8 +46,9 @@ public class NewEmployee extends BaseEmployee {
                                 @Context final UriInfo uriInfo,
                                 @Context final SecurityContext securityContext) {
 
-        final NewEmployeeCommand command = descriptors.newEmployeeCommand(payload);
-        final Employee employee = addEmployee(getOrgDomain(securityContext), command);
+        String domain = getOrgDomain(securityContext);
+        final NewEmployeeCommand command = descriptors.newEmployeeCommand(payload, domain);
+        final Employee employee = addEmployee(domain, command);
         events.publish(command);
         return buildRepresentation(uriInfo, employee);
     }

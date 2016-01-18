@@ -1,22 +1,29 @@
 import React from 'react';
 import qwest from 'qwest';
-import { bindAll } from 'lodash';
 import { connect } from 'react-redux';
 
 import NavItem from 'react-bootstrap/lib/NavItem';
 
 import actions from '../../../actions';
 
+function mapStateToProps(state) {
+  return {
+    user: state.user
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    login: (data) => dispatch(actions.user.login(data)),
+    logout: () => dispatch(actions.user.logout())
+  };
+}
+
 class RightButton extends React.Component {
   constructor() {
     super();
 
     this.auth2 = null;
-
-    bindAll(this, [
-      'handleLogInError',
-      'handleLogInSuccess'
-    ]);
   }
 
   handleLogInSuccess(user) {
@@ -28,14 +35,14 @@ class RightButton extends React.Component {
     const email = basicProfile.getEmail();
     const [ name, surname ] = basicProfile.getName().split(' ');
 
-    this.props.dispatch(actions.user.login.success({
+    this.props.login({
       email,
       id,
       imageUrl,
       name,
       surname,
       token
-    }));
+    });
   }
 
   // TODO: Implement
@@ -43,7 +50,9 @@ class RightButton extends React.Component {
     console.error(arguments);
   }
 
-  handleLogOutButtonClick() {
+  // TODO: Does not work right now.
+  handleLogOutButtonClick(event) {
+    event.preventDefault();
   }
 
   componentDidMount() {
@@ -56,7 +65,7 @@ class RightButton extends React.Component {
       });
 
       if (loginButtonElement) {
-        this.auth2.attachClickHandler(loginButtonElement, {}, this.handleLogInSuccess, this.handleLogInError);
+        this.auth2.attachClickHandler(loginButtonElement, {}, this.handleLogInSuccess.bind(this), this.handleLogInError.bind(this));
       }
     });
   }
@@ -65,17 +74,11 @@ class RightButton extends React.Component {
     const user = this.props.user;
 
     if (user && user.name) {
-      return <NavItem eventKey={2} href="#" onClick={this.handleLogoutButtonClick}>Log Out</NavItem>;
+      return <NavItem eventKey={2} href="#" id="logout-button" onClick={this.handleLogoutButtonClick}>Log Out</NavItem>;
     } else {
       return <NavItem eventKey={2} href="#" id="login-button">Log In</NavItem>;
     }
   }
 }
 
-RightButton.mapStateToProps = function mapStateToProps(state) {
-  return {
-    user: state.user
-  };
-};
-
-export default connect(RightButton.mapStateToProps)(RightButton);
+export default connect(mapStateToProps, mapDispatchToProps)(RightButton);

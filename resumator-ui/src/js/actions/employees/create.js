@@ -5,7 +5,7 @@ function create(data) {
     dispatch({ type: 'employees:create:start' });
 
     qwest
-      .post(`/api/employees`, data, {
+      .post(`/api/employee`, data, {
         dataType: 'json',
         responseType: 'json'
       })

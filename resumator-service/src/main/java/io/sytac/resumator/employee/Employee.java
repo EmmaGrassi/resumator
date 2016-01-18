@@ -6,6 +6,7 @@ import io.sytac.resumator.model.Experience;
 import io.sytac.resumator.model.Language;
 import io.sytac.resumator.model.enums.Nationality;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -26,8 +27,9 @@ public class Employee {
 	private final String phonenumber;
 	private final String github;
 	private final String linkedin;
-	private final Long dateOfBirth;
+	private final Date dateOfBirth;
 	private final Nationality nationality;
+	private final String currentResidence;
 	private final String aboutMe;
 	private final List<Education> education;
 	private final List<Course> courses;
@@ -58,8 +60,9 @@ public class Employee {
 					final String phonenumber,
 					final String github,
 					final String linkedin,
-					final Long dateOfBirth,
+					final Date dateOfBirth,
 					final Nationality nationality,
+					final String currentResidence,
 					final String aboutMe,
 					final List<Education> education,
 					final List<Course> courses,
@@ -67,7 +70,7 @@ public class Employee {
 					final List<Language> languages) {
 
 		this(new EmployeeId(), title, name, surname, email, phonenumber, github, linkedin,
-				dateOfBirth, nationality, aboutMe, education, courses, experience, languages);
+				dateOfBirth, nationality, currentResidence, aboutMe, education, courses, experience, languages);
 	}
 
 	/**
@@ -106,8 +109,9 @@ public class Employee {
 					final String phonenumber,
 					final String github,
 					final String linkedin,
-					final Long dateOfBirth,
+					final Date dateOfBirth,
 					final Nationality nationality,
+					final String currentResidence,
 					final String aboutMe,
 					final List<Education> education,
 					final List<Course> courses,
@@ -123,6 +127,7 @@ public class Employee {
 		this.linkedin = linkedin;
 		this.dateOfBirth = dateOfBirth;
 		this.nationality = nationality;
+		this.currentResidence = currentResidence;
 		this.aboutMe = aboutMe;
 		this.education = education;
 		this.courses = courses;
@@ -162,12 +167,16 @@ public class Employee {
 		return linkedin;
 	}
 
-	public Long getDateOfBirth() {
+	public Date getDateOfBirth() {
 		return dateOfBirth;
 	}
 
 	public Nationality getNationality() {
 		return nationality;
+	}
+
+	public String getCurrentResidence() {
+		return currentResidence;
 	}
 
 	public String getAboutMe() {

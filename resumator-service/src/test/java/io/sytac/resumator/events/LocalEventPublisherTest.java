@@ -8,14 +8,11 @@ import io.sytac.resumator.command.CommandPayload;
 import io.sytac.resumator.employee.NewEmployeeCommand;
 import io.sytac.resumator.employee.NewEmployeeCommandPayload;
 import io.sytac.resumator.model.*;
-import io.sytac.resumator.model.enums.Degree;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.Timestamp;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
@@ -53,16 +50,19 @@ public class LocalEventPublisherTest {
         assertEquals("Received undesirable events types!", 2, invoked.get());
     }
     private NewEmployeeCommand getEmployeeCommand() {
-        final List<Education> education = Arrays.asList(new Education(Degree.MASTER_DEGREE, "Field", "University", true, 2000));
-        final List<Course> courses = Arrays.asList(new Course("Course1", "Course 1", 1452863321441L));
+        final List<Education> education = Arrays.asList(new Education(Education.Degree.MASTER_DEGREE, "Field", "SChool", "City", "Country", 2000, 2005));
+        final List<Course> courses = Arrays.asList(new Course("Course1", "Course 1", "1994"));
         final List<String> technologies = Arrays.asList("Java", "Turbo Pascal");
         final List<String> methodologies = Arrays.asList("Scrum", "Exreme programming");
-        final List<Experience> experience  = Arrays.asList(new Experience("CompanyName", "Title", "Location", "Short Desciption",
-                technologies, methodologies, 546040800000L, 546090800000L));
-        final List<Language> languages = Arrays.asList(new Language("English", "FULL_PROFESSIONAL"));
 
-        final NewEmployeeCommandPayload payload = new NewEmployeeCommandPayload("ACME", "Title", "Foo", "Bar", "Email",
-                "+31000999000", "Github", "Linkedin", "1984-04-22T00: 00: 00.000Z", "ITALY", "About ME", education, courses, experience, languages);
+        Date startDate = new GregorianCalendar(2010, Calendar.JANUARY, 1).getTime();
+        Date endDate = new GregorianCalendar(2014, Calendar.JANUARY, 1).getTime();
+        final List<Experience> experience  = Collections.singletonList(new Experience("CompanyName", "Title", "City", "Coutry", "Short Description",
+                technologies, methodologies, startDate, endDate));
+
+        final List<Language> languages = Arrays.asList(new Language("English", Language.Proficiency.FULL_PROFESSIONAL));
+        final NewEmployeeCommandPayload payload = new NewEmployeeCommandPayload("ACME", "Title", "Foo", "Bar", "Email", "+31000999000",
+                "Github", "Linkedin", "1984-04-22T00:00:00.000Z", "ITALY", "N", "About ME", education, courses, experience, languages);
 
         return new NewEmployeeCommand(payload, "ACME", Long.toString(new Date().getTime()));
     }

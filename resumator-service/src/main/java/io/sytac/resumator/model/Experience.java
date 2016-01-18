@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.sytac.resumator.utils.DateUtils;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,10 +23,18 @@ public class Experience {
 	private final String shortDescription;
 	private final List<String> technologies;
 	private final List<String> methodologies;
-	private final Long startDate;
-	private final Long endDate;
+	private final Date startDate;
+	private final Date endDate;
 
-	public Experience(String companyName, String title, String city, String country, String shortDescription, List<String> technologies, List<String> methodologies, Long startDate, Long endDate) {
+	public Experience(String companyName,
+					  String title,
+					  String city,
+					  String country,
+					  String shortDescription,
+					  List<String> technologies,
+					  List<String> methodologies,
+					  Date startDate,
+					  Date endDate) {
 		this.companyName = companyName;
 		this.title = title;
 		this.city = city;
@@ -68,10 +77,10 @@ public class Experience {
 		return shortDescription;
 	}
 
-	public Long getStartDate() {
+	public Date getStartDate() {
 		return startDate;
 	}
-	public Long getEndDate() {
+	public Date getEndDate() {
 		return endDate;
 	}
 	public String getCity() {
@@ -86,4 +95,5 @@ public class Experience {
 	public List<String> getMethodologies() {
 		return methodologies;
 	}
+
 }

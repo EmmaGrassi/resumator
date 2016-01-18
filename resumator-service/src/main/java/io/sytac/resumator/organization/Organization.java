@@ -55,6 +55,7 @@ public class Organization {
                 payload.getLinkedin(),
                 DateUtils.convert(payload.getDateOfBirth()),
                 Nationality.valueOf(payload.getNationality()),
+                payload.getCurrentResidence(),
                 payload.getAboutMe(),
                 payload.getEducation(),
                 payload.getCourses(),

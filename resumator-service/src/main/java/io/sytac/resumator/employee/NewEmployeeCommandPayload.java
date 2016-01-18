@@ -33,6 +33,7 @@ public class NewEmployeeCommandPayload implements CommandPayload {
     private final String linkedin;
     private final String dateOfBirth;
     private final String nationality;
+    private final String currentResidence;
     private final String aboutMe;
     private final List<Education> education;
     private final List<Course> courses;
@@ -50,6 +51,7 @@ public class NewEmployeeCommandPayload implements CommandPayload {
                                      @JsonProperty("linkedin") final String linkedin,
                                      @JsonProperty("dateOfBirth") final String dateOfBirth,
                                      @JsonProperty("nationality") final String nationality,
+                                     @JsonProperty("currentResidence") final String currentResidence,
                                      @JsonProperty("aboutMe") final String aboutMe,
                                      @JsonProperty("education") final List<Education> education,
                                      @JsonProperty("courses") final List<Course> courses,
@@ -66,6 +68,7 @@ public class NewEmployeeCommandPayload implements CommandPayload {
         this.linkedin = linkedin;
         this.dateOfBirth = dateOfBirth;
         this.nationality = nationality;
+        this.currentResidence = currentResidence;
         this.aboutMe = aboutMe;
         this.education = education;
         this.courses = courses;
@@ -111,6 +114,10 @@ public class NewEmployeeCommandPayload implements CommandPayload {
 
     public String getNationality() {
         return nationality;
+    }
+
+    public String getCurrentResidence() {
+        return currentResidence;
     }
 
     public String getAboutMe() {

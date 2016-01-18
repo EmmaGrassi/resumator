@@ -15,9 +15,9 @@ public class Course {
 	
 	private final String name;
 	private final String description;
-	private final Long date;
+	private final int year;
 
-	public Course(String name, String description, Long date) {
+	public Course(String name, String description, int year) {
 		this.name = name;
 		this.description = description;
 		this.year = year;
@@ -26,10 +26,10 @@ public class Course {
 	@JsonCreator
 	public Course(@JsonProperty("name") String name,
 				  @JsonProperty("description") String description,
-				  @JsonProperty("date") String date) {
+				  @JsonProperty("date") String year) {
 		this.name = name;
 		this.description = description;
-		this.date = DateUtils.convert(date);
+		this.year = Integer.valueOf(year);
 	}
 
 	public String getName() {
@@ -38,9 +38,6 @@ public class Course {
 
 	public String getDescription() {
 		return description;
-	}
-	public Long getDate() {
-		return date;
 	}
 
 	public int getYear() {

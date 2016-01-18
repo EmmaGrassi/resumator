@@ -39,7 +39,7 @@ public class NewEmployeeCommandDeserializer extends JsonDeserializer<NewEmployee
         final String linkedin = nullable(payloadJson, "linkedin");
         final String dateOfBirth = nullable(payloadJson, "dateOfBirth");
         final String nation = nullable(payloadJson, "nationality");
-        return new NewEmployeeCommandPayload(null, title, name, surname, email, phonenumber, github, linkedin, dateOfBirth, nation, "", null, null, null, null);
+        return new NewEmployeeCommandPayload(null, title, name, surname, email, phonenumber, github, linkedin, dateOfBirth, nation, "", "", null, null, null, null);
     }
 
     private CommandHeader parseHeader(final JsonNode node) {

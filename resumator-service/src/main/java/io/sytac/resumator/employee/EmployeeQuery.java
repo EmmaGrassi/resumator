@@ -34,17 +34,14 @@ import javax.ws.rs.core.UriInfo;
 @RolesAllowed(Roles.USER)
 public class EmployeeQuery extends BaseEmployee {
 
-    @Inject
-    public EmployeeQuery(final OrganizationRepository organizations) {
-        super(organizations);
-    }
-
     private static final String CONTENT_TYPE_DOCX = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
 
     private final DocxGenerator docxGenerator;
 
+
     @Inject
-    public EmployeeQuery(final DocxGenerator docxGenerator) {
+    public EmployeeQuery(final OrganizationRepository organizations, final DocxGenerator docxGenerator) {
+        super(organizations);
         this.docxGenerator = docxGenerator;
     }
 
@@ -114,7 +111,8 @@ public class EmployeeQuery extends BaseEmployee {
     }
 
     private Employee getEmployee() {
-        return new Employee("Peter", "Janssen", 1980, Nationality.DUTCH, "Amsterdam");
+        Date date = new GregorianCalendar(1980, Calendar.JANUARY, 1).getTime();
+        return new Employee("Peter", "Janssen", null, null, null, null, null, date, Nationality.DUTCH, "Amsterdam", null, null, null, null, null);
     }
 
     private List<Education> getEducations() {
@@ -216,7 +214,7 @@ public class EmployeeQuery extends BaseEmployee {
         result.put("JobTitle", resume.getJobTitle());
         result.put("FirstName", resume.getEmployee().getName());
         result.put("LastName", resume.getEmployee().getSurname());
-        result.put("YearOfBirth", String.valueOf(resume.getEmployee().getYearOfBirth()));
+        result.put("YearOfBirth", String.valueOf(resume.getEmployee().getDateOfBirth()));
         result.put("CurrentResidence", resume.getEmployee().getCurrentResidence());
         result.put("Nationality", resume.getEmployee().getNationality().toString());
         result.put("Bio", resume.getShortBio());

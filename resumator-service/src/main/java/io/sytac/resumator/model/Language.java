@@ -1,5 +1,8 @@
 package io.sytac.resumator.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * A language an employee speaks.
  *

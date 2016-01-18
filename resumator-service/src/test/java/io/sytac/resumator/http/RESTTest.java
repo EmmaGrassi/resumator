@@ -9,6 +9,7 @@ import io.sytac.resumator.ObjectMapperResolver;
 import io.sytac.resumator.employee.Employee;
 import io.sytac.resumator.employee.EmployeeId;
 import io.sytac.resumator.model.enums.Nationality;
+import io.sytac.resumator.utils.DateUtils;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
@@ -78,8 +79,9 @@ public class RESTTest extends JerseyTest {
                     map.get("phonenumber").toString(),
                     map.get("github").toString(),
                     map.get("linkedin").toString(),
-                    Long.valueOf(map.get("dateOfBirth").toString()),
+                    DateUtils.convert(map.get("dateOfBirth").toString()),
                     Nationality.valueOf(map.get("nationality").toString()),
+                    "",
                     "",
                     null,
                     null,

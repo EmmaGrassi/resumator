@@ -2,7 +2,6 @@ package io.sytac.resumator.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.sytac.resumator.model.enums.Degree;
 
 /**
  * A school or university attended by the employee

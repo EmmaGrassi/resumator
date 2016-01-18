@@ -25,7 +25,7 @@ import java.net.URI;
  * @author Carlo Sciolla
  * @since 0.1
  */
-@Path("employee")
+@Path("employees")
 @RolesAllowed(Roles.USER)
 public class NewEmployee extends BaseEmployee {
 

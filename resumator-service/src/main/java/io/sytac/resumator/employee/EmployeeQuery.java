@@ -20,7 +20,7 @@ import javax.ws.rs.core.UriInfo;
  * @author Carlo Sciolla
  * @since 0.1
  */
-@Path("employee/{id}")
+@Path("employees/{id}")
 @RolesAllowed(Roles.USER)
 public class EmployeeQuery extends BaseEmployee {
 

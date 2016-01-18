@@ -36,7 +36,10 @@ public class DocxGenerator {
             removeTableRowsWithPlaceholdersLeft(table);
         });
 
-        return doc::write;
+        return out -> {
+            doc.write(out);
+            doc.close();
+        };
     }
 
     private void replacePlaceholders(XWPFTable table, Map<String, String> replacementMap) {

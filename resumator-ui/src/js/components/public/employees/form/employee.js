@@ -1,5 +1,5 @@
 import React from 'react';
-import qwest from 'qwest';
+import moment from 'moment';
 import tcombForm from 'tcomb-form';
 import tcombFormTypes from 'tcomb-form-types';
 import { Button, Col, Grid, Input, Row } from 'react-bootstrap';
@@ -103,7 +103,23 @@ class EmployeeForm extends React.Component {
     const value = this.refs.form.getValue();
 
     if (value) {
-      this.props.onSubmit(value);
+
+      value.dateOfBirth = moment(value.dateOfBirth).format('YYYY-MM-DD');
+
+      value.courses = map(value.courses, (v) => {
+        v.date = moment(v.date).format('YYYY-MM-DD');
+
+        return v;
+      });
+
+      value.experience = map(value.experience, (v) => {
+        v.startDate = moment(v.startDate).format('YYYY-MM-DD');
+        v.endDate = moment(v.endDate).format('YYYY-MM-DD');
+
+        return v;
+      });
+
+      this.props.handleSubmit(value);
     }
   }
 
@@ -138,7 +154,7 @@ class EmployeeForm extends React.Component {
       <Grid>
         <Row>
           <Col xs={12}>
-            <form onSubmit={this.handleSubmit}>
+            <form onSubmit={this.handleSubmit.bind(this)}>
               <Form
                 ref="form"
                 type={EmployeeSchema}

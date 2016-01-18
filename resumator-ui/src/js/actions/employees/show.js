@@ -5,8 +5,15 @@ function show(id) {
     dispatch({ type: 'employees:show:start' });
 
     qwest
-      .get(`/data/employees/${id}.json`)
-      .then((xhr, response) => {
+      .get(`/api/employees/${id}`, {
+        dataType: 'json',
+        responseType: 'hal+json'
+      })
+      .then((xhr, _response) => {
+        const response = JSON.parse(_response);
+
+        delete response._links;
+
         dispatch({ type: 'employees:show:success', response });
       })
       .catch((error) => {

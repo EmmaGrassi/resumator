@@ -22,9 +22,6 @@ function mapDispatchToProps(dispatch) {
 class Create extends React.Component {
   handleFormSubmit(data) {
     this.props.createEmployee(data);
-
-    // TODO: Get ID from returned resource from POST request.
-    // this.props.navigateToEmployeesShow();
   }
 
   render() {

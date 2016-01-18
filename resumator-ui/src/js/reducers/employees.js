@@ -62,6 +62,8 @@ const defaults = immutable.Map({
   create: immutable.Map({
     isSaving: false,
 
+    id: null,
+
     item: item
   }),
 
@@ -105,8 +107,11 @@ function list(state = defaults, action = {}) {
         .setIn(['create', 'isSaving'], true);
 
     case 'employees:create:success':
+      const id = action.response.id;
+
       return state
-        .setIn(['create', 'isSaving'], false);
+        .setIn(['create', 'isSaving'], false)
+        .setIn(['create', 'id'], id);
 
     case 'employees:create:failure':
       return state

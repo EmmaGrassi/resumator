@@ -5,7 +5,10 @@ function list(data) {
     dispatch({ type: 'employees:list:start' });
 
     qwest
-      .get(`/data/employees/list.json`)
+      .get(`/data/employees/list.json`, {
+        dataType: 'json',
+        responseType: 'json'
+      })
       .then((xhr, response) => {
         dispatch({ type: 'employees:list:success', response });
       })

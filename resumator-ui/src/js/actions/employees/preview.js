@@ -5,7 +5,10 @@ function preview(id) {
     dispatch({ type: 'employees:preview:start' });
 
     qwest
-      .get(`/data/employees/${id}.json`)
+      .get(`/data/employees/${id}.json`, {
+        dataType: 'json',
+        responseType: 'json'
+      })
       .then((xhr, response) => {
         dispatch({ type: 'employees:preview:success', response });
       })

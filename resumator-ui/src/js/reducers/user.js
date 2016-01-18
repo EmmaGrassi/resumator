@@ -1,6 +1,8 @@
+import immutable from 'immutable';
+
 // TODO: redo with Immutable.js
 
-const defaults = {
+const defaults = immutable.Map({
   token: null,
 
   id: null,
@@ -8,21 +10,18 @@ const defaults = {
   surname: null,
   imageUrl: null,
   email: null
-};
+});
 
 function user(state = defaults, action = {}) {
   switch (action.type) {
     case 'user:login:success':
-      // TODO: Use immutable.js
-      return Object.assign({}, state, {
-        token: action.data.token,
-
-        id: action.data.id,
-        name: action.data.name,
-        surname: action.data.surname,
-        imageUrl: action.data.imageUrl,
-        email: action.data.email
-      });
+      return state
+        .set('token', action.data.token)
+        .set('id', action.data.id)
+        .set('name', action.data.name)
+        .set('surname', action.data.surname)
+        .set('imageUrl', action.data.imageUrl)
+        .set('email', action.data.email);
 
     case 'user:login:error':
       return defaults;

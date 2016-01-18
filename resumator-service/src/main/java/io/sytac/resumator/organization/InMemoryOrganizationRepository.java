@@ -1,11 +1,9 @@
 package io.sytac.resumator.organization;
 
 import io.sytac.resumator.events.EventPublisher;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -17,9 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class InMemoryOrganizationRepository implements OrganizationRepository {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(InMemoryOrganizationRepository.class);
-
-    private final ConcurrentHashMap<String, Organization> organizations = new ConcurrentHashMap<>();
+    private final Map<String, Organization> organizations = new ConcurrentHashMap<>();
 
     private final EventPublisher events;
 
@@ -51,12 +47,11 @@ public class InMemoryOrganizationRepository implements OrganizationRepository {
 
     @Override
     public Organization addOrganization(final Organization org) {
-        final Optional<Organization> stored = Optional.ofNullable(organizations.putIfAbsent(org.getDomain(), org));
-        if (stored.isPresent()) {
-            LOGGER.warn("Replacing existing organization: {}", stored);
-            return stored.get();
+        if (organizations.containsKey(org.getDomain())) {
+            throw new IllegalStateException("Cannot add an organization that already exists");
         }
 
+        organizations.put(org.getDomain(), org);
         return org;
     }
 }

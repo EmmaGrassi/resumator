@@ -54,7 +54,7 @@ public class NewEmployeeCommandTest {
                 technologies, methodologies, expStartDate, expEndDate));
         final List<Language> languages = Collections.singletonList(new Language("English", Language.Proficiency.FULL_PROFESSIONAL));
         final NewEmployeeCommandPayload payload = new NewEmployeeCommandPayload("sytac.io", "Title", "Foo", "Bar", "Email", "+31000999000",
-                "Github", "Linkedin", "1984-04-22", "ITALY", "N", "About ME", education, courses, experience, languages);
+                "Github", "Linkedin", "1984-04-22", "ITALY", "N", "About ME", educations, courses, experiences, languages);
         final NewEmployeeCommand foobar = new NewEmployeeCommand(payload, "sytac.io", Long.toString(new Date().getTime()));
 
         final Date timestamp = foobar.getHeader().getTimestamp();

@@ -100,9 +100,11 @@ class EmployeeForm extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
 
-    const value = this.refs.form.getValue();
+    let value = this.refs.form.getValue();
 
     if (value) {
+      value = JSON.stringify(value);
+      value = JSON.parse(value);
 
       value.dateOfBirth = moment(value.dateOfBirth).format('YYYY-MM-DD');
 

@@ -26,7 +26,7 @@ public class Course {
 	@JsonCreator
 	public Course(@JsonProperty("name") String name,
 				  @JsonProperty("description") String description,
-				  @JsonProperty("date") String year) {
+				  @JsonProperty("year") String year) {
 		this.name = name;
 		this.description = description;
 		this.year = Integer.valueOf(year);

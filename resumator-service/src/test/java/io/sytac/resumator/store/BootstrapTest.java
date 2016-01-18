@@ -9,14 +9,17 @@ import io.sytac.resumator.employee.NewEmployeeCommandPayload;
 import io.sytac.resumator.events.EventPublisher;
 import io.sytac.resumator.model.Event;
 import io.sytac.resumator.organization.InMemoryOrganizationRepository;
+import io.sytac.resumator.organization.NewOrganizationCommand;
 import io.sytac.resumator.organization.OrganizationRepository;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 
 import java.util.*;
 
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
+import static org.mockito.MockitoAnnotations.initMocks;
 
 public class BootstrapTest {
 
@@ -25,8 +28,12 @@ public class BootstrapTest {
     private ObjectMapper json;
     private OrganizationRepository orgs;
 
+    @Mock
+    private EventPublisher eventPublisherMock;
+
     @Before
     public void setUp() throws Exception {
+        initMocks(this);
         json = new ObjectMapper();
         json.registerModule(new Jdk8Module());
 
@@ -37,7 +44,8 @@ public class BootstrapTest {
         orgDetails.put("name", "ACME inc.");
         orgDetails.put("domain", "acme.biz");
 
-        orgs = new InMemoryOrganizationRepository();
+        when(eventPublisherMock.publish(any(NewOrganizationCommand.class))).thenReturn(mock(Event.class));
+        orgs = new InMemoryOrganizationRepository(eventPublisherMock);
         orgs.register(new CommandFactory().newOrganizationCommand(orgDetails));
 
         bootstrap = new Bootstrap(store, orgs, json);

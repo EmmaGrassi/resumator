@@ -40,7 +40,6 @@ public class Organization {
         if(previous != null) {
             throw new IllegalArgumentException("Duplicate employee:" + employee);
         }
-
         return employee;
     }
 
@@ -83,8 +82,7 @@ public class Organization {
     public Optional<Employee> findEmployeeByName(String name, String surname) {
         return employees.values()
                         .stream()
-                        .filter(employee -> name.equals(employee.getName()) &&
-                                            surname.equals(employee.getSurname()))
+                        .filter(employee -> name.equals(employee.getName()) && surname.equals(employee.getSurname()))
                         .findFirst();
     }
 }

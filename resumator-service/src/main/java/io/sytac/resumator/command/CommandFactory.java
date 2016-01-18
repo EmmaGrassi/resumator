@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public class CommandFactory {
 
-    public NewEmployeeCommand newEmployeeCommand(final NewEmployeeCommandPayload payload, final String organizationDomain) {
+    public NewEmployeeCommand newEmployeeCommand(final NewEmployeeCommandPayload payload) {
         final String timestamp = String.valueOf(new Date().getTime());
         return new NewEmployeeCommand(payload, timestamp);
     }

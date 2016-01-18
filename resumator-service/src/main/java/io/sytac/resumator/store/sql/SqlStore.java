@@ -4,6 +4,7 @@ import io.sytac.resumator.ConfigurationException;
 import io.sytac.resumator.employee.NewEmployeeCommand;
 import io.sytac.resumator.events.EventPublisher;
 import io.sytac.resumator.model.Event;
+import io.sytac.resumator.organization.NewOrganizationCommand;
 import io.sytac.resumator.store.EventStore;
 import io.sytac.resumator.store.IllegalInsertOrderException;
 import io.sytac.resumator.store.sql.mapper.EventMapper;
@@ -44,8 +45,11 @@ public class SqlStore implements EventStore {
         Configuration configuration = new Configuration(environment);
         configuration.getTypeHandlerRegistry().register("io.sytac.resumator.store.sql.mapper");
         configuration.addMapper(EventMapper.class);
+
         sessionFactory = new SqlSessionFactoryBuilder().build(configuration);
+
         events.subscribe(this::put, NewEmployeeCommand.EVENT_TYPE);
+        events.subscribe(this::put, NewOrganizationCommand.EVENT_TYPE);
     }
 
     private PooledDataSource createDataSource(final io.sytac.resumator.Configuration properties) {

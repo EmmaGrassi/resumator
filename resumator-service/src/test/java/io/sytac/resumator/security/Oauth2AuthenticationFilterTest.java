@@ -1,9 +1,14 @@
 package io.sytac.resumator.security;
 
+import io.sytac.resumator.command.Command;
+import io.sytac.resumator.events.EventPublisher;
+import io.sytac.resumator.model.Event;
 import io.sytac.resumator.organization.InMemoryOrganizationRepository;
+import io.sytac.resumator.organization.NewOrganizationCommand;
 import io.sytac.resumator.organization.OrganizationRepository;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Cookie;
@@ -15,6 +20,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import static org.mockito.Mockito.*;
+import static org.mockito.MockitoAnnotations.initMocks;
 
 public class Oauth2AuthenticationFilterTest {
 
@@ -22,9 +28,14 @@ public class Oauth2AuthenticationFilterTest {
     private Oauth2SecurityService service;
     private OrganizationRepository orgs;
 
+    @Mock
+    private EventPublisher eventPublisherMock;
+
     @Before
     public void setUp() throws Exception {
-        orgs = new InMemoryOrganizationRepository();
+        initMocks(this);
+        when(eventPublisherMock.publish(any(NewOrganizationCommand.class))).thenReturn(mock(Event.class));
+        orgs = new InMemoryOrganizationRepository(eventPublisherMock);
         service = mock(Oauth2SecurityService.class);
         filter = new Oauth2AuthenticationFilter(service);
     }

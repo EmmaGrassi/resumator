@@ -4,16 +4,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.sytac.resumator.employee.NewEmployeeCommand;
 import io.sytac.resumator.model.Event;
 import io.sytac.resumator.organization.NewOrganizationCommand;
+import io.sytac.resumator.organization.Organization;
 import io.sytac.resumator.organization.OrganizationRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
@@ -36,9 +34,6 @@ public class Bootstrap {
         this.store = store;
         this.orgs = orgs;
         this.json = json;
-
-        // Register organisation manually. Will be removed when NewOrganisation endpoint is implemented.
-        orgs.register(new NewOrganizationCommand("Sytac", "sytac.io", String.valueOf(new Date().getTime())));
     }
 
     public void start(final Consumer<BootstrapResult> callback) {
@@ -74,11 +69,19 @@ public class Bootstrap {
                 orgs.fromDomain(command.getPayload().getOrganizationDomain())
                         .orElseThrow(() -> new IllegalArgumentException("Cannot replay new employee for unknown organization"))
                         .addEmployee(command);
-                return true;
+            break;
+
+            case "newOrganization":
+                final NewOrganizationCommand organizationCommand = json.readValue(event.getPayload(), NewOrganizationCommand.class);
+                Organization organization = new Organization(organizationCommand.getPayload().getName(), organizationCommand.getPayload().getDomain());
+                orgs.addOrganization(organization);
+            break;
+
             default:
                 LOGGER.error("Ignoring unsupported event:\n{}", event);
                 return false;
         }
+        return true;
     }
 
     public static class BootstrapResult {

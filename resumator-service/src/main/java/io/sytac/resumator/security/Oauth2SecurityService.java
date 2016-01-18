@@ -8,6 +8,7 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.common.collect.Sets;
 import io.sytac.resumator.Configuration;
+import io.sytac.resumator.organization.NewOrganizationCommand;
 import io.sytac.resumator.organization.Organization;
 import io.sytac.resumator.organization.OrganizationRepository;
 import org.slf4j.Logger;
@@ -16,10 +17,7 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Supplier;
 
 import static io.sytac.resumator.ConfigurationEntries.*;
@@ -68,7 +66,7 @@ public class Oauth2SecurityService {
 
     private Set<String> getRoles(final String user) {
         final Set<String> admins = new HashSet<>(config.getListProperty(ADMIN_ACCOUNT_LIST));
-        return admins.contains(user) ? Sets.newHashSet(ADMIN) : Sets.newHashSet(USER);
+        return admins.contains(user) ? Sets.newHashSet(ADMIN, USER) : Sets.newHashSet(USER);
     }
 
     private Optional<GoogleIdToken> verify(final GoogleIdTokenVerifier verifier, final String idtoken) {

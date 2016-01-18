@@ -1,5 +1,7 @@
 package io.sytac.resumator.organization;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.sytac.resumator.command.CommandPayload;
 
 /**
@@ -13,7 +15,9 @@ public class NewOrganizationCommandPayload implements CommandPayload {
     final String name;
     final String domain;
 
-    public NewOrganizationCommandPayload(final String name, final String domain) {
+    @JsonCreator
+    public NewOrganizationCommandPayload(@JsonProperty("name") final String name,
+                                         @JsonProperty("domain") final String domain) {
         this.name = name;
         this.domain = domain;
     }

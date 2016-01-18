@@ -1,10 +1,11 @@
 package io.sytac.resumator.command;
 
 import io.sytac.resumator.employee.NewEmployeeCommand;
+import io.sytac.resumator.employee.NewEmployeeCommandPayload;
 import io.sytac.resumator.events.EventPublisher;
 import io.sytac.resumator.organization.NewOrganizationCommand;
 
-import javax.ws.rs.core.MultivaluedMap;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -15,30 +16,15 @@ import java.util.Map;
  */
 public class CommandFactory {
 
-    private final EventPublisher events;
-
-    public CommandFactory(final EventPublisher eventPublisher) {
-        this.events = eventPublisher;
-    }
-
-    public NewEmployeeCommand newEmployeeCommand(final MultivaluedMap<String, String> formParams, final String organizationId) {
-        final String name = formParams.getFirst("name");
-        final String surname = formParams.getFirst("name");
-        final String yearOfBirth = formParams.getFirst("name");
-        final String nationality = formParams.getFirst("name");
-        final String currentResident = formParams.getFirst("name");
-        final String timestamp = formParams.getFirst("timestamp");
-        final NewEmployeeCommand newEmployeeCommand = new NewEmployeeCommand(organizationId, name, surname, yearOfBirth, nationality, currentResident, timestamp);
-        events.publish(newEmployeeCommand);
-        return newEmployeeCommand;
+    public NewEmployeeCommand newEmployeeCommand(final NewEmployeeCommandPayload payload, String domain) {
+        final String timestamp = String.valueOf(new Date().getTime());
+        return new NewEmployeeCommand(payload, domain, timestamp);
     }
 
     public NewOrganizationCommand newOrganizationCommand(final Map<String, String> input) {
         final String name = input.get("name");
         final String domain = input.get("domain");
         final String timestamp = input.get("timestamp");
-        final NewOrganizationCommand newOrganizationCommand = new NewOrganizationCommand(name, domain, timestamp);
-        events.publish(newOrganizationCommand);
-        return newOrganizationCommand;
+        return new NewOrganizationCommand(name, domain, timestamp);
     }
 }

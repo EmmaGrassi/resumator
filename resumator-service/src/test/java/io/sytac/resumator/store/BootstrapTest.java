@@ -5,17 +5,21 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import io.sytac.resumator.command.CommandFactory;
 import io.sytac.resumator.employee.Employee;
 import io.sytac.resumator.employee.NewEmployeeCommand;
+import io.sytac.resumator.employee.NewEmployeeCommandPayload;
 import io.sytac.resumator.events.EventPublisher;
 import io.sytac.resumator.model.Event;
 import io.sytac.resumator.organization.InMemoryOrganizationRepository;
+import io.sytac.resumator.organization.NewOrganizationCommand;
 import io.sytac.resumator.organization.OrganizationRepository;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 
 import java.util.*;
 
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
+import static org.mockito.MockitoAnnotations.initMocks;
 
 public class BootstrapTest {
 
@@ -24,8 +28,12 @@ public class BootstrapTest {
     private ObjectMapper json;
     private OrganizationRepository orgs;
 
+    @Mock
+    private EventPublisher eventPublisherMock;
+
     @Before
     public void setUp() throws Exception {
+        initMocks(this);
         json = new ObjectMapper();
         json.registerModule(new Jdk8Module());
 
@@ -36,15 +44,16 @@ public class BootstrapTest {
         orgDetails.put("name", "ACME inc.");
         orgDetails.put("domain", "acme.biz");
 
-        orgs = new InMemoryOrganizationRepository();
-        orgs.register(new CommandFactory(mock(EventPublisher.class)).newOrganizationCommand(orgDetails));
+        when(eventPublisherMock.publish(any(NewOrganizationCommand.class))).thenReturn(mock(Event.class));
+        orgs = new InMemoryOrganizationRepository(eventPublisherMock);
+        orgs.register(new CommandFactory().newOrganizationCommand(orgDetails));
 
         bootstrap = new Bootstrap(store, orgs, json);
     }
 
     @Test
     public void canReplayZeroEvents() {
-        bootstrap.start(result -> assertTrue("The replay of 0 events failed", result.failures.isEmpty()));
+        bootstrap.replay();
         verify(store, times(1)).setReadOnly(false);
         verify(store, times(1)).setReadOnly(true);
     }
@@ -52,7 +61,7 @@ public class BootstrapTest {
     @Test
     public void canReplayNewEmployeeEvent() {
         when(store.getAll()).thenReturn(Collections.singletonList(newEmployeeEvent()));
-        bootstrap.start(result -> assertTrue("The replay of creating one employee failed", result.successfullyReplayed.get() == 1));
+        bootstrap.replay();
         verify(store, times(1)).setReadOnly(false);
         verify(store, times(1)).setReadOnly(true);
         Optional<Employee> employee = orgs.fromDomain("acme.biz").get().findEmployeeByName("name", "surname");
@@ -60,7 +69,9 @@ public class BootstrapTest {
     }
 
     private Event newEmployeeEvent() {
-        final NewEmployeeCommand command = new NewEmployeeCommand("acme.biz", "name", "surname", "1984", "ITALIAN", "Amsterdam", Long.toString(new Date().getTime()));
+        final NewEmployeeCommandPayload employeeCommandPayload = new NewEmployeeCommandPayload("acme.biz", "title", "name", "surname", "email",
+                "phonenumber", "github", "linkedin", "1984-04-22T00:00:00.000Z", "ITALIAN", "", null, null, null, null);
+        final NewEmployeeCommand command = new NewEmployeeCommand(employeeCommandPayload, "acme.biz", Long.toString(new Date().getTime()));
         return command.asEvent(json);
     }
 

@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -70,11 +71,20 @@ public class RESTTest extends JerseyTest {
         public Employee readFrom(Class<Employee> type, Type genericType, Annotation[] annotations, MediaType mediaType, MultivaluedMap<String, String> httpHeaders, InputStream entityStream) throws IOException, WebApplicationException {
             Map<String, Object> map = mapper.readerFor(Map.class).readValue(entityStream);
             return new Employee(new EmployeeId(map.get("id").toString()),
-                                                map.get("name").toString(),
-                                                map.get("surname").toString(),
-                                                Integer.valueOf(map.get("year-of-birth").toString()),
-                                                Nationality.valueOf(map.get("nationality").toString()),
-                                                map.get("current-residence").toString());
+                    map.get("title").toString(),
+                    map.get("name").toString(),
+                    map.get("surname").toString(),
+                    map.get("email").toString(),
+                    map.get("phonenumber").toString(),
+                    map.get("github").toString(),
+                    map.get("linkedin").toString(),
+                    Long.valueOf(map.get("dateOfBirth").toString()),
+                    Nationality.valueOf(map.get("nationality").toString()),
+                    "",
+                    null,
+                    null,
+                    null,
+                    null);
         }
     }
 

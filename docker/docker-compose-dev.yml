@@ -9,6 +9,8 @@ db:
     - POSTGRES_USER=resumator
     - POSTGRES_PASSWORD=resumator
     - POSTGRES_DB=resumator
+  ports:
+    - "5432:5432"
 ui:
   image: resumator-ui
   volumes:

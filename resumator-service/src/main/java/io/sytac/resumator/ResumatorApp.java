@@ -11,7 +11,13 @@ import io.sytac.resumator.organization.OrganizationRepository;
 import io.sytac.resumator.security.Oauth2AuthenticationFilter;
 import io.sytac.resumator.security.Oauth2SecurityService;
 import io.sytac.resumator.security.Oauth2SecurityServiceFactory;
+import io.sytac.resumator.store.BootstrapRunner;
+import io.sytac.resumator.store.EventStore;
+import io.sytac.resumator.store.sql.SchemaManager;
+import io.sytac.resumator.store.sql.SqlStore;
+import io.sytac.resumator.store.Bootstrap;
 import org.eclipse.jetty.server.Server;
+import org.glassfish.hk2.api.Immediate;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.jetty.JettyHttpContainerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -66,6 +72,7 @@ public class ResumatorApp {
         rc = registerRepositories(rc);
         rc = registerDocxGenerator(rc);
         rc = registerGlobalExceptionHandler(rc);
+        rc = registerBootstrap(rc);
         return rc;
     }
 
@@ -82,11 +89,23 @@ public class ResumatorApp {
         });
     }
 
+    private ResourceConfig registerBootstrap(final ResourceConfig rc) {
+        return rc.register(new AbstractBinder() {
+            @Override
+            protected void configure() {
+                bind(Bootstrap.class).to(Bootstrap.class).in(Singleton.class);
+                bind(BootstrapRunner.class).in(Immediate.class);
+            }
+        });
+    }
+
     private ResourceConfig registerRepositories(final ResourceConfig rc) {
         return rc.register(new AbstractBinder() {
                     @Override
                     protected void configure() {
-                        bind(InMemoryOrganizationRepository.class).to(OrganizationRepository.class);
+                        bind(InMemoryOrganizationRepository.class).to(OrganizationRepository.class).in(Singleton.class);
+                        bind(SqlStore.class).to(EventStore.class).in(Immediate.class);
+                        bind(SchemaManager.class).in(Immediate.class);
                     }
                 });
     }
@@ -147,7 +166,8 @@ public class ResumatorApp {
                 "io.sytac.resumator.employee",
                 "io.sytac.resumator.organization",
                 "io.sytac.resumator.service",
-                "com.theoryinpractise.halbuilder.jaxrs"); // HAL support
+                "com.theoryinpractise.halbuilder.jaxrs") // HAL support
+                .register(ImmediateScopeFeature.class);  // enable immediate instantiation of beans
     }
 
     protected Configuration loadConfiguration() {

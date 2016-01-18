@@ -1,5 +1,9 @@
 package io.sytac.resumator.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.sytac.resumator.model.enums.Degree;
+
 /**
  * A school or university attended by the employee
  *
@@ -17,15 +21,22 @@ public class Education {
 	private final int startYear;
 	private final int endYear;
 
-    public Education(Degree degree, String fieldOfStudy, String school, String city, String country, int startYear, int endYear) {
-        this.degree = degree;
-        this.fieldOfStudy = fieldOfStudy;
-        this.school = school;
+	@JsonCreator
+	public Education(@JsonProperty("degree") Degree degree,
+					 @JsonProperty("fieldOfStudy") String fieldOfStudy,
+					 @JsonProperty("school") String school,
+					 @JsonProperty("city") String city,
+					 @JsonProperty("country") String country,
+					 @JsonProperty("startYear") int startYear,
+					 @JsonProperty("endYear") int endYear) {
+		this.degree = degree;
+		this.fieldOfStudy = fieldOfStudy;
+		this.school = school;
         this.city = city;
         this.country = country;
         this.startYear = startYear;
         this.endYear = endYear;
-    }
+	}
 
     public String getSchool() {
 		return school;

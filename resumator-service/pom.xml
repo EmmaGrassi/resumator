@@ -13,7 +13,7 @@
 
     <properties>
         <jersey.version>2.22.1</jersey.version>
-        <jetty.version>9.1.1.v20140108</jetty.version>
+        <jetty.version>9.3.6.v20151106</jetty.version>
         <jackson.version>2.6.3</jackson.version>
         <halbuilder.standard.version>4.0.1</halbuilder.standard.version>
         <halbuilder.jaxrs.version>1.1.1</halbuilder.jaxrs.version>
@@ -95,6 +95,11 @@
             <artifactId>slf4j-simple</artifactId>
             <version>${slf4j.version}</version>
         </dependency>
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>2.9.1</version>
+        </dependency>
 
         <!-- DOCX GENERATION -->
         <dependency>
@@ -132,7 +137,6 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <version>${h2.version}</version>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.glassfish.jersey.test-framework.providers</groupId>
@@ -176,6 +180,7 @@
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <mainClass>io.sytac.resumator.ResumatorApp</mainClass>
                                 </transformer>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
                             </transformers>
                             <filters>
                                 <filter>

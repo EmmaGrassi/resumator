@@ -1,10 +1,8 @@
 package io.sytac.resumator;
 
 import io.sytac.resumator.command.CommandFactory;
-import io.sytac.resumator.events.EventPublisher;
 import org.glassfish.hk2.api.Factory;
 
-import javax.inject.Inject;
 import javax.ws.rs.ext.Provider;
 
 /**
@@ -16,16 +14,9 @@ import javax.ws.rs.ext.Provider;
 @Provider
 public class CommandFactoryResolver implements Factory<CommandFactory> {
 
-    private final EventPublisher events;
-
-    @Inject
-    public CommandFactoryResolver(final EventPublisher publisher) {
-        this.events = publisher;
-    }
-
     @Override
     public CommandFactory provide() {
-        return new CommandFactory(events);
+        return new CommandFactory();
     }
 
     @Override

@@ -2,17 +2,24 @@ package io.sytac.resumator.store;
 
 import io.sytac.resumator.command.CommandFactory;
 import io.sytac.resumator.events.EventPublisher;
+import io.sytac.resumator.model.Event;
+import io.sytac.resumator.organization.InMemoryOrganizationRepository;
 import io.sytac.resumator.organization.NewOrganizationCommand;
 import io.sytac.resumator.organization.Organization;
-import io.sytac.resumator.organization.InMemoryOrganizationRepository;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
 
 /**
  * Organizations must be available in memory
@@ -22,10 +29,15 @@ public class InMemoryOrganizationRepositoryTest {
     private InMemoryOrganizationRepository repository;
     private CommandFactory commands;
 
+    @Mock
+    private EventPublisher eventPublisherMock;
+
     @Before
     public void setup() {
-        repository = new InMemoryOrganizationRepository();
-        commands = new CommandFactory(mock(EventPublisher.class));
+        initMocks(this);
+        when(eventPublisherMock.publish(any(NewOrganizationCommand.class))).thenReturn(mock(Event.class));
+        repository = new InMemoryOrganizationRepository(eventPublisherMock);
+        commands = new CommandFactory();
     }
 
     @Test
@@ -35,14 +47,13 @@ public class InMemoryOrganizationRepositoryTest {
         assertEquals("The stored organization doesn't match the input one!", "name", stored.getName());
     }
 
-    @Test
-    public void canOverrideOrganizations() {
+    @Test(expected = IllegalStateException.class)
+    public void cannotOverrideOrganizations() {
         final NewOrganizationCommand one = newOrgCommand("one", "domain");
         final NewOrganizationCommand two = newOrgCommand("two", "domain");
 
         repository.register(one);
-        final Organization overridden = repository.register(two);
-        assertEquals("When overriding an organization, the older one was not returned", "one", overridden.getName());
+        repository.register(two);
     }
 
     @Test

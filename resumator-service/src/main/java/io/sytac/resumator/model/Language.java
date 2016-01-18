@@ -4,15 +4,17 @@ package io.sytac.resumator.model;
  * A language an employee speaks.
  *
  * @author Jack Tol
+ * @author Dmitry Ryazanov
  * @since 0.1
  */
 public class Language {
 
     private final String name;
-
     private final Proficiency proficiency;
 
-    public Language(String name, Proficiency proficiency) {
+    @JsonCreator
+    public Language(@JsonProperty("name") String name,
+                    @JsonProperty("proficiency") Proficiency proficiency) {
         this.name = name;
         this.proficiency = proficiency;
     }

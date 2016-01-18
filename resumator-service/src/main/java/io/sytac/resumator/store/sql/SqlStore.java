@@ -4,9 +4,9 @@ import io.sytac.resumator.ConfigurationException;
 import io.sytac.resumator.employee.NewEmployeeCommand;
 import io.sytac.resumator.events.EventPublisher;
 import io.sytac.resumator.model.Event;
+import io.sytac.resumator.organization.NewOrganizationCommand;
 import io.sytac.resumator.store.EventStore;
 import io.sytac.resumator.store.IllegalInsertOrderException;
-import io.sytac.resumator.store.IllegalStreamOrderException;
 import io.sytac.resumator.store.sql.mapper.EventMapper;
 import org.apache.ibatis.datasource.pooled.PooledDataSource;
 import org.apache.ibatis.mapping.Environment;
@@ -35,7 +35,7 @@ public class SqlStore implements EventStore {
     private final ThreadLocal<SqlSession> session = new ThreadLocal<>();
     private final SqlSessionFactory sessionFactory;
     private final DataSource dataSource;
-    private final AtomicBoolean readOnly = new AtomicBoolean(true);
+    private final AtomicBoolean readOnly = new AtomicBoolean(false);
 
     @Inject
     public SqlStore(final io.sytac.resumator.Configuration config, final EventPublisher events){
@@ -45,8 +45,11 @@ public class SqlStore implements EventStore {
         Configuration configuration = new Configuration(environment);
         configuration.getTypeHandlerRegistry().register("io.sytac.resumator.store.sql.mapper");
         configuration.addMapper(EventMapper.class);
+
         sessionFactory = new SqlSessionFactoryBuilder().build(configuration);
+
         events.subscribe(this::put, NewEmployeeCommand.EVENT_TYPE);
+        events.subscribe(this::put, NewOrganizationCommand.EVENT_TYPE);
     }
 
     private PooledDataSource createDataSource(final io.sytac.resumator.Configuration properties) {
@@ -74,24 +77,12 @@ public class SqlStore implements EventStore {
         }
         EventMapper mapper = session.get().getMapper(EventMapper.class);
         checkInsertOrder(event, mapper);
-        checkStreamOrder(event, mapper);
         mapper.put(event);
         session.get().commit();
     }
 
     private void assertWriteAllowed() {
         if(readOnly.get()) throw new IllegalStateException("The system is in read only mode");
-    }
-
-    private void checkStreamOrder(Event event, EventMapper mapper) {
-        if(event.hasStreamOrder()){
-            Long streamOrder = event.getStreamOrder();
-            Long lastStreamOrder = mapper.getLastStreamOrder(event.getStreamId());
-            lastStreamOrder = lastStreamOrder == null ? -1 : lastStreamOrder;
-            if(lastStreamOrder >= streamOrder) {
-                throw new IllegalStreamOrderException();
-            }
-        }
     }
 
     private void checkInsertOrder(Event event, EventMapper mapper) {

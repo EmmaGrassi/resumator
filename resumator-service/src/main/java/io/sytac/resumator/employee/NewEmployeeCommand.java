@@ -27,25 +27,14 @@ public class NewEmployeeCommand implements Command<CommandHeader, NewEmployeeCom
     private final CommandHeader header;
     private final NewEmployeeCommandPayload payload;
 
-    public NewEmployeeCommand(final String organizationDomain,
-                                      final String name,
-                                      final String surname,
-                                      final String yearOfBirth,
-                                      final String nationality,
-                                      final String currentResidence,
-                                      final String timestamp) {
-        payload = new NewEmployeeCommandPayload(organizationDomain,
-                                                name,
-                                                surname,
-                                                yearOfBirth,
-                                                nationality,
-                                                currentResidence);
+    public NewEmployeeCommand(final NewEmployeeCommandPayload payload, final String domain, final String timestamp) {
+        this.payload = payload;
         final Date time = Optional.ofNullable(timestamp)
-                                    .map(Long::decode)
-                                    .map(Date::new)
-                                    .orElse(new Date());
+                .map(Long::decode)
+                .map(Date::new)
+                .orElse(new Date());
 
-        header = new CommandHeader(time);
+        header = new CommandHeader(domain, time);
     }
 
     @SuppressWarnings("unused")
@@ -81,9 +70,7 @@ public class NewEmployeeCommand implements Command<CommandHeader, NewEmployeeCom
         }
 
         return new Event(header.getId().orElse(randomId()),
-                        "streamId",
                         header.getInsertOrder().orElse(Event.ORDER_UNSET),
-                        header.getStreamOrder().orElse(Event.ORDER_UNSET),
                         asJson,
                         new Timestamp(header.getTimestamp().getTime()),
                         getType());

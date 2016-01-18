@@ -3,17 +3,15 @@ package io.sytac.resumator.store;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.sytac.resumator.employee.NewEmployeeCommand;
 import io.sytac.resumator.model.Event;
+import io.sytac.resumator.organization.NewOrganizationCommand;
+import io.sytac.resumator.organization.Organization;
 import io.sytac.resumator.organization.OrganizationRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Consumer;
+import java.util.Optional;
 
 /**
  * Replays events to build up the in-memory query state
@@ -30,62 +28,47 @@ public class Bootstrap {
     private final ObjectMapper json;
 
     @Inject
-    public Bootstrap(EventStore store, OrganizationRepository orgs, ObjectMapper json) {
+    public Bootstrap(final EventStore store, final OrganizationRepository orgs, final ObjectMapper json) {
         this.store = store;
         this.orgs = orgs;
         this.json = json;
     }
 
-    public void start(final Consumer<BootstrapResult> callback) {
+    public void replay() {
+        LOGGER.info("Replaying events, setting store to read-only");
         store.setReadOnly(true);
-        final List<Event> events = store.getAll();
-        final BootstrapResult result = replay(events);
+        store.getAll().forEach(this::replayEvent);
+
+        LOGGER.info("Replayed events successfully, setting store to read-write");
         store.setReadOnly(false);
-        callback.accept(result);
     }
 
-    private BootstrapResult replay(List<Event> events) {
-        final BootstrapResult result = new BootstrapResult();
+    private void replayEvent(Event event) {
+        try {
+            switch (event.getType()) {
+                case "newEmployee":
+                    final NewEmployeeCommand command = json.readValue(event.getPayload(), NewEmployeeCommand.class);
+                    final Optional<String> domain = command.getHeader().getDomain();
+                    if (domain.isPresent()) {
+                        orgs.fromDomain(domain.get())
+                                .orElseThrow(() -> new IllegalArgumentException("Cannot replay new employee for unknown organization"))
+                                .addEmployee(command);
+                    } else{
+                        LOGGER.error("Ignoring 'newEmployee' event without domain data in the header:\n{}", event);
+                    }
+                break;
 
-        events.forEach(event -> {
-            try {
-                if(replayEvent(event)) {
-                    result.successfullyReplayed.incrementAndGet();
-                } else {
-                    result.failures.put(event, new IllegalArgumentException("Unsupported event type: " + event.getType()));
-                }
-            } catch (Exception e) {
-                result.failures.put(event, e);
+                case "newOrganization":
+                    final NewOrganizationCommand organizationCommand = json.readValue(event.getPayload(), NewOrganizationCommand.class);
+                    Organization organization = new Organization(organizationCommand.getPayload().getName(), organizationCommand.getPayload().getDomain());
+                    orgs.addOrganization(organization);
+                    break;
+
+                default:
+                    throw new IllegalStateException("Could not format the following unknown event: " + event);
             }
-        });
-
-        return result;
-    }
-
-    private boolean replayEvent(Event event) throws IOException {
-        switch (event.getType()) {
-            case "newEmployee":
-                final NewEmployeeCommand command = json.readValue(event.getPayload(), NewEmployeeCommand.class);
-                orgs.fromDomain(command.getPayload().getOrganizationDomain())
-                        .orElseThrow(() -> new IllegalArgumentException("Cannot replay new employee for unknown organization"))
-                        .addEmployee(command);
-                return true;
-            default:
-                LOGGER.error("Ignoring unsupported event:\n{}", event);
-                return false;
-        }
-    }
-
-    public static class BootstrapResult {
-        protected final AtomicInteger successfullyReplayed = new AtomicInteger(0);
-        protected final Map<Event, Exception> failures = new HashMap<>();
-
-        public AtomicInteger getSuccessfullyReplayed() {
-            return successfullyReplayed;
-        }
-
-        public Map<Event, Exception> getFailures() {
-            return failures;
+        } catch (IOException e) {
+            throw new IllegalStateException("The following exception occurred while replaying events: ", e);
         }
     }
 }

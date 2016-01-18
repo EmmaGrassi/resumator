@@ -33,4 +33,6 @@ public interface OrganizationRepository {
      * @return The registered organization
      */
     Organization register(NewOrganizationCommand command);
+
+    Organization addOrganization(Organization org);
 }

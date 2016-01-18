@@ -5,7 +5,6 @@ import io.sytac.resumator.Configuration;
 import io.sytac.resumator.events.EventPublisher;
 import io.sytac.resumator.model.Event;
 import io.sytac.resumator.store.IllegalInsertOrderException;
-import io.sytac.resumator.store.IllegalStreamOrderException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -49,15 +48,11 @@ public class SqlStoreTest extends AbstractResumatorTest {
     }
 
     private Event createRandomEvent() {
-        return new Event(UUID.randomUUID().toString(), "stream", 1L, 1L, "bogus: 汉语 / 漢語", new Timestamp(0), "NewEmployeeCommand");
+        return new Event(UUID.randomUUID().toString(), 1L, "bogus: 汉语 / 漢語", new Timestamp(0), "NewEmployeeCommand");
     }
 
     private Event createRandomEvent(final Long insertSequence) {
-        return new Event(UUID.randomUUID().toString(), "stream", insertSequence, 1L, "bogus", new Timestamp(0), "test");
-    }
-
-    private Event createRandomEvent(final Long insertSequence, final String streamId, final Long streamOrder) {
-        return new Event(UUID.randomUUID().toString(), streamId, insertSequence, streamOrder, "bogus", new Timestamp(0), "test");
+        return new Event(UUID.randomUUID().toString(), insertSequence, "bogus", new Timestamp(0), "test");
     }
 
     @Test
@@ -74,15 +69,6 @@ public class SqlStoreTest extends AbstractResumatorTest {
     public void insertSequenceMustBeUnique(){
         Event event1 = createRandomEvent(1L);
         Event event2 = createRandomEvent(1L);
-
-        store.put(event1);
-        store.put(event2);
-    }
-
-    @Test(expected = IllegalStreamOrderException.class)
-    public void streamOrderMustBeUnique(){
-        Event event1 = createRandomEvent(1L, "stream", 1L);
-        Event event2 = createRandomEvent(2L, "stream", 1L);
 
         store.put(event1);
         store.put(event2);

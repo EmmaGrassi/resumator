@@ -5,6 +5,7 @@ import io.sytac.resumator.employee.EmployeeId;
 import io.sytac.resumator.employee.NewEmployeeCommand;
 import io.sytac.resumator.employee.NewEmployeeCommandPayload;
 import io.sytac.resumator.model.enums.Nationality;
+import io.sytac.resumator.utils.DateUtils;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -39,18 +40,26 @@ public class Organization {
         if(previous != null) {
             throw new IllegalArgumentException("Duplicate employee:" + employee);
         }
-
         return employee;
     }
 
     private Employee fromCommand(final NewEmployeeCommand command) {
         final NewEmployeeCommandPayload payload = command.getPayload();
 
-        return new Employee(payload.getName(),
+        return new Employee(payload.getTitle(),
+                payload.getName(),
                 payload.getSurname(),
-                Integer.parseInt(payload.getYearOfBirth()),
+                payload.getEmail(),
+                payload.getPhonenumber(),
+                payload.getGithub(),
+                payload.getLinkedin(),
+                DateUtils.convert(payload.getDateOfBirth()),
                 Nationality.valueOf(payload.getNationality()),
-                payload.getCurrentResidence());
+                payload.getAboutMe(),
+                payload.getEducation(),
+                payload.getCourses(),
+                payload.getExperience(),
+                payload.getLanguages());
 
     }
 
@@ -66,11 +75,14 @@ public class Organization {
         return name;
     }
 
+    public Employee getEmployeeById(String id) {
+        return employees.get(new EmployeeId(id));
+    }
+
     public Optional<Employee> findEmployeeByName(String name, String surname) {
         return employees.values()
                         .stream()
-                        .filter(employee -> name.equals(employee.getName()) &&
-                                            surname.equals(employee.getSurname()))
+                        .filter(employee -> name.equals(employee.getName()) && surname.equals(employee.getSurname()))
                         .findFirst();
     }
 }

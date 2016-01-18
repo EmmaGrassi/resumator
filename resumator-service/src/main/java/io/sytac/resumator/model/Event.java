@@ -16,30 +16,24 @@ import java.sql.Timestamp;
 @MappedJdbcTypes(JdbcType.CLOB)
 public class Event {
 
-    public static final Long ORDER_UNSET = Long.MIN_VALUE;
+    public static final Long ORDER_UNSET = null;
 
     final String id;
-    final String streamId;
     final Long insertOrder;
-    final Long streamOrder;
     final String payload;
     final Timestamp created;
     final String type;
 
-    public Event(String id, String streamId, Long insertOrder, Long streamOrder, String payload, Timestamp created, String type) {
+    public Event(String id, Long insertOrder, String payload, Timestamp created, String type) {
         this.id = id;
-        this.streamId = streamId;
         this.insertOrder = insertOrder;
-        this.streamOrder = streamOrder;
         this.payload = payload;
         this.created = created;
         this.type = type;
     }
-    public Event(String id, String streamId, Long insertOrder, Long streamOrder, Clob payload, Timestamp created, String type) {
+    public Event(String id, Long insertOrder, Clob payload, Timestamp created, String type) {
         this.id = id;
-        this.streamId = streamId;
         this.insertOrder = insertOrder;
-        this.streamOrder = streamOrder;
         this.payload = readClob(payload);
         this.created = created;
         this.type = type;
@@ -70,18 +64,6 @@ public class Event {
         return insertOrder;
     }
 
-    public boolean hasStreamOrder() {
-        return streamOrder != null;
-    }
-
-    public Long getStreamOrder() {
-        return streamOrder;
-    }
-
-    public String getStreamId() {
-        return streamId;
-    }
-
     public String getType() {
         return type;
     }
@@ -94,9 +76,7 @@ public class Event {
     public String toString() {
         return "Event{" +
                 "id='" + id + '\'' +
-                ", streamId='" + streamId + '\'' +
                 ", insertOrder=" + insertOrder +
-                ", streamOrder=" + streamOrder +
                 ", payload='" + payload + '\'' +
                 ", created=" + created +
                 ", type='" + type + '\'' +

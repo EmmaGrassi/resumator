@@ -1,6 +1,9 @@
 package io.sytac.resumator.model;
 
-import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.sytac.resumator.utils.DateUtils;
+
 import java.util.List;
 
 /**
@@ -19,10 +22,10 @@ public class Experience {
 	private final String shortDescription;
 	private final List<String> technologies;
 	private final List<String> methodologies;
-	private final Date startDate;
-	private final Date endDate;
+	private final Long startDate;
+	private final Long endDate;
 
-	public Experience(String companyName, String title, String city, String country, String shortDescription, List<String> technologies, List<String> methodologies, Date startDate, Date endDate) {
+	public Experience(String companyName, String title, String city, String country, String shortDescription, List<String> technologies, List<String> methodologies, Long startDate, Long endDate) {
 		this.companyName = companyName;
 		this.title = title;
 		this.city = city;
@@ -34,6 +37,27 @@ public class Experience {
 		this.endDate = endDate;
 	}
 
+	@JsonCreator
+	public Experience(@JsonProperty("companyName") String companyName,
+					  @JsonProperty("title") String title,
+					  @JsonProperty("city") String city,
+					  @JsonProperty("country") String country,
+					  @JsonProperty("shortDescription") String shortDescription,
+					  @JsonProperty("technologies") List<String> technologies,
+					  @JsonProperty("methodologies") List<String> methodologies,
+					  @JsonProperty("startDate") String startDate,
+					  @JsonProperty("endDate") String endDate) {
+		this.companyName = companyName;
+		this.title = title;
+		this.city = city;
+		this.country = country;
+		this.shortDescription = shortDescription;
+		this.technologies = technologies;
+		this.methodologies = methodologies;
+		this.startDate = DateUtils.convert(startDate);
+		this.endDate = DateUtils.convert(endDate);
+	}
+
 	public String getCompanyName() {
 		return companyName;
 	}
@@ -43,10 +67,11 @@ public class Experience {
 	public String getShortDescription() {
 		return shortDescription;
 	}
-	public Date getStartDate() {
+
+	public Long getStartDate() {
 		return startDate;
 	}
-	public Date getEndDate() {
+	public Long getEndDate() {
 		return endDate;
 	}
 	public String getCity() {

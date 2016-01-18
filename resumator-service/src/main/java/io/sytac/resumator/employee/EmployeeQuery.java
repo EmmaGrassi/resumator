@@ -7,6 +7,9 @@ import io.sytac.resumator.model.*;
 import io.sytac.resumator.model.enums.Nationality;
 import io.sytac.resumator.docx.DocxGenerator;
 import org.apache.commons.lang3.StringUtils;
+import io.sytac.resumator.organization.Organization;
+import io.sytac.resumator.organization.OrganizationRepository;
+import io.sytac.resumator.security.Roles;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
@@ -16,6 +19,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.SecurityContext;
+import javax.ws.rs.core.UriInfo;
 
 /**
  * Retrieve information about one employee
@@ -23,9 +30,14 @@ import java.util.*;
  * @author Carlo Sciolla
  * @since 0.1
  */
-@Path("employee/{id}")
-@RolesAllowed({"user"})
-public class EmployeeQuery extends BaseResource {
+@Path("employees/{id}")
+@RolesAllowed(Roles.USER)
+public class EmployeeQuery extends BaseEmployee {
+
+    @Inject
+    public EmployeeQuery(final OrganizationRepository organizations) {
+        super(organizations);
+    }
 
     private static final String CONTENT_TYPE_DOCX = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
 
@@ -38,10 +50,13 @@ public class EmployeeQuery extends BaseResource {
 
     @GET
     @Produces(RepresentationFactory.HAL_JSON)
-    @Consumes("application/json")
-    public Representation fakeEmployee(@PathParam("id") final String id, @Context final UriInfo uriInfo) {
-        //throw new WebApplicationException("Cannot get an employee yet, sorry!", HttpStatus.NOT_IMPLEMENTED_501);
-        Employee res = new Employee("Jimi", "Hendrix", 1942, Nationality.AMERICAN, "Heaven");
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Representation fakeEmployee(@PathParam("id") final String id,
+                                       @Context final UriInfo uriInfo,
+                                       @Context final SecurityContext securityContext) {
+        String orgDomain = getOrgDomain(securityContext);
+        Organization organization = getOrganizations().fromDomain(orgDomain).get();
+        Employee res = organization.getEmployeeById(id);
         return represent(res, uriInfo);
     }
 
@@ -65,14 +80,22 @@ public class EmployeeQuery extends BaseResource {
      * @return The {@link Representation} of the {@link Employee}
      */
     private Representation represent(final Employee employee, final UriInfo uriInfo) {
-
         return rest.newRepresentation()
                 .withProperty("id", employee.getId().toString())
+                .withProperty("title", employee.getTitle())
                 .withProperty("name", employee.getName())
                 .withProperty("surname", employee.getSurname())
+                .withProperty("email", employee.getEmail())
+                .withProperty("phonenumber", employee.getPhonenumber())
+                .withProperty("github", employee.getGithub())
+                .withProperty("linkedin", employee.getLinkedin())
+                .withProperty("dateOfBirth", employee.getDateOfBirth())
                 .withProperty("nationality", employee.getNationality())
-                .withProperty("current-residence", employee.getCurrentResidence())
-                .withProperty("year-of-birth", employee.getYearOfBirth())
+                .withProperty("aboutMe", employee.getAboutMe())
+                .withProperty("education", employee.getEducation())
+                .withProperty("courses", employee.getCourses())
+                .withProperty("experience", employee.getExperience())
+                .withProperty("languages", employee.getLanguages())
                 .withLink("self", uriInfo.getRequestUri().toString());
     }
 

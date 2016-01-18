@@ -1,6 +1,7 @@
 import React from 'react';
 import qwest from 'qwest';
 import { connect } from 'react-redux';
+import { pushPath } from 'redux-simple-router';
 
 import NavItem from 'react-bootstrap/lib/NavItem';
 
@@ -15,7 +16,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     login: (data) => dispatch(actions.user.login(data)),
-    logout: () => dispatch(actions.user.logout())
+    logout: () => dispatch(actions.user.logout()),
+    navigateToHome: () => dispatch(pushPath(`/`))
   };
 }
 
@@ -53,6 +55,10 @@ class RightButton extends React.Component {
   // TODO: Does not work right now.
   handleLogOutButtonClick(event) {
     event.preventDefault();
+    event.stopPropagation();
+
+    this.props.logout();
+    this.props.navigateToHome();
   }
 
   componentDidMount() {
@@ -74,9 +80,9 @@ class RightButton extends React.Component {
     const user = this.props.user;
 
     if (user && user.name) {
-      return <NavItem eventKey={2} href="#" id="logout-button" onClick={this.handleLogoutButtonClick}>Log Out</NavItem>;
+      return <NavItem eventKey={2} href="#" key="logoutButton" id="logout-button" onClick={this.handleLogOutButtonClick.bind(this)}>Log Out</NavItem>;
     } else {
-      return <NavItem eventKey={2} href="#" id="login-button">Log In</NavItem>;
+      return <NavItem eventKey={2} href="#" key="loginButton" id="login-button">Log In</NavItem>;
     }
   }
 }

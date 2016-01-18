@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { pushPath } from 'redux-simple-router';
 
 import EmployeesNewForm from './form/employee';
 
@@ -11,12 +12,19 @@ function mapStateToProps(state) {
   };
 }
 
+function mapDispatchToProps(dispatch) {
+  return {
+    createEmployee: (data) => dispatch(actions.employees.create(data)),
+    navigateToEmployeesShow: (id) => dispatch(pushPath(`/employees/${id}`, {}))
+  };
+}
 
 class Create extends React.Component {
-  handleSubmit(data) {
-    this.props.dispatch(actions.employee.new(data));
+  handleFormSubmit(data) {
+    this.props.createEmployee(data);
 
-    window.location.hash = `preview`;
+    // TODO: Get ID from returned resource from POST request.
+    // this.props.navigateToEmployeesShow();
   }
 
   render() {
@@ -28,11 +36,11 @@ class Create extends React.Component {
         <EmployeesNewForm
           ref="employeeForm"
           options={options}
-          handleSubmit={this.handleSubmit.bind(this)}
+          handleSubmit={this.handleFormSubmit.bind(this)}
         />
       </div>
     );
   }
 }
 
-export default connect(mapStateToProps)(Create);
+export default connect(mapStateToProps, mapDispatchToProps)(Create);

@@ -103,7 +103,7 @@ class EmployeeForm extends React.Component {
     const value = this.refs.form.getValue();
 
     if (value) {
-      this.props.onSubmit(value);
+      this.props.handleSubmit(value);
     }
   }
 
@@ -138,7 +138,7 @@ class EmployeeForm extends React.Component {
       <Grid>
         <Row>
           <Col xs={12}>
-            <form onSubmit={this.handleSubmit}>
+            <form onSubmit={this.handleSubmit.bind(this)}>
               <Form
                 ref="form"
                 type={EmployeeSchema}

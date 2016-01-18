@@ -43,18 +43,18 @@ public class NewEmployeeCommandTest {
 
     @Test
     public void JSONisPredictable() throws JsonProcessingException {
-        final List<Education> education = Collections.singletonList(new Education(Education.Degree.MASTER_DEGREE, "Field", "School", "City", "Country", 2000, 2005));
+        final List<Education> educations = Collections.singletonList(new Education(Education.Degree.MASTER_DEGREE, "Field", "School", "City", "Country", 2000, 2005));
         final List<Course> courses = Collections.singletonList(new Course("Course1", "Course 1", "1994"));
         final List<String> technologies = Arrays.asList("Java", "Turbo Pascal");
         final List<String> methodologies = Arrays.asList("Scrum", "Extreme programming");
 
-        Date startDate = new GregorianCalendar(2010, Calendar.JANUARY, 1).getTime();
-        Date endDate = new GregorianCalendar(2014, Calendar.JANUARY, 1).getTime();
-        final List<Experience> experience  = Collections.singletonList(new Experience("CompanyName", "Title", "City", "Country", "Short Description",
-                technologies, methodologies, startDate, endDate));
+        Date expStartDate = new GregorianCalendar(2010, Calendar.JANUARY, 1).getTime();
+        Date expEndDate = new GregorianCalendar(2014, Calendar.JANUARY, 1).getTime();
+        final List<Experience> experiences  = Collections.singletonList(new Experience("CompanyName", "Title", "City", "Country", "Short Description",
+                technologies, methodologies, expStartDate, expEndDate));
         final List<Language> languages = Collections.singletonList(new Language("English", Language.Proficiency.FULL_PROFESSIONAL));
         final NewEmployeeCommandPayload payload = new NewEmployeeCommandPayload("sytac.io", "Title", "Foo", "Bar", "Email", "+31000999000",
-                "Github", "Linkedin", "1984-04-22T00:00:00.000Z", "ITALY", "N", "About ME", education, courses, experience, languages);
+                "Github", "Linkedin", "1984-04-22T00:00:00.000Z", "ITALY", "N", "About ME", educations, courses, experiences, languages);
         final NewEmployeeCommand foobar = new NewEmployeeCommand(payload, "sytac.io", Long.toString(new Date().getTime()));
 
         final Date timestamp = foobar.getHeader().getTimestamp();
@@ -95,8 +95,8 @@ public class NewEmployeeCommandTest {
                         "\"shortDescription\":\"Short Description\"," +
                         "\"technologies\":[\"Java\",\"Turbo Pascal\"]," +
                         "\"methodologies\":[\"Scrum\",\"Extreme programming\"]," +
-                        "\"startDate\":1262300400000," +
-                        "\"endDate\":1388530800000}]," +
+                        "\"startDate\":" + expStartDate.getTime() + "," +
+                        "\"endDate\":" + expEndDate.getTime() + "}]," +
                     "\"languages\":" +
                         "[{\"name\":\"English\","+
                         "\"proficiency\":\"FULL_PROFESSIONAL\"}]}," +

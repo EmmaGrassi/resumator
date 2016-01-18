@@ -22,7 +22,7 @@ each(nationalities, (c) => {
 const CoursesSchema = tcombForm.struct({
   name: tcombForm.String,
   description: tcombForm.String,
-  date: tcombForm.Date,
+  year: tcombForm.Date
 });
 
 const DegreeSchema = tcombForm.enums({
@@ -37,25 +37,22 @@ const DegreeSchema = tcombForm.enums({
 const EducationSchema = tcombForm.struct({
   degree: DegreeSchema,
   fieldOfStudy: tcombForm.String,
-  university: tcombForm.String,
-  graduated: tcombForm.Boolean,
-
-  // TODO: Support this type in tcomb-form-types.
-  graduationYear: tcombFormTypes.Number.Decimal
+  school: tcombForm.String,
+  city: tcombForm.String,
+  country: tcombForm.String,
+  startYear: tcombForm.String,
+  endYear: tcombForm.Number
 });
 
 const ExperienceSchema = tcombForm.struct({
   companyName: tcombForm.String,
   title: tcombForm.String,
-  location: tcombForm.String,
+  city: tcombForm.String,
+  country: tcombForm.String,
   startDate: tcombForm.Date,
   endDate: tcombForm.Date,
-
   shortDescription: tcombForm.String,
-
   technologies: tcombForm.list(tcombForm.String),
-
-  // TODO: Tag text input
   methodologies: tcombForm.list(tcombForm.String)
 });
 
@@ -109,7 +106,7 @@ class EmployeeForm extends React.Component {
       value.dateOfBirth = moment(value.dateOfBirth).format('YYYY-MM-DD');
 
       value.courses = map(value.courses, (v) => {
-        v.date = moment(v.date).format('YYYY-MM-DD');
+        v.year = moment(v.year).format('YYYY-MM-DD');
 
         return v;
       });

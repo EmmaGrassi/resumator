@@ -31,7 +31,7 @@ public class OrganizationTest {
     @Test
     public void happyFlow() {
         NewEmployeeCommandPayload employeeCommandPayload = new NewEmployeeCommandPayload("ACME", "title", "Name", "Surname", "Email",
-                "+31000999000", "Github", "Linkedin", "1984-04-22T00: 00: 00.000Z", "ITALIAN", "", null, null, null, null);
+                "+31000999000", "Github", "Linkedin", "1984-04-22T00:00:00.000Z", "ITALIAN", "", null, null, null, null);
         NewEmployeeCommand command = new NewEmployeeCommand(employeeCommandPayload, Long.toString(new Date().getTime()));
         final Employee employee = new Organization("ACME", "ACME", "acme.com").addEmployee(command);
         assertEquals("Wrong organization ID in Employee", Nationality.ITALIAN, employee.getNationality());

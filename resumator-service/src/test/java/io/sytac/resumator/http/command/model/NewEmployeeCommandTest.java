@@ -18,6 +18,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -46,13 +47,13 @@ public class NewEmployeeCommandTest {
 
     @Test
     public void JSONisPredictable() throws JsonProcessingException {
-        final List<Education> education = Arrays.asList(new Education(Degree.MASTER_DEGREE, "Field", "University", true, 2000));
-        final List<Course> courses = Arrays.asList(new Course("Course1", "Course 1", "1994-01-01T00: 00: 00.000Z"));
+        final List<Education> education = Collections.singletonList(new Education(Degree.MASTER_DEGREE, "Field", "University", true, 2000));
+        final List<Course> courses = Collections.singletonList(new Course("Course1", "Course 1", "1994-01-01T00:00:00.000Z"));
         final List<String> technologies = Arrays.asList("Java", "Turbo Pascal");
         final List<String> methodologies = Arrays.asList("Scrum", "Extreme programming");
-        final List<Experience> experience  = Arrays.asList(new Experience("CompanyName", "Title", "Location", "Short Description",
-                technologies, methodologies, "1994-01-01T00: 00: 00.000Z", "1998-01-31T00: 00: 00.000Z"));
-        final List<Language> languages = Arrays.asList(new Language("English", "FULL_PROFESSIONAL"));
+        final List<Experience> experience  = Collections.singletonList(new Experience("CompanyName", "Title", "Location", "Short Description",
+                technologies, methodologies, "1994-01-01T00:00:00.000Z", "1998-01-31T00:00:00.000Z"));
+        final List<Language> languages = Collections.singletonList(new Language("English", "FULL_PROFESSIONAL"));
         final NewEmployeeCommandPayload payload = new NewEmployeeCommandPayload("ACME", "Title", "Foo", "Bar", "Email", "+31000999000",
                 "Github", "Linkedin", "1984-04-22T00: 00: 00.000Z", "ITALY", "About ME", education, courses, experience, languages);
         final NewEmployeeCommand foobar = new NewEmployeeCommand(payload, Long.toString(new Date().getTime()));

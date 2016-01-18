@@ -55,7 +55,7 @@ gulp.task('cleanDirectory', 'Cleans the build directory, starting every run with
 gulp.task('compileBabel', 'Compiles all JavaScript files from ES2015 to ES5 with Babel.js from the source directory to the build directory.', function(cb) {
   return gulp.src('src/**/*.js')
     .pipe(plugins.plumber({
-      errorHandler: (error) => {
+      errorHandler: function(error) {
         console.log(error);
         this.emit('end');
       }

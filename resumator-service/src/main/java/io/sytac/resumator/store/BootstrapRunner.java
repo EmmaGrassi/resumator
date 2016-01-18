@@ -23,21 +23,14 @@ public class BootstrapRunner {
 
     @Inject
     public BootstrapRunner(final Bootstrap bootstrap, final OrganizationRepository orgs) {
-        bootstrap.start(result -> {
-            LOGGER.warn("Bootstrap finished");
-            if (result.getFailures() != null && result.getFailures().size() == 0) {
-                LOGGER.warn(" with no failures");
-            } else {
-                LOGGER.warn(" with failures: ");
-                result.getFailures().forEach((key, fail) -> LOGGER.info(fail.getMessage()));
-            }
-        });
+        bootstrap.replay();
 
         // Register organisation manually. Will be removed when NewOrganisation endpoint is implemented.
         NewOrganizationCommand organizationCommand = new NewOrganizationCommand("Sytac", "sytac.io", String.valueOf(new Date().getTime()));
         final Optional<Organization> organization = orgs.fromDomain(organizationCommand.getPayload().getDomain());
         if (!organization.isPresent()) {
             orgs.register(organizationCommand);
+            LOGGER.debug("Added dummy organization manually");
         }
     }
 }

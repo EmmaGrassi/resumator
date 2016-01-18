@@ -47,14 +47,13 @@ public class InMemoryOrganizationRepositoryTest {
         assertEquals("The stored organization doesn't match the input one!", "name", stored.getName());
     }
 
-    @Test
-    public void canOverrideOrganizations() {
+    @Test(expected = IllegalStateException.class)
+    public void cannotOverrideOrganizations() {
         final NewOrganizationCommand one = newOrgCommand("one", "domain");
         final NewOrganizationCommand two = newOrgCommand("two", "domain");
 
         repository.register(one);
-        final Organization overridden = repository.register(two);
-        assertEquals("When overriding an organization, the older one was not returned", "one", overridden.getName());
+        repository.register(two);
     }
 
     @Test

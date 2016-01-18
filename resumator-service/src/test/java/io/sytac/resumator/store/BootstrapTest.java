@@ -53,7 +53,7 @@ public class BootstrapTest {
 
     @Test
     public void canReplayZeroEvents() {
-        bootstrap.start(result -> assertTrue("The replay of 0 events failed", result.failures.isEmpty()));
+        bootstrap.replay();
         verify(store, times(1)).setReadOnly(false);
         verify(store, times(1)).setReadOnly(true);
     }
@@ -61,7 +61,7 @@ public class BootstrapTest {
     @Test
     public void canReplayNewEmployeeEvent() {
         when(store.getAll()).thenReturn(Collections.singletonList(newEmployeeEvent()));
-        bootstrap.start(result -> assertTrue("The replay of creating one employee failed", result.successfullyReplayed.get() == 1));
+        bootstrap.replay();
         verify(store, times(1)).setReadOnly(false);
         verify(store, times(1)).setReadOnly(true);
         Optional<Employee> employee = orgs.fromDomain("acme.biz").get().findEmployeeByName("name", "surname");

@@ -78,8 +78,9 @@ class RightButton extends React.Component {
 
   render() {
     const user = this.props.user;
+    const token = user.get('token');
 
-    if (user && user.name) {
+    if (token) {
       return <NavItem eventKey={2} href="#" key="logoutButton" id="logout-button" onClick={this.handleLogOutButtonClick.bind(this)}>Log Out</NavItem>;
     } else {
       return <NavItem eventKey={2} href="#" key="loginButton" id="login-button">Log In</NavItem>;

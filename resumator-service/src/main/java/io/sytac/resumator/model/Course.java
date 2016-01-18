@@ -1,7 +1,5 @@
 package io.sytac.resumator.model;
 
-import java.util.Date;
-
 /**
  * A course / training followed by the employee
  *
@@ -13,22 +11,23 @@ public class Course {
 	
 	private final String name;
 	private final String description;
-	private final Date date;
+	private final int year;
 
-	public Course(String name, String description, Date date) {
+	public Course(String name, String description, int year) {
 		this.name = name;
 		this.description = description;
-		this.date = date;
+		this.year = year;
 	}
 
 	public String getName() {
 		return name;
 	}
+
 	public String getDescription() {
 		return description;
 	}
-	public Date getYear() {
-		return date;
-	}
 
+	public int getYear() {
+		return year;
+	}
 }

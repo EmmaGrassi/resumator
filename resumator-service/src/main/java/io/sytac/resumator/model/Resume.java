@@ -1,11 +1,8 @@
 package io.sytac.resumator.model;
 
 import io.sytac.resumator.employee.Employee;
-import io.sytac.resumator.model.enums.LangSkill;
 
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
 /**
  * The complete CV of an employee
@@ -19,12 +16,12 @@ public class Resume {
 	private final String jobTitle;
 	private final Employee employee;
 	private final String shortBio;
-	private final Map<Locale,LangSkill> languages;
+	private final List<Language> languages;
 	private final List<Course> courses;
 	private final List<Education> educations;
 	private final List<Experience> experiences;
 
-	public Resume(String jobTitle, Employee employee, String shortBio, Map<Locale, LangSkill> languages, List<Course> courses, List<Education> educations, List<Experience> experiences) {
+	public Resume(String jobTitle, Employee employee, String shortBio, List<Language> languages, List<Course> courses, List<Education> educations, List<Experience> experiences) {
 		this.jobTitle = jobTitle;
 		this.employee = employee;
 		this.shortBio = shortBio;
@@ -40,7 +37,7 @@ public class Resume {
 	public String getShortBio() {
 		return shortBio;
 	}
-	public Map<Locale, LangSkill> getLanguages() {
+	public List<Language> getLanguages() {
 		return languages;
 	}
 	public List<Course> getCourses() {

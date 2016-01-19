@@ -95,7 +95,7 @@ class RightNav extends React.Component {
 
       return (
         <Nav pullRight>
-          <NavDropdown eventKey={2} title={title}>
+          <NavDropdown eventKey={2} title={title} id="right-nav-dropdown">
             <MenuItem onClick={this.handleLogOutButtonClick.bind(this)}>Log Out</MenuItem>
           </NavDropdown>
         </Nav>

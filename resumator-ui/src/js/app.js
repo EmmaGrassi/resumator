@@ -20,8 +20,6 @@ import AdminEmployeesShow from './components/admin/employees/show';
 import AdminHome from './components/admin/home';
 import PublicContainer from './components/public/container';
 import PublicHome from './components/public/home';
-import PublicLogin from './components/public/login';
-import PublicLogout from './components/public/logout';
 import PublicEmployeesCreate from './components/public/employees/create';
 import PublicEmployeesEdit from './components/public/employees/edit';
 import PublicEmployeesList from './components/public/employees/list';
@@ -64,13 +62,12 @@ const router = (
             <Route path="preview" component={ PublicEmployeesPreview } />
           </Route>
         </Route>
-
-        <Route path="login" component={ PublicLogin } />
-        <Route path="logout" component={ PublicLogout } />
       </Route>
     </Router>
   </Provider>
 );
+
+store.dispatch(actions.user.getCookie());
 
 domready(() => {
   ReactDOM.render(router, rootElement);

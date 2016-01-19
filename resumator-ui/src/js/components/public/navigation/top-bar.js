@@ -9,7 +9,7 @@ import NavbarHeader from 'react-bootstrap/lib/NavbarHeader';
 import NavbarToggle from 'react-bootstrap/lib/NavbarToggle';
 import NavItem from 'react-bootstrap/lib/NavItem';
 
-import RightButton from './right-button';
+import RightNav from './right-nav';
 
 class TopBar extends React.Component {
   render() {
@@ -24,9 +24,7 @@ class TopBar extends React.Component {
         <Nav>
           <NavItem eventKey={1} href="#/employees">Employees</NavItem>
         </Nav>
-        <Nav pullRight>
-          <RightButton/>
-        </Nav>
+        <RightNav/>
       </NavbarCollapse>
     </Navbar>;
   }

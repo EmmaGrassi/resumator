@@ -14,41 +14,15 @@ const item = immutable.Map({
   aboutMe: null,
 
   education: immutable.List([
-    //{
-    //  degree: 'Bachelor of ICT',
-    //  fieldOfStudy: 'ICT',
-    //  university: 'Hogeschool van Amsterdam',
-    //  graduated: true,
-    //  graduationYear: 1999
-    //}
   ]),
 
   courses: immutable.List([
-    //{
-    //  name: 'Some',
-    //  description: 'Description',
-    //  date: new Date('1976-02-01T00:00:00.000Z')
-    //}
   ]),
 
   experience: immutable.List([
-    //{
-    //  companyName: 'Sytac',
-    //  title: 'Senior Engineer',
-    //  location: 'Haarlem',
-    //  startDate: new Date('2015-12-02T00:00:00.000Z'),
-    //  endDate: new Date('2016-06-31T00:00:00.000Z'),
-    //  shortDescription: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi magna ante, convallis vel auctor sed, tristique nec velit. In lacinia vitae massa at porttitor. In pretium justo urna, sit amet vulputate ipsum interdum vel. Morbi pretium diam ac leo laoreet, in aliquet mi iaculis. Donec a tempor neque.',
-    //  technologies: ['Jquery', 'MSSQL', 'Word', 'QUICKBASIC'],
-    //  methodologies: ['Waterfall', 'Pray n Spray']
-    //}
   ]),
 
   languages: immutable.List([
-    //{
-    //  name: 'Dutch',
-    //  proficiency: 'NATIVE'
-    //}
   ])
 });
 

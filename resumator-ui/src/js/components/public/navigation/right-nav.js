@@ -3,6 +3,7 @@ import qwest from 'qwest';
 import { connect } from 'react-redux';
 import { pushPath } from 'redux-simple-router';
 
+import Nav from 'react-bootstrap/lib/Nav';
 import NavItem from 'react-bootstrap/lib/NavItem';
 
 import actions from '../../../actions';
@@ -17,11 +18,10 @@ function mapDispatchToProps(dispatch) {
   return {
     login: (data) => dispatch(actions.user.login(data)),
     logout: () => dispatch(actions.user.logout()),
-    navigateToHome: () => dispatch(pushPath(`/`))
   };
 }
 
-class RightButton extends React.Component {
+class RightNav extends React.Component {
   constructor() {
     super();
 
@@ -52,40 +52,53 @@ class RightButton extends React.Component {
     console.error(arguments);
   }
 
-  // TODO: Does not work right now.
   handleLogOutButtonClick(event) {
     event.preventDefault();
     event.stopPropagation();
 
     this.props.logout();
-    this.props.navigateToHome();
   }
 
   componentDidMount() {
-    const loginButtonElement = document.getElementById('login-button');
-
     gapi.load('auth2', () => {
       this.auth2 = gapi.auth2.init({
         client_id: '49560145160-80v99olfohmo0etbo6hugpo337p5d1nl.apps.googleusercontent.com',
         cookiepolicy: 'single_host_origin'
       });
 
-      if (loginButtonElement) {
-        this.auth2.attachClickHandler(loginButtonElement, {}, this.handleLogInSuccess.bind(this), this.handleLogInError.bind(this));
-      }
+      const loginButtonElement = document.getElementById('login-button');
+
+      this.auth2.attachClickHandler(loginButtonElement, {}, this.handleLogInSuccess.bind(this), this.handleLogInError.bind(this));
     });
+  }
+
+  componentDidUpdate() {
+    const loginButtonElement = document.getElementById('login-button');
+
+    this.auth2.attachClickHandler(loginButtonElement, {}, this.handleLogInSuccess.bind(this), this.handleLogInError.bind(this));
   }
 
   render() {
     const user = this.props.user;
     const token = user.get('token');
+    const name = user.get('name');
+    const surname = user.get('surname');
 
     if (token) {
-      return <NavItem eventKey={2} href="#" key="logoutButton" id="logout-button" onClick={this.handleLogOutButtonClick.bind(this)}>Log Out</NavItem>;
+      return (
+        <Nav pullRight>
+          <NavItem eventKey={2}>Logged in as {name} {surname}</NavItem>
+          <NavItem eventKey={3} href="#" key="logoutButton" id="logout-button" onClick={this.handleLogOutButtonClick.bind(this)}>Log Out</NavItem>
+        </Nav>
+      );
     } else {
-      return <NavItem eventKey={2} href="#" key="loginButton" id="login-button">Log In</NavItem>;
+      return (
+        <Nav pullRight>
+          <NavItem eventKey={2} href="#" key="loginButton" id="login-button">Log In</NavItem>
+        </Nav>
+      );
     }
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(RightButton);
+export default connect(mapStateToProps, mapDispatchToProps)(RightNav);

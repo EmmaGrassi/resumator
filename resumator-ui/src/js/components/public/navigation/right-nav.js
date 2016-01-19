@@ -3,7 +3,9 @@ import qwest from 'qwest';
 import { connect } from 'react-redux';
 import { pushPath } from 'redux-simple-router';
 
+import MenuItem from 'react-bootstrap/lib/MenuItem';
 import Nav from 'react-bootstrap/lib/Nav';
+import NavDropdown from 'react-bootstrap/lib/NavDropdown';
 import NavItem from 'react-bootstrap/lib/NavItem';
 
 import actions from '../../../actions';
@@ -68,14 +70,18 @@ class RightNav extends React.Component {
 
       const loginButtonElement = document.getElementById('login-button');
 
-      this.auth2.attachClickHandler(loginButtonElement, {}, this.handleLogInSuccess.bind(this), this.handleLogInError.bind(this));
+      if (loginButtonElement) {
+        this.auth2.attachClickHandler(loginButtonElement, {}, this.handleLogInSuccess.bind(this), this.handleLogInError.bind(this));
+      }
     });
   }
 
   componentDidUpdate() {
     const loginButtonElement = document.getElementById('login-button');
 
-    this.auth2.attachClickHandler(loginButtonElement, {}, this.handleLogInSuccess.bind(this), this.handleLogInError.bind(this));
+    if (loginButtonElement) {
+      this.auth2.attachClickHandler(loginButtonElement, {}, this.handleLogInSuccess.bind(this), this.handleLogInError.bind(this));
+    }
   }
 
   render() {
@@ -85,10 +91,13 @@ class RightNav extends React.Component {
     const surname = user.get('surname');
 
     if (token) {
+      const title = `${name} ${surname}`;
+
       return (
         <Nav pullRight>
-          <NavItem eventKey={2}>Logged in as {name} {surname}</NavItem>
-          <NavItem eventKey={3} href="#" key="logoutButton" id="logout-button" onClick={this.handleLogOutButtonClick.bind(this)}>Log Out</NavItem>
+          <NavDropdown eventKey={2} title={title}>
+            <MenuItem onClick={this.handleLogOutButtonClick.bind(this)}>Log Out</MenuItem>
+          </NavDropdown>
         </Nav>
       );
     } else {

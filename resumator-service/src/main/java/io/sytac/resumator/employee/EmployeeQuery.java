@@ -6,9 +6,11 @@ import io.sytac.resumator.http.BaseResource;
 import io.sytac.resumator.model.*;
 import io.sytac.resumator.model.enums.Nationality;
 import io.sytac.resumator.docx.DocxGenerator;
+import io.sytac.resumator.security.Roles;
 import org.apache.commons.lang3.StringUtils;
 import io.sytac.resumator.organization.OrganizationRepository;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -29,6 +31,7 @@ import java.util.Optional;
  * @since 0.1
  */
 @Path("employees/{id}")
+@RolesAllowed(Roles.USER)
 public class EmployeeQuery extends BaseResource {
 
     private static final String CONTENT_TYPE_DOCX = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";

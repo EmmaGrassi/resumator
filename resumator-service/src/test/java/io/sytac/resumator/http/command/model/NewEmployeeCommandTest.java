@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import io.sytac.resumator.command.CommandHeader;
 import io.sytac.resumator.employee.NewEmployeeCommand;
 import io.sytac.resumator.employee.NewEmployeeCommandDeserializer;
 import io.sytac.resumator.employee.NewEmployeeCommandPayload;
@@ -55,13 +56,18 @@ public class NewEmployeeCommandTest {
         final List<Language> languages = Collections.singletonList(new Language("English", Language.Proficiency.FULL_PROFESSIONAL));
         final NewEmployeeCommandPayload payload = new NewEmployeeCommandPayload("sytac.io", "Title", "Foo", "Bar", "Email", "+31000999000",
                 "Github", "Linkedin", "1984-04-22", "ITALY", "N", "About ME", educations, courses, experiences, languages);
-        final NewEmployeeCommand foobar = new NewEmployeeCommand(payload, "sytac.io", Long.toString(new Date().getTime()));
 
-        final Date timestamp = foobar.getHeader().getTimestamp();
+        final CommandHeader commandHeader = new CommandHeader.Builder().setId("123-a-321-b")
+                .setDomain("sytac.io")
+                .build();
+        final NewEmployeeCommand foobar = new NewEmployeeCommand(payload, commandHeader);
+
+        final Long timestamp = foobar.getHeader().getTimestamp();
         final String expected =
                 "{\"header\":" +
-                    "{\"domain\":\"sytac.io\"," +
-                    "\"timestamp\":" + timestamp.getTime() + "}," +
+                    "{\"id\":\"123-a-321-b\"," +
+                    "\"domain\":\"sytac.io\"," +
+                    "\"timestamp\":" + timestamp + "}," +
                 "\"payload\":" +
                     "{\"organizationDomain\":\"sytac.io\"," +
                     "\"title\":\"Title\"," +
@@ -112,6 +118,7 @@ public class NewEmployeeCommandTest {
         final String expected =
                         "{\"header\":" +
                             "{\"timestamp\":" + new Date().getTime() + "," +
+                            "\"id\":\"123-a-321-b\"," +
                             "\"domain\":\"sytac.io\"}," +
                         "\"payload\":" +
                             "{\"organizationDomain\":\"foobar\"," +

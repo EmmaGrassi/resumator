@@ -3,6 +3,7 @@ package io.sytac.resumator.organization;
 import io.sytac.resumator.employee.Employee;
 import io.sytac.resumator.employee.NewEmployeeCommand;
 import io.sytac.resumator.employee.NewEmployeeCommandPayload;
+import io.sytac.resumator.employee.*;
 import io.sytac.resumator.model.enums.Nationality;
 import io.sytac.resumator.utils.DateUtils;
 
@@ -41,10 +42,23 @@ public class Organization {
         return employee;
     }
 
+    public void removeEmployee(final RemoveEmployeeCommand command) {
+        final String employeeId = command.getHeader().getId()
+                .orElseThrow(() -> new IllegalArgumentException("Failed to remove employee because employeeId is null or empty"));
+
+        if (employees.containsKey(employeeId)) {
+            employees.remove(employeeId);
+        } else {
+            throw new IllegalArgumentException(String.format("Employee with id '%s' does not exist", employeeId));
+        }
+    }
+
     private Employee fromCommand(final NewEmployeeCommand command) {
         final NewEmployeeCommandPayload payload = command.getPayload();
+        final String employeeId = command.getHeader().getId().orElse(UUID.randomUUID().toString());
 
-        return new Employee(payload.getTitle(),
+        return new Employee(employeeId,
+                payload.getTitle(),
                 payload.getName(),
                 payload.getSurname(),
                 payload.getEmail(),

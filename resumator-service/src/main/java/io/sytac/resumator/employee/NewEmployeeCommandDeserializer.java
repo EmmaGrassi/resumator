@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.sytac.resumator.command.CommandHeader;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.Optional;
 
 /**
@@ -44,9 +43,10 @@ public class NewEmployeeCommandDeserializer extends JsonDeserializer<NewEmployee
 
     private CommandHeader parseHeader(final JsonNode node) {
         final JsonNode headerJson = node.get("header");
-        final Date date = new Date(headerJson.get("timestamp").asLong());
+        final Long timestamp = headerJson.get("timestamp").asLong();
         final String domain = headerJson.get("domain").asText();
-        return new CommandHeader(domain, date);
+        final String id = headerJson.get("id").asText();
+        return new CommandHeader.Builder().setId(id).setDomain(domain).setTimestamp(timestamp).build();
     }
 
     private String nullable(final JsonNode node, final String field){

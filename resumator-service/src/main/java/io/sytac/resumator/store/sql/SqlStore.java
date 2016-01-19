@@ -2,6 +2,7 @@ package io.sytac.resumator.store.sql;
 
 import io.sytac.resumator.ConfigurationException;
 import io.sytac.resumator.employee.NewEmployeeCommand;
+import io.sytac.resumator.employee.RemoveEmployeeCommand;
 import io.sytac.resumator.events.EventPublisher;
 import io.sytac.resumator.model.Event;
 import io.sytac.resumator.organization.NewOrganizationCommand;
@@ -49,6 +50,7 @@ public class SqlStore implements EventStore {
         sessionFactory = new SqlSessionFactoryBuilder().build(configuration);
 
         events.subscribe(this::put, NewEmployeeCommand.EVENT_TYPE);
+        events.subscribe(this::put, RemoveEmployeeCommand.EVENT_TYPE);
         events.subscribe(this::put, NewOrganizationCommand.EVENT_TYPE);
     }
 

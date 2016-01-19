@@ -42,7 +42,7 @@ public class NewOrganizationCommand implements Command<CommandHeader, NewOrganiz
                 .map(Date::new)
                 .orElse(new Date());
 
-        this.header  = new CommandHeader(time);
+        this.header  = new CommandHeader.Builder().setTimestamp(time.getTime()).build();
         this.payload = new NewOrganizationCommandPayload(name, domain);
     }
 
@@ -73,7 +73,7 @@ public class NewOrganizationCommand implements Command<CommandHeader, NewOrganiz
         return new Event(header.getId().orElse(randomId()),
                 header.getInsertOrder().orElse(Event.ORDER_UNSET),
                 asJson,
-                new Timestamp(header.getTimestamp().getTime()),
+                new Timestamp(header.getTimestamp()),
                 getType());
     }
 

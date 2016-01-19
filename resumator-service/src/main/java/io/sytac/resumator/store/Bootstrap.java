@@ -1,7 +1,9 @@
 package io.sytac.resumator.store;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.sytac.resumator.command.Command;
 import io.sytac.resumator.employee.NewEmployeeCommand;
+import io.sytac.resumator.employee.RemoveEmployeeCommand;
 import io.sytac.resumator.model.Event;
 import io.sytac.resumator.organization.NewOrganizationCommand;
 import io.sytac.resumator.organization.Organization;
@@ -43,26 +45,39 @@ public class Bootstrap {
         store.setReadOnly(false);
     }
 
+    private void checkIdAndDomainInHeader(final Command command) {
+        final Optional<String> id = command.getHeader().getId();
+        final Optional<String> domain = command.getHeader().getDomain();
+        if (!id.isPresent() || !domain.isPresent()) {
+            throw new IllegalStateException("Cannot replay 'newEmployee' event without id and domain information in the header");
+        }
+    }
+
+    private Organization getOrganization(final Command command) {
+        return orgs.fromDomain(command.getHeader().getDomain().get())
+                .orElseThrow(() -> new IllegalArgumentException(String.format("Cannot replay '%' for unknown organization", command.getType())));
+    }
+
     private void replayEvent(Event event) {
         try {
             switch (event.getType()) {
-                case "newEmployee":
-                    final NewEmployeeCommand command = json.readValue(event.getPayload(), NewEmployeeCommand.class);
-                    final Optional<String> domain = command.getHeader().getDomain();
-                    if (domain.isPresent()) {
-                        orgs.fromDomain(domain.get())
-                                .orElseThrow(() -> new IllegalArgumentException("Cannot replay new employee for unknown organization"))
-                                .addEmployee(command);
-                    } else{
-                        LOGGER.error("Ignoring 'newEmployee' event without domain data in the header:\n{}", event);
-                    }
+                case NewEmployeeCommand.EVENT_TYPE:
+                    final NewEmployeeCommand newEmployeeCommand = json.readValue(event.getPayload(), NewEmployeeCommand.class);
+                    checkIdAndDomainInHeader(newEmployeeCommand);
+                    this.getOrganization(newEmployeeCommand).addEmployee(newEmployeeCommand);
                 break;
 
-                case "newOrganization":
+                case RemoveEmployeeCommand.EVENT_TYPE:
+                    final RemoveEmployeeCommand removeEmployeeCommand = json.readValue(event.getPayload(), RemoveEmployeeCommand.class);
+                    checkIdAndDomainInHeader(removeEmployeeCommand);
+                    this.getOrganization(removeEmployeeCommand).removeEmployee(removeEmployeeCommand);
+                break;
+
+                case NewOrganizationCommand.EVENT_TYPE:
                     final NewOrganizationCommand organizationCommand = json.readValue(event.getPayload(), NewOrganizationCommand.class);
-                    Organization organization = new Organization(organizationCommand.getPayload().getName(), organizationCommand.getPayload().getDomain());
+                    final Organization organization = new Organization(organizationCommand.getPayload().getName(), organizationCommand.getPayload().getDomain());
                     orgs.addOrganization(organization);
-                    break;
+                break;
 
                 default:
                     throw new IllegalStateException("Could not format the following unknown event: " + event);

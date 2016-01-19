@@ -15,37 +15,37 @@ import java.util.Optional;
 import java.util.UUID;
 
 /**
- * Describes the intent to create a new Employee
+ * Describes the intent to remove an Employee
  *
- * @author Carlo Sciolla
+ * @author Dmitry Ryazanov
  * @since 0.1
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class NewEmployeeCommand implements Command<CommandHeader, NewEmployeeCommandPayload> {
+public class RemoveEmployeeCommand implements Command<CommandHeader, RemoveEmployeeCommandPayload> {
 
-    public static final String EVENT_TYPE = "newEmployee";
+    public static final String EVENT_TYPE = "removeEmployee";
     private final CommandHeader header;
-    private final NewEmployeeCommandPayload payload;
+    private final RemoveEmployeeCommandPayload payload;
 
-    public NewEmployeeCommand(final NewEmployeeCommandPayload payload, final String domain, final String timestamp) {
+    public RemoveEmployeeCommand(final RemoveEmployeeCommandPayload payload, final String domain, final String timestamp) {
         final Date date = Optional.ofNullable(timestamp)
                 .map(Long::decode)
                 .map(Date::new)
                 .orElse(new Date());
 
-        this.payload = payload;
         this.header = new CommandHeader.Builder().setDomain(domain).setTimestamp(date.getTime()).build();
+        this.payload = payload;
     }
 
-    public NewEmployeeCommand(final NewEmployeeCommandPayload payload, final CommandHeader header) {
-        this.payload = payload;
+    public RemoveEmployeeCommand(final RemoveEmployeeCommandPayload payload, final CommandHeader header) {
         this.header = header;
+        this.payload = payload;
     }
 
     @SuppressWarnings("unused")
     @JsonCreator
-        /* package */ NewEmployeeCommand(@JsonProperty("header") final CommandHeader header,
-                                         @JsonProperty("payload") final NewEmployeeCommandPayload payload) {
+    public RemoveEmployeeCommand(@JsonProperty("header") final CommandHeader header,
+                                 @JsonProperty("payload") final RemoveEmployeeCommandPayload payload) {
         this.header = header;
         this.payload = payload;
     }
@@ -56,7 +56,7 @@ public class NewEmployeeCommand implements Command<CommandHeader, NewEmployeeCom
     }
 
     @Override
-    public NewEmployeeCommandPayload getPayload() {
+    public RemoveEmployeeCommandPayload getPayload() {
         return payload;
     }
 
@@ -69,9 +69,8 @@ public class NewEmployeeCommand implements Command<CommandHeader, NewEmployeeCom
     public Event asEvent(final ObjectMapper json) {
         try {
             final String asJson = json.writeValueAsString(this);
-            final String eventId = header.getId().orElse(UUID.randomUUID().toString());
             final Long insertOrder = header.getInsertOrder().orElse(Event.ORDER_UNSET);
-            return new Event(eventId, insertOrder, asJson, new Timestamp(header.getTimestamp()), getType());
+            return new Event(UUID.randomUUID().toString(), insertOrder, asJson, new Timestamp(header.getTimestamp()), getType());
         } catch (JsonProcessingException e) {
             throw new IllegalArgumentException(e);
         }

@@ -10,52 +10,66 @@ import java.util.Optional;
  * @since 0.1
  */
 public class CommandHeader {
-    private final Optional<String> id;
-    private final Optional<String> domain;
-    private final Date timestamp;
-    private final Optional<Long> insertOrder;
+    protected final String id;
+    private final String domain;
+    private final Long timestamp;
+    private final Long insertOrder;
 
     public CommandHeader() {
-        this.timestamp = new Date();
-        insertOrder = Optional.empty();
-        id = Optional.empty();
-        domain = Optional.empty();
+        this(null, null, new Date().getTime(), null);
     }
 
-    public CommandHeader(final Date date) {
-        this.timestamp = date;
-        insertOrder = Optional.empty();
-        id = Optional.empty();
-        domain = Optional.empty();
-    }
-
-    public CommandHeader(final String domain, final Date date) {
-        this.timestamp = date;
-        insertOrder = Optional.empty();
-        id = Optional.empty();
-        this.domain = Optional.ofNullable(domain);
-    }
-
-    public CommandHeader(final String id, final String domain, final Date date, final Long insertOrder) {
-        this.id = Optional.ofNullable(id);
-        this.timestamp = date;
-        this.insertOrder = Optional.ofNullable(insertOrder);
-        this.domain = Optional.ofNullable(domain);
-    }
-
-    public Date getTimestamp() {
-        return timestamp;
-    }
-
-    public Optional<String> getDomain() {
-        return domain;
-    }
-
-    public Optional<Long> getInsertOrder() {
-        return insertOrder;
+    private CommandHeader(final String id, final String domain, final Long timestamp, final Long insertOrder) {
+        this.id = id;
+        this.domain = domain;
+        this.timestamp = timestamp;
+        this.insertOrder = insertOrder;
     }
 
     public Optional<String> getId() {
-        return id;
+        return Optional.ofNullable(id);
+    }
+
+    public Optional<String> getDomain() {
+        return Optional.ofNullable(domain);
+    }
+
+    public Long getTimestamp() {
+        return timestamp;
+    }
+
+    public Optional<Long> getInsertOrder() {
+        return Optional.ofNullable(insertOrder);
+    }
+
+    public static class Builder {
+        protected String id = null;
+        private String domain = null;
+        private Long timestamp = new Date().getTime();
+        private Long insertOrder = null;
+
+        public Builder setTimestamp(Long timestamp) {
+            this.timestamp = timestamp;
+            return this;
+        }
+
+        public Builder setDomain(String domain) {
+            this.domain = domain;
+            return this;
+        }
+
+        public Builder setId(String id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder setInsertOrder(Long insertOrder) {
+            this.insertOrder = insertOrder;
+            return this;
+        }
+
+        public CommandHeader build() {
+            return new CommandHeader(id, domain, timestamp, insertOrder);
+        }
     }
 }

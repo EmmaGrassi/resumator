@@ -1,12 +1,10 @@
 package io.sytac.resumator.command;
 
-import io.sytac.resumator.employee.NewEmployeeCommand;
-import io.sytac.resumator.employee.NewEmployeeCommandPayload;
-import io.sytac.resumator.events.EventPublisher;
+import io.sytac.resumator.employee.*;
 import io.sytac.resumator.organization.NewOrganizationCommand;
 
-import java.util.Date;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Creates command descriptors and publishes the related event
@@ -17,8 +15,19 @@ import java.util.Map;
 public class CommandFactory {
 
     public NewEmployeeCommand newEmployeeCommand(final NewEmployeeCommandPayload payload, String domain) {
-        final String timestamp = String.valueOf(new Date().getTime());
-        return new NewEmployeeCommand(payload, domain, timestamp);
+        return new NewEmployeeCommand(payload,
+                new CommandHeader.Builder()
+                        .setId(UUID.randomUUID().toString())
+                        .setDomain(domain)
+                        .build());
+    }
+
+    public RemoveEmployeeCommand removeEmployeeCommand(String employeeId, String domain) {
+        return new RemoveEmployeeCommand(new RemoveEmployeeCommandPayload(employeeId),
+                new CommandHeader.Builder()
+                        .setId(employeeId)
+                        .setDomain(domain)
+                        .build());
     }
 
     public NewOrganizationCommand newOrganizationCommand(final Map<String, String> input) {

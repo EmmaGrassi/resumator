@@ -43,21 +43,30 @@ class Show extends React.Component {
     const item = this.props.show.get('item');
     const courses = item.get('courses');
 
-    return (
-      <ListGroup>
-        {courses.map((v, i) => {
-          const name = v.get('name');
-          const date = v.get('date') && moment(v.get(date)).format('YYYY');
-          const description = v.get('description');
+    if (!courses) {
+      return '';
+    }
 
-          return (
-            <ListGroupItem key={i}>
-              <strong>{name} ({date}))</strong><br/>
-              {description}
-            </ListGroupItem>
-          );
-        })}
-      </ListGroup>
+    return (
+      <Row>
+        <Col xsOffset={4} xs={8}>
+          <h3>Courses</h3>
+          <ListGroup>
+            {courses && courses.map((v, i) => {
+              const name = v.get('name');
+              const date = v.get('date') && moment(v.get(date)).format('YYYY');
+              const description = v.get('description');
+
+              return (
+                <ListGroupItem key={i}>
+                  <strong>{name} ({date}))</strong><br/>
+                  {description}
+                </ListGroupItem>
+              );
+            })}
+          </ListGroup>
+        </Col>
+      </Row>
     );
   }
 
@@ -65,18 +74,27 @@ class Show extends React.Component {
     const item = this.props.show.get('item');
     const education = item.get('education');
 
+    if (!education) {
+      return '';
+    }
+
     return (
-      <ListGroup>
-        {education.map((v, i) => {
-          return (
-            <ListGroupItem key={i}>
-              <strong>{v.get('degree')}</strong><br/>
-              {v.get('university')} ({v.get('fieldOfStudy')})<br/>
-              {v.get('graduated') && `Graduated in ${v.get('graduationYear')}`}
-            </ListGroupItem>
-          );
-        })}
-      </ListGroup>
+      <Row>
+        <Col xsOffset={4} xs={8}>
+          <h3>Education</h3>
+          <ListGroup>
+            {education.map((v, i) => {
+              return (
+                <ListGroupItem key={i}>
+                  <strong>{v.get('degree')}</strong><br/>
+                  {v.get('university')} ({v.get('fieldOfStudy')})<br/>
+                  {v.get('graduated') && `Graduated in ${v.get('graduationYear')}`}
+                </ListGroupItem>
+              );
+            })}
+          </ListGroup>
+        </Col>
+      </Row>
     );
   }
 
@@ -84,32 +102,41 @@ class Show extends React.Component {
     const item = this.props.show.get('item');
     const experience = item.get('experience');
 
+    if (!experience) {
+      return '';
+    }
+
     return (
-      <ListGroup>
-        {experience.map((v, i) => {
-          const startDate = moment(v.get('startDate'));
-          const endDate = moment(v.get('endDate'));
+      <Row>
+        <Col xsOffset={4} xs={8}>
+          <h3>Experience</h3>
+          <ListGroup>
+            {experience.map((v, i) => {
+              const startDate = moment(v.get('startDate'));
+              const endDate = moment(v.get('endDate'));
 
-          let difference = endDate.diff(startDate, 'years');
+              let difference = endDate.diff(startDate, 'years');
 
-          if (difference < 1) {
-            difference = `${endDate.diff(startDate, 'months')} months`;
-          } else {
-            difference = `${difference} years`;
-          }
+              if (difference < 1) {
+                difference = `${endDate.diff(startDate, 'months')} months`;
+              } else {
+                difference = `${difference} years`;
+              }
 
-          return (
-            <ListGroupItem key={i}>
-              <strong>{v.get('title')}</strong> at {v.get('companyName')} ({v.get('location')})<br/>
-              {startDate.format('YYYY')} - {endDate.format('YYYY')} ({difference})<br/>
-              <br/>
-              <p>{v.get('shortDescription')}</p>
-              <strong>Technologies:</strong> {v.get('technologies').join(', ')}<br/>
-              <strong>Methodologies:</strong> {v.get('methodologies').join(', ')}<br/>
-            </ListGroupItem>
-          );
-        })}
-      </ListGroup>
+              return (
+                <ListGroupItem key={i}>
+                  <strong>{v.get('title')}</strong> at {v.get('companyName')} ({v.get('location')})<br/>
+                  {startDate.format('YYYY')} - {endDate.format('YYYY')} ({difference})<br/>
+                  <br/>
+                  <p>{v.get('shortDescription')}</p>
+                  <strong>Technologies:</strong> {v.get('technologies').join(', ')}<br/>
+                  <strong>Methodologies:</strong> {v.get('methodologies').join(', ')}<br/>
+                </ListGroupItem>
+              );
+            })}
+          </ListGroup>
+        </Col>
+      </Row>
     );
   }
 
@@ -117,22 +144,31 @@ class Show extends React.Component {
     const item = this.props.show.get('item');
     const languages = item.get('languages');
 
-    return (
-      <ListGroup>
-        {languages.map((v, i) => {
-          const words = v.get('proficiency').split('_');
-          const casedWords = map(words, (w) => {
-            return `${w.substring(0, 1)}${w.substring(1).toLowerCase()}`;
-          });
-          const proficiency = casedWords.join(' ');
+    if (!languages) {
+      return '';
+    }
 
-          return (
-            <ListGroupItem key={i}>
-              <strong>{v.get('name')} ({proficiency})</strong><br/>
-            </ListGroupItem>
-          );
-        })}
-      </ListGroup>
+    return (
+      <Row>
+        <Col xsOffset={4} xs={8}>
+          <h3>Languages</h3>
+          <ListGroup>
+            {languages.map((v, i) => {
+              const words = v.get('proficiency').split('_');
+              const casedWords = map(words, (w) => {
+                return `${w.substring(0, 1)}${w.substring(1).toLowerCase()}`;
+              });
+              const proficiency = casedWords.join(' ');
+
+              return (
+                <ListGroupItem key={i}>
+                  <strong>{v.get('name')} ({proficiency})</strong><br/>
+                </ListGroupItem>
+              );
+            })}
+          </ListGroup>
+        </Col>
+      </Row>
     );
   }
 
@@ -185,37 +221,10 @@ class Show extends React.Component {
             </Col>
           </Row>
 
-          <Row>
-            <Col xsOffset={4} xs={8}>
-              <h3>Experience</h3>
-
-              {experience}
-            </Col>
-          </Row>
-
-          <Row>
-            <Col xsOffset={4} xs={8}>
-              <h3>Education</h3>
-
-              {education}
-            </Col>
-          </Row>
-
-          <Row>
-            <Col xsOffset={4} xs={8}>
-              <h3>Courses</h3>
-
-              {courses}
-            </Col>
-          </Row>
-
-          <Row>
-            <Col xsOffset={4} xs={8}>
-              <h3>Languages</h3>
-
-              {languages}
-            </Col>
-          </Row>
+          {experience}
+          {education}
+          {languages}
+          {courses}
         </Grid>
       </Loader>
     );

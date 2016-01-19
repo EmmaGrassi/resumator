@@ -22,7 +22,7 @@ each(nationalities, (c) => {
 const CoursesSchema = tcombForm.struct({
   name: tcombForm.String,
   description: tcombForm.String,
-  year: tcombForm.Date
+  year: tcombForm.Number
 });
 
 const DegreeSchema = tcombForm.enums({

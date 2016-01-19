@@ -16,14 +16,16 @@ function getCookie() {
     const surname = cookies.get('surname', cookiesOptions);
     const imageUrl = cookies.get('imageUrl', cookiesOptions);
 
-    dispatch(login({
-      token,
-      id,
-      email,
-      name,
-      surname,
-      imageUrl
-    }));
+    if (token) {
+      dispatch(login({
+        token,
+        id,
+        email,
+        name,
+        surname,
+        imageUrl
+      }));
+    }
   };
 }
 

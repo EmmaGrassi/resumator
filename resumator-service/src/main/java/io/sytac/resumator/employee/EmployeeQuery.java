@@ -7,11 +7,8 @@ import io.sytac.resumator.model.*;
 import io.sytac.resumator.model.enums.Nationality;
 import io.sytac.resumator.docx.DocxGenerator;
 import org.apache.commons.lang3.StringUtils;
-import io.sytac.resumator.organization.Organization;
 import io.sytac.resumator.organization.OrganizationRepository;
-import io.sytac.resumator.security.Roles;
 
-import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -23,6 +20,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriInfo;
+import java.util.Optional;
 
 /**
  * Retrieve information about one employee
@@ -31,17 +29,17 @@ import javax.ws.rs.core.UriInfo;
  * @since 0.1
  */
 @Path("employees/{id}")
-@RolesAllowed(Roles.USER)
-public class EmployeeQuery extends BaseEmployee {
+public class EmployeeQuery extends BaseResource {
 
     private static final String CONTENT_TYPE_DOCX = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
 
-    private final DocxGenerator docxGenerator;
+    private OrganizationRepository organizations;
 
+    private final DocxGenerator docxGenerator;
 
     @Inject
     public EmployeeQuery(final OrganizationRepository organizations, final DocxGenerator docxGenerator) {
-        super(organizations);
+        this.organizations = organizations;
         this.docxGenerator = docxGenerator;
     }
 
@@ -51,10 +49,11 @@ public class EmployeeQuery extends BaseEmployee {
     public Representation fakeEmployee(@PathParam("id") final String id,
                                        @Context final UriInfo uriInfo,
                                        @Context final SecurityContext securityContext) {
-        String orgDomain = getOrgDomain(securityContext);
-        Organization organization = getOrganizations().fromDomain(orgDomain).get();
-        Employee res = organization.getEmployeeById(id);
-        return represent(res, uriInfo);
+        Optional<Employee> employee = organizations
+                .get(getUser().getOrganizationId())
+                .map(org -> org.getEmployeeById(id));
+
+        return represent(employee, uriInfo);
     }
 
     @GET
@@ -76,26 +75,31 @@ public class EmployeeQuery extends BaseEmployee {
      * @param uriInfo  The current REST endpoint information
      * @return The {@link Representation} of the {@link Employee}
      */
-    private Representation represent(final Employee employee, final UriInfo uriInfo) {
-        return rest.newRepresentation()
-                .withProperty("id", employee.getId().toString())
-                .withProperty("title", employee.getTitle())
-                .withProperty("name", employee.getName())
-                .withProperty("surname", employee.getSurname())
-                .withProperty("email", employee.getEmail())
-                .withProperty("phonenumber", employee.getPhonenumber())
-                .withProperty("github", employee.getGithub())
-                .withProperty("linkedin", employee.getLinkedin())
-                .withProperty("dateOfBirth", employee.getDateOfBirth())
-                .withProperty("nationality", employee.getNationality())
-                .withProperty("aboutMe", employee.getAboutMe())
-                .withProperty("education", employee.getEducation())
-                .withProperty("courses", employee.getCourses())
-                .withProperty("experience", employee.getExperience())
-                .withProperty("languages", employee.getLanguages())
-                .withLink("self", uriInfo.getRequestUri().toString());
-    }
+    private Representation represent(final Optional<Employee> employee, final UriInfo uriInfo) {
+        Representation representation = rest.newRepresentation();
 
+        employee.ifPresent(emp ->
+                representation.withProperty("id", emp.getId())
+                        .withProperty("title", emp.getTitle())
+                        .withProperty("name", emp.getName())
+                        .withProperty("surname", emp.getSurname())
+                        .withProperty("email", emp.getEmail())
+                        .withProperty("phonenumber", emp.getPhoneNumber())
+                        .withProperty("github", emp.getGitHub())
+                        .withProperty("linkedin", emp.getLinkedIn())
+                        .withProperty("dateOfBirth", emp.getDateOfBirth())
+                        .withProperty("nationality", emp.getNationality())
+                        .withProperty("aboutMe", emp.getAboutMe())
+                        .withProperty("education", emp.getEducations())
+                        .withProperty("courses", emp.getCourses())
+                        .withProperty("experience", emp.getExperiences())
+                        .withProperty("languages", emp.getLanguages())
+        );
+
+        representation.withLink("self", uriInfo.getRequestUri().toString());
+
+        return representation;
+    }
     private InputStream getTemplateStream() {
         return getClass().getClassLoader().getResourceAsStream("resume-template.docx");
     }

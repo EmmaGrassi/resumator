@@ -61,7 +61,7 @@ public class ResumatorApp {
         }
     }
 
-    protected ResourceConfig constructConfig(final Configuration configuration) {
+    private ResourceConfig constructConfig(final Configuration configuration) {
         ResourceConfig rc = registerApplicationResources(new ResourceConfig());
         rc = registerConfiguration(rc, configuration);
         rc = registerEventPublisher(rc);
@@ -129,12 +129,12 @@ public class ResumatorApp {
         return rc.register(new AbstractBinder() {
             @Override
             protected void configure() {
-                bindFactory(ObjectMapperResolver.class).to(ObjectMapper.class).in(Singleton.class);
+                bindFactory(ObjectMapperFactory.class).to(ObjectMapper.class).in(Singleton.class);
             }
         });
     }
 
-    protected ResourceConfig registerEventPublisher(final ResourceConfig rc) {
+    private ResourceConfig registerEventPublisher(final ResourceConfig rc) {
         return rc.register(new AbstractBinder() {
             @Override
             protected void configure() {
@@ -143,7 +143,7 @@ public class ResumatorApp {
         });
     }
 
-    protected ResourceConfig registerCommandFactory(final ResourceConfig rc) {
+    private ResourceConfig registerCommandFactory(final ResourceConfig rc) {
         return rc.register(new AbstractBinder() {
             @Override
             protected void configure() {
@@ -152,7 +152,7 @@ public class ResumatorApp {
         });
     }
 
-    protected ResourceConfig registerConfiguration(final ResourceConfig rc, final Configuration configuration) {
+    private ResourceConfig registerConfiguration(final ResourceConfig rc, final Configuration configuration) {
         return rc.register(new AbstractBinder() {
             @Override
             protected void configure() {
@@ -161,7 +161,7 @@ public class ResumatorApp {
         });
     }
 
-    protected ResourceConfig registerApplicationResources(final ResourceConfig rc) {
+    private ResourceConfig registerApplicationResources(final ResourceConfig rc) {
         return rc.packages(
                 "io.sytac.resumator.employee",
                 "io.sytac.resumator.organization",

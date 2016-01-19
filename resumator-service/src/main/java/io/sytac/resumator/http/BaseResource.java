@@ -3,10 +3,14 @@ package io.sytac.resumator.http;
 import com.theoryinpractise.halbuilder.api.Link;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import com.theoryinpractise.halbuilder.json.JsonRepresentationFactory;
+import io.sytac.resumator.security.User;
 
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
+import java.security.Principal;
 
 /**
  * Common functionality required by any REST resource
@@ -16,7 +20,23 @@ import java.net.URI;
  */
 public class BaseResource {
 
-    protected final RepresentationFactory rest = new JsonRepresentationFactory();
+    protected final RepresentationFactory rest = new JsonRepresentationFactory().withFlag(RepresentationFactory.STRIP_NULLS);
+
+    @Context
+    private SecurityContext securityContext;
+
+    /**
+     * Retrieves the logged in User.
+     * @return the logged in User
+     */
+    protected User getUser() {
+        final Principal user = securityContext.getUserPrincipal();
+        if (user instanceof User) {
+            return ((User) user);
+        }
+
+        throw new IllegalStateException("User Principal is missing, this should never happen.");
+    }
 
     /**
      * Build the URI for the link connected to the provided resource

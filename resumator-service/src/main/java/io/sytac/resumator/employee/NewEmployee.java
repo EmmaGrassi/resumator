@@ -4,6 +4,8 @@ import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import io.sytac.resumator.command.CommandFactory;
 import io.sytac.resumator.events.EventPublisher;
+import io.sytac.resumator.http.BaseResource;
+import io.sytac.resumator.model.exceptions.InvalidOrganizationException;
 import io.sytac.resumator.organization.Organization;
 import io.sytac.resumator.organization.OrganizationRepository;
 import io.sytac.resumator.security.Roles;
@@ -27,14 +29,15 @@ import java.net.URI;
  */
 @Path("employees")
 @RolesAllowed(Roles.USER)
-public class NewEmployee extends BaseEmployee {
+public class NewEmployee extends BaseResource {
 
+    private final OrganizationRepository organizations;
     private final CommandFactory descriptors;
     private final EventPublisher events;
 
     @Inject
     public NewEmployee(final OrganizationRepository organizations, final CommandFactory descriptors, final EventPublisher events) {
-        super(organizations);
+        this.organizations = organizations;
         this.descriptors = descriptors;
         this.events = events;
     }
@@ -46,28 +49,27 @@ public class NewEmployee extends BaseEmployee {
                                 @Context final UriInfo uriInfo,
                                 @Context final SecurityContext securityContext) {
 
-        String domain = getOrgDomain(securityContext);
+        Organization organization = organizations.get(getUser().getOrganizationId())
+                .orElseThrow(InvalidOrganizationException::new);
+        String domain = organization.getDomain();
+
         final NewEmployeeCommand command = descriptors.newEmployeeCommand(payload, domain);
-        final Employee employee = addEmployee(domain, command);
+        Employee newEmployee = organization.addEmployee(command);
         events.publish(command);
-        return buildRepresentation(uriInfo, employee);
+
+        return buildRepresentation(uriInfo, newEmployee);
     }
 
     private Response buildRepresentation(final UriInfo uriInfo, final Employee employee) {
-        final URI employeeLink = resourceLink(uriInfo, EmployeeQuery.class, employee.getId().toString());
+        final URI employeeLink = resourceLink(uriInfo, EmployeeQuery.class, employee.getId());
         final Representation halResource = rest.newRepresentation()
                 .withProperty("status", "created")
-                .withProperty("id", employee.getId().toString())
+                .withProperty("id", employee.getId())
                 .withLink("employee", employeeLink);
 
         return Response.ok(halResource.toString(RepresentationFactory.HAL_JSON))
                 .status(HttpStatus.CREATED_201)
                 .header(HttpHeader.LOCATION.asString(), employeeLink.toString())
                 .build();
-    }
-
-    private Employee addEmployee(String orgDomain, NewEmployeeCommand descriptor) {
-        Organization organization = getOrganizations().fromDomain(orgDomain).get();
-        return organization.addEmployee(descriptor);
     }
 }

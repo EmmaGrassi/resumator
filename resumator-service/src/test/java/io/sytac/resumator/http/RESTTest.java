@@ -5,9 +5,8 @@ import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import com.theoryinpractise.halbuilder.jaxrs.JaxRsHalBuilderReaderSupport;
 import com.theoryinpractise.halbuilder.jaxrs.JaxRsHalBuilderSupport;
 import io.sytac.resumator.Configuration;
-import io.sytac.resumator.ObjectMapperResolver;
+import io.sytac.resumator.ObjectMapperFactory;
 import io.sytac.resumator.employee.Employee;
-import io.sytac.resumator.employee.EmployeeId;
 import io.sytac.resumator.model.enums.Nationality;
 import io.sytac.resumator.utils.DateUtils;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
@@ -23,7 +22,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
-import java.util.Date;
 import java.util.Map;
 
 /**
@@ -41,7 +39,7 @@ public class RESTTest extends JerseyTest {
                 .packages("io.sytac.resumator.employee",
                           "io.sytac.resumator.service")
                 .register(new ConfigurationBinder())
-                .register(new ObjectMapperResolver())
+                .register(new ObjectMapperFactory())
                 .register(JaxRsHalBuilderSupport.class)
                 .register(JaxRsHalBuilderReaderSupport.class)
                 .register(EmployeeMessageBodyReader.class)
@@ -71,7 +69,7 @@ public class RESTTest extends JerseyTest {
         @Override
         public Employee readFrom(Class<Employee> type, Type genericType, Annotation[] annotations, MediaType mediaType, MultivaluedMap<String, String> httpHeaders, InputStream entityStream) throws IOException, WebApplicationException {
             Map<String, Object> map = mapper.readerFor(Map.class).readValue(entityStream);
-            return new Employee(new EmployeeId(map.get("id").toString()),
+            return new Employee(map.get("id").toString(),
                     map.get("title").toString(),
                     map.get("name").toString(),
                     map.get("surname").toString(),

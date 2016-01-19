@@ -1,14 +1,12 @@
 package io.sytac.resumator.organization;
 
 import io.sytac.resumator.employee.Employee;
-import io.sytac.resumator.employee.EmployeeId;
 import io.sytac.resumator.employee.NewEmployeeCommand;
 import io.sytac.resumator.employee.NewEmployeeCommandPayload;
 import io.sytac.resumator.model.enums.Nationality;
 import io.sytac.resumator.utils.DateUtils;
 
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -22,7 +20,7 @@ public class Organization {
     private final String id;
     private final String name;
     private final String domain;
-    private final ConcurrentHashMap<EmployeeId, Employee> employees = new ConcurrentHashMap<>();
+    private final Map<String, Employee> employees = new ConcurrentHashMap<>();
 
     public Organization(final String id, final String name, final String domain) {
         this.id = id;
@@ -77,7 +75,7 @@ public class Organization {
     }
 
     public Employee getEmployeeById(String id) {
-        return employees.get(new EmployeeId(id));
+        return employees.get(id);
     }
 
     public Optional<Employee> findEmployeeByName(String name, String surname) {

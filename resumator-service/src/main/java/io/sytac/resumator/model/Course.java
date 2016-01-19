@@ -2,7 +2,6 @@ package io.sytac.resumator.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.sytac.resumator.utils.DateUtils;
 
 /**
  * A course / training followed by the employee

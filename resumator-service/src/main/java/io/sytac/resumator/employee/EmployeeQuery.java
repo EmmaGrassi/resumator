@@ -2,28 +2,28 @@ package io.sytac.resumator.employee;
 
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
+import io.sytac.resumator.docx.DocxGenerator;
 import io.sytac.resumator.http.BaseResource;
 import io.sytac.resumator.model.*;
-import io.sytac.resumator.model.enums.Nationality;
-import io.sytac.resumator.docx.DocxGenerator;
+import io.sytac.resumator.model.Error;
+import io.sytac.resumator.organization.OrganizationRepository;
 import io.sytac.resumator.security.Roles;
 import io.sytac.resumator.security.User;
 import io.sytac.resumator.security.UserPrincipal;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import io.sytac.resumator.organization.OrganizationRepository;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.*;
-import javax.ws.rs.core.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.UriInfo;
-import java.util.Optional;
 
 /**
  * Retrieve information about one employee
@@ -33,11 +33,12 @@ import java.util.Optional;
  */
 @Path("employees/{id}")
 @RolesAllowed(Roles.USER)
+@Slf4j
 public class EmployeeQuery extends BaseResource {
 
     private static final String CONTENT_TYPE_DOCX = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
 
-    private OrganizationRepository organizations;
+    private final OrganizationRepository organizations;
 
     private final DocxGenerator docxGenerator;
 
@@ -52,23 +53,23 @@ public class EmployeeQuery extends BaseResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Representation getEmployee(@PathParam("id") final String id, @UserPrincipal User user,
                                       @Context final UriInfo uriInfo) {
-        Optional<Employee> employee = organizations
-                .get(user.getOrganizationId())
-                .map(org -> org.getEmployeeById(id));
-
-        return represent(employee, uriInfo);
+        return represent(getEmployee(id, user), uriInfo);
     }
 
     @GET
     @Produces(CONTENT_TYPE_DOCX)
-    public Response getPdf(@PathParam("id") final String id) throws IOException {
-        Resume stubResume = getStubResume();
-        Employee employee = stubResume.getEmployee();
-
-        return Response
-                .ok(docxGenerator.generate(getTemplateStream(), getPlaceholderMappings(stubResume)), CONTENT_TYPE_DOCX)
-                .header("content-disposition", String.format("attachment; filename = %s_%s.docx", employee.getName(), employee.getSurname()))
-                .build();
+    public Response getPdf(@PathParam("id") final String id, @UserPrincipal final User user) {
+        return getEmployee(id, user).map(employee -> {
+            try {
+                return Response.ok(docxGenerator.generate(getTemplateStream(), getPlaceholderMappings(employee)),
+                                CONTENT_TYPE_DOCX)
+                        .header("content-disposition", String.format("attachment; filename = %s_%s.docx", employee.getName(), employee.getSurname()))
+                        .build();
+            } catch (IOException exc) {
+                log.error("The following exception occurred while generating a PDF: ", exc);
+                return Response.serverError().entity(new Error("Could not generate pdf, please try again later")).build();
+            }
+        }).orElse(Response.status(Response.Status.NOT_FOUND).build());
     }
 
     /**
@@ -104,128 +105,37 @@ public class EmployeeQuery extends BaseResource {
         return representation;
     }
 
+    private Optional<Employee> getEmployee(String id, User user) {
+        return organizations
+                .get(user.getOrganizationId())
+                .map(org -> org.getEmployeeById(id));
+    }
+
     private InputStream getTemplateStream() {
         return getClass().getClassLoader().getResourceAsStream("resume-template.docx");
     }
 
-    private Resume getStubResume() {
-        String jobTitle = "Senior Node.js Developer";
-        String bio = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi magna ante, convallis vel auctor " +
-                "sed, tristique nec velit. In lacinia vitae massa at porttitor. In pretium justo urna, sit amet " +
-                "vulputate ipsum interdum vel. Morbi pretium diam ac leo laoreet, in aliquet mi iaculis. Donec a tempor " +
-                "neque.";
-
-        return new Resume(jobTitle, getEmployee(), bio, getLanguages(), getCourses(), getEducations(), getExperiences());
-    }
-
-    private Employee getEmployee() {
-        Date date = new GregorianCalendar(1980, Calendar.JANUARY, 1).getTime();
-        return new Employee("Peter", "Janssen", null, null, null, null, null, date, Nationality.DUTCH, "Amsterdam", null, null, null, null, null);
-    }
-
-    private List<Education> getEducations() {
-        List<Education> result = new ArrayList<>();
-
-        result.add(new Education(Education.Degree.MASTER_DEGREE, "Computer Science", "Universiteit Utrecht", "Utrecht",
-                "The Netherlands", 2012, 2014));
-        result.add(new Education(Education.Degree.BACHELOR_DEGREE, "Computer Engineering", "Hogeschool van Amsterdam",
-                "Amsterdam", "The Netherlands", 2008, 2012));
-
-        return result;
-    }
-
-    private List<Course> getCourses() {
-        List<Course> result = new ArrayList<>();
-
-        result.add(new Course("Scala Basics", "New thinking..", 2015));
-        result.add(new Course("Java EE Fundamentals", "The basics of..", 2013));
-        result.add(new Course("Certified ScrumMaster", "Not only technical..", 2013));
-        result.add(new Course("AngularJS", "Still new..",  2012));
-        result.add(new Course("Javascript", "In depth..", 2010));
-
-        return result;
-    }
-
-    private List<Language> getLanguages() {
-        List<Language> result = new ArrayList<>();
-
-        result.add(new Language("Dutch", Language.Proficiency.NATIVE));
-        result.add(new Language("English", Language.Proficiency.FULL_PROFESSIONAL));
-        result.add(new Language("German", Language.Proficiency.ELEMENTARY));
-
-        return result;
-    }
-
-    private List<Experience> getExperiences() {
-        List<Experience> result = new ArrayList<>();
-
-        List<String> technologies = Arrays.asList("Javascript", "AngularJS", "jQuery", "Underscore.js", "NPM", "Bower",
-                "Grunt", "Karma", "Jasmine", "Protractor", "Bootstrap" ,"Git", "SASS");
-        List<String> methodologies = Arrays.asList("Scrum", "Kanban");
-        Date startDate = new GregorianCalendar(2014, Calendar.JANUARY, 1).getTime();
-        Date endDate = null;
-
-        result.add(new Experience("Company 1", "Front-End Developer", "Den Haag", "The Netherlands", "Lorem ipsum dolor sit amet, " +
-                "consectetur adipiscing elit. Phasellus vel ante sit amet velit accumsan posuere. Interdum et malesuada " +
-                "fames ac ante ipsum primis in faucibus. Etiam in enim vel mauris posuere imperdiet. Donec et mattis " +
-                "risus. Nunc lobortis tellus eu facilisis dapibus. Vivamus iaculis risus aliquam tellus vestibulum " +
-                "dapibus. In mauris sem, fringilla vitae bibendum et, luctus in urna. Pellentesque mattis eget felis id " +
-                "laoreet. Duis molestie eu ligula a tincidunt. In gravida justo nec erat interdum, nec tincidunt sapien " +
-                "rutrum.\n\nQuisque suscipit laoreet pulvinar. Integer a orci ex. Aliquam bibendum posuere nulla, vitae " +
-                "commodo elit vehicula sit amet. Phasellus blandit justo porta lacus dapibus interdum. Quisque sagittis " +
-                "nec ante bibendum scelerisque. Pellentesque vitae magna nibh. Donec lacus turpis, faucibus vel " +
-                "pellentesque vel, tincidunt at augue. In at laoreet lacus. Curabitur malesuada suscipit turpis et rutrum. " +
-                "Aenean eget consequat purus. In quis pulvinar dolor, nec placerat risus. Class aptent taciti sociosqu " +
-                "ad litora torquent per conubia nostra, per inceptos himenaeos.", technologies, methodologies,
-                startDate, endDate));
-
-        technologies = Arrays.asList("Java EE", "Spring Web", "Hibernate", "Oracle DB", "JUnit", "Mockito", "Cucumber",
-                "Logstash", "Kibana", "ElasticSearch", "AOP", "Git", "REST");
-
-        methodologies = Collections.singletonList("Scrum");
-        startDate = new GregorianCalendar(2010, Calendar.MARCH, 17).getTime();
-        endDate = new GregorianCalendar(2013, Calendar.DECEMBER, 30).getTime();
-
-        result.add(new Experience("Company 2", "Back-End Developer", "Amsterdam", "The Netherlands", "In quis lacus nec " +
-                "purus rhoncus molestie in vitae erat. Integer tristique consequat lectus, et blandit augue. Nam dictum " +
-                "vestibulum massa, iaculis commodo erat pellentesque non. Vestibulum nec turpis tortor. Sed in accumsan " +
-                "tortor, nec consequat nunc. Quisque massa dui, hendrerit sed odio mollis, luctus congue risus. " +
-                "Phasellus interdum enim sit amet arcu imperdiet ullamcorper. Curabitur porttitor ornare risus eu tempus. " +
-                "Nam id pretium dui. Praesent sodales, odio vitae laoreet posuere, nulla sem fermentum ligula, id hendrerit " +
-                "ipsum nunc at nisi. Maecenas egestas ultricies ante, non ornare ex dictum sed. Morbi vel dolor sed ligula maximus " +
-                "mattis sed et felis.\n\nInteger ut consectetur libero, nec interdum lorem. Ut ante magna, vehicula nec " +
-                "lectus sit amet, pulvinar elementum orci. Sed viverra eleifend nulla, rutrum dapibus neque ultrices a. " +
-                "Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Morbi " +
-                "blandit fringilla nisi ac viverra. Vivamus in tincidunt ex, quis mollis tortor. Curabitur lectus lectus, " +
-                "venenatis a pellentesque id, lobortis vel lorem. Pellentesque vulputate, erat at aliquam cursus, enim " +
-                "neque ultricies libero, et blandit magna augue quis tellus.", technologies, methodologies,
-                startDate, endDate));
-
-        return result;
-    }
-
-
-    private Map<String, String> getPlaceholderMappings(Resume resume) {
+    private Map<String, String> getPlaceholderMappings(Employee employee) {
         Map<String, String> result = new HashMap<>();
 
-        result.putAll(getPersonaliaMappings(resume));
-        result.putAll(getExperienceMappings(resume.getExperiences()));
-        result.putAll(getEducationMappings(resume.getEducations()));
-        result.putAll(getCourseMappings(resume.getCourses()));
-        result.putAll(getLanguageMappings(resume.getLanguages()));
+        result.putAll(getPersonaliaMappings(employee));
+        result.putAll(getExperienceMappings(employee.getExperiences()));
+        result.putAll(getEducationMappings(employee.getEducations()));
+        result.putAll(getCourseMappings(employee.getCourses()));
+        result.putAll(getLanguageMappings(employee.getLanguages()));
 
         return result;
     }
 
-    private Map<String, String> getPersonaliaMappings(Resume resume) {
+    private Map<String, String> getPersonaliaMappings(Employee employee) {
         Map<String, String> result = new HashMap<>();
-        result.put("JobTitle", resume.getJobTitle());
-        result.put("FirstName", resume.getEmployee().getName());
-        result.put("LastName", resume.getEmployee().getSurname());
-        result.put("YearOfBirth", String.valueOf(resume.getEmployee().getDateOfBirth()));
-        result.put("CurrentResidence", resume.getEmployee().getCurrentResidence());
-        result.put("Nationality", resume.getEmployee().getNationality().toString());
-        result.put("Bio", resume.getShortBio());
+        result.put("JobTitle", employee.getTitle());
+        result.put("FirstName", employee.getName());
+        result.put("LastName", employee.getSurname());
+        result.put("YearOfBirth", String.valueOf(getYearOfDate(employee.getDateOfBirth())));
+        result.put("CurrentResidence", employee.getCurrentResidence());
+        result.put("Nationality", employee.getNationality().toString());
+        result.put("Bio", employee.getAboutMe());
         return result;
     }
 
@@ -307,5 +217,12 @@ public class EmployeeQuery extends BaseResource {
         } else {
             return period + df.format(endDate);
         }
+    }
+
+    private int getYearOfDate(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+
+        return calendar.get(Calendar.YEAR);
     }
 }

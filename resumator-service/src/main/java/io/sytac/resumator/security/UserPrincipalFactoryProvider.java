@@ -28,7 +28,7 @@ public class UserPrincipalFactoryProvider extends AbstractValueFactoryProvider {
     }
 
     @Override
-    protected Factory<?> createValueFactory(Parameter parameter) {
+    protected Factory<User> createValueFactory(Parameter parameter) {
         Class<?> classType = parameter.getRawType();
 
         if (classType == null || !classType.equals(User.class)) {

@@ -8,6 +8,8 @@ import io.sytac.resumator.model.exceptions.InvalidOrganizationException;
 import io.sytac.resumator.organization.Organization;
 import io.sytac.resumator.organization.OrganizationRepository;
 import io.sytac.resumator.security.Roles;
+import io.sytac.resumator.security.User;
+import io.sytac.resumator.security.UserPrincipal;
 import org.eclipse.jetty.http.HttpStatus;
 
 import javax.annotation.security.RolesAllowed;
@@ -40,9 +42,9 @@ public class RemoveEmployee extends BaseResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces({RepresentationFactory.HAL_JSON, MediaType.APPLICATION_JSON})
     public Response removeEmployee(@PathParam("id") final String employeeId,
-                                   @Context final SecurityContext securityContext) {
+                                   @UserPrincipal final User user) {
 
-        final Organization organization = organizations.get(getUser().getOrganizationId())
+        final Organization organization = organizations.get(user.getOrganizationId())
                 .orElseThrow(InvalidOrganizationException::new);
 
         if (organization.getEmployeeById(employeeId) == null) {

@@ -117,9 +117,15 @@ public class ResumatorApp {
                  .register(new AbstractBinder() {
                      @Override
                      protected void configure() {
-                         bindFactory(Oauth2SecurityServiceFactory.class).to(Oauth2SecurityService.class);
-                         bind(UserPrincipalFactoryProvider.class).to(ValueFactoryProvider.class).in(Singleton.class);
-                         bind(UserPrincipalParamResolver.class).to(new TypeLiteral<InjectionResolver<UserPrincipal>>() {}).in(Singleton.class);
+                         bindFactory(Oauth2SecurityServiceFactory.class)
+                                 .to(Oauth2SecurityService.class);
+
+                         bind(UserPrincipalFactoryProvider.class)
+                                 .to(ValueFactoryProvider.class)
+                                 .in(Singleton.class);
+                         bind(UserPrincipalParamResolver.class)
+                                 .to(new TypeLiteral<InjectionResolver<UserPrincipal>>() {})
+                                 .in(Singleton.class);
                      }
                  });
     }

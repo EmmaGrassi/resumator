@@ -9,6 +9,8 @@ import io.sytac.resumator.model.exceptions.InvalidOrganizationException;
 import io.sytac.resumator.organization.Organization;
 import io.sytac.resumator.organization.OrganizationRepository;
 import io.sytac.resumator.security.Roles;
+import io.sytac.resumator.security.User;
+import io.sytac.resumator.security.UserPrincipal;
 import org.eclipse.jetty.http.HttpHeader;
 import org.eclipse.jetty.http.HttpStatus;
 
@@ -46,10 +48,10 @@ public class NewEmployee extends BaseResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces({RepresentationFactory.HAL_JSON, MediaType.APPLICATION_JSON})
     public Response newEmployee(final NewEmployeeCommandPayload payload,
-                                @Context final UriInfo uriInfo,
-                                @Context final SecurityContext securityContext) {
+                                @UserPrincipal final User user,
+                                @Context final UriInfo uriInfo) {
 
-        Organization organization = organizations.get(getUser().getOrganizationId())
+        Organization organization = organizations.get(user.getOrganizationId())
                 .orElseThrow(InvalidOrganizationException::new);
         String domain = organization.getDomain();
 

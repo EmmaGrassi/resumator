@@ -7,6 +7,8 @@ import io.sytac.resumator.model.*;
 import io.sytac.resumator.model.enums.Nationality;
 import io.sytac.resumator.docx.DocxGenerator;
 import io.sytac.resumator.security.Roles;
+import io.sytac.resumator.security.User;
+import io.sytac.resumator.security.UserPrincipal;
 import org.apache.commons.lang3.StringUtils;
 import io.sytac.resumator.organization.OrganizationRepository;
 
@@ -20,7 +22,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriInfo;
 import java.util.Optional;
 
@@ -49,11 +50,10 @@ public class EmployeeQuery extends BaseResource {
     @GET
     @Produces(RepresentationFactory.HAL_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Representation getEmployee(@PathParam("id") final String id,
-                                      @Context final UriInfo uriInfo,
-                                      @Context final SecurityContext securityContext) {
+    public Representation getEmployee(@PathParam("id") final String id, @UserPrincipal User user,
+                                      @Context final UriInfo uriInfo) {
         Optional<Employee> employee = organizations
-                .get(getUser().getOrganizationId())
+                .get(user.getOrganizationId())
                 .map(org -> org.getEmployeeById(id));
 
         return represent(employee, uriInfo);

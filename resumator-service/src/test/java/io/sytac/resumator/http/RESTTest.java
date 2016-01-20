@@ -8,11 +8,18 @@ import io.sytac.resumator.Configuration;
 import io.sytac.resumator.ObjectMapperFactory;
 import io.sytac.resumator.employee.Employee;
 import io.sytac.resumator.model.enums.Nationality;
+import io.sytac.resumator.security.UserPrincipal;
+import io.sytac.resumator.security.UserPrincipalFactoryProvider;
+import io.sytac.resumator.security.UserPrincipalParamResolver;
 import io.sytac.resumator.utils.DateUtils;
+import org.glassfish.hk2.api.InjectionResolver;
+import org.glassfish.hk2.api.TypeLiteral;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
+import org.glassfish.jersey.server.spi.internal.ValueFactoryProvider;
 import org.glassfish.jersey.test.JerseyTest;
 
+import javax.inject.Singleton;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
@@ -42,7 +49,18 @@ public class RESTTest extends JerseyTest {
                 .register(new ObjectMapperFactory())
                 .register(JaxRsHalBuilderSupport.class)
                 .register(JaxRsHalBuilderReaderSupport.class)
-                .register(EmployeeMessageBodyReader.class);
+                .register(EmployeeMessageBodyReader.class)
+                .register(new AbstractBinder() {
+                    @Override
+                    protected void configure() {
+                        bind(UserPrincipalFactoryProvider.class)
+                                .to(ValueFactoryProvider.class)
+                                .in(Singleton.class);
+                        bind(UserPrincipalParamResolver.class)
+                                .to(new TypeLiteral<InjectionResolver<UserPrincipal>>() {})
+                                .in(Singleton.class);
+                    }
+                });
     }
 
     /**

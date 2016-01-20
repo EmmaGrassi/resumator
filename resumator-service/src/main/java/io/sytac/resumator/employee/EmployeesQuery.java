@@ -5,9 +5,11 @@ import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import io.sytac.resumator.http.BaseResource;
 import io.sytac.resumator.organization.Organization;
 import io.sytac.resumator.organization.OrganizationRepository;
+import io.sytac.resumator.security.Roles;
 import io.sytac.resumator.security.User;
 import io.sytac.resumator.security.UserPrincipal;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -26,6 +28,7 @@ import java.util.*;
  * @since 0.1
  */
 @Path("employees")
+@RolesAllowed(Roles.USER)
 public class EmployeesQuery extends BaseResource {
 
     private static final String REL_SELF = "self";
@@ -49,7 +52,9 @@ public class EmployeesQuery extends BaseResource {
 
     @GET
     @Produces(RepresentationFactory.HAL_JSON)
-    public Representation getEmployees(@QueryParam(QUERY_PARAM_PAGE) Integer page, @UserPrincipal User user, @Context final UriInfo uriInfo) {
+    public Representation getEmployees(@QueryParam(QUERY_PARAM_PAGE) Integer page,
+                                       @UserPrincipal final User user,
+                                       @Context final UriInfo uriInfo) {
         int pageNumber = Math.max(Optional.ofNullable(page).orElse(FIRST_PAGE), FIRST_PAGE);
 
         Representation representation = rest.newRepresentation()

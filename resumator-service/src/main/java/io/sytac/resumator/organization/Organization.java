@@ -3,9 +3,11 @@ package io.sytac.resumator.organization;
 import io.sytac.resumator.employee.Employee;
 import io.sytac.resumator.employee.NewEmployeeCommand;
 import io.sytac.resumator.employee.NewEmployeeCommandPayload;
-import io.sytac.resumator.employee.*;
+import io.sytac.resumator.employee.RemoveEmployeeCommand;
 import io.sytac.resumator.model.enums.Nationality;
 import io.sytac.resumator.utils.DateUtils;
+import lombok.AccessLevel;
+import lombok.Getter;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -16,11 +18,14 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Carlo Sciolla
  * @since 0.1
  */
+@Getter
 public class Organization {
 
     private final String id;
     private final String name;
     private final String domain;
+
+    @Getter(AccessLevel.NONE)
     private Map<String, Employee> employees = new ConcurrentHashMap<>();
 
     public Organization(final String id, final String name, final String domain) {
@@ -74,18 +79,6 @@ public class Organization {
                 payload.getExperience(),
                 payload.getLanguages());
 
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getDomain() {
-        return domain;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public Employee getEmployeeById(String id) {

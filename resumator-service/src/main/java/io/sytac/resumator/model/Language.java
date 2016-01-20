@@ -2,6 +2,8 @@ package io.sytac.resumator.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.ToString;
 
 /**
  * A language an employee speaks.
@@ -10,6 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author Dmitry Ryazanov
  * @since 0.1
  */
+@Getter
+@ToString
 public class Language {
 
     private final String name;
@@ -20,14 +24,6 @@ public class Language {
                     @JsonProperty("proficiency") Proficiency proficiency) {
         this.name = name;
         this.proficiency = proficiency;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Proficiency getProficiency() {
-        return proficiency;
     }
 
     public enum Proficiency {

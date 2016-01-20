@@ -2,6 +2,9 @@ package io.sytac.resumator.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.ToString;
 
 /**
  * A course / training followed by the employee
@@ -10,36 +13,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author Carlo Sciolla
  * @since 0.1
  */
+@Getter
+@AllArgsConstructor
+@ToString
 public class Course {
 	
 	private final String name;
 	private final String description;
 	private final int year;
 
-	public Course(String name, String description, int year) {
-		this.name = name;
-		this.description = description;
-		this.year = year;
-	}
-
 	@JsonCreator
 	public Course(@JsonProperty("name") String name,
 				  @JsonProperty("description") String description,
 				  @JsonProperty("year") String year) {
-		this.name = name;
-		this.description = description;
-		this.year = Integer.valueOf(year);
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public int getYear() {
-		return year;
+		this(name, description, Integer.valueOf(year));
 	}
 }

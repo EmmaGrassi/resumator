@@ -7,6 +7,7 @@ import io.sytac.resumator.model.Course;
 import io.sytac.resumator.model.Education;
 import io.sytac.resumator.model.Experience;
 import io.sytac.resumator.model.Language;
+import lombok.Getter;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ import java.util.List;
  * @author Dmitry Ryazanov
  * @since 0.1
  */
+@Getter
 public class RemoveEmployeeCommandPayload implements CommandPayload {
 
     private final String employeeId;
@@ -23,9 +25,5 @@ public class RemoveEmployeeCommandPayload implements CommandPayload {
     @JsonCreator
     public RemoveEmployeeCommandPayload(@JsonProperty("employeeId") final String employeeId) {
         this.employeeId = employeeId;
-    }
-
-    public String getEmployeeId() {
-        return employeeId;
     }
 }

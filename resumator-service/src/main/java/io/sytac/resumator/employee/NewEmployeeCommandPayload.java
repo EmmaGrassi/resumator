@@ -7,6 +7,8 @@ import io.sytac.resumator.model.Course;
 import io.sytac.resumator.model.Education;
 import io.sytac.resumator.model.Experience;
 import io.sytac.resumator.model.Language;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -21,6 +23,7 @@ import java.util.List;
  * @author Carlo Sciolla
  * @since 0.1
  */
+@Getter
 public class NewEmployeeCommandPayload implements CommandPayload {
 
     private final String organizationDomain;
@@ -74,69 +77,5 @@ public class NewEmployeeCommandPayload implements CommandPayload {
         this.courses = courses;
         this.experience = experience;
         this.languages = languages;
-    }
-
-    public String getOrganizationDomain() {
-        return organizationDomain;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPhonenumber() {
-        return phonenumber;
-    }
-
-    public String getGithub() {
-        return github;
-    }
-
-    public String getLinkedin() {
-        return linkedin;
-    }
-
-    public String getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public String getNationality() {
-        return nationality;
-    }
-
-    public String getCurrentResidence() {
-        return currentResidence;
-    }
-
-    public String getAboutMe() {
-        return aboutMe;
-    }
-
-    public List<Education> getEducation() {
-        return education;
-    }
-
-    public List<Course> getCourses() {
-        return courses;
-    }
-
-    public List<Experience> getExperience() {
-        return experience;
-    }
-
-    public List<Language> getLanguages() {
-        return languages;
     }
 }

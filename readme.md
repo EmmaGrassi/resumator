@@ -20,7 +20,8 @@ Creation, storing, searching and exporting of Sytac Resumes:
 - [configuration reference](https://github.com/sytac/resumator/blob/master/doc/configure.md)
 
 ## 3rd Party libs
-[docx4j](https://github.com/plutext/docx4j) for exporting in HTML, PDF, DOCX
+[Apache POI](https://poi.apache.org/) for exporting in DOCX
+[Lombok](https://projectlombok.org/) for generating boilerplate code
 
 ## Usage
 ```

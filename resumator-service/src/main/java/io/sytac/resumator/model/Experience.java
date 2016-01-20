@@ -3,6 +3,9 @@ package io.sytac.resumator.model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.sytac.resumator.utils.DateUtils;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.ToString;
 
 import java.util.Date;
 import java.util.List;
@@ -14,6 +17,9 @@ import java.util.List;
  * @author Carlo Sciolla
  * @since 0.1
  */
+@Getter
+@AllArgsConstructor
+@ToString
 public class Experience {
 	
 	private final String companyName;
@@ -26,26 +32,6 @@ public class Experience {
 	private final Date startDate;
 	private final Date endDate;
 
-	public Experience(String companyName,
-					  String title,
-					  String city,
-					  String country,
-					  String shortDescription,
-					  List<String> technologies,
-					  List<String> methodologies,
-					  Date startDate,
-					  Date endDate) {
-		this.companyName = companyName;
-		this.title = title;
-		this.city = city;
-		this.country = country;
-		this.shortDescription = shortDescription;
-		this.technologies = technologies;
-		this.methodologies = methodologies;
-		this.startDate = startDate;
-		this.endDate = endDate;
-	}
-
 	@JsonCreator
 	public Experience(@JsonProperty("companyName") String companyName,
 					  @JsonProperty("title") String title,
@@ -56,44 +42,7 @@ public class Experience {
 					  @JsonProperty("methodologies") List<String> methodologies,
 					  @JsonProperty("startDate") String startDate,
 					  @JsonProperty("endDate") String endDate) {
-		this.companyName = companyName;
-		this.title = title;
-		this.city = city;
-		this.country = country;
-		this.shortDescription = shortDescription;
-		this.technologies = technologies;
-		this.methodologies = methodologies;
-		this.startDate = DateUtils.convert(startDate);
-		this.endDate = DateUtils.convert(endDate);
+		this(companyName, title, city, country, shortDescription, technologies, methodologies,
+				DateUtils.convert(startDate), DateUtils.convert(endDate));
 	}
-
-	public String getCompanyName() {
-		return companyName;
-	}
-	public String getTitle() {
-		return title;
-	}
-	public String getShortDescription() {
-		return shortDescription;
-	}
-
-	public Date getStartDate() {
-		return startDate;
-	}
-	public Date getEndDate() {
-		return endDate;
-	}
-	public String getCity() {
-		return city;
-	}
-	public String getCountry() {
-		return country;
-	}
-	public List<String> getTechnologies() {
-		return technologies;
-	}
-	public List<String> getMethodologies() {
-		return methodologies;
-	}
-
 }

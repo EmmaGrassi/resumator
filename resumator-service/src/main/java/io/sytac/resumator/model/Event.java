@@ -1,5 +1,9 @@
 package io.sytac.resumator.model;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.ToString;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedJdbcTypes;
 
@@ -14,6 +18,9 @@ import java.sql.Timestamp;
  * @since 0.1
  */
 @MappedJdbcTypes(JdbcType.CLOB)
+@Getter
+@AllArgsConstructor
+@ToString
 public class Event {
 
     public static final Long ORDER_UNSET = null;
@@ -21,25 +28,17 @@ public class Event {
     final String id;
     final Long insertOrder;
     final String payload;
+
+    @Getter(AccessLevel.NONE)
     final Timestamp created;
+
     final String type;
 
-    public Event(String id, Long insertOrder, String payload, Timestamp created, String type) {
-        this.id = id;
-        this.insertOrder = insertOrder;
-        this.payload = payload;
-        this.created = created;
-        this.type = type;
-    }
     public Event(String id, Long insertOrder, Clob payload, Timestamp created, String type) {
-        this.id = id;
-        this.insertOrder = insertOrder;
-        this.payload = readClob(payload);
-        this.created = created;
-        this.type = type;
+        this(id, insertOrder, readClob(payload), created, type);
     }
 
-    private String readClob(Clob clob) {
+    private static String readClob(Clob clob) {
         if (clob != null) {
             try {
                 int size = (int) clob.length();
@@ -52,34 +51,7 @@ public class Event {
         throw new IllegalArgumentException("Null event payload");
     }
 
-    public String getId() {
-        return this.id;
-    }
-
     public boolean hasInsertOrder() {
         return insertOrder != null;
-    }
-
-    public Long getInsertOrder() {
-        return insertOrder;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public String getPayload() {
-        return payload;
-    }
-
-    @Override
-    public String toString() {
-        return "Event{" +
-                "id='" + id + '\'' +
-                ", insertOrder=" + insertOrder +
-                ", payload='" + payload + '\'' +
-                ", created=" + created +
-                ", type='" + type + '\'' +
-                '}';
     }
 }

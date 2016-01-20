@@ -21,7 +21,7 @@ public class Organization {
     private final String id;
     private final String name;
     private final String domain;
-    private final Map<String, Employee> employees = new ConcurrentHashMap<>();
+    private Map<String, Employee> employees = new ConcurrentHashMap<>();
 
     public Organization(final String id, final String name, final String domain) {
         this.id = id;
@@ -90,6 +90,10 @@ public class Organization {
 
     public Employee getEmployeeById(String id) {
         return employees.get(id);
+    }
+
+    public List<Employee> getEmployees() {
+        return Collections.unmodifiableList(new ArrayList<>(employees.values()));
     }
 
     public Optional<Employee> findEmployeeByName(String name, String surname) {

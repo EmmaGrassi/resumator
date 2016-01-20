@@ -200,6 +200,16 @@ public class Employee {
 		return languages;
 	}
 
+	@Override
+	public int hashCode() {
+		return id.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+        return obj instanceof Employee && id.equals(((Employee)obj).id);
+	}
+
 	// TODO: add all the fields
 	@Override
     public String toString() {

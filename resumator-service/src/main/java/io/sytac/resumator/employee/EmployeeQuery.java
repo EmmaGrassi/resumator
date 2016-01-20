@@ -49,9 +49,9 @@ public class EmployeeQuery extends BaseResource {
     @GET
     @Produces(RepresentationFactory.HAL_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Representation fakeEmployee(@PathParam("id") final String id,
-                                       @Context final UriInfo uriInfo,
-                                       @Context final SecurityContext securityContext) {
+    public Representation getEmployee(@PathParam("id") final String id,
+                                      @Context final UriInfo uriInfo,
+                                      @Context final SecurityContext securityContext) {
         Optional<Employee> employee = organizations
                 .get(getUser().getOrganizationId())
                 .map(org -> org.getEmployeeById(id));
@@ -103,6 +103,7 @@ public class EmployeeQuery extends BaseResource {
 
         return representation;
     }
+
     private InputStream getTemplateStream() {
         return getClass().getClassLoader().getResourceAsStream("resume-template.docx");
     }

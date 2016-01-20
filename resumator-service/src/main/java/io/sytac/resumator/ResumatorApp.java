@@ -8,9 +8,7 @@ import io.sytac.resumator.events.EventPublisherFactory;
 import io.sytac.resumator.http.UriRewriteSupportFilter;
 import io.sytac.resumator.organization.InMemoryOrganizationRepository;
 import io.sytac.resumator.organization.OrganizationRepository;
-import io.sytac.resumator.security.Oauth2AuthenticationFilter;
-import io.sytac.resumator.security.Oauth2SecurityService;
-import io.sytac.resumator.security.Oauth2SecurityServiceFactory;
+import io.sytac.resumator.security.*;
 import io.sytac.resumator.store.BootstrapRunner;
 import io.sytac.resumator.store.EventStore;
 import io.sytac.resumator.store.sql.SchemaManager;
@@ -18,10 +16,13 @@ import io.sytac.resumator.store.sql.SqlStore;
 import io.sytac.resumator.store.Bootstrap;
 import org.eclipse.jetty.server.Server;
 import org.glassfish.hk2.api.Immediate;
+import org.glassfish.hk2.api.InjectionResolver;
+import org.glassfish.hk2.api.TypeLiteral;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.jetty.JettyHttpContainerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
+import org.glassfish.jersey.server.spi.internal.ValueFactoryProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -117,6 +118,8 @@ public class ResumatorApp {
                      @Override
                      protected void configure() {
                          bindFactory(Oauth2SecurityServiceFactory.class).to(Oauth2SecurityService.class);
+                         bind(UserPrincipalFactoryProvider.class).to(ValueFactoryProvider.class).in(Singleton.class);
+                         bind(UserPrincipalParamResolver.class).to(new TypeLiteral<InjectionResolver<UserPrincipal>>() {}).in(Singleton.class);
                      }
                  });
     }

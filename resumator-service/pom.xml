@@ -20,7 +20,7 @@
         <google.api.client.version>1.19.1</google.api.client.version>
         <slf4j.version>1.7.12</slf4j.version>
         <junit.version>4.12</junit.version>
-        <mockito.version>2.0.31-beta</mockito.version>
+        <mockito.version>2.0.39-beta</mockito.version>
         <h2.version>1.4.190</h2.version>
         <apache.poi.version>3.13</apache.poi.version>
         <apache.commons-lang.version>3.4</apache.commons-lang.version>

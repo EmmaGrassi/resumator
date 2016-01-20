@@ -42,8 +42,7 @@ public class RESTTest extends JerseyTest {
                 .register(new ObjectMapperFactory())
                 .register(JaxRsHalBuilderSupport.class)
                 .register(JaxRsHalBuilderReaderSupport.class)
-                .register(EmployeeMessageBodyReader.class)
-                ;
+                .register(EmployeeMessageBodyReader.class);
     }
 
     /**

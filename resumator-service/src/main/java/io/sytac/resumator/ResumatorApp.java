@@ -9,11 +9,12 @@ import io.sytac.resumator.http.UriRewriteSupportFilter;
 import io.sytac.resumator.organization.InMemoryOrganizationRepository;
 import io.sytac.resumator.organization.OrganizationRepository;
 import io.sytac.resumator.security.*;
+import io.sytac.resumator.store.Bootstrap;
 import io.sytac.resumator.store.BootstrapRunner;
 import io.sytac.resumator.store.EventStore;
 import io.sytac.resumator.store.sql.SchemaManager;
 import io.sytac.resumator.store.sql.SqlStore;
-import io.sytac.resumator.store.Bootstrap;
+import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jetty.server.Server;
 import org.glassfish.hk2.api.Immediate;
 import org.glassfish.hk2.api.InjectionResolver;
@@ -23,8 +24,6 @@ import org.glassfish.jersey.jetty.JettyHttpContainerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 import org.glassfish.jersey.server.spi.internal.ValueFactoryProvider;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.inject.Singleton;
 import java.io.IOException;
@@ -44,9 +43,8 @@ import static io.sytac.resumator.ConfigurationEntries.BASE_URI;
  * @author Carlo Sciolla
  * @since 0.1
  */
+@Slf4j
 public class ResumatorApp {
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(ResumatorApp.class);
 
 	public static void main(final String[] args) throws IOException {
         final ResumatorApp app = new ResumatorApp();
@@ -180,7 +178,7 @@ public class ResumatorApp {
     }
 
     protected Configuration loadConfiguration() {
-        LOGGER.info("Loading the configuration");
+        log.info("Loading the configuration");
         return new Configuration();
 
     }
@@ -201,9 +199,9 @@ public class ResumatorApp {
     }
 
     protected void banner() {
-        LOGGER.info("╔╦╗┬ ┬┌─┐  ╦═╗┌─┐┌─┐┬ ┬┌┬┐┌─┐┌┬┐┌─┐┬─┐");
-        LOGGER.info(" ║ ├─┤├┤   ╠╦╝├┤ └─┐│ ││││├─┤ │ │ │├┬┘");
-        LOGGER.info(" ╩ ┴ ┴└─┘  ╩╚═└─┘└─┘└─┘┴ ┴┴ ┴ ┴ └─┘┴└─");
-        LOGGER.info("───────────────────────────────── v0.1");
+        log.info("╔╦╗┬ ┬┌─┐  ╦═╗┌─┐┌─┐┬ ┬┌┬┐┌─┐┌┬┐┌─┐┬─┐");
+        log.info(" ║ ├─┤├┤   ╠╦╝├┤ └─┐│ ││││├─┤ │ │ │├┬┘");
+        log.info(" ╩ ┴ ┴└─┘  ╩╚═└─┘└─┘└─┘┴ ┴┴ ┴ ┴ └─┘┴└─");
+        log.info("───────────────────────────────── v0.1");
     }
 }

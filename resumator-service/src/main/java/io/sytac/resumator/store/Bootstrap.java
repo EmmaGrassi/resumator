@@ -8,8 +8,7 @@ import io.sytac.resumator.model.Event;
 import io.sytac.resumator.organization.NewOrganizationCommand;
 import io.sytac.resumator.organization.Organization;
 import io.sytac.resumator.organization.OrganizationRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Inject;
 import java.io.IOException;
@@ -21,9 +20,8 @@ import java.util.Optional;
  * @author Carlo Sciolla
  * @since 0.1
  */
+@Slf4j
 public class Bootstrap {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(Bootstrap.class);
 
     private final EventStore store;
     private final OrganizationRepository orgs;
@@ -37,11 +35,11 @@ public class Bootstrap {
     }
 
     public void replay() {
-        LOGGER.info("Replaying events, setting store to read-only");
+        log.info("Replaying events, setting store to read-only");
         store.setReadOnly(true);
         store.getAll().forEach(this::replayEvent);
 
-        LOGGER.info("Replayed events successfully, setting store to read-write");
+        log.info("Replayed events successfully, setting store to read-write");
         store.setReadOnly(false);
     }
 
@@ -55,7 +53,7 @@ public class Bootstrap {
 
     private Organization getOrganization(final Command command) {
         return orgs.fromDomain(command.getHeader().getDomain().get())
-                .orElseThrow(() -> new IllegalArgumentException(String.format("Cannot replay '%' for unknown organization", command.getType())));
+                .orElseThrow(() -> new IllegalArgumentException(String.format("Cannot replay '%s' for unknown organization", command.getType())));
     }
 
     private void replayEvent(Event event) {

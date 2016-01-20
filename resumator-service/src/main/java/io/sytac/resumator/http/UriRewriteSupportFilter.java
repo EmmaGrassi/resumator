@@ -1,8 +1,7 @@
 package io.sytac.resumator.http;
 
 import io.sytac.resumator.Configuration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Inject;
 import javax.ws.rs.container.ContainerRequestContext;
@@ -13,7 +12,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import static io.sytac.resumator.ConfigurationEntries.*;
+import static io.sytac.resumator.ConfigurationEntries.CONTEXT_PATH;
 
 /**
  * Enables Jersey routes to work even when the Resumator is serving requests from a rewritten context path
@@ -22,9 +21,8 @@ import static io.sytac.resumator.ConfigurationEntries.*;
  * @since 0.1
  */
 @PreMatching
+@Slf4j
 public class UriRewriteSupportFilter implements ContainerRequestFilter {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(UriRewriteSupportFilter.class);
 
     private final Configuration config;
 
@@ -51,7 +49,7 @@ public class UriRewriteSupportFilter implements ContainerRequestFilter {
             try {
                 return new URI(uriString + path);
             } catch (URISyntaxException e) {
-                LOGGER.error("Wrong value for config entry resumator.http.context.path, ignoring: {}", path);
+                log.error("Wrong value for config entry resumator.http.context.path, ignoring: {}", path);
                 return uri;
             }
         }

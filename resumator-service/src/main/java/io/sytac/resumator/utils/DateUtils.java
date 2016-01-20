@@ -1,7 +1,6 @@
 package io.sytac.resumator.utils;
 
 import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 import java.util.Date;
 

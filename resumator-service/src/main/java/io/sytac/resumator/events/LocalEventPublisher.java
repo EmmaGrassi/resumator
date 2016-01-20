@@ -6,8 +6,7 @@ import com.google.common.eventbus.Subscribe;
 import io.sytac.resumator.Configuration;
 import io.sytac.resumator.command.Command;
 import io.sytac.resumator.model.Event;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Inject;
 import java.util.Optional;
@@ -21,9 +20,8 @@ import static io.sytac.resumator.ConfigurationEntries.LOG_TAG;
  * @author Carlo Sciolla
  * @since 0.1
  */
+@Slf4j
 public class LocalEventPublisher implements EventPublisher {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(LocalEventPublisher.class);
 
     private final EventBus eventBus;
     private final ObjectMapper json;
@@ -61,7 +59,7 @@ public class LocalEventPublisher implements EventPublisher {
             this.delegate = delegate;
             this.type = Optional.ofNullable(type);
             if(!this.type.isPresent()) {
-                LOGGER.warn("Trying to register an event listener for a specific type, but the type is null: {}", delegate.getClass());
+                log.warn("Trying to register an event listener for a specific type, but the type is null: {}", delegate.getClass());
             }
         }
 

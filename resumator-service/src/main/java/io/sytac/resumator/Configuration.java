@@ -1,7 +1,6 @@
 package io.sytac.resumator;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
 import java.net.URI;
@@ -23,10 +22,9 @@ import static io.sytac.resumator.ConfigurationEntries.USER_CONFIG_FILE_LOCATION;
  * @author Carlo Sciolla
  * @since 0.1
  */
+@Slf4j
 public class Configuration {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(Configuration.class);
-
+    
     public static final String LIST_SEPARATOR = ":";
 
     private static final String STATIC_CONFIG_LOCATION = "resumator.properties";
@@ -56,7 +54,7 @@ public class Configuration {
             fileInputStream = new FileInputStream(propertiesFile);
             return readProperties(fileInputStream);
         } catch (FileNotFoundException e) {
-            LOGGER.error("Couldn't read properties file, ignoring");
+            log.error("Couldn't read properties file, ignoring");
         }
 
         return new Properties();
@@ -69,7 +67,7 @@ public class Configuration {
         } catch (FileNotFoundException e) {
             // cannot happen, file should be retrieved through class loader
         } catch (IOException e) {
-            LOGGER.error("Cannot read the static configuration file, exiting");
+            log.error("Cannot read the static configuration file, exiting");
             throw new IllegalStateException(e);
         }
 
@@ -120,14 +118,14 @@ public class Configuration {
         if(customLocation != null) {
             propertiesFile = Paths.get(customLocation).toFile();
             if(!propertiesFile.isFile()) {
-                LOGGER.warn("No configuration file was found at the provided location: {}", customLocation);
+                log.warn("No configuration file was found at the provided location: {}", customLocation);
                 return Optional.empty();
             }
         } else {
             if(defaultFile.isFile()) {
                 propertiesFile = defaultFile;
             } else {
-                LOGGER.debug("No configuration file was found");
+                log.debug("No configuration file was found");
                 return Optional.empty();
             }
         }
@@ -164,7 +162,7 @@ public class Configuration {
             try {
                 return Integer.valueOf(value);
             } catch (NumberFormatException e) {
-                LOGGER.warn("Cannot parse config entry {} as integer, ignoring: {}", key, value);
+                log.warn("Cannot parse config entry {} as integer, ignoring: {}", key, value);
                 return null;
             }
         });

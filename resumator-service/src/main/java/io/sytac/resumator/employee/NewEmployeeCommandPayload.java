@@ -7,14 +7,8 @@ import io.sytac.resumator.model.Course;
 import io.sytac.resumator.model.Education;
 import io.sytac.resumator.model.Experience;
 import io.sytac.resumator.model.Language;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.SecurityContext;
-import java.util.Date;
 import java.util.List;
 
 /**

@@ -8,16 +8,17 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.common.collect.Sets;
 import io.sytac.resumator.Configuration;
-import io.sytac.resumator.organization.NewOrganizationCommand;
 import io.sytac.resumator.organization.Organization;
 import io.sytac.resumator.organization.OrganizationRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Inject;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 import java.util.function.Supplier;
 
 import static io.sytac.resumator.ConfigurationEntries.*;
@@ -30,9 +31,8 @@ import static io.sytac.resumator.security.Roles.USER;
  * @author Carlo Sciolla
  * @since 0.1
  */
+@Slf4j
 public class Oauth2SecurityService {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(Oauth2SecurityService.class);
 
     private final Configuration config;
     private final OrganizationRepository organizations;
@@ -75,7 +75,7 @@ public class Oauth2SecurityService {
             token = verifier.verify(idtoken);
             return validate(token);
         } catch (GeneralSecurityException | IOException e) {
-            LOGGER.warn("Couldn't validate the Google JWT", e);
+            log.warn("Couldn't validate the Google JWT", e);
         }
 
         return Optional.empty();
@@ -101,7 +101,7 @@ public class Oauth2SecurityService {
     private Boolean assertCondition(final String errorMessage, final Supplier<Boolean> assertion) {
         final Boolean result = assertion.get();
         if(!result) {
-            LOGGER.info(errorMessage);
+            log.info(errorMessage);
         }
 
         return result;

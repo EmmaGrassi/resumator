@@ -2,8 +2,6 @@ package io.sytac.resumator.store.sql.mapper;
 
 import io.sytac.resumator.model.Event;
 import org.apache.ibatis.annotations.*;
-import org.apache.ibatis.type.ClobTypeHandler;
-import org.apache.ibatis.type.JdbcType;
 
 import java.util.List;
 

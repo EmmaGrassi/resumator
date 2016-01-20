@@ -6,7 +6,7 @@ import io.sytac.resumator.command.CommandFactory;
 import io.sytac.resumator.command.CommandHeader;
 import io.sytac.resumator.employee.Employee;
 import io.sytac.resumator.employee.NewEmployeeCommand;
-import io.sytac.resumator.employee.NewEmployeeCommandPayload;
+import io.sytac.resumator.employee.EmployeeCommandPayload;
 import io.sytac.resumator.events.EventPublisher;
 import io.sytac.resumator.model.Event;
 import io.sytac.resumator.organization.InMemoryOrganizationRepository;
@@ -70,13 +70,13 @@ public class BootstrapTest {
     }
 
     private Event newEmployeeEvent() {
-        final NewEmployeeCommandPayload employeeCommandPayload = new NewEmployeeCommandPayload("acme.biz", "title", "name", "surname", "email",
+        final EmployeeCommandPayload employeeCommandPayload = new EmployeeCommandPayload("title", "name", "surname", "email",
                 "phonenumber", "github", "linkedin", "1984-04-22", "ITALIAN", "", "", null, null, null, null);
         final CommandHeader commandHeader = new CommandHeader.Builder()
                 .setId(UUID.randomUUID().toString())
                 .setDomain("acme.biz")
                 .build();
-        final NewEmployeeCommand command = new NewEmployeeCommand(employeeCommandPayload, commandHeader);
+        final NewEmployeeCommand command = new NewEmployeeCommand(commandHeader, employeeCommandPayload);
         return command.asEvent(json);
     }
 

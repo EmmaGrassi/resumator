@@ -16,10 +16,7 @@ import org.eclipse.jetty.http.HttpStatus;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.net.URI;
 
@@ -29,25 +26,26 @@ import java.net.URI;
  * @author Carlo Sciolla
  * @since 0.1
  */
-@Path("employees")
+@Path("employees/{id}")
 @RolesAllowed(Roles.USER)
-public class NewEmployee extends BaseResource {
+public class UpdateEmployee extends BaseResource {
 
     private final OrganizationRepository organizations;
     private final CommandFactory descriptors;
     private final EventPublisher events;
 
     @Inject
-    public NewEmployee(final OrganizationRepository organizations, final CommandFactory descriptors, final EventPublisher events) {
+    public UpdateEmployee(final OrganizationRepository organizations, final CommandFactory descriptors, final EventPublisher events) {
         this.organizations = organizations;
         this.descriptors = descriptors;
         this.events = events;
     }
 
-    @POST
+    @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces({RepresentationFactory.HAL_JSON, MediaType.APPLICATION_JSON})
-    public Response newEmployee(final EmployeeCommandPayload payload,
+    public Response newEmployee(@PathParam("id") final String employeeId,
+                                final EmployeeCommandPayload payload,
                                 @UserPrincipal final User user,
                                 @Context final UriInfo uriInfo) {
 
@@ -55,22 +53,22 @@ public class NewEmployee extends BaseResource {
                 .orElseThrow(InvalidOrganizationException::new);
         String domain = organization.getDomain();
 
-        final NewEmployeeCommand command = descriptors.newEmployeeCommand(payload, domain);
-        Employee newEmployee = organization.addEmployee(command);
+        final UpdateEmployeeCommand command = descriptors.updateEmployeeCommand(employeeId, payload, domain);
+        Employee updatedEmployee = organization.updateEmployee(command);
         events.publish(command);
 
-        return buildRepresentation(uriInfo, newEmployee);
+        return buildRepresentation(uriInfo, updatedEmployee);
     }
 
     private Response buildRepresentation(final UriInfo uriInfo, final Employee employee) {
         final URI employeeLink = resourceLink(uriInfo, EmployeeQuery.class, employee.getId());
         final Representation halResource = rest.newRepresentation()
-                .withProperty("status", "created")
+                .withProperty("status", "updated")
                 .withProperty("id", employee.getId())
                 .withLink("employee", employeeLink);
 
         return Response.ok(halResource.toString(RepresentationFactory.HAL_JSON))
-                .status(HttpStatus.CREATED_201)
+                .status(HttpStatus.OK_200)
                 .header(HttpHeader.LOCATION.asString(), employeeLink.toString())
                 .build();
     }

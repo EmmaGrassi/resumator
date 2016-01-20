@@ -7,6 +7,8 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import io.sytac.resumator.employee.NewEmployeeCommand;
 import io.sytac.resumator.employee.NewEmployeeCommandDeserializer;
+import io.sytac.resumator.employee.UpdateEmployeeCommand;
+import io.sytac.resumator.employee.UpdateEmployeeCommandDeserializer;
 import org.glassfish.hk2.api.Factory;
 
 import javax.ws.rs.ext.Provider;
@@ -34,6 +36,7 @@ public class ObjectMapperFactory implements Factory<ObjectMapper> {
     protected SimpleModule initResumatorSerializers() {
         final SimpleModule resumator = new SimpleModule("Resumator");
         resumator.addDeserializer(NewEmployeeCommand.class, new NewEmployeeCommandDeserializer());
+        resumator.addDeserializer(UpdateEmployeeCommand.class, new UpdateEmployeeCommandDeserializer());
         return resumator;
     }
 

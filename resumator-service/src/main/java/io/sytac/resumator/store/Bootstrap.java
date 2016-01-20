@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.sytac.resumator.command.Command;
 import io.sytac.resumator.employee.NewEmployeeCommand;
 import io.sytac.resumator.employee.RemoveEmployeeCommand;
+import io.sytac.resumator.employee.UpdateEmployeeCommand;
 import io.sytac.resumator.model.Event;
 import io.sytac.resumator.organization.NewOrganizationCommand;
 import io.sytac.resumator.organization.Organization;
@@ -63,6 +64,12 @@ public class Bootstrap {
                     final NewEmployeeCommand newEmployeeCommand = json.readValue(event.getPayload(), NewEmployeeCommand.class);
                     checkIdAndDomainInHeader(newEmployeeCommand);
                     this.getOrganization(newEmployeeCommand).addEmployee(newEmployeeCommand);
+                break;
+
+                case UpdateEmployeeCommand.EVENT_TYPE:
+                    final UpdateEmployeeCommand updateEmployeeCommand = json.readValue(event.getPayload(), UpdateEmployeeCommand.class);
+                    checkIdAndDomainInHeader(updateEmployeeCommand);
+                    this.getOrganization(updateEmployeeCommand).updateEmployee(updateEmployeeCommand);
                 break;
 
                 case RemoveEmployeeCommand.EVENT_TYPE:

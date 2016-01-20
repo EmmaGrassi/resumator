@@ -21,14 +21,14 @@ import java.util.UUID;
  * @since 0.1
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class NewEmployeeCommand extends AbstractEmployeeCommand {
+public class UpdateEmployeeCommand extends AbstractEmployeeCommand {
 
-    public static final String EVENT_TYPE = "newEmployee";
+    public static final String EVENT_TYPE = "updateEmployee";
 
     @SuppressWarnings("unused")
     @JsonCreator
-    public NewEmployeeCommand(@JsonProperty("header") final CommandHeader header,
-                              @JsonProperty("payload") final EmployeeCommandPayload payload) {
+    public UpdateEmployeeCommand(@JsonProperty("header") final CommandHeader header,
+                                 @JsonProperty("payload") final EmployeeCommandPayload payload) {
         super(header, payload);
     }
 
@@ -39,7 +39,6 @@ public class NewEmployeeCommand extends AbstractEmployeeCommand {
 
     @Override
     public Event asEvent(final ObjectMapper json) {
-        final String eventId = getHeader().getId().orElse(UUID.randomUUID().toString());
-        return createEvent(eventId, json);
+        return createEvent(UUID.randomUUID().toString(), json);
     }
 }

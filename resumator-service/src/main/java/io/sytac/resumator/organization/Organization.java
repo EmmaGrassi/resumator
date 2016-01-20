@@ -1,8 +1,10 @@
 package io.sytac.resumator.organization;
 
+import io.sytac.resumator.command.Command;
 import io.sytac.resumator.employee.Employee;
 import io.sytac.resumator.employee.NewEmployeeCommand;
-import io.sytac.resumator.employee.NewEmployeeCommandPayload;
+import io.sytac.resumator.employee.EmployeeCommandPayload;
+import io.sytac.resumator.employee.*;
 import io.sytac.resumator.employee.RemoveEmployeeCommand;
 import io.sytac.resumator.model.enums.Nationality;
 import io.sytac.resumator.utils.DateUtils;
@@ -39,12 +41,24 @@ public class Organization {
     }
 
     public Employee addEmployee(final NewEmployeeCommand command) {
-        final Employee employee = fromCommand(command);
+        final String employeeId = command.getHeader().getId().orElse(UUID.randomUUID().toString());
+        final Employee employee = fromCommand(employeeId, command);
         final Employee previous = employees.putIfAbsent(employee.getId(), employee);
         if(previous != null) {
             throw new IllegalArgumentException("Duplicate employee:" + employee);
         }
         return employee;
+    }
+
+    public Employee updateEmployee(final UpdateEmployeeCommand command) {
+        final String employeeId = command.getHeader().getId()
+                .orElseThrow(() -> new IllegalArgumentException("Cannot update employee because EmployeeId is null or empty"));
+
+        if (!employees.containsKey(employeeId)) {
+            throw new IllegalArgumentException(String.format("Employee with id '%s' not found in the repository", employeeId));
+        }
+
+        return employees.put(employeeId, fromCommand(employeeId, command));
     }
 
     public void removeEmployee(final RemoveEmployeeCommand command) {
@@ -58,9 +72,8 @@ public class Organization {
         }
     }
 
-    private Employee fromCommand(final NewEmployeeCommand command) {
-        final NewEmployeeCommandPayload payload = command.getPayload();
-        final String employeeId = command.getHeader().getId().orElse(UUID.randomUUID().toString());
+    private Employee fromCommand(final String employeeId, final Command command) {
+        final EmployeeCommandPayload payload = (EmployeeCommandPayload)command.getPayload();
 
         return new Employee(employeeId,
                 payload.getTitle(),

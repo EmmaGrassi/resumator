@@ -18,9 +18,8 @@ import java.util.List;
  * @since 0.1
  */
 @Getter
-public class NewEmployeeCommandPayload implements CommandPayload {
+public class EmployeeCommandPayload implements CommandPayload {
 
-    private final String organizationDomain;
     private final String title;
     private final String name;
     private final String surname;
@@ -38,24 +37,22 @@ public class NewEmployeeCommandPayload implements CommandPayload {
     private final List<Language> languages;
 
     @JsonCreator
-    public NewEmployeeCommandPayload(@JsonProperty("organizationDomain") final String organizationDomain,
-                                     @JsonProperty("title") final String title,
-                                     @JsonProperty("name") final String name,
-                                     @JsonProperty("surname") final String surname,
-                                     @JsonProperty("email") final String email,
-                                     @JsonProperty("phonenumber") final String phonenumber,
-                                     @JsonProperty("github") final String github,
-                                     @JsonProperty("linkedin") final String linkedin,
-                                     @JsonProperty("dateOfBirth") final String dateOfBirth,
-                                     @JsonProperty("nationality") final String nationality,
-                                     @JsonProperty("currentResidence") final String currentResidence,
-                                     @JsonProperty("aboutMe") final String aboutMe,
-                                     @JsonProperty("education") final List<Education> education,
-                                     @JsonProperty("courses") final List<Course> courses,
-                                     @JsonProperty("experience") final List<Experience> experience,
-                                     @JsonProperty("languages") final List<Language> languages) {
+    public EmployeeCommandPayload(@JsonProperty("title") final String title,
+                                  @JsonProperty("name") final String name,
+                                  @JsonProperty("surname") final String surname,
+                                  @JsonProperty("email") final String email,
+                                  @JsonProperty("phonenumber") final String phonenumber,
+                                  @JsonProperty("github") final String github,
+                                  @JsonProperty("linkedin") final String linkedin,
+                                  @JsonProperty("dateOfBirth") final String dateOfBirth,
+                                  @JsonProperty("nationality") final String nationality,
+                                  @JsonProperty("currentResidence") final String currentResidence,
+                                  @JsonProperty("aboutMe") final String aboutMe,
+                                  @JsonProperty("education") final List<Education> education,
+                                  @JsonProperty("courses") final List<Course> courses,
+                                  @JsonProperty("experience") final List<Experience> experience,
+                                  @JsonProperty("languages") final List<Language> languages) {
 
-        this.organizationDomain = organizationDomain;
         this.title = title;
         this.name = name;
         this.surname = surname;

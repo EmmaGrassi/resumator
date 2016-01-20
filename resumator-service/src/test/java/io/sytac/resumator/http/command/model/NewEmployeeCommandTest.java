@@ -8,7 +8,7 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import io.sytac.resumator.command.CommandHeader;
 import io.sytac.resumator.employee.NewEmployeeCommand;
 import io.sytac.resumator.employee.NewEmployeeCommandDeserializer;
-import io.sytac.resumator.employee.NewEmployeeCommandPayload;
+import io.sytac.resumator.employee.EmployeeCommandPayload;
 import io.sytac.resumator.model.Course;
 import io.sytac.resumator.model.Education;
 import io.sytac.resumator.model.Experience;
@@ -54,13 +54,13 @@ public class NewEmployeeCommandTest {
         final List<Experience> experiences  = Collections.singletonList(new Experience("CompanyName", "Title", "City", "Country", "Short Description",
                 technologies, methodologies, expStartDate, expEndDate));
         final List<Language> languages = Collections.singletonList(new Language("English", Language.Proficiency.FULL_PROFESSIONAL));
-        final NewEmployeeCommandPayload payload = new NewEmployeeCommandPayload("sytac.io", "Title", "Foo", "Bar", "Email", "+31000999000",
+        final EmployeeCommandPayload payload = new EmployeeCommandPayload("Title", "Foo", "Bar", "Email", "+31000999000",
                 "Github", "Linkedin", "1984-04-22", "ITALY", "N", "About ME", educations, courses, experiences, languages);
 
         final CommandHeader commandHeader = new CommandHeader.Builder().setId("123-a-321-b")
                 .setDomain("sytac.io")
                 .build();
-        final NewEmployeeCommand foobar = new NewEmployeeCommand(payload, commandHeader);
+        final NewEmployeeCommand foobar = new NewEmployeeCommand(commandHeader, payload);
 
         final Long timestamp = foobar.getHeader().getTimestamp();
         final String expected =
@@ -69,8 +69,7 @@ public class NewEmployeeCommandTest {
                     "\"domain\":\"sytac.io\"," +
                     "\"timestamp\":" + timestamp + "}," +
                 "\"payload\":" +
-                    "{\"organizationDomain\":\"sytac.io\"," +
-                    "\"title\":\"Title\"," +
+                    "{\"title\":\"Title\"," +
                     "\"name\":\"Foo\"," +
                     "\"surname\":\"Bar\"," +
                     "\"email\":\"Email\"," +
@@ -121,8 +120,7 @@ public class NewEmployeeCommandTest {
                             "\"id\":\"123-a-321-b\"," +
                             "\"domain\":\"sytac.io\"}," +
                         "\"payload\":" +
-                            "{\"organizationDomain\":\"foobar\"," +
-                            "\"title\":\"Title\"," +
+                            "{\"title\":\"Title\"," +
                             "\"name\":\"Foo\"," +
                             "\"surname\":\"Bar\"," +
                             "\"email\":\"Email\"," +

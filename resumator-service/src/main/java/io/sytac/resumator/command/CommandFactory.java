@@ -14,12 +14,20 @@ import java.util.UUID;
  */
 public class CommandFactory {
 
-    public NewEmployeeCommand newEmployeeCommand(final NewEmployeeCommandPayload payload, String domain) {
-        return new NewEmployeeCommand(payload,
-                new CommandHeader.Builder()
-                        .setId(UUID.randomUUID().toString())
-                        .setDomain(domain)
-                        .build());
+    public NewEmployeeCommand newEmployeeCommand(final EmployeeCommandPayload payload, final String domain) {
+        final CommandHeader header = new CommandHeader.Builder()
+                .setId(UUID.randomUUID().toString())
+                .setDomain(domain)
+                .build();
+        return new NewEmployeeCommand(header, payload);
+    }
+
+    public UpdateEmployeeCommand updateEmployeeCommand(final String employeeId,
+                                                       final EmployeeCommandPayload payload,
+                                                       final String domain) {
+
+        final CommandHeader header = new CommandHeader.Builder().setId(employeeId).setDomain(domain).build();
+        return new UpdateEmployeeCommand(header, payload);
     }
 
     public RemoveEmployeeCommand removeEmployeeCommand(String employeeId, String domain) {

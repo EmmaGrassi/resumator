@@ -6,7 +6,7 @@ import io.sytac.resumator.command.Command;
 import io.sytac.resumator.command.CommandHeader;
 import io.sytac.resumator.command.CommandPayload;
 import io.sytac.resumator.employee.NewEmployeeCommand;
-import io.sytac.resumator.employee.NewEmployeeCommandPayload;
+import io.sytac.resumator.employee.EmployeeCommandPayload;
 import io.sytac.resumator.model.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -60,11 +60,16 @@ public class LocalEventPublisherTest {
         final List<Experience> experience  = Collections.singletonList(new Experience("CompanyName", "Title", "City", "Coutry", "Short Description",
                 technologies, methodologies, startDate, endDate));
 
-        final List<Language> languages = Collections.singletonList(new Language("English", Language.Proficiency.FULL_PROFESSIONAL));
-        final NewEmployeeCommandPayload payload = new NewEmployeeCommandPayload("ACME", "Title", "Foo", "Bar", "Email", "+31000999000",
+        final List<Language> languages = Arrays.asList(new Language("English", Language.Proficiency.FULL_PROFESSIONAL));
+        final EmployeeCommandPayload payload = new EmployeeCommandPayload("Title", "Foo", "Bar", "Email", "+31000999000",
                 "Github", "Linkedin", "1984-04-22", "ITALY", "N", "About ME", education, courses, experience, languages);
 
-        return new NewEmployeeCommand(payload, "ACME", Long.toString(new Date().getTime()));
+        final CommandHeader commandHeader = new CommandHeader.Builder()
+                .setId(UUID.randomUUID().toString())
+                .setDomain("acme.biz")
+                .setTimestamp(new Date().getTime())
+                .build();
+        return new NewEmployeeCommand(commandHeader, payload);
     }
 
     private class BogusCommand implements Command {

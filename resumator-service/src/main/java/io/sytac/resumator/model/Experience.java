@@ -9,6 +9,7 @@ import lombok.ToString;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * The working experience of an employee
@@ -30,7 +31,7 @@ public class Experience {
 	private final List<String> technologies;
 	private final List<String> methodologies;
 	private final Date startDate;
-	private final Date endDate;
+	private final Optional<Date> endDate;
 
 	@JsonCreator
 	public Experience(@JsonProperty("companyName") String companyName,
@@ -43,6 +44,6 @@ public class Experience {
 					  @JsonProperty("startDate") String startDate,
 					  @JsonProperty("endDate") String endDate) {
 		this(companyName, title, city, country, shortDescription, technologies, methodologies,
-				DateUtils.convert(startDate), DateUtils.convert(endDate));
+				DateUtils.convert(startDate), Optional.ofNullable(endDate).map(DateUtils::convert));
 	}
 }

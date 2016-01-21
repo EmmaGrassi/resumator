@@ -1,14 +1,12 @@
 package io.sytac.resumator.http.command.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import io.sytac.resumator.command.CommandHeader;
 import io.sytac.resumator.employee.DateToStringSerializer;
 import io.sytac.resumator.employee.EmployeeCommandPayload;
-import io.sytac.resumator.employee.NewEmployeeCommand;
 import io.sytac.resumator.model.Course;
 import io.sytac.resumator.model.Education;
 import io.sytac.resumator.model.Experience;
@@ -17,13 +15,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.junit.Before;
 import org.junit.Ignore;
-import org.junit.Test;
 
-import java.io.IOException;
 import java.util.*;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 @Ignore
 public class CommonCommandTest {
@@ -83,7 +76,7 @@ public class CommonCommandTest {
 
     protected Experience createExperience() {
         return new Experience(COMPANY_NAME, TITLE, CITY, COUNTRY, SHORT_DESCRIPTION,
-                getTechnologies(), getMethodologies(), getExperienceStartDate(), getExperienceEndDate());
+                getTechnologies(), getMethodologies(), getExperienceStartDate(), Optional.of(getExperienceEndDate()));
     }
 
     protected Education createEducation() {

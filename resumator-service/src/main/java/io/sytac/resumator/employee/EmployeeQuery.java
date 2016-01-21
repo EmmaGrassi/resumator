@@ -152,7 +152,7 @@ public class EmployeeQuery extends BaseResource {
         for (int i = 1; i <= experiences.size(); i++) {
             Experience experience = experiences.get(i - 1);
             result.put("Experience.Position" + i, experience.getTitle());
-            result.put("Experience.Period" + i, getPeriod(experience.getStartDate(), experience.getEndDate()));
+            result.put("Experience.Period" + i, getPeriod(experience.getStartDate(), experience.getEndDate().orElseGet(null)));
             result.put("Experience.CompanyName" + i, experience.getCompanyName());
             result.put("Experience.City" + i, experience.getCity());
             result.put("Experience.Country" + i, experience.getCountry());

@@ -61,43 +61,62 @@ class List extends React.Component {
   }
 
   render() {
-    const items = this.props.employees.get('list').get('items');
-    const isFetching = this.props.employees.get('show').get('isFetching');
+    const data = this.props.employees.get('list').toJS();
+    const items = data.items;
+    const isFetching = data.isFetching;
 
-    const rows = items.map((value, iterator) => {
-      const id = value.get('id');
-      const name = value.get('name');
-      const surname = value.get('surname');
+    let rows;
 
-      return <tr
-        key={iterator}
-        onClick={this.handleRowButtonClick.bind(this, id)}
-        style={{
+    if (items.length) {
+      rows = items.map((value, iterator) => {
+        const id = value.get('id');
+        const name = value.get('name');
+        const surname = value.get('surname');
+
+        return <tr
+          key={iterator}
+          onClick={this.handleRowButtonClick.bind(this, id)}
+          style={{
           cursor: 'pointer'
         }}
-      >
-        <td
-          style={{
+        >
+          <td
+            style={{
             verticalAlign: 'middle'
           }}
-        >
-          {name}
-        </td>
-        <td
-          style={{
+          >
+            {name}
+          </td>
+          <td
+            style={{
             verticalAlign: 'middle'
           }}
-        >
-          {surname}
-        </td>
-        <td>
-          <ButtonGroup>
-            <Button onClick={this.handleEditButtonClick.bind(this, id)}><Glyphicon glyph="pencil"/> Edit</Button>
-            <Button onClick={this.handleRemoveButtonClick.bind(this, id)} bsStyle="danger"><Glyphicon glyph="trash" /> Remove</Button>
-          </ButtonGroup>
-        </td>
-      </tr>;
-    });
+          >
+            {surname}
+          </td>
+          <td>
+            <ButtonGroup>
+              <Button onClick={this.handleEditButtonClick.bind(this, id)}><Glyphicon glyph="pencil"/> Edit</Button>
+              <Button onClick={this.handleRemoveButtonClick.bind(this, id)} bsStyle="danger"><Glyphicon glyph="trash" /> Remove</Button>
+            </ButtonGroup>
+          </td>
+        </tr>;
+      });
+    } else {
+      rows = (
+        <tr>
+          <td
+            colSpan="3"
+            style={{
+              textAlign: 'center'
+            }}
+          >
+            No Content
+          </td>
+        </tr>
+      );
+    }
+
 
     return (
       <Loader

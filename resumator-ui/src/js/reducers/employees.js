@@ -68,17 +68,18 @@ function list(state = defaults, action = {}) {
         .setIn(['list', 'isFetching'], true);
 
     case 'employees:list:success':
-      const json = JSON.parse(action.response);
+      const json = JSON.parse(action.response.text);
 
-      if (!json._embedded && json._embedded.employees) {
-        return state;
+      let employees;
+      if (json._embedded && json._embedded.employees) {
+        const employees = map(json._embedded.employees, (v) => {
+          delete v._links;
+
+          return v;
+        });
+      } else {
+        employees = [];
       }
-
-      const employees = map(json._embedded.employees, (v) => {
-        delete v._links;
-
-        return v;
-      });
 
       return state
         .setIn(['list', 'isFetching'], false)

@@ -1,19 +1,20 @@
 import qwest from 'qwest';
+import request from 'superagent';
 
-function list(data) {
+function list() {
   return (dispatch) => {
     dispatch({ type: 'employees:list:start' });
 
-    qwest
-      .get(`/api/employees`, {
-        dataType: 'json',
-        responseType: 'json'
-      })
-      .then((xhr, response) => {
+    request
+      .get(`/api/employees`)
+      .set('Content-Type', 'application/json')
+      .end((error, response) => {
+        if (error) {
+          dispatch({ type: 'employees:list:failure', error });
+          return;
+        }
+
         dispatch({ type: 'employees:list:success', response });
-      })
-      .catch((error) => {
-        dispatch({ type: 'employees:list:failure', error });
       });
   };
 }

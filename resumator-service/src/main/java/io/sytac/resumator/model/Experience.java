@@ -1,8 +1,5 @@
 package io.sytac.resumator.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import io.sytac.resumator.utils.DateUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
@@ -31,18 +28,4 @@ public class Experience {
 	private final List<String> methodologies;
 	private final Date startDate;
 	private final Date endDate;
-
-	@JsonCreator
-	public Experience(@JsonProperty("companyName") String companyName,
-					  @JsonProperty("title") String title,
-					  @JsonProperty("city") String city,
-					  @JsonProperty("country") String country,
-					  @JsonProperty("shortDescription") String shortDescription,
-					  @JsonProperty("technologies") List<String> technologies,
-					  @JsonProperty("methodologies") List<String> methodologies,
-					  @JsonProperty("startDate") String startDate,
-					  @JsonProperty("endDate") String endDate) {
-		this(companyName, title, city, country, shortDescription, technologies, methodologies,
-				DateUtils.convert(startDate), DateUtils.convert(endDate));
-	}
 }

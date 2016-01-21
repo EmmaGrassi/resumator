@@ -1,7 +1,6 @@
 package io.sytac.resumator.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -13,6 +12,7 @@ import lombok.ToString;
  * @since 0.1
  */
 @Getter
+@AllArgsConstructor
 @ToString
 public class Education {
 
@@ -23,23 +23,6 @@ public class Education {
     private final String country;
 	private final int startYear;
 	private final int endYear;
-
-    @JsonCreator
-    public Education(@JsonProperty("degree") Degree degree,
-                     @JsonProperty("fieldOfStudy") String fieldOfStudy,
-                     @JsonProperty("school") String school,
-                     @JsonProperty("city") String city,
-                     @JsonProperty("country") String country,
-                     @JsonProperty("startYear") int startYear,
-                     @JsonProperty("endYear") int endYear) {
-        this.degree = degree;
-        this.fieldOfStudy = fieldOfStudy;
-        this.school = school;
-        this.city = city;
-        this.country = country;
-        this.startYear = startYear;
-        this.endYear = endYear;
-    }
 
     public enum Degree {
         ASSOCIATE_DEGREE("Associate Degree"),

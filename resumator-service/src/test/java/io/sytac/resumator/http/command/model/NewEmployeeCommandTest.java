@@ -45,7 +45,7 @@ public class NewEmployeeCommandTest {
     @Test
     public void JSONisPredictable() throws JsonProcessingException {
         final List<Education> educations = Collections.singletonList(new Education(Education.Degree.MASTER_DEGREE, "Field", "School", "City", "Country", 2000, 2005));
-        final List<Course> courses = Collections.singletonList(new Course("Course1", "Course 1", "1994"));
+        final List<Course> courses = Collections.singletonList(new Course("Course1", "Course 1", 1994));
         final List<String> technologies = Arrays.asList("Java", "Turbo Pascal");
         final List<String> methodologies = Arrays.asList("Scrum", "Extreme programming");
 

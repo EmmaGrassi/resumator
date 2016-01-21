@@ -1,7 +1,6 @@
 package io.sytac.resumator.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -13,18 +12,12 @@ import lombok.ToString;
  * @since 0.1
  */
 @Getter
+@AllArgsConstructor
 @ToString
 public class Language {
 
     private final String name;
     private final Proficiency proficiency;
-
-    @JsonCreator
-    public Language(@JsonProperty("name") String name,
-                    @JsonProperty("proficiency") Proficiency proficiency) {
-        this.name = name;
-        this.proficiency = proficiency;
-    }
 
     public enum Proficiency {
         ELEMENTARY("Elementary"),

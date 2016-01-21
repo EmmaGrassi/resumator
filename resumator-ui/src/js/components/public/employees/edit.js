@@ -15,7 +15,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     editEmployee: (id) => dispatch(actions.employees.edit(id)),
-    updateEmployee: (data) => dispatch(actions.employees.update(data))
+    updateEmployee: (id, data) => dispatch(actions.employees.update(id, data))
   }
 }
 
@@ -24,35 +24,23 @@ class Edit extends React.Component {
     this.props.editEmployee(this.props.params.userId)
   }
 
-  handleFormSubmit(data) {
-    this.props.updateEmployee(data);
+  handleFormSubmit(id, data) {
+    this.props.updateEmployee(id, data);
   }
 
   render() {
-    let item = this.props.edit.get('item');
-    const isFetching = this.props.edit.get('isFetching');
+    const data = this.props.edit.toJS();
+    const isFetching = data.isFetching;
 
-    if (item) {
-      item = item.toJS();
+    if (data.item) {
+      data.item.dateOfBirth = new Date(data.item.dateOfBirth);
 
-      // Create date objects out of date values because the form needs them like
-      // this.
-      item.dateOfBirth = new Date(item.dateOfBirth);
-
-      item.courses = item.courses.map((v, i) => {
-        v.date = new Date(v.date);
-
-        return v;
-      });
-
-      item.experience = item.experience.map((v, i) => {
+      data.item.experience = data.item.experience.map((v, i) => {
         v.endDate = new Date(v.endDate);
         v.startDate = new Date(v.startDate);
 
         return v;
       });
-    } else {
-      item = null;
     }
 
     return (
@@ -60,8 +48,8 @@ class Edit extends React.Component {
         loaded={!isFetching}
       >
         <EmployeesEditForm
-          value={item}
-          onSubmit={this.handleFormSubmit.bind(this)}
+          value={data.item}
+          handleSubmit={this.handleFormSubmit.bind(this, data.item.id)}
         />
       </Loader>
     );

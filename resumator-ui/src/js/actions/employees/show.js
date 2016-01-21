@@ -1,23 +1,25 @@
-import qwest from 'qwest';
+import request from 'superagent';
+
+import list from './list';
 
 function show(id) {
   return (dispatch) => {
     dispatch({ type: 'employees:show:start' });
 
-    qwest
-      .get(`/api/employees/${id}`, {
-        dataType: 'json',
-        responseType: 'hal+json'
-      })
-      .then((xhr, _response) => {
-        const response = JSON.parse(_response);
+    request
+      .get(`/api/employees/${id}`)
+      .set('Content-Type', 'application/json')
+      .end((error, _response) => {
+        if (error) {
+          dispatch({ type: 'employees:show:failure', error });
+          return;
+        }
+
+        const response = JSON.parse(_response.text);
 
         delete response._links;
 
         dispatch({ type: 'employees:show:success', response });
-      })
-      .catch((error) => {
-        dispatch({ type: 'employees:show:failure', error });
       });
   };
 }

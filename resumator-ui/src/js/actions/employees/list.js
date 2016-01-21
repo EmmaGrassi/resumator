@@ -1,4 +1,3 @@
-import qwest from 'qwest';
 import request from 'superagent';
 
 function list() {

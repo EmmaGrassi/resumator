@@ -1,10 +1,26 @@
-import qwest from 'qwest';
+export default update;
 
-function update(id) {
+import request from 'superagent';
+import { pushPath } from 'redux-simple-router';
+
+function update(id, data) {
   return (dispatch) => {
-    // TODO: implement.
     dispatch({ type: 'employees:update:start' });
-    dispatch({ type: 'employees:update:success' });
+
+    request
+      .put(`/api/employees/${id}`)
+      .send(data)
+      .set('Content-Type', 'application/json')
+      .end((error, response) => {
+        if (error) {
+          dispatch({ type: 'employees:update:failure', error });
+          return;
+        }
+
+        dispatch({ type: 'employees:update:success', response });
+
+        dispatch(pushPath(`/employees/${id}`));
+      });
   };
 }
 

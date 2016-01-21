@@ -105,12 +105,6 @@ class EmployeeForm extends React.Component {
 
       value.dateOfBirth = moment(value.dateOfBirth).format('YYYY-MM-DD');
 
-      value.courses = map(value.courses, (v) => {
-        v.year = moment(v.year).format('YYYY-MM-DD');
-
-        return v;
-      });
-
       value.experience = map(value.experience, (v) => {
         v.startDate = moment(v.startDate).format('YYYY-MM-DD');
         v.endDate = moment(v.endDate).format('YYYY-MM-DD');

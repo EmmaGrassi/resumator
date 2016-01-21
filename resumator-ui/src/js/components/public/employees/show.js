@@ -18,7 +18,6 @@ function mapDispatchToProps(dispatch) {
   return {
     fetchEmployee: (id) => dispatch(actions.employees.show(id)),
     navigateToEmployeesEdit: (id) => dispatch(pushPath(`/employees/${id}/edit`)),
-    navigateToEmployeesPreview: (id) => dispatch(pushPath(`/employees/${id}/preview`))
   }
 }
 
@@ -31,12 +30,6 @@ class Show extends React.Component {
     const item = this.props.show.get('item');
 
     this.props.navigateToEmployeesEdit(item.get('id'));
-  }
-
-  handlePreviewButtonClick() {
-    const item = this.props.show.get('item');
-
-    this.props.navigateToEmployeesPreview(item.get('id'));
   }
 
   getCourses() {
@@ -191,6 +184,8 @@ class Show extends React.Component {
     const experience = this.getExperience();
     const languages = this.getLanguages();
 
+    const docxURL = `/api/employees/${item.get('id')}/docx`;
+
     return (
       <Loader
         loaded={!isFetching}
@@ -205,7 +200,7 @@ class Show extends React.Component {
               <span className="pull-right">
                 <ButtonGroup>
                   <Button bsStyle="primary" onClick={this.handleEditButtonClick.bind(this)}>Edit</Button>
-                  <Button bsStyle="default" onClick={this.handlePreviewButtonClick.bind(this)}>Preview</Button>
+                  <Button bsStyle="default" href={docxURL}>DOCX</Button>
                 </ButtonGroup>
               </span>
 

@@ -67,7 +67,6 @@ class List extends React.Component {
       const id = value.get('id');
       const name = value.get('name');
       const surname = value.get('surname');
-      const email = value.get('email');
 
       return <tr
         key={iterator}
@@ -76,10 +75,20 @@ class List extends React.Component {
           cursor: 'pointer'
         }}
       >
-        <td>{id}</td>
-        <td>{name}</td>
-        <td>{surname}</td>
-        <td>{email}</td>
+        <td
+          style={{
+            verticalAlign: 'middle'
+          }}
+        >
+          {name}
+        </td>
+        <td
+          style={{
+            verticalAlign: 'middle'
+          }}
+        >
+          {surname}
+        </td>
         <td>
           <ButtonGroup>
             <Button onClick={this.handleEditButtonClick.bind(this, id)}><Glyphicon glyph="pencil"/> Edit</Button>
@@ -96,14 +105,21 @@ class List extends React.Component {
         <Grid>
           <Row>
             <Col xs={12}>
-              <Table striped hover>
+              <Table striped condensed hover responsive>
                 <thead>
                   <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Surname</th>
-                    <th>Email</th>
-                    <th>Actions</th>
+                    <th
+                    >
+                      Name
+                    </th>
+                    <th
+                    >
+                      Surname
+                    </th>
+                    <th
+                    >
+                      Actions
+                    </th>
                   </tr>
                 </thead>
                 <tbody>

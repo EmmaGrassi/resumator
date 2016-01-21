@@ -1,4 +1,5 @@
 import immutable from 'immutable';
+import { map } from 'lodash';
 
 const item = immutable.Map({
   title: null,
@@ -67,9 +68,21 @@ function list(state = defaults, action = {}) {
         .setIn(['list', 'isFetching'], true);
 
     case 'employees:list:success':
+      const json = JSON.parse(action.response);
+
+      if (!json._embedded && json._embedded.employees) {
+        return state;
+      }
+
+      const employees = map(json._embedded.employees, (v) => {
+        delete v._links;
+
+        return v;
+      });
+
       return state
         .setIn(['list', 'isFetching'], false)
-        .setIn(['list', 'items'], immutable.fromJS(action.response));
+        .setIn(['list', 'items'], immutable.fromJS(employees));
 
     case 'employees:list:failure':
       return state

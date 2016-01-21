@@ -5,7 +5,7 @@ function list(data) {
     dispatch({ type: 'employees:list:start' });
 
     qwest
-      .get(`/data/employees/list.json`, {
+      .get(`/api/employees`, {
         dataType: 'json',
         responseType: 'json'
       })

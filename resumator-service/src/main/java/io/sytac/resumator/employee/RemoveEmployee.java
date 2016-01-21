@@ -1,6 +1,5 @@
 package io.sytac.resumator.employee;
 
-import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import io.sytac.resumator.command.CommandFactory;
 import io.sytac.resumator.events.EventPublisher;
 import io.sytac.resumator.http.BaseResource;
@@ -40,7 +39,6 @@ public class RemoveEmployee extends BaseResource {
 
     @DELETE
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces({RepresentationFactory.HAL_JSON, MediaType.APPLICATION_JSON})
     public Response removeEmployee(@PathParam("id") final String employeeId,
                                    @UserPrincipal final User user) {
 

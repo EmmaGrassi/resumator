@@ -217,12 +217,16 @@ public class EmployeeQuery extends BaseResource {
     private String getPeriod(Date startDate, Date endDate) {
         SimpleDateFormat df = new SimpleDateFormat("MMM. yyyy");
 
-        String period = df.format(startDate) + " - ";
-
+        final String startDateStr = df.format(startDate);
         if (endDate == null) {
-            return period + "present";
+            return startDateStr + " - present";
+        }
+
+        final String endDateStr = df.format(endDate);
+        if (endDateStr.equals(startDateStr)) {
+            return startDateStr;
         } else {
-            return period + df.format(endDate);
+            return startDateStr + " - " + endDateStr;
         }
     }
 

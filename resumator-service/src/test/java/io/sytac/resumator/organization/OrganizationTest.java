@@ -51,16 +51,6 @@ public class OrganizationTest {
         assertEquals("Wrong organization ID in Employee", Nationality.ITALIAN, employee.getNationality());
     }
 
-    private Employee createCommand(EmployeeCommandPayload employeeCommandPayload) {
-        final CommandHeader header = new CommandHeader.Builder()
-                .setId(UUID.randomUUID().toString())
-                .setDomain("domain")
-                .setTimestamp(new Date().getTime())
-                .build();
-        final NewEmployeeCommand command = new NewEmployeeCommand(header, employeeCommandPayload);
-        return organization.addEmployee(command);
-    }
-
     @Test
     public void getEmployeesReturnsListOfEmployees() {
         List<Employee> expectedEmployees = Arrays.asList(getDummyEmployee("id1"), getDummyEmployee("id2"));
@@ -78,9 +68,18 @@ public class OrganizationTest {
         organization.getEmployees().add(getDummyEmployee("dummy"));
     }
 
+    private Employee createCommand(EmployeeCommandPayload employeeCommandPayload) {
+        final CommandHeader header = new CommandHeader.Builder()
+                .setId(UUID.randomUUID().toString())
+                .setDomain("domain")
+                .setTimestamp(new Date().getTime())
+                .build();
+        final NewEmployeeCommand command = new NewEmployeeCommand(header, employeeCommandPayload);
+        return organization.addEmployee(command);
+    }
+
     private Employee getDummyEmployee(final String id) {
-        return new Employee(id, "title", "name", "surname", "email", "phoneNumber", null, null, null, null,
-                null, null, null, null, null, null);
+        return Employee.builder().id(id).build();
     }
 
 }

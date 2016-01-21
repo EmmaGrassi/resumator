@@ -5,7 +5,7 @@ import io.sytac.resumator.model.Education;
 import io.sytac.resumator.model.Experience;
 import io.sytac.resumator.model.Language;
 import io.sytac.resumator.model.enums.Nationality;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -23,7 +23,6 @@ import java.util.UUID;
  * @since 0.1
  */
 @Getter
-@AllArgsConstructor
 @EqualsAndHashCode
 @ToString
 public class Employee {
@@ -40,45 +39,31 @@ public class Employee {
 	private final Nationality nationality;
 	private final String currentResidence;
 	private final String aboutMe;
-	private final List<Education> educations;
+    private final List<Education> educations;
 	private final List<Course> courses;
 	private final List<Experience> experiences;
 	private final List<Language> languages;
 
-	/**
-	 * Create a new employee, assigning a random id
-	 *
-	 * @param name The name of the employee
-	 * @param surname The last name of the employee
-	 * @param email The date of birth of the employee
-	 * @param phoneNumber The phone number of the employee
-	 * @param gitHub The GitHub account of the employee
-	 * @param linkedIn The LinkedIn account of the employee
-	 * @param dateOfBirth The date of birth of the employee
-	 * @param nationality The nationality of the employee
-	 * @param aboutMe The short introduction of the employee
-	 * @param educations The list of educations of the employee
-	 * @param courses The list of courses of the employee
-	 * @param experiences The experiences list of the employee
-	 * @param languages The list of languages of the employee
-     */
-	public Employee(final String title,
-					final String name,
-					final String surname,
-					final String email,
-					final String phoneNumber,
-					final String gitHub,
-					final String linkedIn,
-					final Date dateOfBirth,
-					final Nationality nationality,
-					final String currentResidence,
-					final String aboutMe,
-					final List<Education> educations,
-					final List<Course> courses,
-					final List<Experience> experiences,
-					final List<Language> languages) {
-
-		this(UUID.randomUUID().toString(), title, name, surname, email, phoneNumber, gitHub, linkedIn,
-				dateOfBirth, nationality, currentResidence, aboutMe, educations, courses, experiences, languages);
-	}
+    @Builder
+    Employee(String id, String title, String name, String surname, String email, String phoneNumber,
+                    String gitHub, String linkedIn, Date dateOfBirth, Nationality nationality, String currentResidence,
+                    String aboutMe, List<Education> educations, List<Course> courses,
+                    List<Experience> experiences, List<Language> languages) {
+        this.id = id == null ? UUID.randomUUID().toString() : id;
+        this.title = title;
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.gitHub = gitHub;
+        this.linkedIn = linkedIn;
+        this.dateOfBirth = dateOfBirth;
+        this.nationality = nationality;
+        this.currentResidence = currentResidence;
+        this.aboutMe = aboutMe;
+        this.educations = educations;
+        this.courses = courses;
+        this.experiences = experiences;
+        this.languages = languages;
+    }
 }

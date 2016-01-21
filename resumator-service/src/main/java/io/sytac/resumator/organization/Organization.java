@@ -75,23 +75,24 @@ public class Organization {
     private Employee fromCommand(final String employeeId, final Command command) {
         final EmployeeCommandPayload payload = (EmployeeCommandPayload)command.getPayload();
 
-        return new Employee(employeeId,
-                payload.getTitle(),
-                payload.getName(),
-                payload.getSurname(),
-                payload.getEmail(),
-                payload.getPhonenumber(),
-                payload.getGithub(),
-                payload.getLinkedin(),
-                DateUtils.convert(payload.getDateOfBirth()),
-                Nationality.valueOf(payload.getNationality()),
-                payload.getCurrentResidence(),
-                payload.getAboutMe(),
-                payload.getEducation(),
-                payload.getCourses(),
-                payload.getExperience(),
-                payload.getLanguages());
-
+        return Employee.builder()
+                .id(employeeId)
+                .title(payload.getTitle())
+                .name(payload.getName())
+                .surname(payload.getSurname())
+                .email(payload.getEmail())
+                .phoneNumber(payload.getPhonenumber())
+                .gitHub(payload.getGithub())
+                .linkedIn(payload.getLinkedin())
+                .dateOfBirth(DateUtils.convert(payload.getDateOfBirth()))
+                .nationality(Nationality.valueOf(payload.getNationality()))
+                .currentResidence(payload.getCurrentResidence())
+                .aboutMe(payload.getAboutMe())
+                .educations(payload.getEducation())
+                .courses(payload.getCourses())
+                .experiences(payload.getExperience())
+                .languages(payload.getLanguages())
+                .build();
     }
 
     public Employee getEmployeeById(String id) {

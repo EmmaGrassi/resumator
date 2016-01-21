@@ -86,22 +86,24 @@ public class RESTTest extends JerseyTest {
         @Override
         public Employee readFrom(Class<Employee> type, Type genericType, Annotation[] annotations, MediaType mediaType, MultivaluedMap<String, String> httpHeaders, InputStream entityStream) throws IOException, WebApplicationException {
             Map<String, Object> map = mapper.readerFor(Map.class).readValue(entityStream);
-            return new Employee(map.get("id").toString(),
-                    map.get("title").toString(),
-                    map.get("name").toString(),
-                    map.get("surname").toString(),
-                    map.get("email").toString(),
-                    map.get("phonenumber").toString(),
-                    map.get("github").toString(),
-                    map.get("linkedin").toString(),
-                    DateUtils.convert(map.get("dateOfBirth").toString()),
-                    Nationality.valueOf(map.get("nationality").toString()),
-                    "",
-                    "",
-                    null,
-                    null,
-                    null,
-                    null);
+            return Employee.builder()
+                    .id(map.get("id").toString())
+                    .title(map.get("title").toString())
+                    .name(map.get("name").toString())
+                    .surname(map.get("surname").toString())
+                    .email(map.get("email").toString())
+                    .phoneNumber(map.get("phonenumber").toString())
+                    .gitHub(map.get("github").toString())
+                    .linkedIn(map.get("linkedin").toString())
+                    .dateOfBirth(DateUtils.convert(map.get("dateOfBirth").toString()))
+                    .nationality(Nationality.valueOf(map.get("nationality").toString()))
+                    .currentResidence("")
+                    .aboutMe("")
+                    .educations(null)
+                    .courses(null)
+                    .experiences(null)
+                    .languages(null)
+                    .build();
         }
     }
 

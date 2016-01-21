@@ -50,7 +50,7 @@ const ExperienceSchema = tcombForm.struct({
   city: tcombForm.String,
   country: tcombForm.String,
   startDate: tcombForm.Date,
-  endDate: tcombForm.Date,
+  endDate: tcombForm.maybe(tcombForm.Date),
   shortDescription: tcombForm.String,
   technologies: tcombForm.list(tcombForm.String),
   methodologies: tcombForm.list(tcombForm.String)
@@ -107,7 +107,9 @@ class EmployeeForm extends React.Component {
 
       value.experience = map(value.experience, (v) => {
         v.startDate = moment(v.startDate).format('YYYY-MM-DD');
-        v.endDate = moment(v.endDate).format('YYYY-MM-DD');
+        if(v.endDate) {
+          v.endDate = moment(v.endDate).format('YYYY-MM-DD');
+        }
 
         return v;
       });

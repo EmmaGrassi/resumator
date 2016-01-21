@@ -5,8 +5,8 @@ import io.sytac.resumator.Configuration;
 import io.sytac.resumator.command.Command;
 import io.sytac.resumator.command.CommandHeader;
 import io.sytac.resumator.command.CommandPayload;
-import io.sytac.resumator.employee.EmployeeCommandPayload;
 import io.sytac.resumator.employee.NewEmployeeCommand;
+import io.sytac.resumator.employee.EmployeeCommandPayload;
 import io.sytac.resumator.model.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -51,7 +51,7 @@ public class LocalEventPublisherTest {
     }
     private NewEmployeeCommand getEmployeeCommand() {
         final List<Education> education = Collections.singletonList(new Education(Education.Degree.MASTER_DEGREE, "Field", "SChool", "City", "Country", 2000, 2005));
-        final List<Course> courses = Collections.singletonList(new Course("Course1", "Course 1", 1994));
+        final List<Course> courses = Collections.singletonList(new Course("Course1", "Course 1", "1994"));
         final List<String> technologies = Arrays.asList("Java", "Turbo Pascal");
         final List<String> methodologies = Arrays.asList("Scrum", "Exreme programming");
 
@@ -60,7 +60,7 @@ public class LocalEventPublisherTest {
         final List<Experience> experience  = Collections.singletonList(new Experience("CompanyName", "Title", "City", "Coutry", "Short Description",
                 technologies, methodologies, startDate, endDate));
 
-        final List<Language> languages = Collections.singletonList(new Language("English", Language.Proficiency.FULL_PROFESSIONAL));
+        final List<Language> languages = Arrays.asList(new Language("English", Language.Proficiency.FULL_PROFESSIONAL));
         final EmployeeCommandPayload payload = new EmployeeCommandPayload("Title", "Foo", "Bar", "Email", "+31000999000",
                 "Github", "Linkedin", "1984-04-22", "ITALY", "N", "About ME", education, courses, experience, languages);
 

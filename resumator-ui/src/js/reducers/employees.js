@@ -72,7 +72,7 @@ function list(state = defaults, action = {}) {
 
       let employees;
       if (json._embedded && json._embedded.employees) {
-        const employees = map(json._embedded.employees, (v) => {
+        employees = map(json._embedded.employees, (v) => {
           delete v._links;
 
           return v;

@@ -67,14 +67,14 @@ class List extends React.Component {
 
     let rows;
 
-    if (items.length) {
-      rows = items.map((value, iterator) => {
-        const id = value.get('id');
-        const name = value.get('name');
-        const surname = value.get('surname');
+    if (items && items.length) {
+      rows = items.map((v, i) => {
+        const id = v.id;
+        const name = v.name;
+        const surname = v.surname;
 
         return <tr
-          key={iterator}
+          key={i}
           onClick={this.handleRowButtonClick.bind(this, id)}
           style={{
           cursor: 'pointer'

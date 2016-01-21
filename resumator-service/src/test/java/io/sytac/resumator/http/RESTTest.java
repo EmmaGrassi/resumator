@@ -84,7 +84,10 @@ public class RESTTest extends JerseyTest {
         }
 
         @Override
-        public Employee readFrom(Class<Employee> type, Type genericType, Annotation[] annotations, MediaType mediaType, MultivaluedMap<String, String> httpHeaders, InputStream entityStream) throws IOException, WebApplicationException {
+        public Employee readFrom(Class<Employee> type, Type genericType, Annotation[] annotations, MediaType mediaType,
+                                 MultivaluedMap<String, String> httpHeaders, InputStream entityStream)
+                throws IOException, WebApplicationException {
+
             Map<String, Object> map = mapper.readerFor(Map.class).readValue(entityStream);
             return Employee.builder()
                     .id(map.get("id").toString())

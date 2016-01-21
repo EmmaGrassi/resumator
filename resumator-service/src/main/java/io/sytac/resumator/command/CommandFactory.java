@@ -31,11 +31,8 @@ public class CommandFactory {
     }
 
     public RemoveEmployeeCommand removeEmployeeCommand(String employeeId, String domain) {
-        return new RemoveEmployeeCommand(new RemoveEmployeeCommandPayload(employeeId),
-                new CommandHeader.Builder()
-                        .setId(employeeId)
-                        .setDomain(domain)
-                        .build());
+        final CommandHeader header = new CommandHeader.Builder().setId(employeeId).setDomain(domain).build();
+        return new RemoveEmployeeCommand(header, new RemoveEmployeeCommandPayload(employeeId));
     }
 
     public NewOrganizationCommand newOrganizationCommand(final Map<String, String> input) {

@@ -1,5 +1,8 @@
 package io.sytac.resumator.command;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Date;
 import java.util.Optional;
 
@@ -19,7 +22,11 @@ public class CommandHeader {
         this(null, null, new Date().getTime(), null);
     }
 
-    private CommandHeader(final String id, final String domain, final Long timestamp, final Long insertOrder) {
+    @JsonCreator
+    public CommandHeader(@JsonProperty("id") final String id,
+                          @JsonProperty("domain") final String domain,
+                          @JsonProperty("timestamp") final Long timestamp,
+                          @JsonProperty("insertOrder") final Long insertOrder) {
         this.id = id;
         this.domain = domain;
         this.timestamp = timestamp;

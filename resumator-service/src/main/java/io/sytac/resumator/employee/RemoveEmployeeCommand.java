@@ -21,43 +21,15 @@ import java.util.UUID;
  * @since 0.1
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class RemoveEmployeeCommand implements Command<CommandHeader, RemoveEmployeeCommandPayload> {
+public class RemoveEmployeeCommand extends AbstractEmployeeCommand {
 
     public static final String EVENT_TYPE = "removeEmployee";
-    private final CommandHeader header;
-    private final RemoveEmployeeCommandPayload payload;
-
-    public RemoveEmployeeCommand(final RemoveEmployeeCommandPayload payload, final String domain, final String timestamp) {
-        final Date date = Optional.ofNullable(timestamp)
-                .map(Long::decode)
-                .map(Date::new)
-                .orElse(new Date());
-
-        this.header = new CommandHeader.Builder().setDomain(domain).setTimestamp(date.getTime()).build();
-        this.payload = payload;
-    }
-
-    public RemoveEmployeeCommand(final RemoveEmployeeCommandPayload payload, final CommandHeader header) {
-        this.header = header;
-        this.payload = payload;
-    }
 
     @SuppressWarnings("unused")
     @JsonCreator
     public RemoveEmployeeCommand(@JsonProperty("header") final CommandHeader header,
                                  @JsonProperty("payload") final RemoveEmployeeCommandPayload payload) {
-        this.header = header;
-        this.payload = payload;
-    }
-
-    @Override
-    public CommandHeader getHeader() {
-        return header;
-    }
-
-    @Override
-    public RemoveEmployeeCommandPayload getPayload() {
-        return payload;
+        super(header, payload);
     }
 
     @Override
@@ -67,12 +39,6 @@ public class RemoveEmployeeCommand implements Command<CommandHeader, RemoveEmplo
 
     @Override
     public Event asEvent(final ObjectMapper json) {
-        try {
-            final String asJson = json.writeValueAsString(this);
-            final Long insertOrder = header.getInsertOrder().orElse(Event.ORDER_UNSET);
-            return new Event(UUID.randomUUID().toString(), insertOrder, asJson, new Timestamp(header.getTimestamp()), getType());
-        } catch (JsonProcessingException e) {
-            throw new IllegalArgumentException(e);
-        }
+        return createEvent(UUID.randomUUID().toString(), json);
     }
 }

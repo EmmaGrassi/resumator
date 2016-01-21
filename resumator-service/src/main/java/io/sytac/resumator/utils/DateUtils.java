@@ -1,5 +1,6 @@
 package io.sytac.resumator.utils;
 
+import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 
 import java.util.Date;
@@ -9,9 +10,13 @@ import java.util.Date;
  */
 public class DateUtils {
 
-    private static final String ISO_DATE_FORMAT = "yyyy-MM-dd";
+    public static final String ISO_DATE_FORMAT = "yyyy-MM-dd";
 
     public static Date convert(String date) {
         return DateTimeFormat.forPattern(ISO_DATE_FORMAT).parseDateTime(date).toDate();
+    }
+
+    public static String convert(Date date) {
+        return new DateTime(date).toString(ISO_DATE_FORMAT);
     }
 }

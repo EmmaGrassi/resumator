@@ -58,7 +58,7 @@ public class EmployeeQuery extends BaseResource {
 
     @GET
     @Produces(CONTENT_TYPE_DOCX)
-    public Response getPdf(@PathParam("id") final String id, @UserPrincipal final User user) {
+    public Response getDocxViaContentNegotiation(@PathParam("id") final String id, @UserPrincipal final User user) {
         return getEmployee(id, user).map(employee -> {
             try {
                 return Response.ok(docxGenerator.generate(getTemplateStream(), getPlaceholderMappings(employee)),
@@ -70,6 +70,13 @@ public class EmployeeQuery extends BaseResource {
                 return Response.serverError().entity(new Error("Could not generate pdf, please try again later")).build();
             }
         }).orElse(Response.status(Response.Status.NOT_FOUND).build());
+    }
+
+    @Path("docx")
+    @GET
+    @Produces(CONTENT_TYPE_DOCX)
+    public Response getDocxViaCustomUrl(@PathParam("id") final String id, @UserPrincipal final User user) {
+        return getDocxViaContentNegotiation(id, user);
     }
 
     /**

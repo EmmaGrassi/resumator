@@ -33,9 +33,9 @@ public class EmployeesQueryTest {
 
     private static final String URI_BASE = "http://base.uri";
 
-    private static final String URI_ABSOLUTE = URI_BASE + "/employees";
+    private static final String URI_ABSOLUTE_PATH = URI_BASE + "/employees";
 
-    private static final String URI_REQUEST = "http://request.uri";
+    private static final String URI_REQUEST = URI_ABSOLUTE_PATH + "?page=1";
 
     @Mock
     private OrganizationRepository organizations;
@@ -57,7 +57,7 @@ public class EmployeesQueryTest {
         when(organizations.get(anyString())).thenReturn(Optional.of(organization));
         when(user.getOrganizationId()).thenReturn("dummy");
 
-        when(uriInfo.getAbsolutePath()).thenReturn(new URI(URI_ABSOLUTE));
+        when(uriInfo.getAbsolutePath()).thenReturn(new URI(URI_ABSOLUTE_PATH));
         when(uriInfo.getBaseUri()).thenReturn(new URI(URI_BASE));
         when(uriInfo.getRequestUri()).thenReturn(new URI(URI_REQUEST));
     }
@@ -100,8 +100,8 @@ public class EmployeesQueryTest {
 
         Representation actual = employeesQuery.getEmployees(1, user, uriInfo);
         assertThat(actual.getLinkByRel("self").getHref(), equalTo(URI_REQUEST));
-        assertThat(actual.getLinkByRel("employees").getHref(), equalTo(URI_ABSOLUTE));
-        assertThat(actual.getLinkByRel("next").getHref(), equalTo(URI_ABSOLUTE + "?page=2"));
+        assertThat(actual.getLinkByRel("employees").getHref(), equalTo(URI_ABSOLUTE_PATH));
+        assertThat(actual.getLinkByRel("next").getHref(), equalTo(URI_ABSOLUTE_PATH + "?page=2"));
     }
 
     @Test
@@ -113,7 +113,7 @@ public class EmployeesQueryTest {
         Representation actual = employeesQuery.getEmployees(1, user, uriInfo);
         actual.getResourcesByRel("employees")
                 .forEach(resource -> assertThat(resource.getLinkByRel("self").getHref(),
-                        equalTo(URI_ABSOLUTE + "/" + resource.getProperties().get("id"))));
+                        equalTo(URI_ABSOLUTE_PATH + "/" + resource.getProperties().get("id"))));
     }
 
     private List<Employee> getNumberOfEmployees(int numberOfEmployees) {

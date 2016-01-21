@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { pushPath } from 'redux-simple-router';
 
 import listAction from '../../../actions/employees/list';
+import removeAction from '../../../actions/employees/remove';
 
 function mapStateToProps(state) {
   return {
@@ -108,18 +109,9 @@ class List extends React.Component {
               <Table striped condensed hover responsive>
                 <thead>
                   <tr>
-                    <th
-                    >
-                      Name
-                    </th>
-                    <th
-                    >
-                      Surname
-                    </th>
-                    <th
-                    >
-                      Actions
-                    </th>
+                    <th>Name</th>
+                    <th>Surname</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>

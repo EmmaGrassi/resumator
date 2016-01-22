@@ -1,8 +1,7 @@
 package io.sytac.resumator.http;
 
 import com.theoryinpractise.halbuilder.api.Link;
-import com.theoryinpractise.halbuilder.api.RepresentationFactory;
-import com.theoryinpractise.halbuilder.json.JsonRepresentationFactory;
+import io.sytac.resumator.halbuilder.ResumatorJsonRepresentationFactory;
 
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
@@ -16,7 +15,7 @@ import java.net.URI;
  */
 public class BaseResource {
 
-    protected final RepresentationFactory rest = new JsonRepresentationFactory().withFlag(RepresentationFactory.STRIP_NULLS);
+    protected final ResumatorJsonRepresentationFactory rest = new ResumatorJsonRepresentationFactory();
 
     /**
      * Build the URI for the link connected to the provided resource

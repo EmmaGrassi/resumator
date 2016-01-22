@@ -216,6 +216,7 @@ class Show extends React.Component {
 
     let {
       aboutMe,
+      currentResidence,
       dateOfBirth,
       email,
       github,
@@ -312,6 +313,19 @@ class Show extends React.Component {
                   </td>
                   <td>
                     {phonenumber}
+                  </td>
+                </tr>
+
+                <tr>
+                  <td
+                    style={{
+                      paddingRight: '15px'
+                    }}
+                  >
+                    <strong>Current residence:</strong>
+                  </td>
+                  <td>
+                    {currentResidence}
                   </td>
                 </tr>
 

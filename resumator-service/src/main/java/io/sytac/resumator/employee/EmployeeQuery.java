@@ -101,6 +101,7 @@ public class EmployeeQuery extends BaseResource {
                         .withProperty("dateOfBirth", emp.getDateOfBirth())
                         .withProperty("nationality", emp.getNationality())
                         .withProperty("aboutMe", emp.getAboutMe())
+                        .withProperty("currentResidence", emp.getCurrentResidence())
                         .withProperty("education", emp.getEducations())
                         .withProperty("courses", emp.getCourses())
                         .withProperty("experience", emp.getExperiences())

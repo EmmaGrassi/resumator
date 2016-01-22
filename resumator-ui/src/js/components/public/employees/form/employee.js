@@ -79,6 +79,8 @@ const EmployeeSchema = tcombForm.struct({
   email: tcombFormTypes.String.Email,
   phonenumber: tcombForm.String,
 
+  currentResidence: tcombForm.String,
+
   github: tcombForm.maybe(tcombForm.String),
   linkedin: tcombForm.maybe(tcombForm.String),
 

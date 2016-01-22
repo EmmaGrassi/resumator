@@ -7,6 +7,7 @@ const item = immutable.Map({
   surname: null,
   email: null,
   phonenumber: null,
+  currentResidence: null,
   github: null,
   linkedin: null,
   dateOfBirth: null,

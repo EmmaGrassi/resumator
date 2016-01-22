@@ -8,7 +8,7 @@ import actions from '../../../actions';
 
 function mapStateToProps(state) {
   return {
-    edit: state.employees.get('edit')
+    employees: state.employees
   };
 }
 
@@ -29,7 +29,7 @@ class Edit extends React.Component {
   }
 
   render() {
-    const data = this.props.edit.toJS();
+    const data = this.props.employees.edit.toJS();
     const isFetching = data.isFetching;
 
     if (data.item) {

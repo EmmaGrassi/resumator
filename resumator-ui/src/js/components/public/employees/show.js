@@ -8,16 +8,25 @@ import { pushPath } from 'redux-simple-router';
 
 import actions from '../../../actions';
 
+function normalizeString(string) {
+  const words = string.split('_');
+  const casedWords = map(words, (w) => {
+    return `${w.substring(0, 1)}${w.substring(1).toLowerCase()}`;
+  });
+
+  return casedWords.join(' ');
+}
+
 function mapStateToProps(state) {
   return {
-    show: state.employees.get('show')
+    employees: state.employees
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     fetchEmployee: (id) => dispatch(actions.employees.show(id)),
-    navigateToEmployeesEdit: (id) => dispatch(pushPath(`/employees/${id}/edit`)),
+    navigateToEmployeesEdit: (id) => dispatch(pushPath(`/employees/${id}/edit`))
   }
 }
 
@@ -27,32 +36,29 @@ class Show extends React.Component {
   }
 
   handleEditButtonClick() {
-    const item = this.props.show.get('item');
+    const data = this.props.employees.show.toJS();
 
-    this.props.navigateToEmployeesEdit(item.get('id'));
+    this.props.navigateToEmployeesEdit(data.item.id);
   }
 
   getCourses() {
-    const item = this.props.show.get('item');
-    const courses = item.get('courses');
-
-    if (!courses) {
-      return '';
-    }
+    const data = this.props.employees.show.toJS();
 
     return (
       <Row>
-        <Col xsOffset={4} xs={8}>
-          <h3>Courses</h3>
+        <Col xs={12}>
+          <h2>Courses</h2>
           <ListGroup>
-            {courses && courses.map((v, i) => {
-              const name = v.get('name');
-              const date = v.get('date') && moment(v.get(date)).format('YYYY');
-              const description = v.get('description');
+            {data.item.courses.map((v, i) => {
+              let {
+                name,
+                year,
+                description
+              } = v;
 
               return (
                 <ListGroupItem key={i}>
-                  <strong>{name} ({date}))</strong><br/>
+                  <strong>{name} ({year})</strong><br/>
                   {description}
                 </ListGroupItem>
               );
@@ -64,24 +70,31 @@ class Show extends React.Component {
   }
 
   getEducation() {
-    const item = this.props.show.get('item');
-    const education = item.get('education');
-
-    if (!education) {
-      return '';
-    }
+    const data = this.props.employees.show.toJS();
 
     return (
       <Row>
-        <Col xsOffset={4} xs={8}>
-          <h3>Education</h3>
+        <Col xs={12}>
+          <h2>Education</h2>
           <ListGroup>
-            {education.map((v, i) => {
+            {data.item.education.map((v, i) => {
+              let {
+                city,
+                country,
+                degree,
+                endYear,
+                fieldOfStudy,
+                school,
+                startYear
+              } = v;
+
+              degree = normalizeString(degree);
+
               return (
                 <ListGroupItem key={i}>
-                  <strong>{v.get('degree')}</strong><br/>
-                  {v.get('university')} ({v.get('fieldOfStudy')})<br/>
-                  {v.get('graduated') && `Graduated in ${v.get('graduationYear')}`}
+                  <strong>{degree} in {fieldOfStudy}</strong><br/>
+                  {school} in {city}, {country}<br/>
+                  {startYear} - {endYear}
                 </ListGroupItem>
               );
             })}
@@ -92,21 +105,28 @@ class Show extends React.Component {
   }
 
   getExperience() {
-    const item = this.props.show.get('item');
-    const experience = item.get('experience');
-
-    if (!experience) {
-      return '';
-    }
+    const data = this.props.employees.show.toJS();
 
     return (
       <Row>
-        <Col xsOffset={4} xs={8}>
-          <h3>Experience</h3>
-          <ListGroup>
-            {experience.map((v, i) => {
-              const startDate = moment(v.get('startDate'));
-              const endDate = moment(v.get('endDate'));
+        <Col xs={12}>
+          <h2>Experience</h2>
+          <div>
+            {data.item.experience.map((v, i) => {
+              let {
+                city,
+                companyName,
+                country,
+                endDate,
+                methodologies,
+                shortDescription,
+                startDate,
+                technologies,
+                title
+              } = v;
+
+              startDate = moment(startDate);
+              endDate = moment(endDate);
 
               let difference = endDate.diff(startDate, 'years');
 
@@ -116,75 +136,102 @@ class Show extends React.Component {
                 difference = `${difference} years`;
               }
 
+              const startYear = startDate.format('YYYY');
+              const endYear = endDate.format('YYYY');
+
+              technologies = technologies.join(', ');
+              methodologies = methodologies.join(', ');
+
+              let hr;
+              if (i !== data.item.experience.length - 1) {
+                hr = <hr/>;
+              }
+
               return (
-                <ListGroupItem key={i}>
-                  <strong>{v.get('title')}</strong> at {v.get('companyName')} ({v.get('location')})<br/>
-                  {startDate.format('YYYY')} - {endDate.format('YYYY')} ({difference})<br/>
+                <div key={i}>
+                  <h3
+                    style={{
+                      marginTop: '10px'
+                    }}
+                  >
+                    {title}
+                  </h3>
+                  <h4>{companyName} ({city}, {country})</h4>
+                  {startYear} - {endYear} ({difference})<br/>
                   <br/>
-                  <p>{v.get('shortDescription')}</p>
-                  <strong>Technologies:</strong> {v.get('technologies').join(', ')}<br/>
-                  <strong>Methodologies:</strong> {v.get('methodologies').join(', ')}<br/>
-                </ListGroupItem>
+                  <p>{shortDescription}</p>
+                  <strong>Technologies:</strong> {technologies}<br/>
+                  <strong>Methodologies:</strong> {methodologies}<br/>
+                  {hr}
+                </div>
               );
             })}
-          </ListGroup>
+          </div>
         </Col>
       </Row>
     );
   }
 
   getLanguages() {
-    const item = this.props.show.get('item');
-    const languages = item.get('languages');
-
-    if (!languages) {
-      return '';
-    }
+    const data = this.props.employees.show.toJS();
 
     return (
       <Row>
-        <Col xsOffset={4} xs={8}>
-          <h3>Languages</h3>
-          <ListGroup>
-            {languages.map((v, i) => {
-              const words = v.get('proficiency').split('_');
-              const casedWords = map(words, (w) => {
-                return `${w.substring(0, 1)}${w.substring(1).toLowerCase()}`;
-              });
-              const proficiency = casedWords.join(' ');
+        <Col xs={12}>
+          <h2>Languages</h2>
+          <div>
+            {data.item.languages.map((v, i) => {
+              let { name, proficiency } = v;
+
+              let hr;
+              if (i !== data.item.experience.length - 1) {
+                hr = <hr/>;
+              }
+
+              proficiency = normalizeString(proficiency);
 
               return (
-                <ListGroupItem key={i}>
-                  <strong>{v.get('name')} ({proficiency})</strong><br/>
-                </ListGroupItem>
+                <div key={i}>
+                  <strong>{name} ({proficiency})</strong><br/>
+                  {hr}
+                </div>
               );
             })}
-          </ListGroup>
+          </div>
         </Col>
       </Row>
     );
   }
 
   render() {
-    const item = this.props.show.get('item');
-    const isFetching = this.props.show.get('isFetching');
+    const data = this.props.employees.show.toJS();
 
-    const dateOfBirth = item.get('dateOfBirth') && moment(item.get('dateOfBirth')).format('YYYY-MM-DD') || null;
-    const email = item.get('email');
-    const github = item.get('github');
-    const linkedin = item.get('linkedin');
-    const name = item.get('name');
-    const nationality = item.get('nationality');
-    const phonenumber = item.get('phonenumber');
-    const surname = item.get('surname');
-    const title = item.get('title');
+    const item = data.item;
+    const isFetching = data.isFetching;
 
     const courses = this.getCourses();
     const education = this.getEducation();
     const experience = this.getExperience();
     const languages = this.getLanguages();
 
-    const docxURL = `/api/employees/${item.get('id')}/docx`;
+    let {
+      aboutMe,
+      dateOfBirth,
+      email,
+      github,
+      id,
+      linkedin,
+      name,
+      nationality,
+      phonenumber,
+      surname,
+      title
+    } = item;
+
+    const docxURL = `/api/employees/${id}/docx`;
+
+    nationality = nationality && normalizeString(nationality);
+    dateOfBirth = moment(dateOfBirth).format('YYYY-MM-DD');
 
     return (
       <Loader
@@ -192,11 +239,7 @@ class Show extends React.Component {
       >
         <Grid>
           <Row>
-            <Col xs={4}>
-              <Image src="/images/thumbnail.png" circle />
-            </Col>
-
-            <Col xs={8}>
+            <Col xs={12}>
               <span className="pull-right">
                 <ButtonGroup>
                   <Button bsStyle="primary" onClick={this.handleEditButtonClick.bind(this)}>Edit</Button>
@@ -206,13 +249,100 @@ class Show extends React.Component {
 
               <h1>{title}</h1>
 
-              <strong>Name:</strong> {name} {surname}<br/>
-              <strong>Nationality:</strong> {nationality}<br/>
-              <strong>Date of Birth:</strong> {dateOfBirth}<br/>
-              <strong>Email:</strong> {email}<br/>
-              <strong>Phone:</strong> {phonenumber}<br/>
-              <strong>Github:</strong> {github}<br/>
-              <strong>Linkedin:</strong> {linkedin}<br/>
+              <table>
+                <tr>
+                  <td
+                    style={{
+                      paddingRight: '15px'
+                    }}
+                  >
+                    <strong>Name:</strong>
+                  </td>
+                  <td>
+                    {name} {surname}
+                  </td>
+                </tr>
+
+                <tr>
+                  <td
+                    style={{
+                      paddingRight: '15px'
+                    }}
+                  >
+                    <strong>Nationality:</strong>
+                  </td>
+                  <td>
+                    {nationality}
+                  </td>
+                </tr>
+
+                <tr>
+                  <td
+                    style={{
+                      paddingRight: '15px'
+                    }}
+                  >
+                    <strong>Date of Birth:</strong>
+                  </td>
+                  <td>
+                    {dateOfBirth}
+                  </td>
+                </tr>
+
+                <tr>
+                  <td
+                    style={{
+                      paddingRight: '15px'
+                    }}
+                  >
+                    <strong>Email:</strong>
+                  </td>
+                  <td>
+                    {email}
+                  </td>
+                </tr>
+
+                <tr>
+                  <td
+                    style={{
+                      paddingRight: '15px'
+                    }}
+                  >
+                    <strong>Phone:</strong>
+                  </td>
+                  <td>
+                    {phonenumber}
+                  </td>
+                </tr>
+
+                <tr>
+                  <td
+                    style={{
+                      paddingRight: '15px'
+                    }}
+                  >
+                    <strong>Github:</strong>
+                  </td>
+                  <td>
+                    {github}
+                  </td>
+                </tr>
+
+                <tr>
+                  <td
+                    style={{
+                      paddingRight: '15px'
+                    }}
+                  >
+                    <strong>Linkedin:</strong>
+                  </td>
+                  <td>
+                    {linkedin}
+                  </td>
+                </tr>
+              </table>
+              <br/>
+              <p>{aboutMe}</p>
             </Col>
           </Row>
 

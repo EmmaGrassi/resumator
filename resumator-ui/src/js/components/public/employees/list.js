@@ -61,7 +61,7 @@ class List extends React.Component {
   }
 
   render() {
-    const data = this.props.employees.get('list').toJS();
+    const data = this.props.employees.list.toJS();
     const items = data.items;
     const isFetching = data.isFetching;
 

@@ -40,7 +40,7 @@ const EducationSchema = tcombForm.struct({
   school: tcombForm.String,
   city: tcombForm.String,
   country: tcombForm.String,
-  startYear: tcombForm.String,
+  startYear: tcombForm.Number,
   endYear: tcombForm.Number
 });
 
@@ -123,6 +123,16 @@ class EmployeeForm extends React.Component {
       fields: {
         aboutMe: {
           type: 'textarea'
+        },
+
+        courses: {
+          item: {
+            fields: {
+              description: {
+                type: 'textarea'
+              }
+            }
+          }
         },
 
         experience: {

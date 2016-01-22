@@ -1,7 +1,5 @@
 import immutable from 'immutable';
 
-// TODO: redo with Immutable.js
-
 const defaults = immutable.Map({
   token: null,
 

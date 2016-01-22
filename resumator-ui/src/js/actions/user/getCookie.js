@@ -4,7 +4,7 @@ import login from './login';
 
 const cookiesOptions = {
   path: '/',
-  domain: 'resumator.sytac.io'
+  domain: window.location.hostname
 };
 
 function getCookie() {

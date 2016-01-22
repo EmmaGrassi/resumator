@@ -2,7 +2,7 @@ import cookies from 'cookies-js';
 
 const cookiesOptions = {
   path: '/',
-  domain: 'resumator.sytac.io',
+  domain: window.location.hostname,
   expires: Infinity,
   secure: false
 };

@@ -3,7 +3,7 @@ import { pushPath } from 'redux-simple-router';
 
 const cookiesOptions = {
   path: '/',
-  domain: 'resumator.sytac.io'
+  domain: window.location.hostname
 };
 
 function logout(data) {

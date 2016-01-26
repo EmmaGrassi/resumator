@@ -1,9 +1,10 @@
-package io.sytac.resumator.store;
+package io.sytac.resumator.store.bootstrap;
 
 
 import io.sytac.resumator.organization.NewOrganizationCommand;
 import io.sytac.resumator.organization.Organization;
 import io.sytac.resumator.organization.OrganizationRepository;
+import io.sytac.resumator.store.bootstrap.Bootstrap;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Inject;

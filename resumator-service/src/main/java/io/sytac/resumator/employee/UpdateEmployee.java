@@ -44,10 +44,10 @@ public class UpdateEmployee extends BaseResource {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces({RepresentationFactory.HAL_JSON, MediaType.APPLICATION_JSON})
-    public Response newEmployee(@PathParam("id") final String employeeId,
-                                final EmployeeCommandPayload payload,
-                                @UserPrincipal final User user,
-                                @Context final UriInfo uriInfo) {
+    public Response updateEmployee(@PathParam("id") final String employeeId,
+                                   final EmployeeCommandPayload payload,
+                                   @UserPrincipal final User user,
+                                   @Context final UriInfo uriInfo) {
 
         Organization organization = organizations.get(user.getOrganizationId())
                 .orElseThrow(InvalidOrganizationException::new);

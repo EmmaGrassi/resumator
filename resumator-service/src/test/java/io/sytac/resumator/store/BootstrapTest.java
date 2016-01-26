@@ -12,6 +12,7 @@ import io.sytac.resumator.model.Event;
 import io.sytac.resumator.organization.InMemoryOrganizationRepository;
 import io.sytac.resumator.organization.NewOrganizationCommand;
 import io.sytac.resumator.organization.OrganizationRepository;
+import io.sytac.resumator.store.bootstrap.Bootstrap;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;

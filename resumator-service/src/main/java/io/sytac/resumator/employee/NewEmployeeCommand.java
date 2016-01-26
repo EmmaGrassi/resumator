@@ -38,8 +38,8 @@ public class NewEmployeeCommand extends AbstractEmployeeCommand {
     }
 
     @Override
-    public Event asEvent(final ObjectMapper json) {
+    public Event asEvent(final ObjectMapper objectMapper) {
         final String eventId = getHeader().getId().orElse(UUID.randomUUID().toString());
-        return createEvent(eventId, json);
+        return createEvent(eventId, objectMapper);
     }
 }

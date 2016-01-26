@@ -37,9 +37,9 @@ public abstract class AbstractEmployeeCommand implements Command<CommandHeader, 
 
     public abstract Event asEvent(final ObjectMapper json);
 
-    protected Event createEvent(final String eventId, final ObjectMapper json) {
+    protected Event createEvent(final String eventId, final ObjectMapper objectMapper) {
         try {
-            final String asJson = json.writeValueAsString(this);
+            final String asJson = objectMapper.writeValueAsString(this);
             final Long insertOrder = getHeader().getInsertOrder().orElse(Event.ORDER_UNSET);
             return new Event(eventId, insertOrder, asJson, new Timestamp(getHeader().getTimestamp()), getType());
         } catch (JsonProcessingException e) {

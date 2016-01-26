@@ -7,6 +7,7 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import io.sytac.resumator.command.CommandHeader;
 import io.sytac.resumator.employee.DateToStringSerializer;
 import io.sytac.resumator.employee.EmployeeCommandPayload;
+import io.sytac.resumator.employee.RemoveEmployeeCommand;
 import io.sytac.resumator.model.Course;
 import io.sytac.resumator.model.Education;
 import io.sytac.resumator.model.Experience;
@@ -15,8 +16,11 @@ import lombok.Getter;
 import lombok.Setter;
 import org.junit.Before;
 import org.junit.Ignore;
+import org.junit.Test;
 
 import java.util.*;
+
+import static org.junit.Assert.assertTrue;
 
 @Ignore
 public class CommonCommandTest {
@@ -102,5 +106,10 @@ public class CommonCommandTest {
 
         return new EmployeeCommandPayload(TITLE, NAME, SURNAME, EMAIL, PHONENUMBER, GITHUB, LINKEDIN, DATE_OF_BIRTH,
                 NATIONALITY, CURRENT_RESIDENCE, ABOUT_ME, educations, courses, experiences, languages);
+    }
+
+    public void canSerializeAsJSON(Class clazz) {
+        assertTrue("Commands must be serializable as they end up in the DB",
+                getObjectMapper().canSerialize(clazz));
     }
 }

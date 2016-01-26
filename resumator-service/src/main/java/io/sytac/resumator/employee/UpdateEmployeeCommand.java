@@ -38,7 +38,7 @@ public class UpdateEmployeeCommand extends AbstractEmployeeCommand {
     }
 
     @Override
-    public Event asEvent(final ObjectMapper json) {
-        return createEvent(UUID.randomUUID().toString(), json);
+    public Event asEvent(final ObjectMapper objectMapper) {
+        return createEvent(UUID.randomUUID().toString(), objectMapper);
     }
 }

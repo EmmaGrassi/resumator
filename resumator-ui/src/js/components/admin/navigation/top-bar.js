@@ -34,7 +34,6 @@ class TopBar extends React.Component {
 
 TopBar.mapStateToProps = function mapStateToProps(state) {
   return {
-    token: state.authentication.token
   };
 };
 

@@ -9,17 +9,17 @@ const cookiesOptions = {
 
 function getCookie() {
   return (dispatch) => {
-    const token = cookies.get('token', cookiesOptions);
-    const id = cookies.get('id', cookiesOptions);
+    const idToken = cookies.get('idToken', cookiesOptions);
+    const expiresAt = cookies.get('expiresAt', cookiesOptions);
     const email = cookies.get('email', cookiesOptions);
     const name = cookies.get('name', cookiesOptions);
     const surname = cookies.get('surname', cookiesOptions);
     const imageUrl = cookies.get('imageUrl', cookiesOptions);
 
-    if (token) {
+    if (idToken) {
       dispatch(login({
-        token,
-        id,
+        idToken,
+        expiresAt,
         email,
         name,
         surname,

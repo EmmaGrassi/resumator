@@ -65,8 +65,19 @@ const router = (
   </Provider>
 );
 
-store.dispatch(actions.user.getCookie());
+// Load auth2 into the gapi object.
+gapi.load('auth2', () => {
+  window.googleAuth = gapi.auth2.init({
+    client_id: '49560145160-80v99olfohmo0etbo6hugpo337p5d1nl.apps.googleusercontent.com',
+    hosted_domain: 'sytac.io'
+  });
 
-domready(() => {
-  ReactDOM.render(router, rootElement);
+  // Make sure the cookie information is stored in the store.
+  store.dispatch(actions.user.getCookie());
+
+  // When the DOM is ready, render to it.
+  domready(() => {
+    ReactDOM.render(router, rootElement);
+  });
 });
+

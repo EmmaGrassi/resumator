@@ -24,28 +24,33 @@ function mapDispatchToProps(dispatch) {
 }
 
 class RightNav extends React.Component {
-  constructor() {
-    super();
+  handleLogInButtonClick(event) {
+    event.preventDefault();
 
-    this.auth2 = null;
+    // TODO: Error handling. Apparently the catch on this is not valid.
+    window.googleAuth.signIn()
+      .then(this.handleLogInSuccess.bind(this));
   }
 
   handleLogInSuccess(user) {
-    const token = user.getAuthResponse().id_token;
+    const authResponse = user.getAuthResponse();
     const basicProfile = user.getBasicProfile();
 
-    const id = basicProfile.getId();
+    const idToken = authResponse.id_token;
+    const expiresAt = authResponse.expires_at;
+
     const imageUrl = basicProfile.getImageUrl();
     const email = basicProfile.getEmail();
     const [ name, surname ] = basicProfile.getName().split(' ');
 
     this.props.login({
+      idToken,
+      expiresAt,
+
       email,
-      id,
       imageUrl,
       name,
-      surname,
-      token
+      surname
     });
   }
 
@@ -61,36 +66,29 @@ class RightNav extends React.Component {
     this.props.logout();
   }
 
-  componentDidMount() {
-    gapi.load('auth2', () => {
-      this.auth2 = gapi.auth2.init({
-        client_id: '49560145160-80v99olfohmo0etbo6hugpo337p5d1nl.apps.googleusercontent.com',
-        cookiepolicy: 'single_host_origin'
-      });
-
-      const loginButtonElement = document.getElementById('login-button');
-
-      if (loginButtonElement) {
-        this.auth2.attachClickHandler(loginButtonElement, {}, this.handleLogInSuccess.bind(this), this.handleLogInError.bind(this));
-      }
-    });
-  }
-
-  componentDidUpdate() {
-    const loginButtonElement = document.getElementById('login-button');
-
-    if (loginButtonElement) {
-      this.auth2.attachClickHandler(loginButtonElement, {}, this.handleLogInSuccess.bind(this), this.handleLogInError.bind(this));
-    }
-  }
+  //componentDidMount() {
+  //  const loginButtonElement = document.getElementById('login-button');
+  //
+  //  if (loginButtonElement) {
+  //    window.googleAuth.attachClickHandler(loginButtonElement, {}, this.handleLogInSuccess.bind(this), this.handleLogInError.bind(this));
+  //  }
+  //}
+  //
+  //componentDidUpdate() {
+  //  const loginButtonElement = document.getElementById('login-button');
+  //
+  //  if (loginButtonElement) {
+  //    window.googleAuth.attachClickHandler(loginButtonElement, {}, this.handleLogInSuccess.bind(this), this.handleLogInError.bind(this));
+  //  }
+  //}
 
   render() {
     const user = this.props.user;
-    const token = user.get('token');
+    const idToken = user.get('idToken');
     const name = user.get('name');
     const surname = user.get('surname');
 
-    if (token) {
+    if (idToken) {
       const title = `${name} ${surname}`;
 
       return (
@@ -103,7 +101,12 @@ class RightNav extends React.Component {
     } else {
       return (
         <Nav pullRight>
-          <NavItem eventKey={2} href="#" key="loginButton" id="login-button">Log In</NavItem>
+          <NavItem
+            eventKey={2}
+            onClick={this.handleLogInButtonClick.bind(this)}
+          >
+            Log In
+          </NavItem>
         </Nav>
       );
     }

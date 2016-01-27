@@ -14,8 +14,8 @@ function user(state = defaults, action = {}) {
   switch (action.type) {
     case 'user:login:success':
       return state
-        .set('token', action.data.token)
-        .set('id', action.data.id)
+        .set('idToken', action.data.idToken)
+        .set('expiresAt', action.data.expiresAt)
         .set('name', action.data.name)
         .set('surname', action.data.surname)
         .set('imageUrl', action.data.imageUrl)

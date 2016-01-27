@@ -33,31 +33,50 @@ const history = createHistory({
 
 syncReduxAndRouter(history, store);
 
-const router = (
-  <Provider store={store} >
-    <Router history={history} >
-      <Route path="admin" component={ AdminContainer } >
-        <IndexRoute component={ AdminHome } />
+function getRouteAttribute(routes, attribute) {
+  for (let i = routes.length - 1; i >= 0; i--) {
+    if (routes[i][attribute] !== undefined) {
+      return routes[i][attribute];
+    }
+  }
+}
 
-        <Route path="employees" component={ AdminEmployeesList } >
-          <Route path=":userId" component={ AdminEmployeesShow } >
-            <Route path="edit" component={ AdminEmployeesEdit } />
+function handleEnter(nextState, replaceState) {
+  const requireAuth = getRouteAttribute(nextState.routes, 'requireAuth');
+
+  const idToken = store.getState().user.get('idToken');
+
+  if (requireAuth && !idToken) {
+    replaceState(null, '/');
+    return;
+  }
+}
+
+const router = (
+  <Provider store={store}>
+    <Router history={history}>
+      <Route path="admin" component={ AdminContainer } onEnter={handleEnter} requireAuth={true}>
+        <IndexRoute component={ AdminHome } onEnter={handleEnter}/>
+
+        <Route path="employees" component={ AdminEmployeesList } onEnter={handleEnter}>
+          <Route path=":userId" component={ AdminEmployeesShow } onEnter={handleEnter}>
+            <Route path="edit" component={ AdminEmployeesEdit } onEnter={handleEnter}/>
           </Route>
         </Route>
       </Route>
 
-      <Route path="/" component={ PublicContainer }>
-        <IndexRoute component={ PublicHome } />
+      <Route path="/" component={ PublicContainer } onEnter={handleEnter}>
+        <IndexRoute component={ PublicHome } onEnter={handleEnter}/>
 
-        <Route path="employees">
-          <IndexRoute component={ PublicEmployeesList } />
+        <Route path="employees" requireAuth={true}>
+          <IndexRoute component={ PublicEmployeesList } onEnter={handleEnter}/>
 
-          <Route path="new" component={ PublicEmployeesCreate } />
+          <Route path="new" component={ PublicEmployeesCreate } onEnter={handleEnter}/>
 
           <Route path=":userId">
-            <IndexRoute component={ PublicEmployeesShow } />
+            <IndexRoute component={ PublicEmployeesShow } onEnter={handleEnter}/>
 
-            <Route path="edit" component={ PublicEmployeesEdit } />
+            <Route path="edit" component={ PublicEmployeesEdit } onEnter={handleEnter}/>
           </Route>
         </Route>
       </Route>

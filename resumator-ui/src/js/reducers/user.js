@@ -1,9 +1,9 @@
 import immutable from 'immutable';
 
 const defaults = immutable.Map({
-  token: null,
+  idToken: null,
+  expiresAt: null,
 
-  id: null,
   name: null,
   surname: null,
   imageUrl: null,

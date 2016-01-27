@@ -2,6 +2,7 @@ import 'babel-polyfill';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+import cookies from 'cookies-js';
 import createHistory from 'history/lib/createHashHistory';
 import domready from 'domready';
 import { IndexRoute, Route, Router } from 'react-router';
@@ -44,7 +45,7 @@ function getRouteAttribute(routes, attribute) {
 function handleEnter(nextState, replaceState) {
   const requireAuth = getRouteAttribute(nextState.routes, 'requireAuth');
 
-  const idToken = store.getState().user.get('idToken');
+  const idToken = cookies.get('idToken');
 
   if (requireAuth && !idToken) {
     replaceState(null, '/');

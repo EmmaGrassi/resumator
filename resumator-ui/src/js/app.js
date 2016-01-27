@@ -19,12 +19,13 @@ import AdminEmployeesEdit from './components/admin/employees/edit';
 import AdminEmployeesList from './components/admin/employees/list';
 import AdminEmployeesShow from './components/admin/employees/show';
 import AdminHome from './components/admin/home';
+import NotFound from './components/NotFound';
 import PublicContainer from './components/public/container';
-import PublicHome from './components/public/home';
 import PublicEmployeesCreate from './components/public/employees/create';
 import PublicEmployeesEdit from './components/public/employees/edit';
 import PublicEmployeesList from './components/public/employees/list';
 import PublicEmployeesShow from './components/public/employees/show';
+import PublicHome from './components/public/home';
 
 const rootElement = document.getElementById('root');
 
@@ -80,6 +81,8 @@ const router = (
             <Route path="edit" component={ PublicEmployeesEdit } onEnter={handleEnter}/>
           </Route>
         </Route>
+
+        <Route path="**" component={NotFound} />
       </Route>
     </Router>
   </Provider>

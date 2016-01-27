@@ -128,9 +128,17 @@ class List extends React.Component {
               <Table striped condensed hover responsive>
                 <thead>
                   <tr>
-                    <th>Name</th>
+                    <th>
+                      Name
+                    </th>
                     <th>Surname</th>
-                    <th>Actions</th>
+                    <th
+                      style={{
+                        width: '20%'
+                      }}
+                    >
+                      Actions
+                    </th>
                   </tr>
                 </thead>
                 <tbody>

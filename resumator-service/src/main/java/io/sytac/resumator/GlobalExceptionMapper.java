@@ -2,10 +2,13 @@ package io.sytac.resumator;
 
 import io.sytac.resumator.model.Error;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.HttpStatus;
 
+import javax.ws.rs.ForbiddenException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
+import java.security.GeneralSecurityException;
 
 /**
  * Global exception mapper that returns an {@link Error} when an exception is thrown in an endpoint.
@@ -16,6 +19,10 @@ public class GlobalExceptionMapper implements ExceptionMapper<Exception> {
     @Override
     public Response toResponse(Exception exception) {
         log.error("The following exception was thrown but not caught in an endpoint: ", exception);
+
+        if (exception instanceof ForbiddenException) {
+            return Response.status(HttpStatus.SC_UNAUTHORIZED).build();
+        }
 
         return Response.status(500)
                 .entity(new Error(exception.getMessage()))

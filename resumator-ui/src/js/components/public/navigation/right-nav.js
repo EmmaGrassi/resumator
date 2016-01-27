@@ -12,7 +12,7 @@ import actions from '../../../actions';
 
 function mapStateToProps(state) {
   return {
-    user: state.user
+    user: state.user.toJS()
   };
 }
 
@@ -66,30 +66,11 @@ class RightNav extends React.Component {
     this.props.logout();
   }
 
-  //componentDidMount() {
-  //  const loginButtonElement = document.getElementById('login-button');
-  //
-  //  if (loginButtonElement) {
-  //    window.googleAuth.attachClickHandler(loginButtonElement, {}, this.handleLogInSuccess.bind(this), this.handleLogInError.bind(this));
-  //  }
-  //}
-  //
-  //componentDidUpdate() {
-  //  const loginButtonElement = document.getElementById('login-button');
-  //
-  //  if (loginButtonElement) {
-  //    window.googleAuth.attachClickHandler(loginButtonElement, {}, this.handleLogInSuccess.bind(this), this.handleLogInError.bind(this));
-  //  }
-  //}
-
   render() {
-    const user = this.props.user;
-    const idToken = user.get('idToken');
-    const name = user.get('name');
-    const surname = user.get('surname');
+    const { user } = this.props;
 
-    if (idToken) {
-      const title = `${name} ${surname}`;
+    if (user.idToken) {
+      const title = `${user.name} ${user.surname}`;
 
       return (
         <Nav pullRight>

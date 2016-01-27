@@ -11,8 +11,32 @@ import NavItem from 'react-bootstrap/lib/NavItem';
 
 import RightNav from './right-nav';
 
+function mapStateToProps(state) {
+  return {
+    user: state.user.toJS()
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    navigateToHome: () => dispatch(pushPath('/'))
+  };
+}
+
 class TopBar extends React.Component {
   render() {
+    const { user } = this.props;
+
+    let nav = '';
+
+    if (user.idToken) {
+      nav = (
+        <Nav>
+          <NavItem eventKey={1} href="#/employees">Employees</NavItem>
+        </Nav>
+      );
+    }
+
     return <Navbar>
       <NavbarHeader>
         <NavbarBrand>
@@ -21,18 +45,12 @@ class TopBar extends React.Component {
         <NavbarToggle/>
       </NavbarHeader>
       <NavbarCollapse>
-        <Nav>
-          <NavItem eventKey={1} href="#/employees">Employees</NavItem>
-        </Nav>
+        {nav}
         <RightNav/>
       </NavbarCollapse>
     </Navbar>;
   }
 }
 
-function select(state) {
-  return {
-  };
-}
+export default connect(mapStateToProps, mapDispatchToProps)(TopBar);
 
-export default connect(select)(TopBar);

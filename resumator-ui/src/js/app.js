@@ -19,6 +19,7 @@ import AdminEmployeesEdit from './components/admin/employees/edit';
 import AdminEmployeesList from './components/admin/employees/list';
 import AdminEmployeesShow from './components/admin/employees/show';
 import AdminHome from './components/admin/home';
+import NotAuthorized from './components/NotAuthorized';
 import NotFound from './components/NotFound';
 import PublicContainer from './components/public/container';
 import PublicEmployeesCreate from './components/public/employees/create';
@@ -82,6 +83,8 @@ const router = (
           </Route>
         </Route>
 
+        <Route path="not-authorized" component={NotAuthorized} />
+        <Route path="not-found" component={NotFound} />
         <Route path="**" component={NotFound} />
       </Route>
     </Router>

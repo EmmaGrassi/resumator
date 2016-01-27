@@ -12,6 +12,9 @@ function create(data) {
       .end((error, response) => {
         if (error) {
           dispatch({ type: 'employees:create:failure', error });
+
+          handleRequestError(dispatch, error);
+
           return;
         }
 

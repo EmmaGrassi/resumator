@@ -14,6 +14,9 @@ function update(id, data) {
       .end((error, response) => {
         if (error) {
           dispatch({ type: 'employees:update:failure', error });
+
+          handleRequestError(dispatch, error);
+
           return;
         }
 

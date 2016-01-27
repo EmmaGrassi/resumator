@@ -12,6 +12,9 @@ function edit(id) {
       .end((error, _response) => {
         if (error) {
           dispatch({ type: 'employees:edit:failure', error });
+
+          handleRequestError(dispatch, error);
+
           return;
         }
 

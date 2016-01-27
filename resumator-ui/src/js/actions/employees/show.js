@@ -12,6 +12,9 @@ function show(id) {
       .end((error, _response) => {
         if (error) {
           dispatch({ type: 'employees:show:failure', error });
+
+          handleRequestError(dispatch, error);
+
           return;
         }
 

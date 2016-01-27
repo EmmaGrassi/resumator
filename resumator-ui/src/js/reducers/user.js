@@ -27,6 +27,9 @@ function user(state = defaults, action = {}) {
     case 'user:logout:success':
       return defaults;
 
+    case 'user:cookie:cleared':
+      return defaults;
+
     default:
       return state;
   }

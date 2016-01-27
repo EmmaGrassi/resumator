@@ -12,6 +12,9 @@ function remove(id) {
       .end((error, response) => {
         if (error) {
           dispatch({ type: 'employees:remove:failure', error });
+
+          handleRequestError(dispatch, error);
+
           return;
         }
 

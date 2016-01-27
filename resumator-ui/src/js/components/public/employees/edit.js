@@ -36,8 +36,13 @@ class Edit extends React.Component {
       data.item.dateOfBirth = new Date(data.item.dateOfBirth);
 
       data.item.experience = data.item.experience.map((v, i) => {
-        v.endDate = new Date(v.endDate);
-        v.startDate = new Date(v.startDate);
+        if (v.startDate) {
+          v.startDate = new Date(v.startDate);
+        }
+
+        if (v.endDate) {
+          v.endDate = new Date(v.endDate);
+        }
 
         return v;
       });

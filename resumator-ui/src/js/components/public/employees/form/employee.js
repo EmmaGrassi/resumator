@@ -109,6 +109,7 @@ class EmployeeForm extends React.Component {
 
       value.experience = map(value.experience, (v) => {
         v.startDate = moment(v.startDate).format('YYYY-MM-DD');
+
         if(v.endDate) {
           v.endDate = moment(v.endDate).format('YYYY-MM-DD');
         }

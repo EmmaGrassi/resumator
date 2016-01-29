@@ -251,109 +251,111 @@ class Show extends React.Component {
               <h1>{title}</h1>
 
               <table>
-                <tr>
-                  <td
-                    style={{
-                      paddingRight: '15px'
-                    }}
-                  >
-                    <strong>Name:</strong>
-                  </td>
-                  <td>
-                    {name} {surname}
-                  </td>
-                </tr>
+                <tbody>
+                  <tr>
+                    <td
+                      style={{
+                        paddingRight: '15px'
+                      }}
+                    >
+                      <strong>Name:</strong>
+                    </td>
+                    <td>
+                      {name} {surname}
+                    </td>
+                  </tr>
 
-                <tr>
-                  <td
-                    style={{
-                      paddingRight: '15px'
-                    }}
-                  >
-                    <strong>Nationality:</strong>
-                  </td>
-                  <td>
-                    {nationality}
-                  </td>
-                </tr>
+                  <tr>
+                    <td
+                      style={{
+                        paddingRight: '15px'
+                      }}
+                    >
+                      <strong>Nationality:</strong>
+                    </td>
+                    <td>
+                      {nationality}
+                    </td>
+                  </tr>
 
-                <tr>
-                  <td
-                    style={{
-                      paddingRight: '15px'
-                    }}
-                  >
-                    <strong>Date of Birth:</strong>
-                  </td>
-                  <td>
-                    {dateOfBirth}
-                  </td>
-                </tr>
+                  <tr>
+                    <td
+                      style={{
+                        paddingRight: '15px'
+                      }}
+                    >
+                      <strong>Date of Birth:</strong>
+                    </td>
+                    <td>
+                      {dateOfBirth}
+                    </td>
+                  </tr>
 
-                <tr>
-                  <td
-                    style={{
-                      paddingRight: '15px'
-                    }}
-                  >
-                    <strong>Email:</strong>
-                  </td>
-                  <td>
-                    {email}
-                  </td>
-                </tr>
+                  <tr>
+                    <td
+                      style={{
+                        paddingRight: '15px'
+                      }}
+                    >
+                      <strong>Email:</strong>
+                    </td>
+                    <td>
+                      {email}
+                    </td>
+                  </tr>
 
-                <tr>
-                  <td
-                    style={{
-                      paddingRight: '15px'
-                    }}
-                  >
-                    <strong>Phone:</strong>
-                  </td>
-                  <td>
-                    {phonenumber}
-                  </td>
-                </tr>
+                  <tr>
+                    <td
+                      style={{
+                        paddingRight: '15px'
+                      }}
+                    >
+                      <strong>Phone:</strong>
+                    </td>
+                    <td>
+                      {phonenumber}
+                    </td>
+                  </tr>
 
-                <tr>
-                  <td
-                    style={{
-                      paddingRight: '15px'
-                    }}
-                  >
-                    <strong>Current residence:</strong>
-                  </td>
-                  <td>
-                    {currentResidence}
-                  </td>
-                </tr>
+                  <tr>
+                    <td
+                      style={{
+                        paddingRight: '15px'
+                      }}
+                    >
+                      <strong>Current residence:</strong>
+                    </td>
+                    <td>
+                      {currentResidence}
+                    </td>
+                  </tr>
 
-                <tr>
-                  <td
-                    style={{
-                      paddingRight: '15px'
-                    }}
-                  >
-                    <strong>Github:</strong>
-                  </td>
-                  <td>
-                    {github}
-                  </td>
-                </tr>
+                  <tr>
+                    <td
+                      style={{
+                        paddingRight: '15px'
+                      }}
+                    >
+                      <strong>Github:</strong>
+                    </td>
+                    <td>
+                      {github}
+                    </td>
+                  </tr>
 
-                <tr>
-                  <td
-                    style={{
-                      paddingRight: '15px'
-                    }}
-                  >
-                    <strong>Linkedin:</strong>
-                  </td>
-                  <td>
-                    {linkedin}
-                  </td>
-                </tr>
+                  <tr>
+                    <td
+                      style={{
+                        paddingRight: '15px'
+                      }}
+                    >
+                      <strong>Linkedin:</strong>
+                    </td>
+                    <td>
+                      {linkedin}
+                    </td>
+                  </tr>
+                </tbody>
               </table>
               <br/>
               <p>{aboutMe}</p>

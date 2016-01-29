@@ -10,8 +10,11 @@ import io.sytac.resumator.organization.OrganizationRepository;
 import io.sytac.resumator.security.Roles;
 import io.sytac.resumator.security.User;
 import io.sytac.resumator.security.UserPrincipal;
+import io.sytac.resumator.utils.DateUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.eclipse.jetty.http.HttpHeader;
+import org.eclipse.jetty.http.HttpStatus;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
@@ -51,7 +54,7 @@ public class EmployeeQuery extends BaseResource {
     @GET
     @Produces(RepresentationFactory.HAL_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Representation getEmployee(@PathParam("id") final String id, @UserPrincipal User user,
+    public Response getEmployee(@PathParam("id") final String id, @UserPrincipal User user,
                                       @Context final UriInfo uriInfo) {
         return represent(getEmployee(id, user), uriInfo);
     }
@@ -86,31 +89,38 @@ public class EmployeeQuery extends BaseResource {
      * @param uriInfo  The current REST endpoint information
      * @return The {@link Representation} of the {@link Employee}
      */
-    private Representation represent(final Optional<Employee> employee, final UriInfo uriInfo) {
-        Representation representation = rest.newRepresentation();
+    private Response represent(final Optional<Employee> employee, final UriInfo uriInfo) {
+        final Representation representation = rest.newRepresentation();
 
-        employee.ifPresent(emp ->
-                representation.withProperty("id", emp.getId())
-                        .withProperty("title", emp.getTitle())
-                        .withProperty("name", emp.getName())
-                        .withProperty("surname", emp.getSurname())
-                        .withProperty("email", emp.getEmail())
-                        .withProperty("phonenumber", emp.getPhoneNumber())
-                        .withProperty("github", emp.getGitHub())
-                        .withProperty("linkedin", emp.getLinkedIn())
-                        .withProperty("dateOfBirth", emp.getDateOfBirth())
-                        .withProperty("nationality", emp.getNationality())
-                        .withProperty("aboutMe", emp.getAboutMe())
-                        .withProperty("currentResidence", emp.getCurrentResidence())
-                        .withProperty("education", emp.getEducations())
-                        .withProperty("courses", emp.getCourses())
-                        .withProperty("experience", emp.getExperiences())
-                        .withProperty("languages", emp.getLanguages())
-        );
+        if (employee.isPresent()) {
+            final Employee emp = employee.get();
+            final List<Education> educations = Optional.ofNullable(emp.getEducations()).orElse(Collections.EMPTY_LIST);
+            final List<Course> courses = Optional.ofNullable(emp.getCourses()).orElse(Collections.EMPTY_LIST);
+            final List<Experience> experiences = Optional.ofNullable(emp.getExperiences()).orElse(Collections.EMPTY_LIST);
+            final List<Language> languages = Optional.ofNullable(emp.getLanguages()).orElse(Collections.EMPTY_LIST);
 
-        representation.withLink("self", uriInfo.getRequestUri().toString());
+            representation.withProperty("id", emp.getId())
+                    .withProperty("title", emp.getTitle())
+                    .withProperty("name", emp.getName())
+                    .withProperty("surname", emp.getSurname())
+                    .withProperty("email", emp.getEmail())
+                    .withProperty("phonenumber", emp.getPhoneNumber())
+                    .withProperty("github", emp.getGitHub())
+                    .withProperty("linkedin", emp.getLinkedIn())
+                    .withProperty("dateOfBirth", emp.getDateOfBirth())
+                    .withProperty("nationality", emp.getNationality())
+                    .withProperty("aboutMe", emp.getAboutMe())
+                    .withProperty("currentResidence", emp.getCurrentResidence())
+                    .withProperty("education", educations)
+                    .withProperty("courses", courses)
+                    .withProperty("experience", experiences)
+                    .withProperty("languages", languages)
+                    .withLink("self", uriInfo.getRequestUri().toString());
 
-        return representation;
+            return Response.ok(representation.toString(RepresentationFactory.HAL_JSON)).build();
+        } else {
+            return Response.ok().status(HttpStatus.NOT_FOUND_404).build();
+        }
     }
 
     private Optional<Employee> getEmployee(String id, User user) {

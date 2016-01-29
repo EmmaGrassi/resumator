@@ -20,11 +20,7 @@ public class GlobalExceptionMapper implements ExceptionMapper<Exception> {
     public Response toResponse(Exception exception) {
         log.error("The following exception was thrown but not caught in an endpoint: ", exception);
 
-        if (exception instanceof ForbiddenException) {
-            return Response.status(HttpStatus.SC_UNAUTHORIZED).build();
-        }
-
-        return Response.status(500)
+        return Response.status(HttpStatus.SC_INTERNAL_SERVER_ERROR)
                 .entity(new Error(exception.getMessage()))
                 .type(MediaType.APPLICATION_JSON)
                 .build();

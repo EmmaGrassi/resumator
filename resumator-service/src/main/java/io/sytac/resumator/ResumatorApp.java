@@ -76,7 +76,8 @@ public class ResumatorApp {
     }
 
     private ResourceConfig registerGlobalExceptionHandler(final ResourceConfig rc) {
-        return rc.register(GlobalExceptionMapper.class);
+        return rc.register(GlobalExceptionMapper.class)
+                .register(ForbiddenExceptionMapper.class);
     }
 
     private ResourceConfig registerDocxGenerator(final ResourceConfig rc) {

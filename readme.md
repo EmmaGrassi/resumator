@@ -25,8 +25,7 @@ Creation, storing, searching and exporting of Sytac Resumes:
 
 ## Usage
 ```
-mvn clean install;
-docker-compose -f ./docker/docker-compose-dev.yml up;
+mvn clean install; docker-compose -f ./docker/docker-compose-dev.yml up;
 ```
 
 3. Open your browser at `http://localhost:8080/resumator`

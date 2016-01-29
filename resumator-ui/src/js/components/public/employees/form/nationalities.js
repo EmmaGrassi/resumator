@@ -1,4 +1,6 @@
-export default [
+import _ from 'lodash';
+
+const nationalities = [
   { value: '', label: '' },
   { value: 'AFGHAN', label: 'Afghan' },
   { value: 'ALBANIAN', label: 'Albanian' },
@@ -194,3 +196,11 @@ export default [
   { value: 'ZAMBIAN', label: 'Zambian' },
   { value: 'ZIMBABWEAN', label: 'Zimbabwean' }
 ];
+
+const object = {};
+
+_.each(nationalities, x => {
+  object[x.value] = x.label;
+})
+
+export default object;

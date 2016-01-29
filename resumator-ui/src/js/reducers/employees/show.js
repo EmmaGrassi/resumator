@@ -5,7 +5,7 @@ import item from './common/item';
 const defaults = immutable.Map({
   isFetching: false,
 
-  item: item
+  item
 });
 
 function show(state = defaults, action = {}) {
@@ -15,11 +15,6 @@ function show(state = defaults, action = {}) {
         .set('isFetching', true);
 
     case 'employees:show:success':
-      action.response.education = action.response.education || [];
-      action.response.courses = action.response.courses || [];
-      action.response.experience = action.response.experience || [];
-      action.response.languages = action.response.languages || [];
-
       return state
         .set('isFetching', false)
         .set('item', immutable.fromJS(action.response));

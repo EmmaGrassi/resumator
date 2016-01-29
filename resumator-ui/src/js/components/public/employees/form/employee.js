@@ -3,21 +3,16 @@ import moment from 'moment';
 import tcombForm from 'tcomb-form';
 import tcombFormTypes from 'tcomb-form-types';
 import { Button, Col, Grid, Input, Row } from 'react-bootstrap';
-import { bindAll, map, each } from 'lodash';
+import { bindAll, map } from 'lodash';
 
 // import DateTimeInput from 'react-bootstrap-datetimepicker';
 // import Select from 'react-select';
 
+import countries from './countries';
 import nationalities from './nationalities';
 import TagsComponent from '../../../../lib/components/tcomb-form/tags';
 
 const { Form } = tcombForm.form;
-
-const nationalitiesObject = {};
-
-each(nationalities, (c) => {
-  nationalitiesObject[c.value] = c.label;
-});
 
 const CoursesSchema = tcombForm.struct({
   name: tcombForm.String,
@@ -39,7 +34,7 @@ const EducationSchema = tcombForm.struct({
   fieldOfStudy: tcombForm.String,
   school: tcombForm.String,
   city: tcombForm.String,
-  country: tcombForm.String,
+  country: tcombForm.enums(countries),
   startYear: tcombForm.Number,
   endYear: tcombForm.Number
 });
@@ -48,7 +43,7 @@ const ExperienceSchema = tcombForm.struct({
   companyName: tcombForm.String,
   title: tcombForm.String,
   city: tcombForm.String,
-  country: tcombForm.String,
+  country: tcombForm.enums(countries),
   startDate: tcombForm.Date,
   endDate: tcombForm.maybe(tcombForm.Date),
   shortDescription: tcombForm.String,
@@ -85,7 +80,7 @@ const EmployeeSchema = tcombForm.struct({
   linkedin: tcombForm.maybe(tcombForm.String),
 
   dateOfBirth: tcombForm.Date,
-  nationality: tcombForm.enums(nationalitiesObject),
+  nationality: tcombForm.enums(nationalities),
 
   aboutMe: tcombForm.String,
 

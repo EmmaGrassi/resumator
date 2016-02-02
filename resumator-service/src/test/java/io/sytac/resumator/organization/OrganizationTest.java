@@ -79,7 +79,7 @@ public class OrganizationTest {
     }
 
     private Employee getDummyEmployee(final String id) {
-        return Employee.builder().id(id).build();
+        return Employee.builder().id(id).email("dummy@email.com").build();
     }
 
 }

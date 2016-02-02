@@ -10,10 +10,8 @@ import io.sytac.resumator.organization.OrganizationRepository;
 import io.sytac.resumator.security.Roles;
 import io.sytac.resumator.security.User;
 import io.sytac.resumator.security.UserPrincipal;
-import io.sytac.resumator.utils.DateUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.eclipse.jetty.http.HttpHeader;
 import org.eclipse.jetty.http.HttpStatus;
 
 import javax.annotation.security.RolesAllowed;
@@ -94,12 +92,13 @@ public class EmployeeQuery extends BaseResource {
 
         if (employee.isPresent()) {
             final Employee emp = employee.get();
-            final List<Education> educations = Optional.ofNullable(emp.getEducations()).orElse(Collections.EMPTY_LIST);
-            final List<Course> courses = Optional.ofNullable(emp.getCourses()).orElse(Collections.EMPTY_LIST);
-            final List<Experience> experiences = Optional.ofNullable(emp.getExperiences()).orElse(Collections.EMPTY_LIST);
-            final List<Language> languages = Optional.ofNullable(emp.getLanguages()).orElse(Collections.EMPTY_LIST);
+            final List<Education> educations = Optional.ofNullable(emp.getEducations()).orElse(Collections.emptyList());
+            final List<Course> courses = Optional.ofNullable(emp.getCourses()).orElse(Collections.emptyList());
+            final List<Experience> experiences = Optional.ofNullable(emp.getExperiences()).orElse(Collections.emptyList());
+            final List<Language> languages = Optional.ofNullable(emp.getLanguages()).orElse(Collections.emptyList());
 
             representation.withProperty("id", emp.getId())
+                    .withProperty("type", emp.getType())
                     .withProperty("title", emp.getTitle())
                     .withProperty("name", emp.getName())
                     .withProperty("surname", emp.getSurname())

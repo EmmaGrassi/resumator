@@ -1,8 +1,6 @@
 service:
   image: resumator-service
   command: -Dresumator.http.context.path=api/
-  ports:
-    - "5005:5005"
   links:
     - db
 db:

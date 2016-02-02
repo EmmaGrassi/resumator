@@ -30,6 +30,10 @@ public class Organization {
     @Getter(AccessLevel.NONE)
     private Map<String, Employee> employees = new ConcurrentHashMap<>();
 
+    @Getter(AccessLevel.NONE)
+    private Map<String, String> employeeIdToEmail = new ConcurrentHashMap<>();
+
+
     public Organization(final String id, final String name, final String domain) {
         this.id = id;
         this.name = name;
@@ -43,33 +47,38 @@ public class Organization {
     public Employee addEmployee(final NewEmployeeCommand command) {
         final String employeeId = command.getHeader().getId().orElse(UUID.randomUUID().toString());
         final Employee employee = fromCommand(employeeId, command);
-        final Employee previous = employees.putIfAbsent(employee.getId(), employee);
-        if(previous != null) {
+        final Employee previous = employees.putIfAbsent(employee.getEmail(), employee);
+
+        if (previous != null) {
             throw new IllegalArgumentException("Duplicate employee:" + employee);
         }
+
+        employeeIdToEmail.put(employeeId, employee.getEmail());
         return employee;
     }
 
     public Employee updateEmployee(final UpdateEmployeeCommand command) {
         final String employeeId = command.getHeader().getId()
-                .orElseThrow(() -> new IllegalArgumentException("Cannot update employee because EmployeeId is null or empty"));
+                .orElseThrow(() -> new IllegalArgumentException("Cannot update employee because employeeId is null or empty"));
 
-        if (!employees.containsKey(employeeId)) {
-            throw new IllegalArgumentException(String.format("Employee with id '%s' not found in the repository", employeeId));
+        final String employeeEmail = employeeIdToEmail.get(employeeId);
+        if (!employees.containsKey(employeeEmail)) {
+            throw new IllegalArgumentException(String.format("Employee with email '%s' not found in the repository", employeeEmail));
         }
 
-        return employees.put(employeeId, fromCommand(employeeId, command));
+        return employees.put(employeeEmail, fromCommand(employeeId, command));
     }
 
     public void removeEmployee(final RemoveEmployeeCommand command) {
         final String employeeId = command.getHeader().getId()
                 .orElseThrow(() -> new IllegalArgumentException("Failed to remove employee because employeeId is null or empty"));
 
-        if (employees.containsKey(employeeId)) {
-            employees.remove(employeeId);
-        } else {
-            throw new IllegalArgumentException(String.format("Employee with id '%s' does not exist", employeeId));
+        final String employeeEmail = employeeIdToEmail.get(employeeId);
+        if (!employees.containsKey(employeeEmail)) {
+            throw new IllegalArgumentException(String.format("Employee with email '%s' does not exist", employeeEmail));
         }
+
+        employees.remove(employeeEmail);
     }
 
     private Employee fromCommand(final String employeeId, final Command command) {
@@ -95,8 +104,8 @@ public class Organization {
                 .build();
     }
 
-    public Employee getEmployeeById(String id) {
-        return employees.get(id);
+    public Employee getEmployeeByEmail(String email) {
+        return employees.get(email);
     }
 
     public List<Employee> getEmployees() {

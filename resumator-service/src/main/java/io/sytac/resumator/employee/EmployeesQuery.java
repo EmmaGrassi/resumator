@@ -91,10 +91,10 @@ public class EmployeesQuery extends BaseResource {
      */
     private Representation represent(final Employee employee, final UriInfo uriInfo) {
         return rest.newRepresentation()
-                .withProperty("id", employee.getId())
+                .withProperty("email", employee.getEmail())
                 .withProperty("name", employee.getName())
                 .withProperty("surname", employee.getSurname())
-                .withLink(REL_SELF, resourceLink(uriInfo, EmployeeQuery.class, employee.getId()));
+                .withLink(REL_SELF, resourceLink(uriInfo, EmployeeQuery.class, employee.getEmail()));
     }
 
     private List<Employee> getEmployees(final String organizationId) {

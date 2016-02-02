@@ -105,7 +105,7 @@ public class CommonCommandTest {
                                                                   List<Language> languages) {
 
         return new EmployeeCommandPayload(TITLE, NAME, SURNAME, EMAIL, PHONENUMBER, GITHUB, LINKEDIN, DATE_OF_BIRTH,
-                NATIONALITY, CURRENT_RESIDENCE, ABOUT_ME, educations, courses, experiences, languages);
+                NATIONALITY, CURRENT_RESIDENCE, ABOUT_ME, educations, courses, experiences, languages, false);
     }
 
     public void canSerializeAsJSON(Class clazz) {

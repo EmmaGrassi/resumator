@@ -39,7 +39,7 @@ public abstract class AbstractEventExecutor implements EventExecutor {
     }
 
     protected Organization getOrganization(final Command command) {
-        String domain = command.getHeader().getDomain().get();
+        final String domain = command.getHeader().getDomain().get();
         return this.repository.fromDomain(domain).orElseThrow(() ->
                 new IllegalArgumentException(String.format("Cannot replay '%s' for unknown organization", command.getType())));
     }

@@ -6,6 +6,7 @@ import io.sytac.resumator.events.EventPublisher;
 import io.sytac.resumator.model.exceptions.InvalidOrganizationException;
 import io.sytac.resumator.organization.Organization;
 import io.sytac.resumator.organization.OrganizationRepository;
+import io.sytac.resumator.security.Roles;
 import io.sytac.resumator.security.User;
 import org.apache.http.HttpStatus;
 import org.junit.Before;
@@ -15,6 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import javax.naming.NoPermissionException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
@@ -40,9 +42,10 @@ import static org.mockito.Mockito.when;
 public class NewEmployeeTest {
 
     public static final String ORG_ID = "org";
+    public static final String EMAIL = "email@dot.com";
     private static final String URI_BASE = "http://base.uri";
     private static final String URI_ABSOLUTE_PATH = URI_BASE + "/employees";
-    public static final String UUID = "6743e653-f3cc-4580-84e8-f44ee8531128";
+//    public static final String UUID = "6743e653-f3cc-4580-84e8-f44ee8531128";
     public static final String DOMAIN = "domain";
 
     @Mock
@@ -79,29 +82,30 @@ public class NewEmployeeTest {
         when(descriptorsMock.newEmployeeCommand(any(EmployeeCommandPayload.class), eq(DOMAIN))).thenReturn(newEmployeeCommandMock);
         when(organizationMock.getDomain()).thenReturn(DOMAIN);
         when(organizationMock.addEmployee(eq(newEmployeeCommandMock))).thenReturn(employeeMock);
+        when(userMock.hasRole(eq(Roles.ADMIN))).thenReturn(true);
         when(userMock.getOrganizationId()).thenReturn(ORG_ID);
-        when(employeeMock.getId()).thenReturn(UUID);
+        when(employeeMock.getEmail()).thenReturn(EMAIL);
 
         when(uriInfoMock.getAbsolutePath()).thenReturn(new URI(URI_ABSOLUTE_PATH));
         when(uriInfoMock.getBaseUri()).thenReturn(new URI(URI_BASE));
     }
 
     @Test
-    public void testNewEmployeesOk() {
+    public void testNewEmployeesOk() throws NoPermissionException {
         final Response response = newEmployee.newEmployee(getEmployeeCommandPayload(), userMock, uriInfoMock);
         assertNotNull(response);
         assertEquals(response.getStatus(), HttpStatus.SC_CREATED);
-        assertEquals(response.getHeaderString("Location"), URI_ABSOLUTE_PATH + "/" + UUID);
+        assertEquals(response.getHeaderString("Location"), URI_ABSOLUTE_PATH + "/" + EMAIL);
     }
 
     @Test(expected = InvalidOrganizationException.class)
-    public void testNewEmployeesWrongOrganisation() {
+    public void testNewEmployeesWrongOrganisation() throws NoPermissionException {
         when(organizationRepositoryMock.get(eq(ORG_ID))).thenThrow(InvalidOrganizationException.class);
         newEmployee.newEmployee(getEmployeeCommandPayload(), userMock, uriInfoMock);
     }
 
     private EmployeeCommandPayload getEmployeeCommandPayload() {
-        return new EmployeeCommandPayload("title", "name", "surname", "email", "phoneNumber", null, null, null, null,
-                null, null, null, null, null, null);
+        return new EmployeeCommandPayload("title", "name", "surname", EMAIL, "phoneNumber", null, null, null, null,
+                null, null, null, null, null, null, false);
     }
 }

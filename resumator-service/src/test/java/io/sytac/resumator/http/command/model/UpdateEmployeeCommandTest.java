@@ -130,7 +130,8 @@ public class UpdateEmployeeCommandTest extends CommonCommandTest {
                 "},{" +
                     "\"name\":\"" + ENGLISH_LANGUAGE + "\"," +
                     "\"proficiency\":\"" + Language.Proficiency.FULL_PROFESSIONAL + "\"" +
-                "}]" +
+                "}]," +
+                "\"admin\":false" +
             "}," +
             "\"type\":\"" + UPDATE_EMPLOYEE_TYPE + "\"" +
         "}";

@@ -113,7 +113,7 @@ public class EmployeesQueryTest {
         Representation actual = employeesQuery.getEmployees(1, null, user, uriInfo);
         actual.getResourcesByRel("employees")
                 .forEach(resource -> assertThat(resource.getLinkByRel("self").getHref(),
-                        equalTo(URI_ABSOLUTE_PATH + "/" + resource.getProperties().get("id"))));
+                        equalTo(URI_ABSOLUTE_PATH + "/" + resource.getProperties().get("email"))));
     }
 
     @Test
@@ -143,6 +143,6 @@ public class EmployeesQueryTest {
 
     private Employee getDummyEmployee(final String id, EmployeeType employeeType) {
         return new Employee(id, employeeType, "title", "name", "surname", "email", "phoneNumber", null, null,
-                null, null, null, null, null, null, null, null);
+                null, null, null, null, null, null, null, null, false);
     }
 }

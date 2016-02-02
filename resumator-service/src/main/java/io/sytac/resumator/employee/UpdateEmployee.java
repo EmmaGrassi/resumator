@@ -16,9 +16,12 @@ import org.eclipse.jetty.http.HttpStatus;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
+import javax.naming.NoPermissionException;
+import javax.naming.OperationNotSupportedException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.net.URI;
+import java.util.Optional;
 
 /**
  * Creates a new {@link Employee}
@@ -26,7 +29,7 @@ import java.net.URI;
  * @author Carlo Sciolla
  * @since 0.1
  */
-@Path("employees/{id}")
+@Path("employees/{email}")
 @RolesAllowed(Roles.USER)
 public class UpdateEmployee extends BaseResource {
 
@@ -44,27 +47,53 @@ public class UpdateEmployee extends BaseResource {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces({RepresentationFactory.HAL_JSON, MediaType.APPLICATION_JSON})
-    public Response updateEmployee(@PathParam("id") final String employeeId,
+    public Response updateEmployee(@PathParam("email") final String email,
                                    final EmployeeCommandPayload payload,
                                    @UserPrincipal final User user,
-                                   @Context final UriInfo uriInfo) {
+                                   @Context final UriInfo uriInfo) throws NoPermissionException, OperationNotSupportedException {
 
-        Organization organization = organizations.get(user.getOrganizationId())
-                .orElseThrow(InvalidOrganizationException::new);
-        String domain = organization.getDomain();
+        final String checkedEmail = Optional.ofNullable(email).orElseThrow(IllegalArgumentException::new);
+        validateEmails(checkedEmail, payload.getEmail());
+        final Organization organization = organizations.get(user.getOrganizationId()).orElseThrow(InvalidOrganizationException::new);
 
-        final UpdateEmployeeCommand command = descriptors.updateEmployeeCommand(employeeId, payload, domain);
-        Employee updatedEmployee = organization.updateEmployee(command);
+        if (!user.hasRole(Roles.ADMIN)) {
+            checkPermissionsForUpdate(user, email);
+            validateAdminFlag(organization, payload);
+        }
+
+        final String employeeId = organization.getEmployeeByEmail(email).getId();
+        final UpdateEmployeeCommand command = descriptors.updateEmployeeCommand(employeeId, payload, organization.getDomain());
+        final Employee updatedEmployee = organization.updateEmployee(command);
+
         events.publish(command);
 
         return buildRepresentation(uriInfo, updatedEmployee);
     }
 
+    private void checkPermissionsForUpdate(final User user, final String email) throws NoPermissionException {
+        if (!email.equals(user.getName())) {
+            throw new NoPermissionException("You don't have permissions to update this profile");
+        }
+    }
+
+    private void validateEmails(final String pathEmail, final String payloadEmail) throws OperationNotSupportedException {
+        if (!pathEmail.equals(payloadEmail)) {
+            throw new OperationNotSupportedException("Unable to change email address - operation is not supported");
+        }
+    }
+
+    private void validateAdminFlag(final Organization organization, final EmployeeCommandPayload payload) throws NoPermissionException {
+        final Employee employee = organization.getEmployeeByEmail(payload.getEmail());
+        if (employee.isAdmin() != payload.isAdmin()) {
+            throw new NoPermissionException("You don't have permissions to update this profile");
+        }
+    }
+
     private Response buildRepresentation(final UriInfo uriInfo, final Employee employee) {
-        final URI employeeLink = resourceLink(uriInfo, EmployeeQuery.class, employee.getId());
+        final URI employeeLink = resourceLink(uriInfo, EmployeeQuery.class, employee.getEmail());
         final Representation halResource = rest.newRepresentation()
                 .withProperty("status", "updated")
-                .withProperty("id", employee.getId())
+                .withProperty("email", employee.getEmail())
                 .withLink("employee", employeeLink);
 
         return Response.ok(halResource.toString(RepresentationFactory.HAL_JSON))

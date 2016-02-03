@@ -1,22 +1,5 @@
 package io.sytac.resumator.employee;
 
-import java.net.URI;
-import java.util.Map;
-
-import javax.annotation.security.RolesAllowed;
-import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
-
-import org.eclipse.jetty.http.HttpHeader;
-import org.eclipse.jetty.http.HttpStatus;
-
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 
@@ -29,6 +12,20 @@ import io.sytac.resumator.organization.OrganizationRepository;
 import io.sytac.resumator.security.Roles;
 import io.sytac.resumator.security.User;
 import io.sytac.resumator.security.UserPrincipal;
+import org.eclipse.jetty.http.HttpHeader;
+import org.eclipse.jetty.http.HttpStatus;
+
+import javax.annotation.security.RolesAllowed;
+import javax.inject.Inject;
+import javax.naming.NoPermissionException;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.*;
+import java.net.URI;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * Creates a new {@link Employee}
@@ -56,18 +53,26 @@ public class NewEmployee extends BaseResource {
     @Produces({RepresentationFactory.HAL_JSON, MediaType.APPLICATION_JSON})
     public Response newEmployee(final EmployeeCommandPayload payload,
                                 @UserPrincipal final User user,
-                                @Context final UriInfo uriInfo) {
+                                @Context final UriInfo uriInfo) throws NoPermissionException {
 
-        Organization organization = organizations.get(user.getOrganizationId())
-                .orElseThrow(InvalidOrganizationException::new);
-        String domain = organization.getDomain();
+        final String checkedEmail = Optional.ofNullable(payload.getEmail()).orElseThrow(IllegalArgumentException::new);
+        if (!user.hasRole(Roles.ADMIN)) {
+            if (!checkedEmail.equals(user.getName())) {
+                throw new IllegalArgumentException("Email address you've submitted is different from the email you have got in your Google Account");
+            } else if (payload.isAdmin()) {
+                throw new NoPermissionException("Only administrators can create user with admin privileges");
+            }
+        }
         
+        final Organization organization = organizations.get(user.getOrganizationId()).orElseThrow(InvalidOrganizationException::new);
+        final String domain = organization.getDomain();
         Map<String, String> notValidatedFields=EmployeeValidator.validateEmployee(payload);
         if(notValidatedFields.size()>0)
         	return buildValidationFailedRepresentation(uriInfo, notValidatedFields);
 
         final NewEmployeeCommand command = descriptors.newEmployeeCommand(payload, domain);
-        Employee newEmployee = organization.addEmployee(command);
+        final Employee newEmployee = organization.addEmployee(command);
+
         events.publish(command);
 
         return buildRepresentation(uriInfo, newEmployee);
@@ -85,10 +90,10 @@ public class NewEmployee extends BaseResource {
                 .build();
     }
     private Response buildRepresentation(final UriInfo uriInfo, final Employee employee) {
-        final URI employeeLink = resourceLink(uriInfo, EmployeeQuery.class, employee.getId());
+        final URI employeeLink = resourceLink(uriInfo, EmployeeQuery.class, employee.getEmail());
         final Representation halResource = rest.newRepresentation()
                 .withProperty("status", "created")
-                .withProperty("id", employee.getId())
+                .withProperty("email", employee.getEmail())
                 .withLink("employee", employeeLink);
 
         return Response.ok(halResource.toString(RepresentationFactory.HAL_JSON))

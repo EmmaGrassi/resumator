@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Date;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Holds the metadata of a command
@@ -13,20 +14,17 @@ import java.util.Optional;
  * @since 0.1
  */
 public class CommandHeader {
-    protected final String id;
+    private final String id;
     private final String domain;
     private final Long timestamp;
     private final Long insertOrder;
 
-    public CommandHeader() {
-        this(null, null, new Date().getTime(), null);
-    }
 
     @JsonCreator
     public CommandHeader(@JsonProperty("id") final String id,
-                          @JsonProperty("domain") final String domain,
-                          @JsonProperty("timestamp") final Long timestamp,
-                          @JsonProperty("insertOrder") final Long insertOrder) {
+                         @JsonProperty("domain") final String domain,
+                         @JsonProperty("timestamp") final Long timestamp,
+                         @JsonProperty("insertOrder") final Long insertOrder) {
         this.id = id;
         this.domain = domain;
         this.timestamp = timestamp;
@@ -50,7 +48,7 @@ public class CommandHeader {
     }
 
     public static class Builder {
-        protected String id = null;
+        private String id = UUID.randomUUID().toString();
         private String domain = null;
         private Long timestamp = new Date().getTime();
         private Long insertOrder = null;

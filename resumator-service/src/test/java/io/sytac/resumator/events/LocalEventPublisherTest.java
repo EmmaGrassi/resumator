@@ -62,7 +62,7 @@ public class LocalEventPublisherTest {
 
         final List<Language> languages = Arrays.asList(new Language("English", Language.Proficiency.FULL_PROFESSIONAL));
         final EmployeeCommandPayload payload = new EmployeeCommandPayload("Title", "Foo", "Bar", "Email", "+31000999000",
-                "Github", "Linkedin", "1984-04-22", "ITALY", "N", "About ME", education, courses, experience, languages);
+                "Github", "Linkedin", "1984-04-22", "ITALY", "N", "About ME", education, courses, experience, languages, false);
 
         final CommandHeader commandHeader = new CommandHeader.Builder()
                 .setId(UUID.randomUUID().toString())

@@ -124,7 +124,8 @@ public class NewEmployeeCommandTest extends CommonCommandTest {
                 "\"languages\":[{" +
                     "\"name\":\"" + ENGLISH_LANGUAGE + "\","+
                     "\"proficiency\":\"" + Language.Proficiency.FULL_PROFESSIONAL + "\"" +
-                "}]" +
+                "}]," +
+                "\"admin\":false" +
             "}," +
             "\"type\":\"" + NEW_EMPLOYEE_TYPE + "\"" +
         "}";

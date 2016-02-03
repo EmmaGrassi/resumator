@@ -13,8 +13,10 @@ import org.eclipse.jetty.http.HttpStatus;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
+import javax.naming.NoPermissionException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import java.util.Optional;
 
 /**
  * Removes an {@link Employee}
@@ -22,7 +24,7 @@ import javax.ws.rs.core.*;
  * @author Dmitry Ryazanov
  * @since 0.1
  */
-@Path("employees/{id}")
+@Path("employees/{email}")
 @RolesAllowed(Roles.USER)
 public class RemoveEmployee extends BaseResource {
 
@@ -39,27 +41,30 @@ public class RemoveEmployee extends BaseResource {
 
     @DELETE
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response removeEmployee(@PathParam("id") final String employeeId,
-                                   @UserPrincipal final User user) {
+    public Response removeEmployee(@PathParam("email") final String email,
+                                   @UserPrincipal final User user) throws NoPermissionException {
 
-        final Organization organization = organizations.get(user.getOrganizationId())
-                .orElseThrow(InvalidOrganizationException::new);
+        final String checkedEmail = Optional.ofNullable(email).orElseThrow(IllegalArgumentException::new);
+        final Organization organization = organizations.get(user.getOrganizationId()).orElseThrow(InvalidOrganizationException::new);
 
-        if (organization.getEmployeeById(employeeId) == null) {
+        if (!user.hasRole(Roles.ADMIN) && !checkedEmail.equals(user.getName())) {
+            throw new NoPermissionException("You don't have permissions to delete this profile");
+        }
+
+        final Employee employee = organization.getEmployeeByEmail(email);
+        if (employee == null) {
             return buildRepresentation(HttpStatus.NOT_FOUND_404);
         }
 
-        final RemoveEmployeeCommand command = descriptors.removeEmployeeCommand(employeeId, organization.getDomain());
-        removeEmployee(organization.getDomain(), command);
+        final RemoveEmployeeCommand command = descriptors.removeEmployeeCommand(employee.getId(), organization.getDomain());
+        organization.removeEmployee(command);
+
         events.publish(command);
+
         return buildRepresentation(HttpStatus.NO_CONTENT_204);
     }
 
     private Response buildRepresentation(int httpStatus) {
         return Response.status(httpStatus).build();
-    }
-
-    private void removeEmployee(String domain, RemoveEmployeeCommand command) {
-        organizations.fromDomain(domain).get().removeEmployee(command);
     }
 }

@@ -15,10 +15,7 @@ import java.util.UUID;
 public class CommandFactory {
 
     public NewEmployeeCommand newEmployeeCommand(final EmployeeCommandPayload payload, final String domain) {
-        final CommandHeader header = new CommandHeader.Builder()
-                .setId(UUID.randomUUID().toString())
-                .setDomain(domain)
-                .build();
+        final CommandHeader header = new CommandHeader.Builder().setDomain(domain).build();
         return new NewEmployeeCommand(header, payload);
     }
 
@@ -30,7 +27,7 @@ public class CommandFactory {
         return new UpdateEmployeeCommand(header, payload);
     }
 
-    public RemoveEmployeeCommand removeEmployeeCommand(String employeeId, String domain) {
+    public RemoveEmployeeCommand removeEmployeeCommand(final String employeeId, final String domain) {
         final CommandHeader header = new CommandHeader.Builder().setId(employeeId).setDomain(domain).build();
         return new RemoveEmployeeCommand(header, new RemoveEmployeeCommandPayload(employeeId));
     }

@@ -57,6 +57,7 @@ public class EmployeeCommandPayload implements CommandPayload {
     private final List<Experience> experience;
     @Valid
     private final List<Language> languages;
+    private final boolean admin;
 
     @JsonCreator
     public EmployeeCommandPayload(@JsonProperty("title") final String title,
@@ -73,7 +74,8 @@ public class EmployeeCommandPayload implements CommandPayload {
                                   @JsonProperty("education") final List<Education> education,
                                   @JsonProperty("courses") final List<Course> courses,
                                   @JsonProperty("experience") final List<Experience> experience,
-                                  @JsonProperty("languages") final List<Language> languages) {
+                                  @JsonProperty("languages") final List<Language> languages,
+                                  @JsonProperty("admin") final boolean admin) {
 
         this.title = title;
         this.name = name;
@@ -90,5 +92,6 @@ public class EmployeeCommandPayload implements CommandPayload {
         this.courses = courses;
         this.experience = experience;
         this.languages = languages;
+        this.admin = admin;
     }
 }

@@ -20,6 +20,7 @@ import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Lists the employees stored into the Resumator
@@ -39,6 +40,8 @@ public class EmployeesQuery extends BaseResource {
 
     private static final String QUERY_PARAM_PAGE = "page";
 
+    private static final String QUERY_PARAM_EMPLOYEE_TYPE = "type";
+
     private static final int FIRST_PAGE = 1;
 
     static final int DEFAULT_PAGE_SIZE = 25;
@@ -53,27 +56,26 @@ public class EmployeesQuery extends BaseResource {
     @GET
     @Produces(RepresentationFactory.HAL_JSON)
     public Representation getEmployees(@QueryParam(QUERY_PARAM_PAGE) Integer page,
+                                       @QueryParam(QUERY_PARAM_EMPLOYEE_TYPE) EmployeeType type,
                                        @UserPrincipal final User user,
                                        @Context final UriInfo uriInfo) {
-        int pageNumber = Math.max(Optional.ofNullable(page).orElse(FIRST_PAGE), FIRST_PAGE);
-
         Representation representation = rest.newRepresentation()
                 .withLink(REL_SELF, uriInfo.getRequestUri())
                 .withLink(REL_EMPLOYEES, resourceLink(uriInfo, EmployeesQuery.class));
 
-        List<Employee> allEmployees = organizations
-                .get(user.getOrganizationId())
-                .map(Organization::getEmployees)
-                .orElse(Collections.emptyList());
+        List<Employee> allEmployees = getEmployees(user.getOrganizationId());
+        List<Employee> filteredEmployees = allEmployees.stream()
+                .filter(employee -> type == null || employee.getType() == type)
+                .collect(Collectors.toList());
 
-        allEmployees
-                .stream()
+        int pageNumber = Math.max(Optional.ofNullable(page).orElse(FIRST_PAGE), FIRST_PAGE);
+        filteredEmployees.stream()
                 .sorted(Comparator.comparing(Employee::getSurname).thenComparing(Employee::getName))
                 .skip(DEFAULT_PAGE_SIZE * (pageNumber - 1))
                 .limit(DEFAULT_PAGE_SIZE)
                 .forEach(employee -> representation.withRepresentation(REL_EMPLOYEES, represent(employee, uriInfo)));
 
-        if (hasNextPage(allEmployees.size(), pageNumber)) {
+        if (hasNextPage(filteredEmployees.size(), pageNumber)) {
             representation.withLink(REL_NEXT, createURIForPage(uriInfo, pageNumber + 1));
         }
 
@@ -89,10 +91,17 @@ public class EmployeesQuery extends BaseResource {
      */
     private Representation represent(final Employee employee, final UriInfo uriInfo) {
         return rest.newRepresentation()
-                .withProperty("id", employee.getId())
+                .withProperty("email", employee.getEmail())
                 .withProperty("name", employee.getName())
                 .withProperty("surname", employee.getSurname())
-                .withLink(REL_SELF, resourceLink(uriInfo, EmployeeQuery.class, employee.getId()));
+                .withLink(REL_SELF, resourceLink(uriInfo, EmployeeQuery.class, employee.getEmail()));
+    }
+
+    private List<Employee> getEmployees(final String organizationId) {
+        return organizations
+                .get(organizationId)
+                .map(Organization::getEmployees)
+                .orElse(Collections.emptyList());
     }
 
     private boolean hasNextPage(int numberOfEmployees, int currentPage) {
@@ -100,6 +109,6 @@ public class EmployeesQuery extends BaseResource {
     }
 
     private URI createURIForPage(UriInfo uriInfo, int page) {
-        return UriBuilder.fromUri(uriInfo.getAbsolutePath()).queryParam(QUERY_PARAM_PAGE, page).build();
+        return UriBuilder.fromUri(uriInfo.getRequestUri()).replaceQueryParam(QUERY_PARAM_PAGE, page).build();
     }
 }

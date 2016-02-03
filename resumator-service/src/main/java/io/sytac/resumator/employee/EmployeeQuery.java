@@ -10,10 +10,8 @@ import io.sytac.resumator.organization.OrganizationRepository;
 import io.sytac.resumator.security.Roles;
 import io.sytac.resumator.security.User;
 import io.sytac.resumator.security.UserPrincipal;
-import io.sytac.resumator.utils.DateUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.eclipse.jetty.http.HttpHeader;
 import org.eclipse.jetty.http.HttpStatus;
 
 import javax.annotation.security.RolesAllowed;
@@ -34,7 +32,7 @@ import java.util.*;
  * @author Carlo Sciolla
  * @since 0.1
  */
-@Path("employees/{id}")
+@Path("employees/{email}")
 @RolesAllowed(Roles.USER)
 @Slf4j
 public class EmployeeQuery extends BaseResource {
@@ -45,6 +43,7 @@ public class EmployeeQuery extends BaseResource {
 
     private final DocxGenerator docxGenerator;
 
+
     @Inject
     public EmployeeQuery(final OrganizationRepository organizations, final DocxGenerator docxGenerator) {
         this.organizations = organizations;
@@ -54,9 +53,11 @@ public class EmployeeQuery extends BaseResource {
     @GET
     @Produces(RepresentationFactory.HAL_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response getEmployee(@PathParam("id") final String id, @UserPrincipal User user,
-                                      @Context final UriInfo uriInfo) {
-        return represent(getEmployee(id, user), uriInfo);
+    public Response getEmployee(@PathParam("email") final String email,
+                                @UserPrincipal User user,
+                                @Context final UriInfo uriInfo) {
+
+        return represent(getEmployee(email, user), uriInfo);
     }
 
     @GET
@@ -90,16 +91,15 @@ public class EmployeeQuery extends BaseResource {
      * @return The {@link Representation} of the {@link Employee}
      */
     private Response represent(final Optional<Employee> employee, final UriInfo uriInfo) {
-        final Representation representation = rest.newRepresentation();
-
         if (employee.isPresent()) {
             final Employee emp = employee.get();
-            final List<Education> educations = Optional.ofNullable(emp.getEducations()).orElse(Collections.EMPTY_LIST);
-            final List<Course> courses = Optional.ofNullable(emp.getCourses()).orElse(Collections.EMPTY_LIST);
-            final List<Experience> experiences = Optional.ofNullable(emp.getExperiences()).orElse(Collections.EMPTY_LIST);
-            final List<Language> languages = Optional.ofNullable(emp.getLanguages()).orElse(Collections.EMPTY_LIST);
+            final List<Education> educations = Optional.ofNullable(emp.getEducations()).orElse(Collections.emptyList());
+            final List<Course> courses = Optional.ofNullable(emp.getCourses()).orElse(Collections.emptyList());
+            final List<Experience> experiences = Optional.ofNullable(emp.getExperiences()).orElse(Collections.emptyList());
+            final List<Language> languages = Optional.ofNullable(emp.getLanguages()).orElse(Collections.emptyList());
 
-            representation.withProperty("id", emp.getId())
+            final String representation = rest.newRepresentation()
+                    .withProperty("type", emp.getType())
                     .withProperty("title", emp.getTitle())
                     .withProperty("name", emp.getName())
                     .withProperty("surname", emp.getSurname())
@@ -115,18 +115,20 @@ public class EmployeeQuery extends BaseResource {
                     .withProperty("courses", courses)
                     .withProperty("experience", experiences)
                     .withProperty("languages", languages)
-                    .withLink("self", uriInfo.getRequestUri().toString());
+                    .withProperty("admin", emp.isAdmin())
+                    .withLink("self", uriInfo.getRequestUri().toString())
+                    .toString(RepresentationFactory.HAL_JSON);
 
-            return Response.ok(representation.toString(RepresentationFactory.HAL_JSON)).build();
+            return Response.ok(representation).build();
         } else {
             return Response.ok().status(HttpStatus.NOT_FOUND_404).build();
         }
     }
 
-    private Optional<Employee> getEmployee(String id, User user) {
+    private Optional<Employee> getEmployee(String email, User user) {
         return organizations
                 .get(user.getOrganizationId())
-                .map(org -> org.getEmployeeById(id));
+                .map(org -> org.getEmployeeByEmail(email));
     }
 
     private InputStream getTemplateStream() {

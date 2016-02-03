@@ -26,7 +26,7 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 /**
- * Tests the Employees resource
+ * Tests the EmployeesQuery resource
  */
 @RunWith(MockitoJUnitRunner.class)
 public class EmployeesQueryTest {
@@ -68,7 +68,7 @@ public class EmployeesQueryTest {
 
         when(organization.getEmployees()).thenReturn(employees);
 
-        Representation actual = employeesQuery.getEmployees(0, user, uriInfo);
+        Representation actual = employeesQuery.getEmployees(0, null, user, uriInfo);
         assertThat(actual.getResourcesByRel("employees").size(), equalTo(EmployeesQuery.DEFAULT_PAGE_SIZE));
     }
 
@@ -78,7 +78,7 @@ public class EmployeesQueryTest {
 
         when(organization.getEmployees()).thenReturn(employees);
 
-        Representation actual = employeesQuery.getEmployees(2, user, uriInfo);
+        Representation actual = employeesQuery.getEmployees(2, null, user, uriInfo);
         assertThat(actual.getResourcesByRel("employees").size(), equalTo(1));
     }
 
@@ -88,7 +88,7 @@ public class EmployeesQueryTest {
 
         when(organization.getEmployees()).thenReturn(employees);
 
-        Representation actual = employeesQuery.getEmployees(2, user, uriInfo);
+        Representation actual = employeesQuery.getEmployees(2, null, user, uriInfo);
         assertThat(actual.getResourcesByRel("employees").size(), equalTo(0));
     }
 
@@ -98,7 +98,7 @@ public class EmployeesQueryTest {
 
         when(organization.getEmployees()).thenReturn(employees);
 
-        Representation actual = employeesQuery.getEmployees(1, user, uriInfo);
+        Representation actual = employeesQuery.getEmployees(1, null, user, uriInfo);
         assertThat(actual.getLinkByRel("self").getHref(), equalTo(URI_REQUEST));
         assertThat(actual.getLinkByRel("employees").getHref(), equalTo(URI_ABSOLUTE_PATH));
         assertThat(actual.getLinkByRel("next").getHref(), equalTo(URI_ABSOLUTE_PATH + "?page=2"));
@@ -110,20 +110,39 @@ public class EmployeesQueryTest {
 
         when(organization.getEmployees()).thenReturn(employees);
 
-        Representation actual = employeesQuery.getEmployees(1, user, uriInfo);
+        Representation actual = employeesQuery.getEmployees(1, null, user, uriInfo);
         actual.getResourcesByRel("employees")
                 .forEach(resource -> assertThat(resource.getLinkByRel("self").getHref(),
-                        equalTo(URI_ABSOLUTE_PATH + "/" + resource.getProperties().get("id"))));
+                        equalTo(URI_ABSOLUTE_PATH + "/" + resource.getProperties().get("email"))));
+    }
+
+    @Test
+    public void getEmployeesWithTypeFilterReturnsFilteredEmployees() {
+        final int nrFreelancers = 3;
+
+        List<Employee> employees = getNumberOfEmployees(5, EmployeeType.EMPLOYEE);
+        employees.addAll(getNumberOfEmployees(nrFreelancers, EmployeeType.FREELANCER));
+
+        when(organization.getEmployees()).thenReturn(employees);
+
+        Representation actual = employeesQuery.getEmployees(1, EmployeeType.FREELANCER, user, uriInfo);
+        assertThat(actual.getResourcesByRel("employees").size(), equalTo(nrFreelancers));
     }
 
     private List<Employee> getNumberOfEmployees(int numberOfEmployees) {
-        return Stream.generate(() -> getDummyEmployee(UUID.randomUUID().toString()))
+        return Stream.generate(() -> getDummyEmployee(UUID.randomUUID().toString(), EmployeeType.EMPLOYEE))
                 .limit(numberOfEmployees)
                 .collect(toList());
     }
 
-    private Employee getDummyEmployee(final String id) {
-        return new Employee(id, "title", "name", "surname", "email", "phoneNumber", null, null, null, null,
-                null, null, null, null, null, null);
+    private List<Employee> getNumberOfEmployees(int numberOfEmployees, EmployeeType employeeType) {
+        return Stream.generate(() -> getDummyEmployee(UUID.randomUUID().toString(), employeeType))
+                .limit(numberOfEmployees)
+                .collect(toList());
+    }
+
+    private Employee getDummyEmployee(final String id, EmployeeType employeeType) {
+        return new Employee(id, employeeType, "title", "name", "surname", "email", "phoneNumber", null, null,
+                null, null, null, null, null, null, null, null, false);
     }
 }

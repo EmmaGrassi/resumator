@@ -8,6 +8,7 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.common.collect.Sets;
 import io.sytac.resumator.Configuration;
+import io.sytac.resumator.employee.Employee;
 import io.sytac.resumator.organization.Organization;
 import io.sytac.resumator.organization.OrganizationRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -60,13 +61,25 @@ public class Oauth2SecurityService {
             final Optional<Organization> organization = organizations.fromDomain(token.getPayload().getHostedDomain());
             return organization.map(org -> new User(org.getId(),
                     token.getPayload().getEmail(),
-                    getRoles(token.getPayload().getEmail())));
+                    getRoles(org, token.getPayload())));
         });
     }
 
-    private Set<String> getRoles(final String user) {
+    private Set<String> getRoles(final Organization organization, final GoogleIdToken.Payload payload) {
+        return hasAdminRole(organization, payload) ? Sets.newHashSet(ADMIN, USER) : Sets.newHashSet(USER);
+    }
+
+    private boolean hasAdminRole(final Organization organization, final GoogleIdToken.Payload payload) {
         final Set<String> admins = new HashSet<>(config.getListProperty(ADMIN_ACCOUNT_LIST));
-        return admins.contains(user) ? Sets.newHashSet(ADMIN, USER) : Sets.newHashSet(USER);
+        if (admins.contains(payload.getEmail())) {
+            return true;
+        } else {
+            final Optional<Employee> employee = Optional.ofNullable(organization.getEmployeeByEmail(payload.getEmail()));
+            if (employee.isPresent() && employee.get().isAdmin()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private Optional<GoogleIdToken> verify(final GoogleIdTokenVerifier verifier, final String idtoken) {

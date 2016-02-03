@@ -57,7 +57,7 @@ public class NewEmployee extends BaseResource {
         if (!user.hasRole(Roles.ADMIN)) {
             if (!checkedEmail.equals(user.getName())) {
                 throw new IllegalArgumentException("Email address you've submitted is different from the email you have got in your Google Account");
-            } else if (payload.isAdmin() == true) {
+            } else if (payload.isAdmin()) {
                 throw new NoPermissionException("Only administrators can create user with admin privileges");
             }
         }

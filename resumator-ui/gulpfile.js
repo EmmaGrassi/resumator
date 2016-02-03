@@ -41,10 +41,10 @@ function runBundle() {
       .bundle()
       .pipe(source('app.bundle.js'))
       .pipe(gulp.dest('build/js'))
+      .on('end', cb)
       .pipe(browserSync.reload({
         stream:true
-      }))
-      .on('end', cb);
+      }));
   };
 }
 

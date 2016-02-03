@@ -145,14 +145,14 @@ gulp.task('minifyHTML', 'Minifies all HTML files and puts them in the build dire
 });
 
 gulp.task('modifyIndexHTML', 'Modifies the index.html so some things are not loaded in production.', function modifyIndexHTML(cb) {
-  fs.readFile('build/index.html', (error, content) => {
+  fs.readFile('build/index.html', function(error, content) {
     if (error) {
       return cb(error);
     }
 
     const newContent = content.toString().replace('var NODE_ENV = \'development\';', 'var NODE_ENV = \'production\';');
 
-    fs.writeFile('build/index.html', newContent, (error) => {
+    fs.writeFile('build/index.html', newContent, function(error) {
       if (error) {
         return cb(error);
       }

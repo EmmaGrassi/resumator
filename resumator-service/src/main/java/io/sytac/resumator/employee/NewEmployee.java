@@ -51,7 +51,7 @@ public class NewEmployee extends BaseResource {
     @Produces({RepresentationFactory.HAL_JSON, MediaType.APPLICATION_JSON})
     public Response newEmployee(final EmployeeCommandPayload payload,
                                 @UserPrincipal final User user,
-                                @Context final UriInfo uriInfo) throws NoPermissionException {
+                                @Context final UriInfo uriInfo) {
 
         final String checkedEmail = Optional.ofNullable(payload.getEmail()).orElseThrow(IllegalArgumentException::new);
         if (!user.hasRole(Roles.ADMIN) && !checkedEmail.equals(user.getName())) {

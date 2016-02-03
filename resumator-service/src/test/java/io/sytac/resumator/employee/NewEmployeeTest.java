@@ -1,13 +1,7 @@
 package io.sytac.resumator.employee;
 
-import com.theoryinpractise.halbuilder.api.Representation;
-import io.sytac.resumator.command.CommandFactory;
-import io.sytac.resumator.events.EventPublisher;
 import io.sytac.resumator.model.exceptions.InvalidOrganizationException;
-import io.sytac.resumator.organization.Organization;
-import io.sytac.resumator.organization.OrganizationRepository;
 import io.sytac.resumator.security.Roles;
-import io.sytac.resumator.security.User;
 import org.apache.http.HttpStatus;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,56 +12,19 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import javax.naming.NoPermissionException;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Stream;
 
-import static java.util.stream.Collectors.toList;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 
 /**
- * Tests the Employees resource
+ * Tests the NewEmployees resource
  */
 @RunWith(MockitoJUnitRunner.class)
-public class NewEmployeeTest {
-
-    public static final String ORG_ID = "org";
-    public static final String EMAIL = "email@dot.com";
-    private static final String URI_BASE = "http://base.uri";
-    private static final String URI_ABSOLUTE_PATH = URI_BASE + "/employees";
-//    public static final String UUID = "6743e653-f3cc-4580-84e8-f44ee8531128";
-    public static final String DOMAIN = "domain";
-
-    @Mock
-    private OrganizationRepository organizationRepositoryMock;
-
-    @Mock
-    private Organization organizationMock;
-
-    @Mock
-    private CommandFactory descriptorsMock;
-
-    @Mock
-    private EventPublisher eventsMock;
-
-    @Mock
-    private User userMock;
-
-    @Mock
-    private UriInfo uriInfoMock;
-
-    @Mock
-    private Employee employeeMock;
+public class NewEmployeeTest extends CommonEmployeeTest {
 
     @Mock
     private NewEmployeeCommand newEmployeeCommandMock;
@@ -78,16 +35,9 @@ public class NewEmployeeTest {
 
     @Before
     public void before() throws URISyntaxException {
-        when(organizationRepositoryMock.get(eq(ORG_ID))).thenReturn(Optional.of(organizationMock));
+        super.before();
         when(descriptorsMock.newEmployeeCommand(any(EmployeeCommandPayload.class), eq(DOMAIN))).thenReturn(newEmployeeCommandMock);
-        when(organizationMock.getDomain()).thenReturn(DOMAIN);
         when(organizationMock.addEmployee(eq(newEmployeeCommandMock))).thenReturn(employeeMock);
-        when(userMock.hasRole(eq(Roles.ADMIN))).thenReturn(true);
-        when(userMock.getOrganizationId()).thenReturn(ORG_ID);
-        when(employeeMock.getEmail()).thenReturn(EMAIL);
-
-        when(uriInfoMock.getAbsolutePath()).thenReturn(new URI(URI_ABSOLUTE_PATH));
-        when(uriInfoMock.getBaseUri()).thenReturn(new URI(URI_BASE));
     }
 
     @Test
@@ -104,8 +54,10 @@ public class NewEmployeeTest {
         newEmployee.newEmployee(getEmployeeCommandPayload(), userMock, uriInfoMock);
     }
 
-    private EmployeeCommandPayload getEmployeeCommandPayload() {
-        return new EmployeeCommandPayload("title", "name", "surname", EMAIL, "phoneNumber", null, null, null, null,
-                null, null, null, null, null, null, false);
+    @Test(expected = IllegalArgumentException.class)
+    public void testNewEmployeesNotAnAdmin() throws NoPermissionException {
+        when(userMock.hasRole(eq(Roles.ADMIN))).thenReturn(false);
+        when(userMock.getName()).thenReturn(WRONG_EMAIL);
+        newEmployee.newEmployee(getEmployeeCommandPayload(), userMock, uriInfoMock);
     }
 }

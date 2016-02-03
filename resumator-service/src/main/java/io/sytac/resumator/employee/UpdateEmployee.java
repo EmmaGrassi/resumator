@@ -61,8 +61,12 @@ public class UpdateEmployee extends BaseResource {
             validateAdminFlag(organization, payload);
         }
 
-        final String employeeId = organization.getEmployeeByEmail(email).getId();
-        final UpdateEmployeeCommand command = descriptors.updateEmployeeCommand(employeeId, payload, organization.getDomain());
+        final Employee employee = organization.getEmployeeByEmail(email);
+        if (employee == null) {
+            return Response.status(HttpStatus.NOT_FOUND_404).build();
+        }
+
+        final UpdateEmployeeCommand command = descriptors.updateEmployeeCommand(employee.getId(), payload, organization.getDomain());
         final Employee updatedEmployee = organization.updateEmployee(command);
 
         events.publish(command);
@@ -85,7 +89,7 @@ public class UpdateEmployee extends BaseResource {
     private void validateAdminFlag(final Organization organization, final EmployeeCommandPayload payload) throws NoPermissionException {
         final Employee employee = organization.getEmployeeByEmail(payload.getEmail());
         if (employee.isAdmin() != payload.isAdmin()) {
-            throw new NoPermissionException("You don't have permissions to update this profile");
+            throw new NoPermissionException("Only administrators can change admin flag");
         }
     }
 

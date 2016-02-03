@@ -57,7 +57,7 @@ public class RemoveEmployee extends BaseResource {
         }
 
         final RemoveEmployeeCommand command = descriptors.removeEmployeeCommand(employee.getId(), organization.getDomain());
-        removeEmployee(organization.getDomain(), command);
+        organization.removeEmployee(command);
 
         events.publish(command);
 
@@ -66,9 +66,5 @@ public class RemoveEmployee extends BaseResource {
 
     private Response buildRepresentation(int httpStatus) {
         return Response.status(httpStatus).build();
-    }
-
-    private void removeEmployee(String domain, RemoveEmployeeCommand command) {
-        organizations.fromDomain(domain).get().removeEmployee(command);
     }
 }

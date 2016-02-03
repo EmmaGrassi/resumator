@@ -3,6 +3,7 @@ package io.sytac.resumator.employee;
 import com.theoryinpractise.halbuilder.api.Representation;
 import io.sytac.resumator.organization.Organization;
 import io.sytac.resumator.organization.OrganizationRepository;
+import io.sytac.resumator.security.Roles;
 import io.sytac.resumator.security.User;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import javax.naming.NoPermissionException;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -23,6 +25,7 @@ import static java.util.stream.Collectors.toList;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 
 /**
@@ -56,6 +59,7 @@ public class EmployeesQueryTest {
     public void before() throws URISyntaxException {
         when(organizations.get(anyString())).thenReturn(Optional.of(organization));
         when(user.getOrganizationId()).thenReturn("dummy");
+        when(user.hasRole(eq(Roles.ADMIN))).thenReturn(true);
 
         when(uriInfo.getAbsolutePath()).thenReturn(new URI(URI_ABSOLUTE_PATH));
         when(uriInfo.getBaseUri()).thenReturn(new URI(URI_BASE));
@@ -63,7 +67,7 @@ public class EmployeesQueryTest {
     }
 
     @Test
-    public void getEmployeesPageLowerThan1ReturnsPage1() {
+    public void getEmployeesPageLowerThan1ReturnsPage1() throws NoPermissionException {
         List<Employee> employees = getNumberOfEmployees(EmployeesQuery.DEFAULT_PAGE_SIZE + 1);
 
         when(organization.getEmployees()).thenReturn(employees);
@@ -73,7 +77,7 @@ public class EmployeesQueryTest {
     }
 
     @Test
-    public void getEmployeesPage2ReturnsPage2() {
+    public void getEmployeesPage2ReturnsPage2() throws NoPermissionException {
         List<Employee> employees = getNumberOfEmployees(EmployeesQuery.DEFAULT_PAGE_SIZE + 1);
 
         when(organization.getEmployees()).thenReturn(employees);
@@ -83,7 +87,7 @@ public class EmployeesQueryTest {
     }
 
     @Test
-    public void getEmployeesPageHigherThanNumberPagesReturnsNoEmployees() {
+    public void getEmployeesPageHigherThanNumberPagesReturnsNoEmployees() throws NoPermissionException {
         List<Employee> employees = getNumberOfEmployees(5);
 
         when(organization.getEmployees()).thenReturn(employees);
@@ -93,7 +97,7 @@ public class EmployeesQueryTest {
     }
 
     @Test
-    public void getEmployeesReturnsExpectedLinks() {
+    public void getEmployeesReturnsExpectedLinks() throws NoPermissionException {
         List<Employee> employees = getNumberOfEmployees(EmployeesQuery.DEFAULT_PAGE_SIZE + 1);
 
         when(organization.getEmployees()).thenReturn(employees);
@@ -105,7 +109,7 @@ public class EmployeesQueryTest {
     }
 
     @Test
-    public void eachEmployeeInGetEmployeesHasSelfLink() {
+    public void eachEmployeeInGetEmployeesHasSelfLink() throws NoPermissionException {
         List<Employee> employees = getNumberOfEmployees(5);
 
         when(organization.getEmployees()).thenReturn(employees);
@@ -117,7 +121,7 @@ public class EmployeesQueryTest {
     }
 
     @Test
-    public void getEmployeesWithTypeFilterReturnsFilteredEmployees() {
+    public void getEmployeesWithTypeFilterReturnsFilteredEmployees() throws NoPermissionException {
         final int nrFreelancers = 3;
 
         List<Employee> employees = getNumberOfEmployees(5, EmployeeType.EMPLOYEE);

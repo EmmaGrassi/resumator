@@ -57,7 +57,7 @@ public class EmployeeQuery extends BaseResource {
                                 @UserPrincipal User user,
                                 @Context final UriInfo uriInfo) {
 
-        return represent(getEmployee(email, user), uriInfo);
+        return represent(email, user, uriInfo);
     }
 
     @GET
@@ -86,11 +86,14 @@ public class EmployeeQuery extends BaseResource {
     /**
      * Translates an {@link Employee} into its HAL representation
      *
-     * @param employee The employee to represent
+     * @param email The email of desired employee
+     * @param user The current user
      * @param uriInfo  The current REST endpoint information
      * @return The {@link Representation} of the {@link Employee}
      */
-    private Response represent(final Optional<Employee> employee, final UriInfo uriInfo) {
+    private Response represent(final String email, final User user, final UriInfo uriInfo) {
+        final Optional<Employee> employee = getEmployee(email, user);
+
         if (employee.isPresent()) {
             final Employee emp = employee.get();
             final List<Education> educations = Optional.ofNullable(emp.getEducations()).orElse(Collections.emptyList());
@@ -115,7 +118,7 @@ public class EmployeeQuery extends BaseResource {
                     .withProperty("courses", courses)
                     .withProperty("experience", experiences)
                     .withProperty("languages", languages)
-                    .withProperty("admin", emp.isAdmin())
+                    .withProperty("admin", (user.hasRole(Roles.ADMIN) ? true : emp.isAdmin()))
                     .withLink("self", uriInfo.getRequestUri().toString())
                     .toString(RepresentationFactory.HAL_JSON);
 

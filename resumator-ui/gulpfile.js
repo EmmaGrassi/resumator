@@ -80,7 +80,7 @@ gulp.task('compileBrowserify', 'Compiles the client JavaScript code from the bui
 
     var bundle = getBundle(path);
 
-    runBundle()(bundle, (error) => {
+    runBundle()(bundle, function(error) {
       if (error) {
         return cb(error);
       }

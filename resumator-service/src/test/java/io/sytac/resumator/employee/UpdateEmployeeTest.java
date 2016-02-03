@@ -15,8 +15,10 @@ import javax.naming.OperationNotSupportedException;
 import javax.ws.rs.core.Response;
 import java.net.URISyntaxException;
 
+import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
@@ -79,5 +81,28 @@ public class UpdateEmployeeTest extends CommonEmployeeTest {
     public void testUpdateEmployeesNotAdminChangeAdminFlag() throws NoPermissionException, OperationNotSupportedException {
         when(userMock.hasRole(eq(Roles.ADMIN))).thenReturn(false);
         updateEmployee.updateEmployee(EMAIL, getEmployeeCommandPayload(true), userMock, uriInfoMock);
+    }
+
+    @Test
+    public void updateEmployee_nonAdminNotChangingEmployeeType_responseStatusIsOk() throws NoPermissionException, OperationNotSupportedException {
+        when(userMock.hasRole(eq(Roles.ADMIN))).thenReturn(false);
+        Response response = updateEmployee.updateEmployee(EMAIL, getEmployeeCommandPayload(), userMock, uriInfoMock);
+
+        assertThat(response.getStatus(), equalTo(org.eclipse.jetty.http.HttpStatus.OK_200));
+    }
+
+    @Test(expected = NoPermissionException.class)
+    public void updateEmployee_nonAdminChangingEmployeeType_permissionExceptionIsThrown() throws NoPermissionException, OperationNotSupportedException {
+        when(userMock.hasRole(eq(Roles.ADMIN))).thenReturn(false);
+        updateEmployee.updateEmployee(EMAIL, getEmployeeCommandPayload(false, EmployeeType.FREELANCER), userMock, uriInfoMock);
+    }
+
+    @Test
+    public void updateEmployee_adminChangingEmployeeType_responseStatusIsOk() throws NoPermissionException, OperationNotSupportedException {
+        when(userMock.hasRole(eq(Roles.ADMIN))).thenReturn(true);
+        Response response = updateEmployee.updateEmployee(EMAIL,
+                getEmployeeCommandPayload(true, EmployeeType.FREELANCER), userMock, uriInfoMock);
+
+        assertThat(response.getStatus(), equalTo(org.eclipse.jetty.http.HttpStatus.OK_200));
     }
 }

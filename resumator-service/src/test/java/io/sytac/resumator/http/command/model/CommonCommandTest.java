@@ -7,6 +7,7 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import io.sytac.resumator.command.CommandHeader;
 import io.sytac.resumator.employee.DateToStringSerializer;
 import io.sytac.resumator.employee.EmployeeCommandPayload;
+import io.sytac.resumator.employee.EmployeeType;
 import io.sytac.resumator.employee.RemoveEmployeeCommand;
 import io.sytac.resumator.model.Course;
 import io.sytac.resumator.model.Education;
@@ -32,6 +33,7 @@ public class CommonCommandTest {
     public static final String SHORT_DESCRIPTION = "Short Description";
     public static final String FIELD_OF_STUDY = "Field of study";
     public static final String SCHOOL = "School";
+    public static final EmployeeType TYPE = EmployeeType.EMPLOYEE;
     public static final String TITLE = "Title";
     public static final String COMPANY_NAME = "CompanyName";
     public static final String NAME = "Foo";
@@ -104,7 +106,7 @@ public class CommonCommandTest {
                                                                   List<Course> courses,
                                                                   List<Language> languages) {
 
-        return new EmployeeCommandPayload(TITLE, NAME, SURNAME, EMAIL, PHONENUMBER, GITHUB, LINKEDIN, DATE_OF_BIRTH,
+        return new EmployeeCommandPayload(TYPE, TITLE, NAME, SURNAME, EMAIL, PHONENUMBER, GITHUB, LINKEDIN, DATE_OF_BIRTH,
                 NATIONALITY, CURRENT_RESIDENCE, ABOUT_ME, educations, courses, experiences, languages, false);
     }
 

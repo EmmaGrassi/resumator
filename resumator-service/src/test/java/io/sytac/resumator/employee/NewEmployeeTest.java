@@ -14,8 +14,10 @@ import javax.naming.NoPermissionException;
 import javax.ws.rs.core.Response;
 import java.net.URISyntaxException;
 
+import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
@@ -65,5 +67,26 @@ public class NewEmployeeTest extends CommonEmployeeTest {
     public void testNewEmployeesWithAdminFlag() throws NoPermissionException {
         when(userMock.hasRole(eq(Roles.ADMIN))).thenReturn(false);
         newEmployee.newEmployee(getEmployeeCommandPayload(true), userMock, uriInfoMock);
+    }
+
+    @Test
+    public void newEmployee_nonAdminNotSettingEmployeeType_responseStatusIsCreated() throws NoPermissionException {
+        when(userMock.hasRole(eq(Roles.ADMIN))).thenReturn(false);
+        newEmployee.newEmployee(getEmployeeCommandPayload(), userMock, uriInfoMock);
+    }
+
+    @Test(expected = NoPermissionException.class)
+    public void newEmployee_nonAdminSettingEmployeeType_permissionExceptionIsThrown() throws NoPermissionException {
+        when(userMock.hasRole(eq(Roles.ADMIN))).thenReturn(false);
+        newEmployee.newEmployee(getEmployeeCommandPayload(false, EmployeeType.EMPLOYEE), userMock, uriInfoMock);
+    }
+
+    @Test
+    public void newEmployee_adminSettingEmployeeType_responseStatusIsCreated() throws NoPermissionException {
+        when(userMock.hasRole(eq(Roles.ADMIN))).thenReturn(true);
+        Response response = newEmployee.newEmployee(getEmployeeCommandPayload(false, EmployeeType.EMPLOYEE), userMock, uriInfoMock);
+
+        assertThat(response.getStatus(), equalTo(HttpStatus.SC_CREATED));
+
     }
 }

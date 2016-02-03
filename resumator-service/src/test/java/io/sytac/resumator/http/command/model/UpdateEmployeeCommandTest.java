@@ -88,6 +88,7 @@ public class UpdateEmployeeCommandTest extends CommonCommandTest {
                 "\"timestamp\":" + headerTimestamp +
             "}," +
             "\"payload\":{" +
+                "\"type\":\"" + TYPE + "\"," +
                 "\"title\":\"" + TITLE + "\"," +
                 "\"name\":\"" + NAME + "\"," +
                 "\"surname\":\"" + SURNAME + "\"," +

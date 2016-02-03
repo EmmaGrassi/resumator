@@ -58,7 +58,7 @@ public class UpdateEmployee extends BaseResource {
 
         if (!user.hasRole(Roles.ADMIN)) {
             checkPermissionsForUpdate(user, email);
-            validateAdminFlag(organization, payload);
+            validateRestrictedFields(organization, payload);
         }
 
         final Employee employee = organization.getEmployeeByEmail(email);
@@ -86,10 +86,12 @@ public class UpdateEmployee extends BaseResource {
         }
     }
 
-    private void validateAdminFlag(final Organization organization, final EmployeeCommandPayload payload) throws NoPermissionException {
-        final Employee employee = organization.getEmployeeByEmail(payload.getEmail());
-        if (employee.isAdmin() != payload.isAdmin()) {
-            throw new NoPermissionException("Only administrators can change admin flag");
+    private void validateRestrictedFields(final Organization organization, final EmployeeCommandPayload payload) throws NoPermissionException {
+        Employee currentEmployee = organization.getEmployeeByEmail(payload.getEmail());
+
+        if (currentEmployee.isAdmin() != payload.isAdmin() ||
+                currentEmployee.getType() != payload.getType()) {
+            throw new NoPermissionException("You do not have permissions to update all the fields you provided");
         }
     }
 

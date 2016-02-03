@@ -84,11 +84,16 @@ public class CommonEmployeeTest {
     }
 
     protected EmployeeCommandPayload getEmployeeCommandPayload() {
-        return getEmployeeCommandPayload(false);
+        return getEmployeeCommandPayload(false, null);
     }
 
+
     protected EmployeeCommandPayload getEmployeeCommandPayload(boolean isAdmin) {
-        return new EmployeeCommandPayload("title", "name", "surname", EMAIL, "phoneNumber", null, null, null, null,
+        return getEmployeeCommandPayload(isAdmin, null);
+    }
+
+    protected EmployeeCommandPayload getEmployeeCommandPayload(boolean isAdmin, EmployeeType type) {
+        return new EmployeeCommandPayload(type, "title", "name", "surname", EMAIL, "phoneNumber", null, null, null, null,
                 null, null, null, null, null, null, isAdmin);
     }
 }

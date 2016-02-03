@@ -86,6 +86,7 @@ public class Organization {
 
         return Employee.builder()
                 .id(employeeId)
+                .type(payload.getType())
                 .title(payload.getTitle())
                 .name(payload.getName())
                 .surname(payload.getSurname())

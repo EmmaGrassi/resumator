@@ -31,21 +31,21 @@ public class OrganizationTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void yearOfBirthMustBeAnInteger(){
-        final EmployeeCommandPayload employeeCommandPayload = new EmployeeCommandPayload("title", "name", "surname",
+        final EmployeeCommandPayload employeeCommandPayload = new EmployeeCommandPayload(null, "title", "name", "surname",
                 "email", "phonenumber", "github", "linkedin", "1984-04-22", "ITALY", "", "", null, null, null, null, false);
         createCommand(employeeCommandPayload);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void nationalityCanOnlyHaveSpecificValues() {
-        final EmployeeCommandPayload employeeCommandPayload = new EmployeeCommandPayload("title", "name", "surname",
+        final EmployeeCommandPayload employeeCommandPayload = new EmployeeCommandPayload(null, "title", "name", "surname",
                 "email", "phonenumber", "github", "linkedin", "1984-04-22", "foo", "", "", null, null, null, null, false);
         createCommand(employeeCommandPayload);
     }
 
     @Test
     public void happyFlow() {
-        final EmployeeCommandPayload employeeCommandPayload = new EmployeeCommandPayload("title", "Name", "Surname", "Email",
+        final EmployeeCommandPayload employeeCommandPayload = new EmployeeCommandPayload(null, "title", "Name", "Surname", "Email",
                 "+31000999000", "Github", "Linkedin", "1984-04-22", "ITALIAN", "", "", null, null, null, null, false);
         final Employee employee = createCommand(employeeCommandPayload);
         assertEquals("Wrong organization ID in Employee", Nationality.ITALIAN, employee.getNationality());

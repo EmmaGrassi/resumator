@@ -71,7 +71,7 @@ public class BootstrapTest {
     }
 
     private Event newEmployeeEvent() {
-        final EmployeeCommandPayload employeeCommandPayload = new EmployeeCommandPayload("title", "name", "surname", "email",
+        final EmployeeCommandPayload employeeCommandPayload = new EmployeeCommandPayload(null, "title", "name", "surname", "email",
                 "phonenumber", "github", "linkedin", "1984-04-22", "ITALIAN", "", "", null, null, null, null, false);
         final CommandHeader commandHeader = new CommandHeader.Builder()
                 .setId(UUID.randomUUID().toString())

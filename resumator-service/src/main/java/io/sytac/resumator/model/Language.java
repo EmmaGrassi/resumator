@@ -1,5 +1,7 @@
 package io.sytac.resumator.model;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
@@ -16,7 +18,9 @@ import lombok.ToString;
 @ToString
 public class Language {
 
+	@NotBlank(message = "language name is mandatory")
     private final String name;
+	@NotBlank(message = "language proficiency is mandatory")
     private final Proficiency proficiency;
 
     @JsonCreator

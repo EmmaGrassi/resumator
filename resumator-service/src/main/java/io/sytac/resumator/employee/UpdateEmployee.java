@@ -19,6 +19,7 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.net.URI;
+import java.util.Map;
 
 /**
  * Creates a new {@link Employee}
@@ -53,11 +54,27 @@ public class UpdateEmployee extends BaseResource {
                 .orElseThrow(InvalidOrganizationException::new);
         String domain = organization.getDomain();
 
+        Map<String, String> notValidatedFields=EmployeeValidator.validateEmployee(payload);
+        if(notValidatedFields.size()>0)
+        	return buildValidationFailedRepresentation(uriInfo, notValidatedFields);
+
         final UpdateEmployeeCommand command = descriptors.updateEmployeeCommand(employeeId, payload, domain);
         Employee updatedEmployee = organization.updateEmployee(command);
         events.publish(command);
 
         return buildRepresentation(uriInfo, updatedEmployee);
+    }
+
+    private Response buildValidationFailedRepresentation(final UriInfo uriInfo,Map<String, String> notValidatedFields) {
+      	
+        final Representation halResource = rest.newRepresentation()
+                .withProperty("status", "failed")
+                .withProperty("fields", notValidatedFields);
+
+
+        return Response.ok(halResource.toString(RepresentationFactory.HAL_JSON))
+                .status(HttpStatus.BAD_REQUEST_400)
+                .build();
     }
 
     private Response buildRepresentation(final UriInfo uriInfo, final Employee employee) {

@@ -25,6 +25,8 @@
         <apache.poi.version>3.13</apache.poi.version>
         <apache.commons-lang.version>3.4</apache.commons-lang.version>
         <lombok.version>1.16.6</lombok.version>
+        <validator.version>5.2.3.Final</validator.version>
+        <el.version>2.2.4</el.version>
     </properties>
 
     <dependencies>
@@ -151,6 +153,24 @@
             <version>${jersey.version}</version>
             <scope>test</scope>
         </dependency>
+	<dependency>
+		<groupId>org.hibernate</groupId>
+		<artifactId>hibernate-validator</artifactId>
+		<version>${validator.version}</version>
+	</dependency>
+
+	<dependency>
+		<groupId>javax.el</groupId>
+		<artifactId>javax.el-api</artifactId>
+		<version>${el.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.glassfish.web</groupId>
+		<artifactId>javax.el</artifactId>
+		<version>${el.version}</version>
+	</dependency>
+
+        
     </dependencies>
 
     <build>

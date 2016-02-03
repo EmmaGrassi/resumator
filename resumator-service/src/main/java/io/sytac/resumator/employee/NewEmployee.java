@@ -1,7 +1,25 @@
 package io.sytac.resumator.employee;
 
+import java.net.URI;
+import java.util.Map;
+
+import javax.annotation.security.RolesAllowed;
+import javax.inject.Inject;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
+
+import org.eclipse.jetty.http.HttpHeader;
+import org.eclipse.jetty.http.HttpStatus;
+
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
+
 import io.sytac.resumator.command.CommandFactory;
 import io.sytac.resumator.events.EventPublisher;
 import io.sytac.resumator.http.BaseResource;
@@ -11,17 +29,6 @@ import io.sytac.resumator.organization.OrganizationRepository;
 import io.sytac.resumator.security.Roles;
 import io.sytac.resumator.security.User;
 import io.sytac.resumator.security.UserPrincipal;
-import org.eclipse.jetty.http.HttpHeader;
-import org.eclipse.jetty.http.HttpStatus;
-
-import javax.annotation.security.RolesAllowed;
-import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.*;
-import java.net.URI;
 
 /**
  * Creates a new {@link Employee}
@@ -54,6 +61,10 @@ public class NewEmployee extends BaseResource {
         Organization organization = organizations.get(user.getOrganizationId())
                 .orElseThrow(InvalidOrganizationException::new);
         String domain = organization.getDomain();
+        
+        Map<String, String> notValidatedFields=EmployeeValidator.validateEmployee(payload);
+        if(notValidatedFields.size()>0)
+        	return buildValidationFailedRepresentation(uriInfo, notValidatedFields);
 
         final NewEmployeeCommand command = descriptors.newEmployeeCommand(payload, domain);
         Employee newEmployee = organization.addEmployee(command);
@@ -62,6 +73,17 @@ public class NewEmployee extends BaseResource {
         return buildRepresentation(uriInfo, newEmployee);
     }
 
+    private Response buildValidationFailedRepresentation(final UriInfo uriInfo,Map<String, String> notValidatedFields) {
+  	
+        final Representation halResource = rest.newRepresentation()
+                .withProperty("status", "failed")
+                .withProperty("fields", notValidatedFields);
+
+
+        return Response.ok(halResource.toString(RepresentationFactory.HAL_JSON))
+                .status(HttpStatus.BAD_REQUEST_400)
+                .build();
+    }
     private Response buildRepresentation(final UriInfo uriInfo, final Employee employee) {
         final URI employeeLink = resourceLink(uriInfo, EmployeeQuery.class, employee.getId());
         final Representation halResource = rest.newRepresentation()

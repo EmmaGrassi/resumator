@@ -1,15 +1,22 @@
 package io.sytac.resumator.model;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import io.sytac.resumator.utils.DateUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
-
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * The working experience of an employee
@@ -23,13 +30,22 @@ import java.util.Optional;
 @ToString
 public class Experience {
 	
+	@NotBlank(message = "companyName is mandatory")
 	private final String companyName;
+	@NotBlank(message = "Experience title is mandatory")
 	private final String title;
+	@NotBlank(message = "Experience city is mandatory")
 	private final String city;
+	@NotBlank(message = "Experience country  is mandatory")
 	private final String country;
+	@NotBlank(message = "shortDescription is mandatory")
 	private final String shortDescription;
+	@NotEmpty(message = "technologies is mandatory")
 	private final List<String> technologies;
+	@NotEmpty(message = "methodologies is mandatory")
 	private final List<String> methodologies;
+	@NotNull(message = "Experience startDate is mandatory")
+	@Past(message="Experience start Date can not be in the future")
 	private final Date startDate;
 	private final Optional<Date> endDate;
 

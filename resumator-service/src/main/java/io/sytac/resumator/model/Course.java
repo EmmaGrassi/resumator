@@ -1,5 +1,9 @@
 package io.sytac.resumator.model;
 
+import javax.validation.constraints.Digits;
+
+import org.hibernate.validator.constraints.NotBlank;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -18,8 +22,11 @@ import lombok.ToString;
 @ToString
 public class Course {
 	
+    @NotBlank(message = "Course name is mandatory")
 	private final String name;
+    @NotBlank(message = "Course description is mandatory")
 	private final String description;
+    @Digits(message = "course year should consist of digits", fraction = 0, integer = 4)
 	private final int year;
 
 	@JsonCreator

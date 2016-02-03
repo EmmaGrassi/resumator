@@ -1,13 +1,13 @@
 import request from 'superagent';
 
-import list from './list';
+import handleRequestError from '../../lib/handleRequestError';
 
-function show(id) {
+function show(email) {
   return (dispatch) => {
     dispatch({ type: 'employees:show:start' });
 
     request
-      .get(`/api/employees/${id}`)
+      .get(`/api/employees/${email}`)
       .set('Content-Type', 'application/json')
       .end((error, _response) => {
         if (error) {

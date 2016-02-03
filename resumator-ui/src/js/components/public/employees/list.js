@@ -16,18 +16,18 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     fetchListData: () => dispatch(listAction()),
-    removeListEntry: (id) => dispatch(removeAction(id)),
-    navigateToEmployeesEdit: (id) => dispatch(pushPath(`/employees/${id}/edit`, {})),
+    removeListEntry: (email) => dispatch(removeAction(email)),
+    navigateToEmployeesEdit: (email) => dispatch(pushPath(`/employees/${email}/edit`, {})),
     navigateToEmployeesNew: () => dispatch(pushPath(`/employees/new`, {})),
-    navigateToEmployeesShow: (id) => dispatch(pushPath(`/employees/${id}`, {}))
+    navigateToEmployeesShow: (email) => dispatch(pushPath(`/employees/${email}`, {}))
   };
 }
 
 class List extends React.Component {
-  handleRowButtonClick(id, event) {
+  handleRowButtonClick(email, event) {
     event.preventDefault();
 
-    this.props.navigateToEmployeesShow(id);
+    this.props.navigateToEmployeesShow(email);
   }
 
   handleNewButtonClick(event) {
@@ -36,14 +36,14 @@ class List extends React.Component {
     this.props.navigateToEmployeesNew();
   }
 
-  handleEditButtonClick(id, event) {
+  handleEditButtonClick(email, event) {
     event.preventDefault();
     event.stopPropagation();
 
-    this.props.navigateToEmployeesEdit(id);
+    this.props.navigateToEmployeesEdit(email);
   }
 
-  handleRemoveButtonClick(id, event) {
+  handleRemoveButtonClick(email, event) {
     event.preventDefault();
     event.stopPropagation();
 
@@ -53,7 +53,7 @@ class List extends React.Component {
       return;
     }
 
-    this.props.removeListEntry(id);
+    this.props.removeListEntry(email);
   }
 
   componentWillMount() {
@@ -69,13 +69,13 @@ class List extends React.Component {
 
     if (items && items.length) {
       rows = items.map((v, i) => {
-        const id = v.id;
+        const email = v.email;
         const name = v.name;
         const surname = v.surname;
 
         return <tr
           key={i}
-          onClick={this.handleRowButtonClick.bind(this, id)}
+          onClick={this.handleRowButtonClick.bind(this, email)}
           style={{
           cursor: 'pointer'
         }}
@@ -96,8 +96,8 @@ class List extends React.Component {
           </td>
           <td>
             <ButtonGroup>
-              <Button onClick={this.handleEditButtonClick.bind(this, id)}><Glyphicon glyph="pencil"/> Edit</Button>
-              <Button onClick={this.handleRemoveButtonClick.bind(this, id)} bsStyle="danger"><Glyphicon glyph="trash" /> Remove</Button>
+              <Button onClick={this.handleEditButtonClick.bind(this, email)}><Glyphicon glyph="pencil"/> Edit</Button>
+              <Button onClick={this.handleRemoveButtonClick.bind(this, email)} bsStyle="danger"><Glyphicon glyph="trash" /> Remove</Button>
             </ButtonGroup>
           </td>
         </tr>;

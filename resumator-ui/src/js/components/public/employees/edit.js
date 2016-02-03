@@ -14,8 +14,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    editEmployee: (id) => dispatch(actions.employees.edit(id)),
-    updateEmployee: (id, data) => dispatch(actions.employees.update(id, data))
+    editEmployee: (email) => dispatch(actions.employees.edit(email)),
+    updateEmployee: (email, data) => dispatch(actions.employees.update(email, data))
   }
 }
 
@@ -24,8 +24,8 @@ class Edit extends React.Component {
     this.props.editEmployee(this.props.params.userId)
   }
 
-  handleFormSubmit(id, data) {
-    this.props.updateEmployee(id, data);
+  handleFormSubmit(email, data) {
+    this.props.updateEmployee(email, data);
   }
 
   render() {
@@ -54,7 +54,7 @@ class Edit extends React.Component {
       >
         <EmployeesEditForm
           value={data.item}
-          handleSubmit={this.handleFormSubmit.bind(this, data.item.id)}
+          handleSubmit={this.handleFormSubmit.bind(this, data.item.email)}
         />
       </Loader>
     );

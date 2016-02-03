@@ -51,11 +51,15 @@ public class NewEmployee extends BaseResource {
     @Produces({RepresentationFactory.HAL_JSON, MediaType.APPLICATION_JSON})
     public Response newEmployee(final EmployeeCommandPayload payload,
                                 @UserPrincipal final User user,
-                                @Context final UriInfo uriInfo) {
+                                @Context final UriInfo uriInfo) throws NoPermissionException {
 
         final String checkedEmail = Optional.ofNullable(payload.getEmail()).orElseThrow(IllegalArgumentException::new);
-        if (!user.hasRole(Roles.ADMIN) && !checkedEmail.equals(user.getName())) {
-            throw new IllegalArgumentException("Email address you've submitted is different from the email you have got in your Google Account");
+        if (!user.hasRole(Roles.ADMIN)) {
+            if (!checkedEmail.equals(user.getName())) {
+                throw new IllegalArgumentException("Email address you've submitted is different from the email you have got in your Google Account");
+            } else if (payload.isAdmin() == true) {
+                throw new NoPermissionException("Only administrators can create user with admin privileges");
+            }
         }
 
         final Organization organization = organizations.get(user.getOrganizationId()).orElseThrow(InvalidOrganizationException::new);

@@ -60,4 +60,10 @@ public class NewEmployeeTest extends CommonEmployeeTest {
         when(userMock.getName()).thenReturn(WRONG_EMAIL);
         newEmployee.newEmployee(getEmployeeCommandPayload(), userMock, uriInfoMock);
     }
+
+    @Test(expected = NoPermissionException.class)
+    public void testNewEmployeesWithAdminFlag() throws NoPermissionException {
+        when(userMock.hasRole(eq(Roles.ADMIN))).thenReturn(false);
+        newEmployee.newEmployee(getEmployeeCommandPayload(true), userMock, uriInfoMock);
+    }
 }

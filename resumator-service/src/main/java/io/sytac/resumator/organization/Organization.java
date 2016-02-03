@@ -101,6 +101,7 @@ public class Organization {
                 .courses(payload.getCourses())
                 .experiences(payload.getExperience())
                 .languages(payload.getLanguages())
+                .admin(payload.isAdmin())
                 .build();
     }
 

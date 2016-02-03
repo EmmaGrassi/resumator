@@ -80,7 +80,13 @@ gulp.task('compileBrowserify', 'Compiles the client JavaScript code from the bui
 
     var bundle = getBundle(path);
 
-    runBundle()(bundle, cb);
+    runBundle()(bundle, (error) => {
+      if (error) {
+        return cb(error);
+      }
+
+      cb();
+    });
   });
 });
 
@@ -124,7 +130,7 @@ gulp.task('minifyJavaScript', 'Minifies the client javascript bundle generated b
     .pipe(gulp.dest('build/js'));
 });
 
-gulp.task('minifyHTML', 'Minifies all HTML files and puts them in the build directory.', function minifyJavaScript() {
+gulp.task('minifyHTML', 'Minifies all HTML files and puts them in the build directory.', function minifyHTML() {
   return gulp.src('build/**/*.html')
     .pipe(plugins.htmlmin({
       removeComments: true,
@@ -137,6 +143,25 @@ gulp.task('minifyHTML', 'Minifies all HTML files and puts them in the build dire
     }))
     .pipe(gulp.dest('build'));
 });
+
+gulp.task('modifyIndexHTML', 'Modifies the index.html so some things are not loaded in production.', function modifyIndexHTML(cb) {
+  fs.readFile('build/index.html', (error, content) => {
+    if (error) {
+      return cb(error);
+    }
+
+    const newContent = content.toString().replace('var NODE_ENV = \'development\';', 'var NODE_ENV = \'production\';');
+
+    fs.writeFile('build/index.html', newContent, (error) => {
+      if (error) {
+        return cb(error);
+      }
+
+      cb();
+    });
+  });
+});
+
 
 // TODO: Allow a way to use this HTTP server to serve the frontend and also
 // proxy any requests that are not static files to a configured API server.
@@ -240,11 +265,10 @@ gulp.task('production', 'Runs all tasks required for production.', function(cb) 
     ],
 
     'compileBrowserify',
+    'minifyJavaScript',
 
-    [
-      'minifyJavaScript',
-      'minifyHTML'
-    ],
+    'modifyIndexHTML',
+    'minifyHTML',
 
     cb
   );

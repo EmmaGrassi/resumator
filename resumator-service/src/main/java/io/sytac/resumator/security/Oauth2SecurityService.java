@@ -73,13 +73,10 @@ public class Oauth2SecurityService {
         final Set<String> admins = new HashSet<>(config.getListProperty(ADMIN_ACCOUNT_LIST));
         if (admins.contains(payload.getEmail())) {
             return true;
-        } else {
-            final Optional<Employee> employee = Optional.ofNullable(organization.getEmployeeByEmail(payload.getEmail()));
-            if (employee.isPresent() && employee.get().isAdmin()) {
-                return true;
-            }
         }
-        return false;
+
+        final Optional<Employee> employee = Optional.ofNullable(organization.getEmployeeByEmail(payload.getEmail()));
+        return employee.map(Employee::isAdmin).orElse(false);
     }
 
     private Optional<GoogleIdToken> verify(final GoogleIdTokenVerifier verifier, final String idtoken) {

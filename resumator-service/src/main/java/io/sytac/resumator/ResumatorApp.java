@@ -46,7 +46,7 @@ import static io.sytac.resumator.ConfigurationEntries.BASE_URI;
 @Slf4j
 public class ResumatorApp {
 
-	public static void main(final String[] args) throws IOException {
+    public static void main(final String[] args) throws IOException {
         final ResumatorApp app = new ResumatorApp();
         app.banner();
 

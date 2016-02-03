@@ -4,11 +4,9 @@ import io.sytac.resumator.model.Error;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpStatus;
 
-import javax.ws.rs.ForbiddenException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
-import java.security.GeneralSecurityException;
 
 /**
  * Global exception mapper that returns an {@link Error} when an exception is thrown in an endpoint.

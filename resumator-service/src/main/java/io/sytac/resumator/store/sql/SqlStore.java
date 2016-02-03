@@ -69,6 +69,7 @@ public class SqlStore implements EventStore {
         return properties.getProperty(property).orElseThrow(() -> new ConfigurationException(property));
     }
 
+    @Override
     public DataSource getDataSource() {
         return dataSource;
     }
@@ -86,7 +87,9 @@ public class SqlStore implements EventStore {
     }
 
     private void assertWriteAllowed() {
-        if(readOnly.get()) throw new IllegalStateException("The system is in read only mode");
+        if(readOnly.get()) {
+            throw new IllegalStateException("The system is in read only mode");
+        }
     }
 
     private void checkInsertOrder(Event event, EventMapper mapper) {
@@ -120,6 +123,7 @@ public class SqlStore implements EventStore {
         session.get().commit();
     }
 
+    @Override
     public void setReadOnly(boolean b) {
         this.readOnly.set(b);
     }

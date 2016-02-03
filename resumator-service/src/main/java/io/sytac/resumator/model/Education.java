@@ -16,13 +16,13 @@ import lombok.ToString;
 @ToString
 public class Education {
 
-	private final Degree degree;
-	private final String fieldOfStudy;
-	private final String school;
+    private final Degree degree;
+    private final String fieldOfStudy;
+    private final String school;
     private final String city;
     private final String country;
-	private final int startYear;
-	private final int endYear;
+    private final int startYear;
+    private final int endYear;
 
     @JsonCreator
     public Education(@JsonProperty("degree") Degree degree,

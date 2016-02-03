@@ -35,8 +35,6 @@ public abstract class AbstractEmployeeCommand implements Command<CommandHeader, 
         return payload;
     }
 
-    public abstract Event asEvent(final ObjectMapper json);
-
     protected Event createEvent(final String eventId, final ObjectMapper objectMapper) {
         try {
             final String asJson = objectMapper.writeValueAsString(this);

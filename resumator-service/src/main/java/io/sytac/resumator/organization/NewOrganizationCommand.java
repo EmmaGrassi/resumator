@@ -23,7 +23,7 @@ import java.util.UUID;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class NewOrganizationCommand implements Command<CommandHeader, NewOrganizationCommandPayload> {
 
-    public final static String EVENT_TYPE = "newOrganization";
+    public static final String EVENT_TYPE = "newOrganization";
 
     final CommandHeader header;
     final NewOrganizationCommandPayload payload;

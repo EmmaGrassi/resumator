@@ -32,7 +32,7 @@ public class OrganizationQuery extends BaseResource {
     @GET
     @Path("{domain}")
     @Produces(RepresentationFactory.HAL_JSON)
-    public Representation getOrganization(final @PathParam("domain") String domain, final @Context UriInfo uriInfo) {
+    public Representation getOrganization(@PathParam("domain") final String domain, @Context final UriInfo uriInfo) {
         return organizations.fromDomain(domain)
                 .map(org -> buildRepresentation(org, uriInfo))
                 .orElseThrow(NotFoundException::new);
@@ -49,7 +49,7 @@ public class OrganizationQuery extends BaseResource {
     @GET
     @Path("{domain}/employees")
     @Produces(RepresentationFactory.HAL_JSON)
-    public Representation getEmployees(final @PathParam("domain") String domain) {
+    public Representation getEmployees(@PathParam("domain") final String domain) {
         throw new WebApplicationException("Not implemented yet", Response.Status.NOT_IMPLEMENTED);
     }
 }

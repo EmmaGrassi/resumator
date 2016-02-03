@@ -17,15 +17,15 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class Course {
-	
-	private final String name;
-	private final String description;
-	private final int year;
 
-	@JsonCreator
-	public Course(@JsonProperty("name") String name,
-				  @JsonProperty("description") String description,
-				  @JsonProperty("year") String year) {
-		this(name, description, Integer.valueOf(year));
-	}
+    private final String name;
+    private final String description;
+    private final int year;
+
+    @JsonCreator
+    public Course(@JsonProperty("name") String name,
+                  @JsonProperty("description") String description,
+                  @JsonProperty("year") String year) {
+        this(name, description, Integer.valueOf(year));
+    }
 }

@@ -22,28 +22,28 @@ import java.util.Optional;
 @AllArgsConstructor
 @ToString
 public class Experience {
-	
-	private final String companyName;
-	private final String title;
-	private final String city;
-	private final String country;
-	private final String shortDescription;
-	private final List<String> technologies;
-	private final List<String> methodologies;
-	private final Date startDate;
-	private final Optional<Date> endDate;
 
-	@JsonCreator
-	public Experience(@JsonProperty("companyName") String companyName,
-					  @JsonProperty("title") String title,
-					  @JsonProperty("city") String city,
-					  @JsonProperty("country") String country,
-					  @JsonProperty("shortDescription") String shortDescription,
-					  @JsonProperty("technologies") List<String> technologies,
-					  @JsonProperty("methodologies") List<String> methodologies,
-					  @JsonProperty("startDate") String startDate,
-					  @JsonProperty("endDate") String endDate) {
-		this(companyName, title, city, country, shortDescription, technologies, methodologies,
-				DateUtils.convert(startDate), Optional.ofNullable(endDate).map(DateUtils::convert));
-	}
+    private final String companyName;
+    private final String title;
+    private final String city;
+    private final String country;
+    private final String shortDescription;
+    private final List<String> technologies;
+    private final List<String> methodologies;
+    private final Date startDate;
+    private final Optional<Date> endDate;
+
+    @JsonCreator
+    public Experience(@JsonProperty("companyName") String companyName,
+                      @JsonProperty("title") String title,
+                      @JsonProperty("city") String city,
+                      @JsonProperty("country") String country,
+                      @JsonProperty("shortDescription") String shortDescription,
+                      @JsonProperty("technologies") List<String> technologies,
+                      @JsonProperty("methodologies") List<String> methodologies,
+                      @JsonProperty("startDate") String startDate,
+                      @JsonProperty("endDate") String endDate) {
+        this(companyName, title, city, country, shortDescription, technologies, methodologies,
+                DateUtils.convert(startDate), Optional.ofNullable(endDate).map(DateUtils::convert));
+    }
 }

@@ -4,7 +4,6 @@ import io.sytac.resumator.employee.*;
 import io.sytac.resumator.organization.NewOrganizationCommand;
 
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * Creates command descriptors and publishes the related event

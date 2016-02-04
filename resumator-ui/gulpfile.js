@@ -39,7 +39,7 @@ function runBundle() {
   return function(bundle, cb) {
     bundle
       .bundle()
-      .on('error', (error) => {
+      .on('error', function (error) {
         console.error(error.stack || error.message || error);
         this.emit('end');
       })

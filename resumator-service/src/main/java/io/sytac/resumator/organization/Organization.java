@@ -86,7 +86,7 @@ public class Organization {
 
         return Employee.builder()
                 .id(employeeId)
-                .type(payload.getType())
+                .type(Optional.ofNullable(payload.getType()).orElse(determineEmployeeType(payload.getEmail())))
                 .title(payload.getTitle())
                 .name(payload.getName())
                 .surname(payload.getSurname())
@@ -106,7 +106,7 @@ public class Organization {
                 .build();
     }
 
-    public Employee getEmployeeByEmail(String email) {
+    public Employee getEmployeeByEmail(final String email) {
         return employees.get(email);
     }
 
@@ -114,10 +114,18 @@ public class Organization {
         return Collections.unmodifiableList(new ArrayList<>(employees.values()));
     }
 
-    public Optional<Employee> findEmployeeByName(String name, String surname) {
+    public Optional<Employee> findEmployeeByName(final String name, final String surname) {
         return employees.values()
                         .stream()
                         .filter(employee -> name.equals(employee.getName()) && surname.equals(employee.getSurname()))
                         .findFirst();
+    }
+
+    private EmployeeType determineEmployeeType(final String email) {
+        if (email.endsWith(domain)) {
+            return EmployeeType.EMPLOYEE;
+        } else {
+            return EmployeeType.PROSPECT;
+        }
     }
 }

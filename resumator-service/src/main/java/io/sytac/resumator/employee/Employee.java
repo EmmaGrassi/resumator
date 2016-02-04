@@ -52,6 +52,7 @@ public class Employee {
              String aboutMe, List<Education> educations, List<Course> courses,
              List<Experience> experiences, List<Language> languages, boolean admin) {
         this.id = id == null ? UUID.randomUUID().toString() : id;
+        this.type = type;
         this.title = title;
         this.name = name;
         this.surname = surname;
@@ -68,15 +69,5 @@ public class Employee {
         this.experiences = experiences;
         this.languages = languages;
         this.admin = admin;
-
-        if (type != null) {
-            this.type = type;
-        } else {
-            if (email.endsWith("sytac.io")) {
-                this.type = EmployeeType.EMPLOYEE;
-            } else {
-                this.type = EmployeeType.PROSPECT;
-            }
-        }
     }
 }

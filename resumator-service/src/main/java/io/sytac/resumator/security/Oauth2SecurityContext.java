@@ -12,10 +12,10 @@ import java.util.Optional;
  */
 class Oauth2SecurityContext implements SecurityContext {
 
-    private final User principal;
+    private final Identity principal;
 
-    public Oauth2SecurityContext(final Optional<User> maybeUser) {
-        this.principal = maybeUser.orElse(User.ANONYMOUS);
+    public Oauth2SecurityContext(final Optional<Identity> maybeUser) {
+        this.principal = maybeUser.orElse(Identity.ANONYMOUS);
     }
 
     @Override

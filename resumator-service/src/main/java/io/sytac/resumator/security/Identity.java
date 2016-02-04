@@ -10,15 +10,15 @@ import java.util.Set;
  * @author Carlo Sciolla
  * @since 0.1
  */
-public class User implements Principal {
+public class Identity implements Principal {
 
-    public static final User ANONYMOUS = new User("", "___anonymous", Collections.emptySet());
+    public static final Identity ANONYMOUS = new Identity("", "___anonymous", Collections.emptySet());
 
     private final String organizationId;
     private final String name;
     private final Set<String> roles;
 
-    public User(final String organizationId, final String name, final Set<String> roles) {
+    public Identity(final String organizationId, final String name, final Set<String> roles) {
         this.organizationId = organizationId;
         this.name = name;
         this.roles = Collections.unmodifiableSet(roles);

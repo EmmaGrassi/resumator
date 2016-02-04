@@ -9,7 +9,7 @@ import io.sytac.resumator.model.exceptions.InvalidOrganizationException;
 import io.sytac.resumator.organization.Organization;
 import io.sytac.resumator.organization.OrganizationRepository;
 import io.sytac.resumator.security.Roles;
-import io.sytac.resumator.security.User;
+import io.sytac.resumator.security.Identity;
 import io.sytac.resumator.security.UserPrincipal;
 import org.eclipse.jetty.http.HttpHeader;
 import org.eclipse.jetty.http.HttpStatus;
@@ -49,15 +49,15 @@ public class UpdateEmployee extends BaseResource {
     @Produces({RepresentationFactory.HAL_JSON, MediaType.APPLICATION_JSON})
     public Response updateEmployee(@PathParam("email") final String email,
                                    final EmployeeCommandPayload payload,
-                                   @UserPrincipal final User user,
+                                   @UserPrincipal final Identity identity,
                                    @Context final UriInfo uriInfo) throws NoPermissionException, OperationNotSupportedException {
 
         final String checkedEmail = Optional.ofNullable(email).orElseThrow(IllegalArgumentException::new);
         validateEmails(checkedEmail, payload.getEmail());
-        final Organization organization = organizations.get(user.getOrganizationId()).orElseThrow(InvalidOrganizationException::new);
+        final Organization organization = organizations.get(identity.getOrganizationId()).orElseThrow(InvalidOrganizationException::new);
 
-        if (!user.hasRole(Roles.ADMIN)) {
-            checkPermissionsForUpdate(user, email);
+        if (!identity.hasRole(Roles.ADMIN)) {
+            checkPermissionsForUpdate(identity, email);
             validateRestrictedFields(organization, payload);
         }
 
@@ -74,8 +74,8 @@ public class UpdateEmployee extends BaseResource {
         return buildRepresentation(uriInfo, updatedEmployee);
     }
 
-    private void checkPermissionsForUpdate(final User user, final String email) throws NoPermissionException {
-        if (!email.equals(user.getName())) {
+    private void checkPermissionsForUpdate(final Identity identity, final String email) throws NoPermissionException {
+        if (!email.equals(identity.getName())) {
             throw new NoPermissionException("You don't have permissions to update this profile");
         }
     }

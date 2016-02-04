@@ -42,7 +42,7 @@ public class RemoveEmployeeTest extends CommonEmployeeTest {
 
     @Test
     public void testRemoveEmployeesOk() throws NoPermissionException {
-        final Response response = removeEmployee.removeEmployee(EMAIL, userMock);
+        final Response response = removeEmployee.removeEmployee(EMAIL, identityMock);
         assertNotNull(response);
         assertEquals(response.getStatus(), HttpStatus.SC_NO_CONTENT);
     }
@@ -50,14 +50,14 @@ public class RemoveEmployeeTest extends CommonEmployeeTest {
     @Test
     public void testRemoveEmployeesNotFound() throws NoPermissionException {
         when(organizationMock.getEmployeeByEmail(eq(EMAIL))).thenReturn(null);
-        final Response response = removeEmployee.removeEmployee(EMAIL, userMock);
+        final Response response = removeEmployee.removeEmployee(EMAIL, identityMock);
         assertNotNull(response);
         assertEquals(response.getStatus(), HttpStatus.SC_NOT_FOUND);
     }
 
     @Test(expected = NoPermissionException.class)
     public void testRemoveEmployeesDifferentEmails() throws NoPermissionException {
-        when(userMock.hasRole(eq(Roles.ADMIN))).thenReturn(false);
-        removeEmployee.removeEmployee(WRONG_EMAIL, userMock);
+        when(identityMock.hasRole(eq(Roles.ADMIN))).thenReturn(false);
+        removeEmployee.removeEmployee(WRONG_EMAIL, identityMock);
     }
 }

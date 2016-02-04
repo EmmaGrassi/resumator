@@ -7,8 +7,8 @@ import io.sytac.resumator.http.BaseResource;
 import io.sytac.resumator.model.*;
 import io.sytac.resumator.model.Error;
 import io.sytac.resumator.organization.OrganizationRepository;
+import io.sytac.resumator.security.Identity;
 import io.sytac.resumator.security.Roles;
-import io.sytac.resumator.security.User;
 import io.sytac.resumator.security.UserPrincipal;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -54,16 +54,16 @@ public class EmployeeQuery extends BaseResource {
     @Produces(RepresentationFactory.HAL_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response getEmployee(@PathParam("email") final String email,
-                                @UserPrincipal User user,
+                                @UserPrincipal Identity identity,
                                 @Context final UriInfo uriInfo) {
 
-        return represent(email, user, uriInfo);
+        return represent(email, identity, uriInfo);
     }
 
     @GET
     @Produces(CONTENT_TYPE_DOCX)
-    public Response getDocxViaContentNegotiation(@PathParam("id") final String id, @UserPrincipal final User user) {
-        return getEmployee(id, user).map(employee -> {
+    public Response getDocxViaContentNegotiation(@PathParam("id") final String id, @UserPrincipal final Identity identity) {
+        return getEmployee(id, identity).map(employee -> {
             try {
                 return Response.ok(docxGenerator.generate(getTemplateStream(), getPlaceholderMappings(employee)),
                                 CONTENT_TYPE_DOCX)
@@ -79,20 +79,20 @@ public class EmployeeQuery extends BaseResource {
     @Path("docx")
     @GET
     @Produces(CONTENT_TYPE_DOCX)
-    public Response getDocxViaCustomUrl(@PathParam("id") final String id, @UserPrincipal final User user) {
-        return getDocxViaContentNegotiation(id, user);
+    public Response getDocxViaCustomUrl(@PathParam("id") final String id, @UserPrincipal final Identity identity) {
+        return getDocxViaContentNegotiation(id, identity);
     }
 
     /**
      * Translates an {@link Employee} into its HAL representation
      *
      * @param email The email of desired employee
-     * @param user The current user
+     * @param identity The current identity
      * @param uriInfo  The current REST endpoint information
      * @return The {@link Representation} of the {@link Employee}
      */
-    private Response represent(final String email, final User user, final UriInfo uriInfo) {
-        final Optional<Employee> employee = getEmployee(email, user);
+    private Response represent(final String email, final Identity identity, final UriInfo uriInfo) {
+        final Optional<Employee> employee = getEmployee(email, identity);
 
         if (employee.isPresent()) {
             final Employee emp = employee.get();
@@ -118,7 +118,7 @@ public class EmployeeQuery extends BaseResource {
                     .withProperty("courses", courses)
                     .withProperty("experience", experiences)
                     .withProperty("languages", languages)
-                    .withProperty("admin", (user.hasRole(Roles.ADMIN) ? true : emp.isAdmin()))
+                    .withProperty("admin", (identity.hasRole(Roles.ADMIN) ? true : emp.isAdmin()))
                     .withLink("self", uriInfo.getRequestUri().toString())
                     .toString(RepresentationFactory.HAL_JSON);
 
@@ -128,9 +128,9 @@ public class EmployeeQuery extends BaseResource {
         }
     }
 
-    private Optional<Employee> getEmployee(String email, User user) {
+    private Optional<Employee> getEmployee(String email, Identity identity) {
         return organizations
-                .get(user.getOrganizationId())
+                .get(identity.getOrganizationId())
                 .map(org -> org.getEmployeeByEmail(email));
     }
 

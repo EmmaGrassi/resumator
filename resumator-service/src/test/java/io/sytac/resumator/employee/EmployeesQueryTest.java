@@ -3,8 +3,8 @@ package io.sytac.resumator.employee;
 import com.theoryinpractise.halbuilder.api.Representation;
 import io.sytac.resumator.organization.Organization;
 import io.sytac.resumator.organization.OrganizationRepository;
+import io.sytac.resumator.security.Identity;
 import io.sytac.resumator.security.Roles;
-import io.sytac.resumator.security.User;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,7 +47,7 @@ public class EmployeesQueryTest {
     private Organization organization;
 
     @Mock
-    private User user;
+    private Identity identity;
 
     @Mock
     private UriInfo uriInfo;
@@ -58,8 +58,8 @@ public class EmployeesQueryTest {
     @Before
     public void before() throws URISyntaxException {
         when(organizations.get(anyString())).thenReturn(Optional.of(organization));
-        when(user.getOrganizationId()).thenReturn("dummy");
-        when(user.hasRole(eq(Roles.ADMIN))).thenReturn(true);
+        when(identity.getOrganizationId()).thenReturn("dummy");
+        when(identity.hasRole(eq(Roles.ADMIN))).thenReturn(true);
 
         when(uriInfo.getAbsolutePath()).thenReturn(new URI(URI_ABSOLUTE_PATH));
         when(uriInfo.getBaseUri()).thenReturn(new URI(URI_BASE));
@@ -72,7 +72,7 @@ public class EmployeesQueryTest {
 
         when(organization.getEmployees()).thenReturn(employees);
 
-        Representation actual = employeesQuery.getEmployees(0, null, user, uriInfo);
+        Representation actual = employeesQuery.getEmployees(0, null, identity, uriInfo);
         assertThat(actual.getResourcesByRel("employees").size(), equalTo(EmployeesQuery.DEFAULT_PAGE_SIZE));
     }
 
@@ -82,7 +82,7 @@ public class EmployeesQueryTest {
 
         when(organization.getEmployees()).thenReturn(employees);
 
-        Representation actual = employeesQuery.getEmployees(2, null, user, uriInfo);
+        Representation actual = employeesQuery.getEmployees(2, null, identity, uriInfo);
         assertThat(actual.getResourcesByRel("employees").size(), equalTo(1));
     }
 
@@ -92,7 +92,7 @@ public class EmployeesQueryTest {
 
         when(organization.getEmployees()).thenReturn(employees);
 
-        Representation actual = employeesQuery.getEmployees(2, null, user, uriInfo);
+        Representation actual = employeesQuery.getEmployees(2, null, identity, uriInfo);
         assertThat(actual.getResourcesByRel("employees").size(), equalTo(0));
     }
 
@@ -102,7 +102,7 @@ public class EmployeesQueryTest {
 
         when(organization.getEmployees()).thenReturn(employees);
 
-        Representation actual = employeesQuery.getEmployees(1, null, user, uriInfo);
+        Representation actual = employeesQuery.getEmployees(1, null, identity, uriInfo);
         assertThat(actual.getLinkByRel("self").getHref(), equalTo(URI_REQUEST));
         assertThat(actual.getLinkByRel("employees").getHref(), equalTo(URI_ABSOLUTE_PATH));
         assertThat(actual.getLinkByRel("next").getHref(), equalTo(URI_ABSOLUTE_PATH + "?page=2"));
@@ -114,7 +114,7 @@ public class EmployeesQueryTest {
 
         when(organization.getEmployees()).thenReturn(employees);
 
-        Representation actual = employeesQuery.getEmployees(1, null, user, uriInfo);
+        Representation actual = employeesQuery.getEmployees(1, null, identity, uriInfo);
         actual.getResourcesByRel("employees")
                 .forEach(resource -> assertThat(resource.getLinkByRel("self").getHref(),
                         equalTo(URI_ABSOLUTE_PATH + "/" + resource.getProperties().get("email"))));
@@ -129,7 +129,7 @@ public class EmployeesQueryTest {
 
         when(organization.getEmployees()).thenReturn(employees);
 
-        Representation actual = employeesQuery.getEmployees(1, EmployeeType.FREELANCER, user, uriInfo);
+        Representation actual = employeesQuery.getEmployees(1, EmployeeType.FREELANCER, identity, uriInfo);
         assertThat(actual.getResourcesByRel("employees").size(), equalTo(nrFreelancers));
     }
 

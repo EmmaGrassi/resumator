@@ -6,8 +6,8 @@ import io.sytac.resumator.http.BaseResource;
 import io.sytac.resumator.model.exceptions.InvalidOrganizationException;
 import io.sytac.resumator.organization.Organization;
 import io.sytac.resumator.organization.OrganizationRepository;
+import io.sytac.resumator.security.Identity;
 import io.sytac.resumator.security.Roles;
-import io.sytac.resumator.security.User;
 import io.sytac.resumator.security.UserPrincipal;
 import org.eclipse.jetty.http.HttpStatus;
 
@@ -42,12 +42,12 @@ public class RemoveEmployee extends BaseResource {
     @DELETE
     @Consumes(MediaType.APPLICATION_JSON)
     public Response removeEmployee(@PathParam("email") final String email,
-                                   @UserPrincipal final User user) throws NoPermissionException {
+                                   @UserPrincipal final Identity identity) throws NoPermissionException {
 
         final String checkedEmail = Optional.ofNullable(email).orElseThrow(IllegalArgumentException::new);
-        final Organization organization = organizations.get(user.getOrganizationId()).orElseThrow(InvalidOrganizationException::new);
+        final Organization organization = organizations.get(identity.getOrganizationId()).orElseThrow(InvalidOrganizationException::new);
 
-        if (!user.hasRole(Roles.ADMIN) && !checkedEmail.equals(user.getName())) {
+        if (!identity.hasRole(Roles.ADMIN) && !checkedEmail.equals(identity.getName())) {
             throw new NoPermissionException("You don't have permissions to delete this profile");
         }
 

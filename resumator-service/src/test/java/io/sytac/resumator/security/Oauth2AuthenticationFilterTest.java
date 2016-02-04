@@ -57,7 +57,7 @@ public class Oauth2AuthenticationFilterTest {
         filter.filter(ctx);
         verify(ctx, times(1)).setSecurityContext(argThat(arg -> {
                     final SecurityContext sc = ((SecurityContext) arg);
-                    return sc.getUserPrincipal().equals(User.ANONYMOUS);
+                    return sc.getUserPrincipal().equals(Identity.ANONYMOUS);
                 }
         ));
     }

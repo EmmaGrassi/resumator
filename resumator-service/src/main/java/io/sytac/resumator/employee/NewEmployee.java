@@ -9,7 +9,7 @@ import io.sytac.resumator.model.exceptions.InvalidOrganizationException;
 import io.sytac.resumator.organization.Organization;
 import io.sytac.resumator.organization.OrganizationRepository;
 import io.sytac.resumator.security.Roles;
-import io.sytac.resumator.security.User;
+import io.sytac.resumator.security.Identity;
 import io.sytac.resumator.security.UserPrincipal;
 import org.eclipse.jetty.http.HttpHeader;
 import org.eclipse.jetty.http.HttpStatus;
@@ -50,12 +50,12 @@ public class NewEmployee extends BaseResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces({RepresentationFactory.HAL_JSON, MediaType.APPLICATION_JSON})
     public Response newEmployee(final EmployeeCommandPayload payload,
-                                @UserPrincipal final User user,
+                                @UserPrincipal final Identity identity,
                                 @Context final UriInfo uriInfo) throws NoPermissionException {
 
         final String checkedEmail = Optional.ofNullable(payload.getEmail()).orElseThrow(IllegalArgumentException::new);
-        if (!user.hasRole(Roles.ADMIN)) {
-            if (!checkedEmail.equals(user.getName())) {
+        if (!identity.hasRole(Roles.ADMIN)) {
+            if (!checkedEmail.equals(identity.getName())) {
                 throw new IllegalArgumentException("Email address you've submitted is different from the email you have got in your Google Account");
             } else if (payload.isAdmin()) {
                 throw new NoPermissionException("Only administrators can create user with admin privileges");
@@ -64,7 +64,7 @@ public class NewEmployee extends BaseResource {
             }
         }
 
-        final Organization organization = organizations.get(user.getOrganizationId()).orElseThrow(InvalidOrganizationException::new);
+        final Organization organization = organizations.get(identity.getOrganizationId()).orElseThrow(InvalidOrganizationException::new);
         final String domain = organization.getDomain();
         final NewEmployeeCommand command = descriptors.newEmployeeCommand(payload, domain);
         final Employee newEmployee = organization.addEmployee(command);

@@ -5,8 +5,8 @@ import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import io.sytac.resumator.http.BaseResource;
 import io.sytac.resumator.organization.Organization;
 import io.sytac.resumator.organization.OrganizationRepository;
+import io.sytac.resumator.security.Identity;
 import io.sytac.resumator.security.Roles;
-import io.sytac.resumator.security.User;
 import io.sytac.resumator.security.UserPrincipal;
 
 import javax.annotation.security.RolesAllowed;
@@ -58,14 +58,14 @@ public class EmployeesQuery extends BaseResource {
     @Produces(RepresentationFactory.HAL_JSON)
     public Representation getEmployees(@QueryParam(QUERY_PARAM_PAGE) Integer page,
                                        @QueryParam(QUERY_PARAM_EMPLOYEE_TYPE) EmployeeType type,
-                                       @UserPrincipal final User user,
+                                       @UserPrincipal final Identity identity,
                                        @Context final UriInfo uriInfo) throws NoPermissionException {
 
         final Representation representation = rest.newRepresentation()
                 .withLink(REL_SELF, uriInfo.getRequestUri())
                 .withLink(REL_EMPLOYEES, resourceLink(uriInfo, EmployeesQuery.class));
 
-        final List<Employee> allEmployees = getEmployees(user.getOrganizationId());
+        final List<Employee> allEmployees = getEmployees(identity.getOrganizationId());
         final List<Employee> filteredEmployees = allEmployees.stream()
                 .filter(employee -> type == null || employee.getType() == type)
                 .collect(Collectors.toList());

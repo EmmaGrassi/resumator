@@ -12,11 +12,11 @@ import static org.junit.Assert.*;
  */
 public class Oauth2SecurityContextTest {
 
-    private Oauth2SecurityContext ctx = new Oauth2SecurityContext(Optional.of(User.ANONYMOUS));
+    private Oauth2SecurityContext ctx = new Oauth2SecurityContext(Optional.of(Identity.ANONYMOUS));
 
     @Test
     public void sysAdminIsInAllRoles() throws Exception {
-        final User root = new User("Sytac", "root", Sets.newHashSet(Roles.SYSADMIN));
+        final Identity root = new Identity("Sytac", "root", Sets.newHashSet(Roles.SYSADMIN));
         ctx = new Oauth2SecurityContext(Optional.of(root));
 
         assertTrue("Sysadmins must be able to access user-restricted features", ctx.isUserInRole(Roles.USER));
@@ -28,7 +28,7 @@ public class Oauth2SecurityContextTest {
     @Test
     public void noUserMeansAnonymousUser() {
         ctx = new Oauth2SecurityContext(Optional.empty());
-        assertEquals("When there's no user it means we're dealing with an anonymous", User.ANONYMOUS, ctx.getUserPrincipal());
+        assertEquals("When there's no user it means we're dealing with an anonymous", Identity.ANONYMOUS, ctx.getUserPrincipal());
     }
 
     @Test

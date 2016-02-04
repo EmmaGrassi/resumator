@@ -37,6 +37,8 @@ import java.util.*;
 @Slf4j
 public class EmployeeQuery extends BaseResource {
 
+    private static final String PATH_PARAM_EMAIL = "email";
+
     private static final String CONTENT_TYPE_DOCX = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
 
     private final OrganizationRepository organizations;
@@ -53,7 +55,7 @@ public class EmployeeQuery extends BaseResource {
     @GET
     @Produces(RepresentationFactory.HAL_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response getEmployee(@PathParam("email") final String email,
+    public Response getEmployee(@PathParam(PATH_PARAM_EMAIL) final String email,
                                 @UserPrincipal Identity identity,
                                 @Context final UriInfo uriInfo) {
 
@@ -62,8 +64,8 @@ public class EmployeeQuery extends BaseResource {
 
     @GET
     @Produces(CONTENT_TYPE_DOCX)
-    public Response getDocxViaContentNegotiation(@PathParam("id") final String id, @UserPrincipal final Identity identity) {
-        return getEmployee(id, identity).map(employee -> {
+    public Response getDocxViaContentNegotiation(@PathParam(PATH_PARAM_EMAIL) final String email, @UserPrincipal final Identity identity) {
+        return getEmployee(email, identity).map(employee -> {
             try {
                 return Response.ok(docxGenerator.generate(getTemplateStream(), getPlaceholderMappings(employee)),
                                 CONTENT_TYPE_DOCX)
@@ -79,8 +81,8 @@ public class EmployeeQuery extends BaseResource {
     @Path("docx")
     @GET
     @Produces(CONTENT_TYPE_DOCX)
-    public Response getDocxViaCustomUrl(@PathParam("id") final String id, @UserPrincipal final Identity identity) {
-        return getDocxViaContentNegotiation(id, identity);
+    public Response getDocxViaCustomUrl(@PathParam(PATH_PARAM_EMAIL) final String email, @UserPrincipal final Identity identity) {
+        return getDocxViaContentNegotiation(email, identity);
     }
 
     /**
@@ -118,7 +120,7 @@ public class EmployeeQuery extends BaseResource {
                     .withProperty("courses", courses)
                     .withProperty("experience", experiences)
                     .withProperty("languages", languages)
-                    .withProperty("admin", (identity.hasRole(Roles.ADMIN) ? true : emp.isAdmin()))
+                    .withProperty("admin", (identity.hasRole(Roles.ADMIN) || emp.isAdmin()))
                     .withLink("self", uriInfo.getRequestUri().toString())
                     .toString(RepresentationFactory.HAL_JSON);
 

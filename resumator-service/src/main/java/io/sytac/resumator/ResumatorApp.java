@@ -63,6 +63,7 @@ public class ResumatorApp {
     private ResourceConfig constructConfig(final Configuration configuration) {
         ResourceConfig rc = registerApplicationResources(new ResourceConfig());
         rc = registerConfiguration(rc, configuration);
+        rc = registerLoggingBridge(rc);
         rc = registerEventPublisher(rc);
         rc = registerCommandFactory(rc);
         rc = registerJSONSupport(rc);
@@ -73,6 +74,15 @@ public class ResumatorApp {
         rc = registerGlobalExceptionHandler(rc);
         rc = registerBootstrap(rc);
         return rc;
+    }
+
+    private ResourceConfig registerLoggingBridge(final ResourceConfig rc) {
+        return rc.register(new AbstractBinder() {
+            @Override
+            protected void configure() {
+                bind(LoggingBridge.class).in(Immediate.class);
+            }
+        });
     }
 
     private ResourceConfig registerGlobalExceptionHandler(final ResourceConfig rc) {

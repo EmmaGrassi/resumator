@@ -10,5 +10,5 @@ import lombok.Getter;
 @AllArgsConstructor
 public class Error {
 
-    private String message;
+    private final String message;
 }

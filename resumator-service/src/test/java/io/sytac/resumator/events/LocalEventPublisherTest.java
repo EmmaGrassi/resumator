@@ -60,8 +60,8 @@ public class LocalEventPublisherTest {
         final List<Experience> experience  = Collections.singletonList(new Experience("CompanyName", "Title", "City", "Coutry", "Short Description",
                 technologies, methodologies, startDate, Optional.of(endDate)));
 
-        final List<Language> languages = Arrays.asList(new Language("English", Language.Proficiency.FULL_PROFESSIONAL));
-        final EmployeeCommandPayload payload = new EmployeeCommandPayload("Title", "Foo", "Bar", "Email", "+31000999000",
+        final List<Language> languages = Collections.singletonList(new Language("English", Language.Proficiency.FULL_PROFESSIONAL));
+        final EmployeeCommandPayload payload = new EmployeeCommandPayload(null, "Title", "Foo", "Bar", "Email", "+31000999000",
                 "Github", "Linkedin", "1984-04-22", "ITALY", "N", "About ME", education, courses, experience, languages, false);
 
         final CommandHeader commandHeader = new CommandHeader.Builder()

@@ -41,8 +41,7 @@ public class NewOrganization extends BaseResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces({RepresentationFactory.HAL_JSON, MediaType.APPLICATION_JSON})
     public Response createOrganization(final Map<String, String> input,
-                                             @Context final UriInfo uriInfo,
-                                             @Context final SecurityContext securityContext) {
+                                             @Context final UriInfo uriInfo) {
         final NewOrganizationCommand command = descriptors.newOrganizationCommand(input);
         final Organization org = organizations.register(command);
         return buildRepresentation(uriInfo, org);

@@ -97,7 +97,9 @@ public class Configuration {
     @SafeVarargs
     static <T> Optional<T> or(Optional<T>... options) {
         for(Optional<T> option : options) {
-            if(option.isPresent()) return option;
+            if(option.isPresent()) {
+                return option;
+            }
         }
 
         return Optional.empty();

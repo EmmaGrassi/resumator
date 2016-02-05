@@ -46,7 +46,7 @@ import static io.sytac.resumator.ConfigurationEntries.BASE_URI;
 @Slf4j
 public class ResumatorApp {
 
-	public static void main(final String[] args) throws IOException {
+    public static void main(final String[] args) throws IOException {
         final ResumatorApp app = new ResumatorApp();
         app.banner();
 
@@ -63,6 +63,7 @@ public class ResumatorApp {
     private ResourceConfig constructConfig(final Configuration configuration) {
         ResourceConfig rc = registerApplicationResources(new ResourceConfig());
         rc = registerConfiguration(rc, configuration);
+        rc = registerLoggingBridge(rc);
         rc = registerEventPublisher(rc);
         rc = registerCommandFactory(rc);
         rc = registerJSONSupport(rc);
@@ -75,9 +76,18 @@ public class ResumatorApp {
         return rc;
     }
 
+    private ResourceConfig registerLoggingBridge(final ResourceConfig rc) {
+        return rc.register(new AbstractBinder() {
+            @Override
+            protected void configure() {
+                bind(LoggingBridge.class).in(Immediate.class);
+            }
+        });
+    }
+
     private ResourceConfig registerGlobalExceptionHandler(final ResourceConfig rc) {
-        return rc.register(GlobalExceptionMapper.class)
-                .register(ForbiddenExceptionMapper.class);
+        return rc.register(WebApplicationExceptionMapper.class)
+                 .register(GlobalExceptionMapper.class);
     }
 
     private ResourceConfig registerDocxGenerator(final ResourceConfig rc) {

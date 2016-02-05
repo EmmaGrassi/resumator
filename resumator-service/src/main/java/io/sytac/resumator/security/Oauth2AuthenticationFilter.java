@@ -36,7 +36,7 @@ public class Oauth2AuthenticationFilter implements ContainerRequestFilter {
     }
 
     private SecurityContext defineSecurityContext(final Optional<Cookie> maybeCookie) {
-        Optional<User> user = maybeCookie.flatMap(cookie -> security.authenticateUser(cookie.getValue()));
+        Optional<Identity> user = maybeCookie.flatMap(cookie -> security.authenticateUser(cookie.getValue()));
         return new Oauth2SecurityContext(user);
     }
 

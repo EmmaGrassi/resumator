@@ -26,8 +26,13 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import static org.hamcrest.core.IsEqual.equalTo;
+
 import io.sytac.resumator.model.exceptions.InvalidOrganizationException;
 import io.sytac.resumator.security.Roles;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 
 /**
  * Tests the NewEmployees resource
@@ -51,7 +56,7 @@ public class NewEmployeeTest extends CommonEmployeeTest {
 
     @Test
     public void testNewEmployeesOk() throws NoPermissionException {
-        final Response response = newEmployee.newEmployee(getEmployeeCommandPayload(), userMock, uriInfoMock);
+        final Response response = newEmployee.newEmployee(getEmployeeCommandPayload(), identityMock, uriInfoMock);
         assertNotNull(response);
         assertEquals(response.getStatus(), HttpStatus.SC_CREATED);
         assertEquals(response.getHeaderString("Location"), URI_ABSOLUTE_PATH + "/" + EMAIL);
@@ -60,26 +65,47 @@ public class NewEmployeeTest extends CommonEmployeeTest {
     @Test(expected = InvalidOrganizationException.class)
     public void testNewEmployeesWrongOrganisation() throws NoPermissionException {
         when(organizationRepositoryMock.get(eq(ORG_ID))).thenThrow(InvalidOrganizationException.class);
-        newEmployee.newEmployee(getEmployeeCommandPayload(), userMock, uriInfoMock);
+        newEmployee.newEmployee(getEmployeeCommandPayload(), identityMock, uriInfoMock);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testNewEmployeesNotAnAdmin() throws NoPermissionException {
-        when(userMock.hasRole(eq(Roles.ADMIN))).thenReturn(false);
-        when(userMock.getName()).thenReturn(WRONG_EMAIL);
-        newEmployee.newEmployee(getEmployeeCommandPayload(), userMock, uriInfoMock);
+        when(identityMock.hasRole(eq(Roles.ADMIN))).thenReturn(false);
+        when(identityMock.getName()).thenReturn(WRONG_EMAIL);
+        newEmployee.newEmployee(getEmployeeCommandPayload(), identityMock, uriInfoMock);
     }
 
     @Test(expected = NoPermissionException.class)
     public void testNewEmployeesWithAdminFlag() throws NoPermissionException {
-        when(userMock.hasRole(eq(Roles.ADMIN))).thenReturn(false);
-        newEmployee.newEmployee(getEmployeeCommandPayload(true), userMock, uriInfoMock);
+        when(identityMock.hasRole(eq(Roles.ADMIN))).thenReturn(false);
+        newEmployee.newEmployee(getEmployeeCommandPayload(true), identityMock, uriInfoMock);
+    }
+
+    @Test
+    public void newEmployee_nonAdminNotSettingEmployeeType_responseStatusIsCreated() throws NoPermissionException {
+        when(identityMock.hasRole(eq(Roles.ADMIN))).thenReturn(false);
+        newEmployee.newEmployee(getEmployeeCommandPayload(), identityMock, uriInfoMock);
+    }
+
+    @Test(expected = NoPermissionException.class)
+    public void newEmployee_nonAdminSettingEmployeeType_permissionExceptionIsThrown() throws NoPermissionException {
+        when(identityMock.hasRole(eq(Roles.ADMIN))).thenReturn(false);
+        newEmployee.newEmployee(getEmployeeCommandPayload(false, EmployeeType.EMPLOYEE), identityMock, uriInfoMock);
+    }
+
+    @Test
+    public void newEmployee_adminSettingEmployeeType_responseStatusIsCreated() throws NoPermissionException {
+        when(identityMock.hasRole(eq(Roles.ADMIN))).thenReturn(true);
+        Response response = newEmployee.newEmployee(getEmployeeCommandPayload(false, EmployeeType.EMPLOYEE), identityMock, uriInfoMock);
+
+        assertThat(response.getStatus(), equalTo(HttpStatus.SC_CREATED));
+
     }
     
     @SuppressWarnings("unchecked")
  	@Test
      public void testNewEmployeesValidation() throws NoPermissionException {
-         final Response response = newEmployee.newEmployee(getEmployeeValidatableCommandPayload(), userMock, uriInfoMock);
+         final Response response = newEmployee.newEmployee(getEmployeeValidatableCommandPayload(), identityMock, uriInfoMock);
          assertNotNull(response);
          assertEquals(response.getStatus(), HttpStatus.SC_BAD_REQUEST);
          Map<String,Object> validationErrors= new HashMap<>();
@@ -102,7 +128,7 @@ public class NewEmployeeTest extends CommonEmployeeTest {
      @SuppressWarnings("unchecked")
  	@Test
      public void testNewEmployeesDetailedValidation() throws NoPermissionException {
-         final Response response = newEmployee.newEmployee(getEmployeeDetailedValidatableCommandPayload(), userMock, uriInfoMock);
+         final Response response = newEmployee.newEmployee(getEmployeeDetailedValidatableCommandPayload(), identityMock, uriInfoMock);
          assertNotNull(response);
          assertEquals(response.getStatus(), HttpStatus.SC_BAD_REQUEST);
          Map<String,Object> validationErrors= new HashMap<>();
@@ -121,12 +147,5 @@ public class NewEmployeeTest extends CommonEmployeeTest {
          assertNotNull("nationality validation is not done.", fields.get("nationality"));
 
      }
-
-
- 	private EmployeeCommandPayload getEmployeeValidatableCommandPayload() {
- 		
-     	return new EmployeeCommandPayload("title", "name", null, "email", "0212238sa32", null,null,"2020-01-01","ANDORRAN", "Netherlands", "about", new ArrayList<>(),new ArrayList<>(),
-         		new ArrayList<>(), new ArrayList<>(),true);
- 	}
 
 }

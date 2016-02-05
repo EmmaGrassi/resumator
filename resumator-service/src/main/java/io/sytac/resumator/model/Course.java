@@ -21,18 +21,18 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class Course {
-	
-    @NotBlank(message = "Course name is mandatory")
-	private final String name;
-    @NotBlank(message = "Course description is mandatory")
-	private final String description;
-    @Digits(message = "course year should consist of digits", fraction = 0, integer = 4)
-	private final int year;
 
-	@JsonCreator
-	public Course(@JsonProperty("name") String name,
-				  @JsonProperty("description") String description,
-				  @JsonProperty("year") String year) {
-		this(name, description, Integer.valueOf(year));
-	}
+    @NotBlank(message = "Course name is mandatory")
+    private final String name;
+    @NotBlank(message = "Course description is mandatory")
+    private final String description;
+    @Digits(message = "course year should consist of digits", fraction = 0, integer = 4)
+    private final int year;
+
+    @JsonCreator
+    public Course(@JsonProperty("name") String name,
+                  @JsonProperty("description") String description,
+                  @JsonProperty("year") String year) {
+        this(name, description, Integer.valueOf(year));
+    }
 }

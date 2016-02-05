@@ -31,21 +31,21 @@ public class UserPrincipalFactoryProviderTest {
 
     @Test
     public void testValueFactoryReturnsPresentUser() throws Exception {
-        User user = new User("orgId", "name", Collections.emptySet());
-        when(securityContext.getUserPrincipal()).thenReturn(user);
+        Identity identity = new Identity("orgId", "name", Collections.emptySet());
+        when(securityContext.getUserPrincipal()).thenReturn(identity);
 
         Parameter parameter = mock(Parameter.class);
-        doReturn(User.class).when(parameter).getRawType();
+        doReturn(Identity.class).when(parameter).getRawType();
 
-        Factory<User> valueFactory = userPrincipalFactoryProvider.createValueFactory(parameter);
-        assertThat(valueFactory.provide(), equalTo(user));
+        Factory<Identity> valueFactory = userPrincipalFactoryProvider.createValueFactory(parameter);
+        assertThat(valueFactory.provide(), equalTo(identity));
     }
 
     @Test(expected = IllegalStateException.class)
     public void testValueFactoryThrowsISEWhenUserNotPresent() throws Exception {
         // Should never happen
         Parameter parameter = mock(Parameter.class);
-        doReturn(User.class).when(parameter).getRawType();
+        doReturn(Identity.class).when(parameter).getRawType();
 
         userPrincipalFactoryProvider.createValueFactory(parameter).provide();
     }

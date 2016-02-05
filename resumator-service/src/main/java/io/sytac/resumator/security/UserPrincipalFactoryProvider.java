@@ -28,22 +28,22 @@ public class UserPrincipalFactoryProvider extends AbstractValueFactoryProvider {
     }
 
     @Override
-    protected Factory<User> createValueFactory(Parameter parameter) {
+    protected Factory<Identity> createValueFactory(Parameter parameter) {
         Class<?> classType = parameter.getRawType();
 
-        if (classType == null || !classType.equals(User.class)) {
+        if (classType == null || !classType.equals(Identity.class)) {
             return null;
         }
 
-        return new AbstractContainerRequestValueFactory<User>() {
+        return new AbstractContainerRequestValueFactory<Identity>() {
             @Override
-            public User provide() {
+            public Identity provide() {
                 final Principal user = securityContext.getUserPrincipal();
-                if (user instanceof User) {
-                    return (User) user;
+                if (user instanceof Identity) {
+                    return (Identity) user;
                 }
 
-                throw new IllegalStateException("User Principal is missing, this should never happen.");
+                throw new IllegalStateException("Identity is missing, this should never happen.");
             }
         };
     }

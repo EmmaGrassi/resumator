@@ -3,8 +3,8 @@ package io.sytac.resumator.http.command.model;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Joiner;
 import io.sytac.resumator.command.CommandHeader;
-import io.sytac.resumator.employee.NewEmployeeCommand;
 import io.sytac.resumator.employee.EmployeeCommandPayload;
+import io.sytac.resumator.employee.NewEmployeeCommand;
 import io.sytac.resumator.model.*;
 import io.sytac.resumator.organization.NewOrganizationCommand;
 import io.sytac.resumator.utils.DateUtils;
@@ -12,11 +12,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 
 public class NewEmployeeCommandTest extends CommonCommandTest {
@@ -85,6 +86,7 @@ public class NewEmployeeCommandTest extends CommonCommandTest {
                 "\"timestamp\":" + headerTimestamp +
             "}," +
             "\"payload\":{" +
+                "\"type\":\"" + TYPE + "\"," +
                 "\"title\":\"" + TITLE + "\"," +
                 "\"name\":\"" + NAME + "\"," +
                 "\"surname\":\"" + SURNAME + "\"," +

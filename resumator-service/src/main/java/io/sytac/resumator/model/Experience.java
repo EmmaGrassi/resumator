@@ -29,37 +29,37 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class Experience {
-	
+
 	@NotBlank(message = "companyName is mandatory")
-	private final String companyName;
+    private final String companyName;
 	@NotBlank(message = "Experience title is mandatory")
-	private final String title;
+    private final String title;
 	@NotBlank(message = "Experience city is mandatory")
-	private final String city;
+    private final String city;
 	@NotBlank(message = "Experience country  is mandatory")
-	private final String country;
+    private final String country;
 	@NotBlank(message = "shortDescription is mandatory")
-	private final String shortDescription;
+    private final String shortDescription;
 	@NotEmpty(message = "technologies is mandatory")
-	private final List<String> technologies;
+    private final List<String> technologies;
 	@NotEmpty(message = "methodologies is mandatory")
-	private final List<String> methodologies;
+    private final List<String> methodologies;
 	@NotNull(message = "Experience startDate is mandatory")
 	@Past(message="Experience start Date can not be in the future")
-	private final Date startDate;
-	private final Optional<Date> endDate;
+    private final Date startDate;
+    private final Optional<Date> endDate;
 
-	@JsonCreator
-	public Experience(@JsonProperty("companyName") String companyName,
-					  @JsonProperty("title") String title,
-					  @JsonProperty("city") String city,
-					  @JsonProperty("country") String country,
-					  @JsonProperty("shortDescription") String shortDescription,
-					  @JsonProperty("technologies") List<String> technologies,
-					  @JsonProperty("methodologies") List<String> methodologies,
-					  @JsonProperty("startDate") String startDate,
-					  @JsonProperty("endDate") String endDate) {
-		this(companyName, title, city, country, shortDescription, technologies, methodologies,
-				DateUtils.convert(startDate), Optional.ofNullable(endDate).map(DateUtils::convert));
-	}
+    @JsonCreator
+    public Experience(@JsonProperty("companyName") String companyName,
+                      @JsonProperty("title") String title,
+                      @JsonProperty("city") String city,
+                      @JsonProperty("country") String country,
+                      @JsonProperty("shortDescription") String shortDescription,
+                      @JsonProperty("technologies") List<String> technologies,
+                      @JsonProperty("methodologies") List<String> methodologies,
+                      @JsonProperty("startDate") String startDate,
+                      @JsonProperty("endDate") String endDate) {
+        this(companyName, title, city, country, shortDescription, technologies, methodologies,
+                DateUtils.convert(startDate), Optional.ofNullable(endDate).map(DateUtils::convert));
+    }
 }

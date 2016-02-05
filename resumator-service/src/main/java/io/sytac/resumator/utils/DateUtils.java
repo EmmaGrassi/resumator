@@ -12,6 +12,12 @@ public class DateUtils {
 
     public static final String ISO_DATE_FORMAT = "yyyy-MM-dd";
 
+    /**
+     * Utility class, not to be instantiated.
+     */
+    private DateUtils() {
+    }
+
     public static Date convert(String date) {
         return DateTimeFormat.forPattern(ISO_DATE_FORMAT).parseDateTime(date).toDate();
     }

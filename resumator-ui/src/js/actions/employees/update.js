@@ -1,14 +1,14 @@
-export default update;
-
 import request from 'superagent';
 import { pushPath } from 'redux-simple-router';
 
-function update(id, data) {
+import handleRequestError from '../../lib/handleRequestError';
+
+function update(email, data) {
   return (dispatch) => {
     dispatch({ type: 'employees:update:start' });
 
     request
-      .put(`/api/employees/${id}`)
+      .put(`/api/employees/${email}`)
       .send(data)
       .set('Content-Type', 'application/json')
       .end((error, response) => {
@@ -22,7 +22,7 @@ function update(id, data) {
 
         dispatch({ type: 'employees:update:success', response });
 
-        dispatch(pushPath(`/employees/${id}`));
+        dispatch(pushPath(`/employees/${email}`));
       });
   };
 }

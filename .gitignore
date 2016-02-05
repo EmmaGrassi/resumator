@@ -9,4 +9,5 @@ node_modules/
 jspm_packages/
 target/
 resumator.log
+resumator*.log.gz
 npm-debug.log

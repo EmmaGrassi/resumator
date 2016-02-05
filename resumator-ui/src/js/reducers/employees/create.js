@@ -6,7 +6,7 @@ const defaults = immutable.Map({
   isSaving: false,
 
   // TODO: Check if this is needed.
-  id: null,
+  email: null,
 
   item: item
 });
@@ -18,11 +18,11 @@ function create(state = defaults, action = {}) {
         .set('isSaving', true);
 
     case 'employees:create:success':
-      const id = action.response.id;
+      const email = action.response.email;
 
       return state
         .set('isSaving', false)
-        .set('id', id);
+        .set('email', email);
 
     case 'employees:create:failure':
       return state

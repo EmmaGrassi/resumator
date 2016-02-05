@@ -39,6 +39,10 @@ function runBundle() {
   return function(bundle, cb) {
     bundle
       .bundle()
+      .on('error', function (error) {
+        console.error(error.stack || error.message || error);
+        this.emit('end');
+      })
       .pipe(source('app.bundle.js'))
       .pipe(gulp.dest('build/js'))
       .on('end', cb)

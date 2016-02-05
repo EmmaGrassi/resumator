@@ -27,6 +27,7 @@ import lombok.Getter;
 @Getter
 public class EmployeeCommandPayload implements CommandPayload {
 
+    private final EmployeeType type;
     @NotBlank(message = "Title is mandatory")
     private final String title;
     @NotBlank(message = "name is mandatory")
@@ -60,7 +61,8 @@ public class EmployeeCommandPayload implements CommandPayload {
     private final boolean admin;
 
     @JsonCreator
-    public EmployeeCommandPayload(@JsonProperty("title") final String title,
+    public EmployeeCommandPayload(@JsonProperty("type") final EmployeeType type,
+                                  @JsonProperty("title") final String title,
                                   @JsonProperty("name") final String name,
                                   @JsonProperty("surname") final String surname,
                                   @JsonProperty("email") final String email,
@@ -76,7 +78,7 @@ public class EmployeeCommandPayload implements CommandPayload {
                                   @JsonProperty("experience") final List<Experience> experience,
                                   @JsonProperty("languages") final List<Language> languages,
                                   @JsonProperty("admin") final boolean admin) {
-
+        this.type = type;
         this.title = title;
         this.name = name;
         this.surname = surname;

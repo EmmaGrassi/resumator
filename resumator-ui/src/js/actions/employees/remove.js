@@ -1,13 +1,14 @@
 import request from 'superagent';
 
+import handleRequestError from '../../lib/handleRequestError';
 import list from './list';
 
-function remove(id) {
+function remove(email) {
   return (dispatch) => {
     dispatch({ type: 'employees:remove:start' });
 
     request
-      .delete(`/api/employees/${id}`)
+      .delete(`/api/employees/${email}`)
       .set('Content-Type', 'application/json')
       .end((error, response) => {
         if (error) {

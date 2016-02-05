@@ -1,6 +1,8 @@
 import request from 'superagent';
 import { pushPath } from 'redux-simple-router';
 
+import handleRequestError from '../../lib/handleRequestError';
+
 function create(data) {
   return (dispatch) => {
     dispatch({ type: 'employees:create:start' });
@@ -18,11 +20,11 @@ function create(data) {
           return;
         }
 
-        const { id } = JSON.parse(response.text);
+        const { email } = JSON.parse(response.text);
 
         dispatch({ type: 'employees:create:success', response });
 
-        dispatch(pushPath(`/employees/${id}`));
+        dispatch(pushPath(`/employees/${email}`));
       });
   };
 }

@@ -3,15 +3,10 @@ package io.sytac.resumator.employee;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.sytac.resumator.command.Command;
 import io.sytac.resumator.command.CommandHeader;
 import io.sytac.resumator.model.Event;
 
-import java.sql.Timestamp;
-import java.util.Date;
-import java.util.Optional;
 import java.util.UUID;
 
 /**

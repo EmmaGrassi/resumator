@@ -25,8 +25,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchEmployee: (id) => dispatch(actions.employees.show(id)),
-    navigateToEmployeesEdit: (id) => dispatch(pushPath(`/employees/${id}/edit`))
+    fetchEmployee: (email) => dispatch(actions.employees.show(email)),
+    navigateToEmployeesEdit: (email) => dispatch(pushPath(`/employees/${email}/edit`))
   }
 }
 
@@ -38,7 +38,7 @@ class Show extends React.Component {
   handleEditButtonClick() {
     const data = this.props.employees.show.toJS();
 
-    this.props.navigateToEmployeesEdit(data.item.id);
+    this.props.navigateToEmployeesEdit(data.item.email);
   }
 
   getCourses() {
@@ -229,7 +229,7 @@ class Show extends React.Component {
       title
     } = item;
 
-    const docxURL = `/api/employees/${id}/docx`;
+    const docxURL = `/api/employees/${email}/docx`;
 
     nationality = nationality && normalizeString(nationality);
     dateOfBirth = moment(dateOfBirth).format('YYYY-MM-DD');

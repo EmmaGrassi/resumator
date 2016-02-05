@@ -2,11 +2,9 @@ package io.sytac.resumator.store.bootstrap;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.sytac.resumator.command.Command;
-import io.sytac.resumator.model.Event;
 import io.sytac.resumator.organization.Organization;
 import io.sytac.resumator.organization.OrganizationRepository;
 
-import java.io.IOException;
 import java.util.Optional;
 
 /**
@@ -43,6 +41,4 @@ public abstract class AbstractEventExecutor implements EventExecutor {
         return this.repository.fromDomain(domain).orElseThrow(() ->
                 new IllegalArgumentException(String.format("Cannot replay '%s' for unknown organization", command.getType())));
     }
-
-    public abstract void execute(Event event) throws IOException;
 }

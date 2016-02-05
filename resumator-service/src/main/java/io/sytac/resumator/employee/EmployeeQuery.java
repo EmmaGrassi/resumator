@@ -7,8 +7,8 @@ import io.sytac.resumator.http.BaseResource;
 import io.sytac.resumator.model.*;
 import io.sytac.resumator.model.Error;
 import io.sytac.resumator.organization.OrganizationRepository;
+import io.sytac.resumator.security.Identity;
 import io.sytac.resumator.security.Roles;
-import io.sytac.resumator.security.User;
 import io.sytac.resumator.security.UserPrincipal;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -37,6 +37,8 @@ import java.util.*;
 @Slf4j
 public class EmployeeQuery extends BaseResource {
 
+    private static final String PATH_PARAM_EMAIL = "email";
+
     private static final String CONTENT_TYPE_DOCX = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
 
     private final OrganizationRepository organizations;
@@ -53,17 +55,17 @@ public class EmployeeQuery extends BaseResource {
     @GET
     @Produces(RepresentationFactory.HAL_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response getEmployee(@PathParam("email") final String email,
-                                @UserPrincipal User user,
+    public Response getEmployee(@PathParam(PATH_PARAM_EMAIL) final String email,
+                                @UserPrincipal Identity identity,
                                 @Context final UriInfo uriInfo) {
 
-        return represent(getEmployee(email, user), uriInfo);
+        return represent(email, identity, uriInfo);
     }
 
     @GET
     @Produces(CONTENT_TYPE_DOCX)
-    public Response getDocxViaContentNegotiation(@PathParam("id") final String id, @UserPrincipal final User user) {
-        return getEmployee(id, user).map(employee -> {
+    public Response getDocxViaContentNegotiation(@PathParam(PATH_PARAM_EMAIL) final String email, @UserPrincipal final Identity identity) {
+        return getEmployee(email, identity).map(employee -> {
             try {
                 return Response.ok(docxGenerator.generate(getTemplateStream(), getPlaceholderMappings(employee)),
                                 CONTENT_TYPE_DOCX)
@@ -79,18 +81,21 @@ public class EmployeeQuery extends BaseResource {
     @Path("docx")
     @GET
     @Produces(CONTENT_TYPE_DOCX)
-    public Response getDocxViaCustomUrl(@PathParam("id") final String id, @UserPrincipal final User user) {
-        return getDocxViaContentNegotiation(id, user);
+    public Response getDocxViaCustomUrl(@PathParam(PATH_PARAM_EMAIL) final String email, @UserPrincipal final Identity identity) {
+        return getDocxViaContentNegotiation(email, identity);
     }
 
     /**
      * Translates an {@link Employee} into its HAL representation
      *
-     * @param employee The employee to represent
+     * @param email The email of desired employee
+     * @param identity The current identity
      * @param uriInfo  The current REST endpoint information
      * @return The {@link Representation} of the {@link Employee}
      */
-    private Response represent(final Optional<Employee> employee, final UriInfo uriInfo) {
+    private Response represent(final String email, final Identity identity, final UriInfo uriInfo) {
+        final Optional<Employee> employee = getEmployee(email, identity);
+
         if (employee.isPresent()) {
             final Employee emp = employee.get();
             final List<Education> educations = Optional.ofNullable(emp.getEducations()).orElse(Collections.emptyList());
@@ -115,7 +120,7 @@ public class EmployeeQuery extends BaseResource {
                     .withProperty("courses", courses)
                     .withProperty("experience", experiences)
                     .withProperty("languages", languages)
-                    .withProperty("admin", emp.isAdmin())
+                    .withProperty("admin", (identity.hasRole(Roles.ADMIN) || emp.isAdmin()))
                     .withLink("self", uriInfo.getRequestUri().toString())
                     .toString(RepresentationFactory.HAL_JSON);
 
@@ -125,9 +130,9 @@ public class EmployeeQuery extends BaseResource {
         }
     }
 
-    private Optional<Employee> getEmployee(String email, User user) {
+    private Optional<Employee> getEmployee(String email, Identity identity) {
         return organizations
-                .get(user.getOrganizationId())
+                .get(identity.getOrganizationId())
                 .map(org -> org.getEmployeeByEmail(email));
     }
 

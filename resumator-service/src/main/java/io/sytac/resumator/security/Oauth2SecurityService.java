@@ -50,16 +50,16 @@ public class Oauth2SecurityService {
      * @param idToken the Id token provided by the Google Authentication on Front End
      * @return the associated user
      */
-    public Optional<User> authenticateUser(final String idToken) {
+    public Optional<Identity> authenticateUser(final String idToken) {
         final GoogleIdTokenVerifier verifier = buildVerifier();
         final Optional<GoogleIdToken> idtoken = verify(verifier, idToken);
         return toUser(idtoken);
     }
 
-    private Optional<User> toUser(final Optional<GoogleIdToken> idToken) {
+    private Optional<Identity> toUser(final Optional<GoogleIdToken> idToken) {
         return idToken.flatMap(token -> {
             final Optional<Organization> organization = organizations.fromDomain(token.getPayload().getHostedDomain());
-            return organization.map(org -> new User(org.getId(),
+            return organization.map(org -> new Identity(org.getId(),
                     token.getPayload().getEmail(),
                     getRoles(org, token.getPayload())));
         });
@@ -73,13 +73,10 @@ public class Oauth2SecurityService {
         final Set<String> admins = new HashSet<>(config.getListProperty(ADMIN_ACCOUNT_LIST));
         if (admins.contains(payload.getEmail())) {
             return true;
-        } else {
-            final Optional<Employee> employee = Optional.ofNullable(organization.getEmployeeByEmail(payload.getEmail()));
-            if (employee.isPresent() && employee.get().isAdmin()) {
-                return true;
-            }
         }
-        return false;
+
+        final Optional<Employee> employee = Optional.ofNullable(organization.getEmployeeByEmail(payload.getEmail()));
+        return employee.map(Employee::isAdmin).orElse(false);
     }
 
     private Optional<GoogleIdToken> verify(final GoogleIdTokenVerifier verifier, final String idtoken) {

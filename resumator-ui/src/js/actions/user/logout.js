@@ -1,7 +1,7 @@
 import cookies from 'cookies-js';
 import { pushPath } from 'redux-simple-router';
 
-import clearCookie from './clearCookie';
+import cookieClear from '../../services/user/cookie/clear';
 
 const cookiesOptions = {
   path: '/',
@@ -10,8 +10,10 @@ const cookiesOptions = {
 
 // TODO: Sign out with google first.
 function logout(data) {
-  return (dispatch) => {
-    dispatch(clearCookie());
+  return async (dispatch) => {
+    dispatch({ type: 'user:logout:start' })
+
+    await cookieClear();
 
     dispatch({ type: 'user:logout:success', data });
 

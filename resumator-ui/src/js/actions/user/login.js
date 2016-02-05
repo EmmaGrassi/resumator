@@ -1,24 +1,32 @@
 import cookies from 'cookies-js';
+import { pushPath } from 'redux-simple-router';
+
+import handleRequestError from '../../lib/handleRequestError.js';
+import cookieClear from '../../services/user/cookie/clear';
+import cookieSet from '../../services/user/cookie/set';
+import profileGet from '../../services/user/profile/get';
+
+const cookiesOptions = {
+  path: '/',
+  domain: window.location.hostname
+};
 
 function login(data) {
-  return (dispatch) => {
-    const cookiesOptions = {
-      path: '/',
-      domain: window.location.hostname,
-      expires: new Date(+data.expiresAt),
-      secure: false
-    };
+  return async (dispatch) => {
+    try {
+      dispatch({ type: 'user:login:start' })
 
-    cookies.set('idToken', data.idToken, cookiesOptions);
-    cookies.set('expiresAt', data.expiresAt, cookiesOptions);
-    cookies.set('email', data.email, cookiesOptions);
-    cookies.set('name', data.name, cookiesOptions);
-    cookies.set('surname', data.surname, cookiesOptions);
-    cookies.set('imageUrl', data.imageUrl, cookiesOptions);
+      await cookieSet(data);
+      await profileGet(data.email);
 
-    cookies.set('resumatorJWT', data.idToken, cookiesOptions);
+      dispatch({ type: 'user:login:success' });
 
-    dispatch({ type: 'user:login:success', data });
+      dispatch(pushPath(`/`));
+    } catch(error) {
+      await cookieClear();
+
+      dispatch({ type: 'user:login:failure' });
+    }
   };
 }
 

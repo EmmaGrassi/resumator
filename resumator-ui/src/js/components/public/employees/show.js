@@ -36,13 +36,13 @@ class Show extends React.Component {
   }
 
   handleEditButtonClick() {
-    const data = this.props.employees.show.toJS();
+    const data = this.props.employees.show;
 
     this.props.navigateToEmployeesEdit(data.item.email);
   }
 
   getCourses() {
-    const data = this.props.employees.show.toJS();
+    const data = this.props.employees.show;
 
     return (
       <Row>
@@ -70,7 +70,7 @@ class Show extends React.Component {
   }
 
   getEducation() {
-    const data = this.props.employees.show.toJS();
+    const data = this.props.employees.show;
 
     return (
       <Row>
@@ -105,7 +105,7 @@ class Show extends React.Component {
   }
 
   getExperience() {
-    const data = this.props.employees.show.toJS();
+    const data = this.props.employees.show;
 
     return (
       <Row>
@@ -173,7 +173,7 @@ class Show extends React.Component {
   }
 
   getLanguages() {
-    const data = this.props.employees.show.toJS();
+    const data = this.props.employees.show;
 
     return (
       <Row>
@@ -204,7 +204,7 @@ class Show extends React.Component {
   }
 
   render() {
-    const data = this.props.employees.show.toJS();
+    const data = this.props.employees.show;
 
     const item = data.item;
     const isFetching = data.isFetching;

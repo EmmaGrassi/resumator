@@ -29,7 +29,7 @@ class Edit extends React.Component {
   }
 
   render() {
-    const data = this.props.employees.edit.toJS();
+    const data = this.props.employees.edit;
     const isFetching = data.isFetching;
 
     if (data.item) {

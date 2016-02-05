@@ -13,7 +13,7 @@ import RightNav from './right-nav';
 
 function mapStateToProps(state) {
   return {
-    user: state.user.toJS()
+    session: state.user.session
   };
 }
 
@@ -25,11 +25,11 @@ function mapDispatchToProps(dispatch) {
 
 class TopBar extends React.Component {
   render() {
-    const { user } = this.props;
+    const { session } = this.props;
 
     let nav = '';
 
-    if (user.idToken) {
+    if (session.idToken) {
       nav = (
         <Nav>
           <NavItem eventKey={1} href="#/employees">Employees</NavItem>

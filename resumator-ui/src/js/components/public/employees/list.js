@@ -69,7 +69,7 @@ class List extends React.Component {
     let rows;
 
     if (items && items.length) {
-      rows = _items.map((v, i) => {
+      rows = items.map((v, i) => {
         const email = v.email;
         const name = v.name;
         const surname = v.surname;

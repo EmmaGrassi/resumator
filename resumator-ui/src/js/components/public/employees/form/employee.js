@@ -72,7 +72,7 @@ const EmployeeSchema = tcombForm.struct({
   surname: tcombForm.String,
 
   email: tcombFormTypes.String.Email,
-  phonenumber: tcombForm.String,
+  phonenumber: tcombForm.Number,
 
   currentResidence: tcombForm.String,
 

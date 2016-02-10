@@ -15,11 +15,9 @@ function profile(state = defaults, action = {}) {
         .set('isFetching', true);
 
     case 'user:getProfile:success':
-      debugger;
-
       return state
         .set('isFetching', false)
-        .set('item', response);
+        .set('item', action.payload);
 
     case 'user:getProfile:failure':
       return defaults;

@@ -12,21 +12,39 @@ const cookiesOptions = {
 };
 
 function login(data) {
-  return async (dispatch) => {
-    try {
-      dispatch({ type: 'user:login:start' })
+  return (dispatch) => {
+    dispatch({ type: 'user:login:start' })
 
-      await cookieSet(data);
-      await profileGet(data.email);
+    cookieSet(data);
 
-      dispatch({ type: 'user:login:success' });
+    profileGet(data.email, function(error, profile) {
+      if (error) {
+        if (error.error.status === 404) {
+          dispatch(pushPath(`/employees/new`));
+          dispatch({ type: 'user:getProfile:success', payload: profile });
+          dispatch({ type: 'user:login:success', payload: data });
 
-      dispatch(pushPath(`/`));
-    } catch(error) {
-      await cookieClear();
+          return;
+        } else {
+          cookieClear();
 
-      dispatch({ type: 'user:login:failure' });
-    }
+          dispatch({ type: 'user:login:failure' });
+
+          return;
+        }
+      }
+
+      dispatch({ type: 'user:getProfile:success', payload: profile });
+      dispatch({ type: 'user:login:success', payload: data });
+
+      if (profile) {
+        if (profile.admin) {
+          dispatch(pushPath(`/employees`));
+        } else {
+          dispatch(pushPath(`/employees/${profile.email}`));
+        }
+      }
+    });
   };
 }
 

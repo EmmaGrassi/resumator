@@ -1,5 +1,6 @@
 import Loader from 'react-loader';
 import React from 'react';
+import _ from 'lodash';
 import { Button, ButtonGroup, ButtonToolbar, Col, Glyphicon, Grid, Row, Table } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { pushPath } from 'redux-simple-router';
@@ -68,7 +69,14 @@ class List extends React.Component {
     let rows;
 
     if (items && items.length) {
-      rows = items.map((v, i) => {
+      // TODO: Some bug with seamless-immutable.
+      const _items = _.map(items, v => ({
+        name: v.name,
+        email: v.email,
+        surname: v.surname
+      }));
+
+      rows = _items.map((v, i) => {
         const email = v.email;
         const name = v.name;
         const surname = v.surname;
@@ -77,8 +85,8 @@ class List extends React.Component {
           key={i}
           onClick={this.handleRowButtonClick.bind(this, email)}
           style={{
-          cursor: 'pointer'
-        }}
+            cursor: 'pointer'
+          }}
         >
           <td
             style={{

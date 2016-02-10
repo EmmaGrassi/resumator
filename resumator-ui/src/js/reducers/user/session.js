@@ -22,7 +22,13 @@ function session(state = defaults, { type, payload } = {}) {
         .set('email', payload.email);
 
     case 'user:login:success':
-      return state;
+      return state
+        .set('idToken', payload.idToken)
+        .set('expiresAt', payload.expiresAt)
+        .set('name', payload.name)
+        .set('surname', payload.surname)
+        .set('imageUrl', payload.imageUrl)
+        .set('email', payload.email);
 
     case 'user:login:failure':
       return defaults;

@@ -5,7 +5,7 @@ const cookiesOptions = {
   domain: window.location.hostname
 };
 
-export default async function clear() {
+export default function clear() {
   cookies.expire('idToken', cookiesOptions);
   cookies.expire('expiresAt', cookiesOptions);
   cookies.expire('email', cookiesOptions);

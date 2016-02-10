@@ -1,6 +1,6 @@
 import cookies from 'cookies-js';
 
-export default async function get(data) {
+export default function get(data) {
   const cookiesOptions = {
     path: '/',
     domain: window.location.hostname,

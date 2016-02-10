@@ -5,7 +5,7 @@ const cookiesOptions = {
   domain: window.location.hostname
 };
 
-export default async function get() {
+export default function get() {
   const idToken = cookies.get('idToken', cookiesOptions);
   const expiresAt = cookies.get('expiresAt', cookiesOptions);
   const email = cookies.get('email', cookiesOptions);

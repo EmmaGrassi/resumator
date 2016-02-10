@@ -1,8 +1,8 @@
-import immutable from 'immutable';
+import immutable from 'seamless-immutable';
 
 import employee from '../common/employee';
 
-const defaults = immutable.Map({
+const defaults = immutable({
   isSaving: false,
 
   // TODO: Check if this is needed.

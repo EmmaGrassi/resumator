@@ -105,12 +105,12 @@ const router = (
         <Route path="employees" requireSession={true}>
           <IndexRoute component={ PublicEmployeesList } onEnter={handleEnter}/>
 
-          <Route path="new" component={ PublicEmployeesCreate } onEnter={handleEnter} requireOwnProfile={true}/>
+          <Route path="new" component={ PublicEmployeesCreate } onEnter={handleEnter}/>
 
           <Route path=":userId">
-            <IndexRoute component={ PublicEmployeesShow } onEnter={handleEnter} requireOwnProfile={true}/>
+            <IndexRoute component={ PublicEmployeesShow } onEnter={handleEnter}/>
 
-            <Route path="edit" component={ PublicEmployeesEdit } onEnter={handleEnter} requireAdmin={true}/>
+            <Route path="edit" component={ PublicEmployeesEdit } onEnter={handleEnter}/>
           </Route>
         </Route>
 

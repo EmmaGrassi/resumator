@@ -1,6 +1,6 @@
-import immutable from 'seamless-immutable';
+import immutable from 'immutable';
 
-const defaults = immutable({
+const defaults = immutable.Map({
   idToken: null,
   expiresAt: null,
 

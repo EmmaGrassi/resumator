@@ -13,7 +13,7 @@ import login from '../../../actions/user/login';
 
 function mapStateToProps(state) {
   return {
-    session: state.user.session
+    session: state.user.session.toJS()
   };
 }
 

@@ -13,7 +13,7 @@ import RightNav from './right-nav';
 
 function mapStateToProps(state) {
   return {
-    session: state.user.session
+    session: state.user.session.toJS()
   };
 }
 

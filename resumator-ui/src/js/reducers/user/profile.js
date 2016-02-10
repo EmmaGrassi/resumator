@@ -1,8 +1,8 @@
-import immutable from 'seamless-immutable';
+import immutable from 'immutable';
 
 import employee from '../common/employee';
 
-const defaults = immutable({
+const defaults = immutable.Map({
   isFetching: false,
 
   item: employee
@@ -17,7 +17,7 @@ function profile(state = defaults, action = {}) {
     case 'user:getProfile:success':
       return state
         .set('isFetching', false)
-        .set('item', action.payload);
+        .set('item', immutable.fromJS(action.payload));
 
     case 'user:getProfile:failure':
       return defaults;

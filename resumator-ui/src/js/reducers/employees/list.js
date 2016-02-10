@@ -1,7 +1,7 @@
-import immutable from 'seamless-immutable';
+import immutable from 'immutable';
 import { map } from 'lodash';
 
-const defaults = immutable({
+const defaults = immutable.Map({
   isFetching: false,
 
   items: []
@@ -16,7 +16,7 @@ function list(state = defaults, action = {}) {
     case 'employees:list:success':
       return state
         .set('isFetching', false)
-        .set('items', immutable(action.payload));
+        .set('items', immutable.fromJS(action.payload));
 
     case 'employees:list:failure':
       return state

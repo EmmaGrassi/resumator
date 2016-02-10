@@ -10,7 +10,7 @@ import removeAction from '../../../actions/employees/remove';
 
 function mapStateToProps(state) {
   return {
-    employees: state.employees
+    list: state.employees.list.toJS()
   };
 }
 
@@ -62,20 +62,13 @@ class List extends React.Component {
   }
 
   render() {
-    const data = this.props.employees.list;
+    const data = this.props.list;
     const items = data.items;
     const isFetching = data.isFetching;
 
     let rows;
 
     if (items && items.length) {
-      // TODO: Some bug with seamless-immutable.
-      const _items = _.map(items, v => ({
-        name: v.name,
-        email: v.email,
-        surname: v.surname
-      }));
-
       rows = _items.map((v, i) => {
         const email = v.email;
         const name = v.name;

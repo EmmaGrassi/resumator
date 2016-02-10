@@ -14,11 +14,6 @@ import initialize from './actions/initialize';
 import store from './store';
 
 // Components
-import AdminContainer from './components/admin/container';
-import AdminEmployeesEdit from './components/admin/employees/edit';
-import AdminEmployeesList from './components/admin/employees/list';
-import AdminEmployeesShow from './components/admin/employees/show';
-import AdminHome from './components/admin/home';
 import NotAuthorized from './components/NotAuthorized';
 import NotFound from './components/NotFound';
 import PublicContainer from './components/public/container';
@@ -89,16 +84,6 @@ function handleEnter(nextState, replaceState) {
 const router = (
   <Provider store={store}>
     <Router history={history}>
-      <Route path="admin" component={ AdminContainer } onEnter={handleEnter} requireSession={true}>
-        <IndexRoute component={ AdminHome } onEnter={handleEnter}/>
-
-        <Route path="employees" component={ AdminEmployeesList } onEnter={handleEnter}>
-          <Route path=":userId" component={ AdminEmployeesShow } onEnter={handleEnter}>
-            <Route path="edit" component={ AdminEmployeesEdit } onEnter={handleEnter}/>
-          </Route>
-        </Route>
-      </Route>
-
       <Route path="/" component={ PublicContainer } onEnter={handleEnter}>
         <IndexRoute component={ PublicHome } onEnter={handleEnter}/>
 

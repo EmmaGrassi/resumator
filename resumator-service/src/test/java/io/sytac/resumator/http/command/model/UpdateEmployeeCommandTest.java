@@ -53,7 +53,7 @@ public class UpdateEmployeeCommandTest extends CommonCommandTest {
 
         final byte[] expectedBytes = json.getBytes("UTF-8");
         final UpdateEmployeeCommand command = getObjectMapper().readValue(expectedBytes, UpdateEmployeeCommand.class);
-        assertEquals("Wrong deserialization", DOMAIN, command.getHeader().getDomain().get());
+        assertEquals("Wrong deserialization", DOMAIN, command.getHeader().getDomain());
     }
 
 
@@ -89,17 +89,21 @@ public class UpdateEmployeeCommandTest extends CommonCommandTest {
             "}," +
             "\"payload\":{" +
                 "\"type\":\"" + TYPE + "\"," +
-                "\"title\":\"" + TITLE + "\"," +
-                "\"name\":\"" + NAME + "\"," +
-                "\"surname\":\"" + SURNAME + "\"," +
-                "\"email\":\"" + EMAIL + "\"," +
-                "\"phonenumber\":\"" + PHONENUMBER + "\"," +
-                "\"github\":\"" + GITHUB + "\"," +
-                "\"linkedin\":\"" + LINKEDIN + "\"," +
-                "\"dateOfBirth\":\"" + DATE_OF_BIRTH + "\"," +
-                "\"nationality\":\"" + NATIONALITY + "\"," +
-                "\"currentResidence\":\"" + CURRENT_RESIDENCE + "\"," +
-                "\"aboutMe\":\"" + ABOUT_ME + "\"," +
+                "\"profile\":{" +
+                    "\"title\":\"" + TITLE + "\"," +
+                    "\"name\":\"" + NAME + "\"," +
+                    "\"surname\":\"" + SURNAME + "\"," +
+                    "\"dateOfBirth\":\"" + DATE_OF_BIRTH + "\"," +
+                    "\"email\":\"" + EMAIL + "\"," +
+                    "\"phonenumber\":\"" + PHONENUMBER + "\"," +
+                    "\"nationality\":\"" + NATIONALITY + "\"," +
+                    "\"cityOfResidence\":\"" + CITY_OF_OF_RESIDENCE + "\"," +
+                    "\"countryOfResidence\":\"" + COUNTRY_OF_RESIDENCE + "\"," +
+                    "\"aboutMe\":\"" + ABOUT_ME + "\"," +
+                    "\"github\":\"" + GITHUB + "\"," +
+                    "\"linkedin\":\"" + LINKEDIN + "\"," +
+                    "\"admin\":false" +
+                "}," +
                 "\"education\":[{" +
                     "\"degree\":\"" + Education.Degree.MASTER_DEGREE + "\","+
                     "\"fieldOfStudy\":\"" + FIELD_OF_STUDY + "\"," +
@@ -131,8 +135,7 @@ public class UpdateEmployeeCommandTest extends CommonCommandTest {
                 "},{" +
                     "\"name\":\"" + ENGLISH_LANGUAGE + "\"," +
                     "\"proficiency\":\"" + Language.Proficiency.FULL_PROFESSIONAL + "\"" +
-                "}]," +
-                "\"admin\":false" +
+                "}]" +
             "}," +
             "\"type\":\"" + UPDATE_EMPLOYEE_TYPE + "\"" +
         "}";

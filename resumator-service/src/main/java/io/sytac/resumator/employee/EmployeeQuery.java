@@ -10,6 +10,8 @@ import io.sytac.resumator.organization.OrganizationRepository;
 import io.sytac.resumator.security.Identity;
 import io.sytac.resumator.security.Roles;
 import io.sytac.resumator.security.UserPrincipal;
+import io.sytac.resumator.user.Profile;
+import io.sytac.resumator.user.ProfileQuery;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jetty.http.HttpStatus;
@@ -23,6 +25,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -69,7 +72,8 @@ public class EmployeeQuery extends BaseResource {
             try {
                 return Response.ok(docxGenerator.generate(getTemplateStream(), getPlaceholderMappings(employee)),
                                 CONTENT_TYPE_DOCX)
-                        .header("content-disposition", String.format("attachment; filename = %s_%s.docx", employee.getName(), employee.getSurname()))
+                        .header("content-disposition", String.format("attachment; filename = %s_%s.docx",
+                                employee.getProfile().getName(), employee.getProfile().getSurname()))
                         .build();
             } catch (IOException exc) {
                 log.error("The following exception occurred while generating a PDF: ", exc);
@@ -103,24 +107,30 @@ public class EmployeeQuery extends BaseResource {
             final List<Experience> experiences = Optional.ofNullable(emp.getExperiences()).orElse(Collections.emptyList());
             final List<Language> languages = Optional.ofNullable(emp.getLanguages()).orElse(Collections.emptyList());
 
-            final String representation = rest.newRepresentation()
+            final Profile profile = emp.getProfile();
+            final Representation profileRepresentation = rest.newRepresentation()
                     .withProperty("type", emp.getType())
-                    .withProperty("title", emp.getTitle())
-                    .withProperty("name", emp.getName())
-                    .withProperty("surname", emp.getSurname())
-                    .withProperty("email", emp.getEmail())
-                    .withProperty("phonenumber", emp.getPhoneNumber())
-                    .withProperty("github", emp.getGitHub())
-                    .withProperty("linkedin", emp.getLinkedIn())
-                    .withProperty("dateOfBirth", emp.getDateOfBirth())
-                    .withProperty("nationality", emp.getNationality())
-                    .withProperty("aboutMe", emp.getAboutMe())
-                    .withProperty("currentResidence", emp.getCurrentResidence())
+                    .withProperty("title", profile.getTitle())
+                    .withProperty("name", profile.getName())
+                    .withProperty("surname", profile.getSurname())
+                    .withProperty("email", profile.getEmail())
+                    .withProperty("phonenumber", profile.getPhoneNumber())
+                    .withProperty("github", profile.getGitHub())
+                    .withProperty("linkedin", profile.getLinkedIn())
+                    .withProperty("dateOfBirth", profile.getDateOfBirth())
+                    .withProperty("nationality", profile.getNationality())
+                    .withProperty("aboutMe", profile.getAboutMe())
+                    .withProperty("cityOfResidence", profile.getCityOfResidence())
+                    .withProperty("countryOfResidence", profile.getCountryOfResidence())
+                    .withProperty("admin", (identity.hasRole(Roles.ADMIN) || profile.isAdmin()))
+                    .withLink("self", resourceLink(uriInfo, ProfileQuery.class, profile.getEmail()));
+
+            final String representation = rest.newRepresentation()
+                    .withRepresentation("profile", profileRepresentation)
                     .withProperty("education", educations)
                     .withProperty("courses", courses)
                     .withProperty("experience", experiences)
                     .withProperty("languages", languages)
-                    .withProperty("admin", (identity.hasRole(Roles.ADMIN) || emp.isAdmin()))
                     .withLink("self", uriInfo.getRequestUri().toString())
                     .toString(RepresentationFactory.HAL_JSON);
 
@@ -143,7 +153,7 @@ public class EmployeeQuery extends BaseResource {
     private Map<String, String> getPlaceholderMappings(Employee employee) {
         Map<String, String> result = new HashMap<>();
 
-        result.putAll(getPersonaliaMappings(employee));
+        result.putAll(getPersonaliaMappings(employee.getProfile()));
         result.putAll(getExperienceMappings(employee.getExperiences()));
         result.putAll(getEducationMappings(employee.getEducations()));
         result.putAll(getCourseMappings(employee.getCourses()));
@@ -152,15 +162,16 @@ public class EmployeeQuery extends BaseResource {
         return result;
     }
 
-    private Map<String, String> getPersonaliaMappings(Employee employee) {
+    private Map<String, String> getPersonaliaMappings(Profile profile) {
         Map<String, String> result = new HashMap<>();
-        result.put("JobTitle", employee.getTitle());
-        result.put("FirstName", employee.getName());
-        result.put("LastName", employee.getSurname());
-        result.put("YearOfBirth", String.valueOf(getYearOfDate(employee.getDateOfBirth())));
-        result.put("CurrentResidence", employee.getCurrentResidence());
-        result.put("Nationality", employee.getNationality().toString());
-        result.put("Bio", employee.getAboutMe());
+        result.put("JobTitle", profile.getTitle());
+        result.put("FirstName", profile.getName());
+        result.put("LastName", profile.getSurname());
+        result.put("YearOfBirth", String.valueOf(getYearOfDate(profile.getDateOfBirth())));
+        result.put("CityOfResidence", profile.getCityOfResidence());
+        result.put("CountryOfResidence", profile.getCountryOfResidence());
+        result.put("Nationality", profile.getNationality().toString());
+        result.put("Bio", profile.getAboutMe());
         return result;
     }
 

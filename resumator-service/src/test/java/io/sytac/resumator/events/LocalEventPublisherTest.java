@@ -8,6 +8,7 @@ import io.sytac.resumator.command.CommandPayload;
 import io.sytac.resumator.employee.NewEmployeeCommand;
 import io.sytac.resumator.employee.EmployeeCommandPayload;
 import io.sytac.resumator.model.*;
+import io.sytac.resumator.user.ProfileCommandPayload;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,18 +30,18 @@ public class LocalEventPublisherTest {
 
     @Test
     public void canPublishEvents() {
-        Event event = events.publish(getEmployeeCommand());
+        final Event event = events.publish(getEmployeeCommand());
         assertEquals("Wrong event details", Event.ORDER_UNSET, event.getInsertOrder());
     }
 
     @Test
     public void canReceiveSpecificEvents() {
-        AtomicInteger invoked = new AtomicInteger(0);
+        final AtomicInteger invoked = new AtomicInteger(0);
         final Consumer<Event> consumer = newEmployeeEvent -> invoked.incrementAndGet();
         final NewEmployeeCommand command = getEmployeeCommand();
 
         events.subscribe(consumer, NewEmployeeCommand.EVENT_TYPE);
-        Event event = events.publish(command);
+        final Event event = events.publish(command);
         assertEquals("Wrong event details", Event.ORDER_UNSET, event.getInsertOrder());
         assertEquals("Not invoked just one time!", 1, invoked.get());
         events.publish(command);
@@ -55,20 +56,18 @@ public class LocalEventPublisherTest {
         final List<String> technologies = Arrays.asList("Java", "Turbo Pascal");
         final List<String> methodologies = Arrays.asList("Scrum", "Exreme programming");
 
-        Date startDate = new GregorianCalendar(2010, Calendar.JANUARY, 1).getTime();
-        Date endDate = new GregorianCalendar(2014, Calendar.JANUARY, 1).getTime();
+        final Date startDate = new GregorianCalendar(2010, Calendar.JANUARY, 1).getTime();
+        final Date endDate = new GregorianCalendar(2014, Calendar.JANUARY, 1).getTime();
         final List<Experience> experience  = Collections.singletonList(new Experience("CompanyName", "Title", "City", "Coutry", "Short Description",
                 technologies, methodologies, startDate, Optional.of(endDate)));
 
         final List<Language> languages = Collections.singletonList(new Language("English", Language.Proficiency.FULL_PROFESSIONAL));
-        final EmployeeCommandPayload payload = new EmployeeCommandPayload(null, "Title", "Foo", "Bar", "Email", "+31000999000",
-                "Github", "Linkedin", "1984-04-22", "ITALY", "N", "About ME", education, courses, experience, languages, false);
+        final ProfileCommandPayload profileCommandPayload = new ProfileCommandPayload("Title", "Foo", "Bar", "1984-04-22", "Email", "+31000999000",
+                "ITALY", "N", "A", "About ME", "Github", "Linkedin", false);
+        final EmployeeCommandPayload payload = new EmployeeCommandPayload(null, profileCommandPayload, education, courses, experience, languages);
 
-        final CommandHeader commandHeader = new CommandHeader.Builder()
-                .setId(UUID.randomUUID().toString())
-                .setDomain("acme.biz")
-                .setTimestamp(new Date().getTime())
-                .build();
+        final CommandHeader commandHeader = CommandHeader.builder().id(UUID.randomUUID().toString())
+                .domain("acme.biz").timestamp(new Date().getTime()).build();
         return new NewEmployeeCommand(commandHeader, payload);
     }
 

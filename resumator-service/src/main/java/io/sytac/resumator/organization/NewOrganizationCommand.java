@@ -42,7 +42,7 @@ public class NewOrganizationCommand implements Command<CommandHeader, NewOrganiz
                 .map(Date::new)
                 .orElse(new Date());
 
-        this.header  = new CommandHeader.Builder().setTimestamp(time.getTime()).build();
+        this.header  = CommandHeader.builder().timestamp(time.getTime()).build();
         this.payload = new NewOrganizationCommandPayload(name, domain);
     }
 
@@ -70,11 +70,9 @@ public class NewOrganizationCommand implements Command<CommandHeader, NewOrganiz
             throw new IllegalArgumentException(e);
         }
 
-        return new Event(header.getId().orElse(randomId()),
-                header.getInsertOrder().orElse(Event.ORDER_UNSET),
-                asJson,
-                new Timestamp(header.getTimestamp()),
-                getType());
+        final String eventId = Optional.ofNullable(header.getId()).orElse(randomId());
+        final Long insertOrder = Optional.ofNullable(header.getInsertOrder()).orElse(Event.ORDER_UNSET);
+        return new Event(eventId, insertOrder, asJson, new Timestamp(header.getTimestamp()), getType());
     }
 
     private String randomId() {

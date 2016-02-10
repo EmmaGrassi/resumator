@@ -11,6 +11,7 @@ import io.sytac.resumator.model.enums.Nationality;
 import io.sytac.resumator.security.UserPrincipal;
 import io.sytac.resumator.security.UserPrincipalFactoryProvider;
 import io.sytac.resumator.security.UserPrincipalParamResolver;
+import io.sytac.resumator.user.Profile;
 import io.sytac.resumator.utils.DateUtils;
 import org.glassfish.hk2.api.InjectionResolver;
 import org.glassfish.hk2.api.TypeLiteral;
@@ -88,20 +89,27 @@ public class RESTTest extends JerseyTest {
                                  MultivaluedMap<String, String> httpHeaders, InputStream entityStream)
                 throws IOException, WebApplicationException {
 
-            Map<String, Object> map = mapper.readerFor(Map.class).readValue(entityStream);
+            final Map<String, Object> map = mapper.readerFor(Map.class).readValue(entityStream);
+            final Profile profile = (Profile)map.get("profile");
+
+
             return Employee.builder()
                     .id(map.get("id").toString())
-                    .title(map.get("title").toString())
-                    .name(map.get("name").toString())
-                    .surname(map.get("surname").toString())
-                    .email(map.get("email").toString())
-                    .phoneNumber(map.get("phonenumber").toString())
-                    .gitHub(map.get("github").toString())
-                    .linkedIn(map.get("linkedin").toString())
-                    .dateOfBirth(DateUtils.convert(map.get("dateOfBirth").toString()))
-                    .nationality(Nationality.valueOf(map.get("nationality").toString()))
-                    .currentResidence("")
-                    .aboutMe("")
+                    .profile(Profile.builder()
+                            .title(profile.getTitle())
+                            .name(map.get("name").toString())
+                            .surname(map.get("surname").toString())
+                            .email(map.get("email").toString())
+                            .phoneNumber(map.get("phonenumber").toString())
+                            .gitHub(map.get("github").toString())
+                            .linkedIn(map.get("linkedin").toString())
+                            .dateOfBirth(DateUtils.convert(map.get("dateOfBirth").toString()))
+                            .nationality(Nationality.valueOf(map.get("nationality").toString()))
+                            .cityOfResidence("")
+                            .countryOfResidence("")
+                            .aboutMe("")
+                            .admin(false)
+                            .build())
                     .educations(null)
                     .courses(null)
                     .experiences(null)

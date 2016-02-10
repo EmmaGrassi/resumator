@@ -13,6 +13,9 @@ import io.sytac.resumator.organization.InMemoryOrganizationRepository;
 import io.sytac.resumator.organization.NewOrganizationCommand;
 import io.sytac.resumator.organization.OrganizationRepository;
 import io.sytac.resumator.store.bootstrap.Bootstrap;
+import io.sytac.resumator.user.InMemoryProfileRepository;
+import io.sytac.resumator.user.ProfileCommandPayload;
+import io.sytac.resumator.user.ProfileRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -29,6 +32,7 @@ public class BootstrapTest {
     private EventStore store;
     private ObjectMapper json;
     private OrganizationRepository orgs;
+    private ProfileRepository profileRepository;
 
     @Mock
     private EventPublisher eventPublisherMock;
@@ -50,7 +54,9 @@ public class BootstrapTest {
         orgs = new InMemoryOrganizationRepository(eventPublisherMock);
         orgs.register(new CommandFactory().newOrganizationCommand(orgDetails));
 
-        bootstrap = new Bootstrap(store, orgs, json);
+        profileRepository = new InMemoryProfileRepository(eventPublisherMock);
+
+        bootstrap = new Bootstrap(store, orgs, profileRepository, json);
     }
 
     @Test
@@ -71,12 +77,10 @@ public class BootstrapTest {
     }
 
     private Event newEmployeeEvent() {
-        final EmployeeCommandPayload employeeCommandPayload = new EmployeeCommandPayload(null, "title", "name", "surname", "email",
-                "phonenumber", "github", "linkedin", "1984-04-22", "ITALIAN", "", "", null, null, null, null, false);
-        final CommandHeader commandHeader = new CommandHeader.Builder()
-                .setId(UUID.randomUUID().toString())
-                .setDomain("acme.biz")
-                .build();
+        final ProfileCommandPayload profileCommandPayload = new ProfileCommandPayload("title", "name", "surname",
+                "1984-04-22", "email", "phonenumber", "ITALIAN", "ROME", "ITALIA", "aboutme", "github", "linkedin", true);
+        final EmployeeCommandPayload employeeCommandPayload = new EmployeeCommandPayload(null, profileCommandPayload, null, null, null, null);
+        final CommandHeader commandHeader = CommandHeader.builder().id(UUID.randomUUID().toString()).domain("acme.biz").build();
         final NewEmployeeCommand command = new NewEmployeeCommand(commandHeader, employeeCommandPayload);
         return command.asEvent(json);
     }

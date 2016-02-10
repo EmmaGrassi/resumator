@@ -5,6 +5,7 @@ import io.sytac.resumator.model.Education;
 import io.sytac.resumator.model.Experience;
 import io.sytac.resumator.model.Language;
 import io.sytac.resumator.model.enums.Nationality;
+import io.sytac.resumator.user.Profile;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -29,45 +30,22 @@ public class Employee {
 
     private final String id;
     private final EmployeeType type;
-    private final String title;
-    private final String name;
-    private final String surname;
-    private final String email;
-    private final String phoneNumber;
-    private final String gitHub;
-    private final String linkedIn;
-    private final Date dateOfBirth;
-    private final Nationality nationality;
-    private final String currentResidence;
-    private final String aboutMe;
+    private final Profile profile;
     private final List<Education> educations;
     private final List<Course> courses;
     private final List<Experience> experiences;
     private final List<Language> languages;
-    private final boolean admin;
 
     @Builder
-    Employee(String id, EmployeeType type, String title, String name, String surname, String email, String phoneNumber,
-             String gitHub, String linkedIn, Date dateOfBirth, Nationality nationality, String currentResidence,
-             String aboutMe, List<Education> educations, List<Course> courses,
-             List<Experience> experiences, List<Language> languages, boolean admin) {
+    Employee(String id, EmployeeType type, Profile profile, List<Education> educations, List<Course> courses,
+             List<Experience> experiences, List<Language> languages) {
+
         this.id = id == null ? UUID.randomUUID().toString() : id;
         this.type = type;
-        this.title = title;
-        this.name = name;
-        this.surname = surname;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-        this.gitHub = gitHub;
-        this.linkedIn = linkedIn;
-        this.dateOfBirth = dateOfBirth;
-        this.nationality = nationality;
-        this.currentResidence = currentResidence;
-        this.aboutMe = aboutMe;
+        this.profile = profile;
         this.educations = educations;
         this.courses = courses;
         this.experiences = experiences;
         this.languages = languages;
-        this.admin = admin;
     }
 }

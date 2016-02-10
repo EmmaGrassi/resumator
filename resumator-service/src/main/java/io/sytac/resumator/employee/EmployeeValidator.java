@@ -13,68 +13,39 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
+import com.google.api.client.util.Maps;
 import io.sytac.resumator.model.Course;
 import io.sytac.resumator.model.Education;
 import io.sytac.resumator.model.enums.Nationality;
+import io.sytac.resumator.user.ProfileCommandPayload;
+import io.sytac.resumator.user.ProfileValidator;
 import io.sytac.resumator.utils.DateUtils;
+import io.sytac.resumator.validator.FieldsValidator;
 
 /**
  * Validates an {@link Employee}
  *
  * @author Selman Tayyar
+ * @author Dmitry Ryazanov
  */
 public class EmployeeValidator {
-	
-	public static Map<String, String> validateEmployee(EmployeeCommandPayload employee){
-		Map<String,String> fields= new HashMap<>();
 
-		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-	    Validator validator = factory.getValidator();
-	    Set<ConstraintViolation<EmployeeCommandPayload>> violations = validator.validate(employee);
-	    
-	    for (ConstraintViolation<EmployeeCommandPayload> constraintViolation : violations) {
-	    	 fields.put(constraintViolation.getPropertyPath().toString(), constraintViolation.getMessage());
-		}
-	    
-	    if(fields.isEmpty()){
-	    	if(validateDateNotInFuture(employee.getDateOfBirth()))
-	    		fields.put("dateOfBirth", "dateOfBirth can not be in the future");
-	    	
-	    	String nationality=employee.getNationality();
-	    	try {
-				Nationality.valueOf(nationality);
-			} catch (IllegalArgumentException e) {
-				
-				fields.put("nationality", "Nationality should be within the accepted list.");
-			}
-	    	
-	    	List<Education> educations=employee.getEducation();
-	    	
-	    	educations.forEach(education -> {
-	            if(education.getStartYear()>education.getEndYear()) {
-	            	fields.put("Education.startyear", "startyear can not be later than endyear");
-	            }
-	    	});
-	    	
-	    	List<Course> courses=employee.getCourses();
-	    	
-	    	courses.forEach(course -> {
-	    		if(new GregorianCalendar().get(Calendar.YEAR)<course.getYear()){
-	    			fields.put("course.year", "course year can not be in the future");
-	            }
-	    	});
-	    }  	
+    public static Map<String, String> validateEmployee(EmployeeCommandPayload employee) {
+        final FieldsValidator<EmployeeCommandPayload> fieldsValidator = new FieldsValidator<>();
+        fieldsValidator.validate(employee);
 
-		
-		return fields;
-		
-	}
+        employee.getEducation().forEach(education -> {
+            if (education.getStartYear() > education.getEndYear()) {
+                fieldsValidator.addFailure("education.startyear", "start year can not be later than end year");
+            }
+        });
 
-	public static boolean validateDateNotInFuture(String dateStr) {
-		Date date = DateUtils.convert(dateStr);
-		Date now = new Date();
-		return date.after(now);
+        employee.getCourses().forEach(course -> {
+            if (new GregorianCalendar().get(Calendar.YEAR)<course.getYear()) {
+                fieldsValidator.addFailure("course.year", "course year can not be in the future");
+            }
+        });
 
-	}
-
+        return fieldsValidator.getFailures();
+    }
 }

@@ -2,6 +2,7 @@ package io.sytac.resumator.store.bootstrap;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.sytac.resumator.organization.OrganizationRepository;
+import io.sytac.resumator.user.ProfileRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -16,5 +17,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public final class ReplayEventConfig {
     private final OrganizationRepository organizationRepository;
+    private final ProfileRepository profileRepository;
     private final ObjectMapper objectMapper;
 }

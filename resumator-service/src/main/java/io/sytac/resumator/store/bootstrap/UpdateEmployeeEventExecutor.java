@@ -19,8 +19,9 @@ public class UpdateEmployeeEventExecutor extends AbstractEventExecutor {
 
     @Override
     public void execute(Event event) throws IOException {
-        final UpdateEmployeeCommand command = objectMapper.readValue(event.getPayload(), UpdateEmployeeCommand.class);
-        checkIdAndDomainInHeader(command);
+        final UpdateEmployeeCommand command = config.getObjectMapper().readValue(event.getPayload(), UpdateEmployeeCommand.class);
+        checkIdInHeader(command);
+        checkDomainInHeader(command);
         getOrganization(command).updateEmployee(command);
     }
 }

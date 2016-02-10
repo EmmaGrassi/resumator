@@ -20,9 +20,9 @@ public class NewOrganizationEventExecutor extends AbstractEventExecutor {
 
     @Override
     public void execute(Event event) throws IOException {
-        final NewOrganizationCommand command = objectMapper.readValue(event.getPayload(), NewOrganizationCommand.class);
+        final NewOrganizationCommand command = config.getObjectMapper().readValue(event.getPayload(), NewOrganizationCommand.class);
         final String orgName = command.getPayload().getName();
         final String domain = command.getPayload().getDomain();
-        this.repository.addOrganization(new Organization(orgName, domain));
+        config.getOrganizationRepository().addOrganization(new Organization(orgName, domain));
     }
 }

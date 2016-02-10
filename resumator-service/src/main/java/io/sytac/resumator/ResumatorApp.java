@@ -14,6 +14,9 @@ import io.sytac.resumator.store.bootstrap.BootstrapRunner;
 import io.sytac.resumator.store.EventStore;
 import io.sytac.resumator.store.sql.SchemaManager;
 import io.sytac.resumator.store.sql.SqlStore;
+import io.sytac.resumator.user.InMemoryProfileRepository;
+import io.sytac.resumator.user.Profile;
+import io.sytac.resumator.user.ProfileRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jetty.server.Server;
 import org.glassfish.hk2.api.Immediate;
@@ -114,6 +117,7 @@ public class ResumatorApp {
                     @Override
                     protected void configure() {
                         bind(InMemoryOrganizationRepository.class).to(OrganizationRepository.class).in(Singleton.class);
+                        bind(InMemoryProfileRepository.class).to(ProfileRepository.class).in(Singleton.class);
                         bind(SqlStore.class).to(EventStore.class).in(Immediate.class);
                         bind(SchemaManager.class).in(Immediate.class);
                     }
@@ -181,6 +185,7 @@ public class ResumatorApp {
 
     private ResourceConfig registerApplicationResources(final ResourceConfig rc) {
         return rc.packages(
+                "io.sytac.resumator.user",
                 "io.sytac.resumator.employee",
                 "io.sytac.resumator.organization",
                 "io.sytac.resumator.service",

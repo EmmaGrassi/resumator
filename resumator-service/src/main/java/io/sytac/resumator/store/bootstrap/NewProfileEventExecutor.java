@@ -2,6 +2,7 @@ package io.sytac.resumator.store.bootstrap;
 
 import io.sytac.resumator.employee.NewEmployeeCommand;
 import io.sytac.resumator.model.Event;
+import io.sytac.resumator.user.NewProfileCommand;
 
 import java.io.IOException;
 
@@ -11,17 +12,16 @@ import java.io.IOException;
  * @author Dmitry Ryazanov
  * @since 0.1
  */
-public class NewEmployeeEventExecutor extends AbstractEventExecutor {
+public class NewProfileEventExecutor extends AbstractEventExecutor {
 
-    public NewEmployeeEventExecutor(final ReplayEventConfig config) {
+    public NewProfileEventExecutor(final ReplayEventConfig config) {
         super(config);
     }
 
     @Override
     public void execute(Event event) throws IOException {
-        final NewEmployeeCommand command = config.getObjectMapper().readValue(event.getPayload(), NewEmployeeCommand.class);
+        final NewProfileCommand command = config.getObjectMapper().readValue(event.getPayload(), NewProfileCommand.class);
         checkIdInHeader(command);
-        checkDomainInHeader(command);
-        getOrganization(command).addEmployee(command);
+        getProfileRepository().add(command);
     }
 }

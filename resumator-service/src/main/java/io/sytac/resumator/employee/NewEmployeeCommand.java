@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.sytac.resumator.command.CommandHeader;
 import io.sytac.resumator.model.Event;
 
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -34,7 +35,7 @@ public class NewEmployeeCommand extends AbstractEmployeeCommand {
 
     @Override
     public Event asEvent(final ObjectMapper objectMapper) {
-        final String eventId = getHeader().getId().orElse(UUID.randomUUID().toString());
+        final String eventId = Optional.ofNullable(getHeader().getId()).orElse(UUID.randomUUID().toString());
         return createEvent(eventId, objectMapper);
     }
 }

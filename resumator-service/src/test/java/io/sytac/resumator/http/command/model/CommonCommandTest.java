@@ -8,16 +8,15 @@ import io.sytac.resumator.command.CommandHeader;
 import io.sytac.resumator.employee.DateToStringSerializer;
 import io.sytac.resumator.employee.EmployeeCommandPayload;
 import io.sytac.resumator.employee.EmployeeType;
-import io.sytac.resumator.employee.RemoveEmployeeCommand;
 import io.sytac.resumator.model.Course;
 import io.sytac.resumator.model.Education;
 import io.sytac.resumator.model.Experience;
 import io.sytac.resumator.model.Language;
+import io.sytac.resumator.user.ProfileCommandPayload;
 import lombok.Getter;
 import lombok.Setter;
 import org.junit.Before;
 import org.junit.Ignore;
-import org.junit.Test;
 
 import java.util.*;
 
@@ -43,8 +42,9 @@ public class CommonCommandTest {
     public static final String GITHUB = "Github";
     public static final String LINKEDIN = "Linkedin";
     public static final String DATE_OF_BIRTH = "1984-04-22";
-    public static final String NATIONALITY = "ITALY";
-    public static final String CURRENT_RESIDENCE = "ITALY";
+    public static final String NATIONALITY = "ITALIAN";
+    public static final String CITY_OF_OF_RESIDENCE = "ROME";
+    public static final String COUNTRY_OF_RESIDENCE = "ITALY";
     public static final String ABOUT_ME = "About ME";
     public static final String ENGLISH_LANGUAGE = "English";
     public static final String DUTCH_LANGUAGE = "Dutch";
@@ -98,7 +98,7 @@ public class CommonCommandTest {
     }
 
     protected CommandHeader createCommandHeader(final String uuid, final String domain, final Long timestamp) {
-        return new CommandHeader.Builder().setId(uuid).setDomain(domain).setTimestamp(timestamp).build();
+        return CommandHeader.builder().id(uuid).domain(domain).timestamp(timestamp).build();
     }
 
     protected EmployeeCommandPayload createEmployeeCommandPayload(List<Experience> experiences,
@@ -106,8 +106,9 @@ public class CommonCommandTest {
                                                                   List<Course> courses,
                                                                   List<Language> languages) {
 
-        return new EmployeeCommandPayload(TYPE, TITLE, NAME, SURNAME, EMAIL, PHONENUMBER, GITHUB, LINKEDIN, DATE_OF_BIRTH,
-                NATIONALITY, CURRENT_RESIDENCE, ABOUT_ME, educations, courses, experiences, languages, false);
+        final ProfileCommandPayload profileCommandPayload = new ProfileCommandPayload(TITLE, NAME, SURNAME, DATE_OF_BIRTH,
+                EMAIL, PHONENUMBER, NATIONALITY, CITY_OF_OF_RESIDENCE, COUNTRY_OF_RESIDENCE, ABOUT_ME, GITHUB, LINKEDIN, false);
+        return new EmployeeCommandPayload(TYPE, profileCommandPayload, educations, courses, experiences, languages);
     }
 
     public void canSerializeAsJSON(Class clazz) {

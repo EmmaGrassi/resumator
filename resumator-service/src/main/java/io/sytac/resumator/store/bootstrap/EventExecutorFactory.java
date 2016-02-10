@@ -4,6 +4,7 @@ import io.sytac.resumator.employee.NewEmployeeCommand;
 import io.sytac.resumator.employee.RemoveEmployeeCommand;
 import io.sytac.resumator.employee.UpdateEmployeeCommand;
 import io.sytac.resumator.organization.NewOrganizationCommand;
+import io.sytac.resumator.user.NewProfileCommand;
 
 /**
  * Event executor factory provides new instances of {@link EventExecutor} or
@@ -15,6 +16,9 @@ import io.sytac.resumator.organization.NewOrganizationCommand;
 public class EventExecutorFactory {
 
     public static EventExecutor getInstance(String eventType, ReplayEventConfig config) {
+        if (NewProfileCommand.EVENT_TYPE.equals(eventType)) {
+            return new NewProfileEventExecutor(config);
+        }
         if (NewEmployeeCommand.EVENT_TYPE.equals(eventType)) {
             return new NewEmployeeEventExecutor(config);
         }

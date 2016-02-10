@@ -76,7 +76,7 @@ public class Oauth2SecurityService {
         }
 
         final Optional<Employee> employee = Optional.ofNullable(organization.getEmployeeByEmail(payload.getEmail()));
-        return employee.map(Employee::isAdmin).orElse(false);
+        return employee.map(emp -> emp.getProfile().isAdmin()).orElse(false);
     }
 
     private Optional<GoogleIdToken> verify(final GoogleIdTokenVerifier verifier, final String idtoken) {

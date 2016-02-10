@@ -8,6 +8,8 @@ import io.sytac.resumator.command.CommandPayload;
 import io.sytac.resumator.model.Event;
 
 import java.sql.Timestamp;
+import java.util.Date;
+import java.util.Optional;
 
 /**
  * Describes the intent to create a new Employee
@@ -38,8 +40,9 @@ public abstract class AbstractEmployeeCommand implements Command<CommandHeader, 
     protected Event createEvent(final String eventId, final ObjectMapper objectMapper) {
         try {
             final String asJson = objectMapper.writeValueAsString(this);
-            final Long insertOrder = getHeader().getInsertOrder().orElse(Event.ORDER_UNSET);
-            return new Event(eventId, insertOrder, asJson, new Timestamp(getHeader().getTimestamp()), getType());
+            final Long insertOrder = Optional.ofNullable(getHeader().getInsertOrder()).orElse(Event.ORDER_UNSET);
+            final Long timestamp = Optional.ofNullable(getHeader().getTimestamp()).orElse(new Date().getTime());
+            return new Event(eventId, insertOrder, asJson, new Timestamp(timestamp), getType());
         } catch (JsonProcessingException e) {
             throw new IllegalArgumentException(e);
         }

@@ -72,7 +72,8 @@ public class EmployeesQuery extends BaseResource {
 
         final int pageNumber = Math.max(Optional.ofNullable(page).orElse(FIRST_PAGE), FIRST_PAGE);
         filteredEmployees.stream()
-                .sorted(Comparator.comparing(Employee::getSurname).thenComparing(Employee::getName))
+                .sorted(Comparator.comparing((Employee emp) -> emp.getProfile().getSurname())
+                        .thenComparing((Employee emp) -> emp.getProfile().getName()))
                 .skip(DEFAULT_PAGE_SIZE * (pageNumber - 1))
                 .limit(DEFAULT_PAGE_SIZE)
                 .forEach(employee -> representation.withRepresentation(REL_EMPLOYEES, represent(employee, uriInfo)));
@@ -93,10 +94,10 @@ public class EmployeesQuery extends BaseResource {
      */
     private Representation represent(final Employee employee, final UriInfo uriInfo) {
         return rest.newRepresentation()
-                .withProperty("email", employee.getEmail())
-                .withProperty("name", employee.getName())
-                .withProperty("surname", employee.getSurname())
-                .withLink(REL_SELF, resourceLink(uriInfo, EmployeeQuery.class, employee.getEmail()));
+                .withProperty("email", employee.getProfile().getEmail())
+                .withProperty("name", employee.getProfile().getName())
+                .withProperty("surname", employee.getProfile().getSurname())
+                .withLink(REL_SELF, resourceLink(uriInfo, EmployeeQuery.class, employee.getProfile().getEmail()));
     }
 
     private List<Employee> getEmployees(final String organizationId) {

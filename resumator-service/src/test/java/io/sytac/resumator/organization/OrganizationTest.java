@@ -6,6 +6,8 @@ import io.sytac.resumator.employee.EmployeeCommandPayload;
 import io.sytac.resumator.employee.EmployeeType;
 import io.sytac.resumator.employee.NewEmployeeCommand;
 import io.sytac.resumator.model.enums.Nationality;
+import io.sytac.resumator.user.Profile;
+import io.sytac.resumator.user.ProfileCommandPayload;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -32,24 +34,27 @@ public class OrganizationTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void yearOfBirthMustBeAnInteger(){
-        final EmployeeCommandPayload employeeCommandPayload = new EmployeeCommandPayload(null, "title", "name", "surname",
-                "email", "phonenumber", "github", "linkedin", "1984-04-22", "ITALY", "", "", null, null, null, null, false);
+        final ProfileCommandPayload profileCommandPayload = new ProfileCommandPayload("title", "name", "surname", "BLA",
+                "email", "phonenumber", "ITALIAN", "ROME", "ITALY", "ABOUT", "github", "linkedin", false);
+        final EmployeeCommandPayload employeeCommandPayload = new EmployeeCommandPayload(null, profileCommandPayload, null, null, null, null);
         createCommand(employeeCommandPayload);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void nationalityCanOnlyHaveSpecificValues() {
-        final EmployeeCommandPayload employeeCommandPayload = new EmployeeCommandPayload(null, "title", "name", "surname",
-                "email", "phonenumber", "github", "linkedin", "1984-04-22", "foo", "", "", null, null, null, null, false);
+        final ProfileCommandPayload profileCommandPayload = new ProfileCommandPayload("title", "name", "surname", "1984-04-22",
+                "email", "phonenumber", "foo", "bar", "foobar", "ABOUT", "github", "linkedin", false);
+        final EmployeeCommandPayload employeeCommandPayload = new EmployeeCommandPayload(null, profileCommandPayload, null, null, null, null);
         createCommand(employeeCommandPayload);
     }
 
     @Test
     public void happyFlow() {
-        final EmployeeCommandPayload employeeCommandPayload = new EmployeeCommandPayload(null, "title", "Name", "Surname", "Email",
-                "+31000999000", "Github", "Linkedin", "1984-04-22", "ITALIAN", "", "", null, null, null, null, false);
+        final ProfileCommandPayload profileCommandPayload = new ProfileCommandPayload("title", "name", "surname", "1984-04-22",
+                "email", "phonenumber", "ITALIAN", "ROME", "ITALY", "ABOUT", "Github", "Linkedin", false);
+        final EmployeeCommandPayload employeeCommandPayload = new EmployeeCommandPayload(null, profileCommandPayload, null, null, null, null);
         final Employee employee = createCommand(employeeCommandPayload);
-        assertEquals("Wrong organization ID in Employee", Nationality.ITALIAN, employee.getNationality());
+        assertEquals("Wrong organization ID in Employee", Nationality.ITALIAN, employee.getProfile().getNationality());
     }
 
     @Test
@@ -71,9 +76,9 @@ public class OrganizationTest {
 
     @Test
     public void addEmployee_withOrganizationEmailAndTypeNotSet_typeShouldBeSetToEmployee() {
-        final EmployeeCommandPayload payload = new EmployeeCommandPayload(null, null, null, null,
-                "email@" + ORGANIZATION_DOMAIN, null, null, null, "1984-04-22", "ITALIAN", null, null,
-                null, null, null, null, false);
+        final ProfileCommandPayload profileCommandPayload = new ProfileCommandPayload(null, null, null, "1984-04-22",
+                "email@" + ORGANIZATION_DOMAIN, null, "ITALIAN", null, null, null, null, null, false);
+        final EmployeeCommandPayload payload = new EmployeeCommandPayload(null, profileCommandPayload, null, null, null, null);
 
         Employee actual = createCommand(payload);
         assertThat(actual.getType(), equalTo(EmployeeType.EMPLOYEE));
@@ -81,9 +86,9 @@ public class OrganizationTest {
 
     @Test
     public void addEmployee_withNonOrganizationEmailAndTypeNotSet_typeShouldBeSetToProspect() {
-        final EmployeeCommandPayload payload = new EmployeeCommandPayload(null, null, null, null,
-                "email@dummy.com", null, null, null, "1984-04-22", "ITALIAN", null, null,
-                null, null, null, null, false);
+        final ProfileCommandPayload profileCommandPayload = new ProfileCommandPayload(null, null, null, "1984-04-22",
+                "email@dummy.com", null, "ITALIAN", null, null, null, null, null, false);
+        final EmployeeCommandPayload payload = new EmployeeCommandPayload(null, profileCommandPayload, null, null, null, null);
 
         Employee actual = createCommand(payload);
         assertThat(actual.getType(), equalTo(EmployeeType.PROSPECT));
@@ -91,26 +96,24 @@ public class OrganizationTest {
 
     @Test
     public void addEmployee_withTypeSet_typeShouldRemainAsSet() {
-        final EmployeeCommandPayload payload = new EmployeeCommandPayload(EmployeeType.FREELANCER, null, null, null,
-                "email@dummy.com", null, null, null, "1984-04-22", "ITALIAN", null, null,
-                null, null, null, null, false);
+        final ProfileCommandPayload profileCommandPayload = new ProfileCommandPayload(null, null, null, "1984-04-22",
+                "email@dummy.com", null, "ITALIAN", null, null, null, null, null, false);
+        final EmployeeCommandPayload payload = new EmployeeCommandPayload(EmployeeType.FREELANCER, profileCommandPayload, null, null, null, null);
 
         Employee actual = createCommand(payload);
         assertThat(actual.getType(), equalTo(payload.getType()));
     }
 
     private Employee createCommand(EmployeeCommandPayload employeeCommandPayload) {
-        final CommandHeader header = new CommandHeader.Builder()
-                .setId(UUID.randomUUID().toString())
-                .setDomain("domain")
-                .setTimestamp(new Date().getTime())
-                .build();
+        final CommandHeader header = CommandHeader.builder().id(UUID.randomUUID().toString())
+                .domain("domain").timestamp(new Date().getTime()).build();
         final NewEmployeeCommand command = new NewEmployeeCommand(header, employeeCommandPayload);
         return organization.addEmployee(command);
     }
 
     private Employee getDummyEmployee(final String id) {
-        return Employee.builder().id(id).email("dummy@email.com").build();
+        final Profile profile = Profile.builder().email("dummy@email.com").build();
+        return Employee.builder().id(id).profile(profile).build();
     }
 
 }

@@ -41,7 +41,7 @@ public class RemoveEmployeeCommandTest extends CommonCommandTest {
     public void canRestoreFromString() throws IOException {
         final byte[] expectedBytes = getJson(String.valueOf(new Date().getTime())).getBytes("UTF-8");
         final RemoveEmployeeCommand command = getObjectMapper().readValue(expectedBytes, RemoveEmployeeCommand.class);
-        assertEquals("Wrong deserialization", DOMAIN, command.getHeader().getDomain().get());
+        assertEquals("Wrong deserialization", DOMAIN, command.getHeader().getDomain());
     }
 
     @Test

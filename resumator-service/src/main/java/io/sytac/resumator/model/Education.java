@@ -2,6 +2,7 @@ package io.sytac.resumator.model;
 
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -24,16 +25,22 @@ public class Education {
 
 	@NotNull(message = "degree is mandatory")
     private final Degree degree;
+
 	@NotBlank(message = "fieldOfStudy is mandatory")
     private final String fieldOfStudy;
+
 	@NotBlank(message = "school is mandatory")
     private final String school;
+
 	@NotBlank(message = "city is mandatory")
     private final String city;
+
 	@NotBlank(message = "country is mandatory")
     private final String country;
+
     @Digits(message = "Education startYear should consist of digits", fraction = 0, integer = 4)
     private final int startYear;
+
     @Digits(message = "Education endYear should consist of digits", fraction = 0, integer = 4)
     private final int endYear;
 

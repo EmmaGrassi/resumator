@@ -19,8 +19,9 @@ public class RemoveEmployeeEventExecutor extends AbstractEventExecutor {
 
     @Override
     public void execute(Event event) throws IOException {
-        final RemoveEmployeeCommand command = objectMapper.readValue(event.getPayload(), RemoveEmployeeCommand.class);
-        checkIdAndDomainInHeader(command);
+        final RemoveEmployeeCommand command = config.getObjectMapper().readValue(event.getPayload(), RemoveEmployeeCommand.class);
+        checkIdInHeader(command);
+        checkDomainInHeader(command);
         getOrganization(command).removeEmployee(command);
     }
 }

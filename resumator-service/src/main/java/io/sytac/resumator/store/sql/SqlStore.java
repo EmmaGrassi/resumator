@@ -10,6 +10,8 @@ import io.sytac.resumator.organization.NewOrganizationCommand;
 import io.sytac.resumator.store.EventStore;
 import io.sytac.resumator.store.IllegalInsertOrderException;
 import io.sytac.resumator.store.sql.mapper.EventMapper;
+import io.sytac.resumator.user.NewProfile;
+import io.sytac.resumator.user.NewProfileCommand;
 import org.apache.ibatis.datasource.pooled.PooledDataSource;
 import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.session.Configuration;
@@ -50,6 +52,7 @@ public class SqlStore implements EventStore {
 
         sessionFactory = new SqlSessionFactoryBuilder().build(configuration);
 
+        events.subscribe(this::put, NewProfileCommand.EVENT_TYPE);
         events.subscribe(this::put, NewEmployeeCommand.EVENT_TYPE);
         events.subscribe(this::put, UpdateEmployeeCommand.EVENT_TYPE);
         events.subscribe(this::put, RemoveEmployeeCommand.EVENT_TYPE);

@@ -12,6 +12,7 @@ import io.sytac.resumator.organization.OrganizationRepository;
 import io.sytac.resumator.security.Roles;
 import io.sytac.resumator.security.Identity;
 import io.sytac.resumator.security.UserPrincipal;
+import io.sytac.resumator.user.ProfileValidator;
 import org.eclipse.jetty.http.HttpHeader;
 import org.eclipse.jetty.http.HttpStatus;
 
@@ -55,23 +56,26 @@ public class NewEmployee extends BaseResource {
                                 @UserPrincipal final Identity identity,
                                 @Context final UriInfo uriInfo) throws NoPermissionException {
 
-        final String checkedEmail = Optional.ofNullable(payload.getEmail()).orElseThrow(IllegalArgumentException::new);
+        final String checkedEmail = Optional.ofNullable(payload.getProfile().getEmail()).orElseThrow(IllegalArgumentException::new);
         if (!identity.hasRole(Roles.ADMIN)) {
             if (!checkedEmail.equals(identity.getName())) {
                 throw new IllegalArgumentException("Email address you've submitted is different from the email you have got in your Google Account");
-            } else if (payload.isAdmin()) {
+            } else if (payload.getProfile().isAdmin()) {
                 throw new NoPermissionException("Only administrators can create user with admin privileges");
             } else if (payload.getType() != null) {
                 throw new NoPermissionException("Only administrators can set an initial employee type");
             }
         }
-        
+
+        final Map<String, String> profileFailures = ProfileValidator.validateProfile(payload.getProfile());
+        final Map<String, String> employeeFailures = EmployeeValidator.validateEmployee(payload);
+        if (profileFailures.size() > 0 || employeeFailures.size() > 0) {
+            profileFailures.putAll(employeeFailures);
+            return buildValidationFailedRepresentation(profileFailures);
+        }
+
         final Organization organization = organizations.get(identity.getOrganizationId()).orElseThrow(InvalidOrganizationException::new);
         final String domain = organization.getDomain();
-        Map<String, String> notValidatedFields=EmployeeValidator.validateEmployee(payload);
-        if(notValidatedFields.size()>0)
-        	return buildValidationFailedRepresentation(uriInfo, notValidatedFields);
-
         final NewEmployeeCommand command = descriptors.newEmployeeCommand(payload, domain);
         final Employee newEmployee = organization.addEmployee(command);
 
@@ -80,22 +84,21 @@ public class NewEmployee extends BaseResource {
         return buildRepresentation(uriInfo, newEmployee);
     }
 
-    private Response buildValidationFailedRepresentation(final UriInfo uriInfo,Map<String, String> notValidatedFields) {
-  	
+    private Response buildValidationFailedRepresentation(Map<String, String> notValidatedFields) {
         final Representation halResource = rest.newRepresentation()
                 .withProperty("status", "failed")
                 .withProperty("fields", notValidatedFields);
-
 
         return Response.ok(halResource.toString(RepresentationFactory.HAL_JSON))
                 .status(HttpStatus.BAD_REQUEST_400)
                 .build();
     }
+
     private Response buildRepresentation(final UriInfo uriInfo, final Employee employee) {
-        final URI employeeLink = resourceLink(uriInfo, EmployeeQuery.class, employee.getEmail());
+        final URI employeeLink = resourceLink(uriInfo, EmployeeQuery.class, employee.getProfile().getEmail());
         final Representation halResource = rest.newRepresentation()
                 .withProperty("status", "created")
-                .withProperty("email", employee.getEmail())
+                .withProperty("email", employee.getProfile().getEmail())
                 .withLink("employee", employeeLink);
 
         return Response.ok(halResource.toString(RepresentationFactory.HAL_JSON))

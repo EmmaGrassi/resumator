@@ -11,6 +11,7 @@ import io.sytac.resumator.organization.OrganizationRepository;
 import io.sytac.resumator.security.Roles;
 import io.sytac.resumator.security.Identity;
 import io.sytac.resumator.security.UserPrincipal;
+import io.sytac.resumator.user.ProfileValidator;
 import org.eclipse.jetty.http.HttpHeader;
 import org.eclipse.jetty.http.HttpStatus;
 
@@ -54,7 +55,7 @@ public class UpdateEmployee extends BaseResource {
                                    @Context final UriInfo uriInfo) throws NoPermissionException, OperationNotSupportedException {
 
         final String checkedEmail = Optional.ofNullable(email).orElseThrow(IllegalArgumentException::new);
-        validateEmails(checkedEmail, payload.getEmail());
+        validateEmails(checkedEmail, payload.getProfile().getEmail());
         final Organization organization = organizations.get(identity.getOrganizationId()).orElseThrow(InvalidOrganizationException::new);
 
         if (!identity.hasRole(Roles.ADMIN)) {
@@ -66,10 +67,13 @@ public class UpdateEmployee extends BaseResource {
         if (employee == null) {
             return Response.status(HttpStatus.NOT_FOUND_404).build();
         }
-        
-                Map<String, String> notValidatedFields=EmployeeValidator.validateEmployee(payload);
-        if(notValidatedFields.size()>0)
-        	return buildValidationFailedRepresentation(uriInfo, notValidatedFields);
+
+        final Map<String, String> profileFailures = ProfileValidator.validateProfile(payload.getProfile());
+        final Map<String, String> employeeFailures = EmployeeValidator.validateEmployee(payload);
+        if (profileFailures.size() > 0 || employeeFailures.size() > 0) {
+            profileFailures.putAll(employeeFailures);
+            return buildValidationFailedRepresentation(uriInfo, profileFailures);
+        }
 
         final UpdateEmployeeCommand command = descriptors.updateEmployeeCommand(employee.getId(), payload, organization.getDomain());
         final Employee updatedEmployee = organization.updateEmployee(command);
@@ -105,19 +109,19 @@ public class UpdateEmployee extends BaseResource {
     }
 
     private void validateRestrictedFields(final Organization organization, final EmployeeCommandPayload payload) throws NoPermissionException {
-        Employee currentEmployee = organization.getEmployeeByEmail(payload.getEmail());
+        Employee currentEmployee = organization.getEmployeeByEmail(payload.getProfile().getEmail());
 
-        if (currentEmployee.isAdmin() != payload.isAdmin() ||
+        if (currentEmployee.getProfile().isAdmin() != payload.getProfile().isAdmin() ||
                 currentEmployee.getType() != payload.getType()) {
             throw new NoPermissionException("You do not have permissions to update all the fields you provided");
         }
     }
 
     private Response buildRepresentation(final UriInfo uriInfo, final Employee employee) {
-        final URI employeeLink = resourceLink(uriInfo, EmployeeQuery.class, employee.getEmail());
+        final URI employeeLink = resourceLink(uriInfo, EmployeeQuery.class, employee.getProfile().getEmail());
         final Representation halResource = rest.newRepresentation()
                 .withProperty("status", "updated")
-                .withProperty("email", employee.getEmail())
+                .withProperty("email", employee.getProfile().getEmail())
                 .withLink("employee", employeeLink);
 
         return Response.ok(halResource.toString(RepresentationFactory.HAL_JSON))

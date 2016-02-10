@@ -5,6 +5,7 @@ import io.sytac.resumator.organization.Organization;
 import io.sytac.resumator.organization.OrganizationRepository;
 import io.sytac.resumator.security.Identity;
 import io.sytac.resumator.security.Roles;
+import io.sytac.resumator.user.Profile;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -146,7 +147,8 @@ public class EmployeesQueryTest {
     }
 
     private Employee getDummyEmployee(final String id, EmployeeType employeeType) {
-        return new Employee(id, employeeType, "title", "name", "surname", "email", "phoneNumber", null, null,
-                null, null, null, null, null, null, null, null, false);
+        final Profile profile = new Profile("", "title", "name", "surname", null, "email", "phoneNumber", null, null,
+                null, null, null, null, false);
+        return new Employee(id, employeeType, profile, null, null, null, null);
     }
 }

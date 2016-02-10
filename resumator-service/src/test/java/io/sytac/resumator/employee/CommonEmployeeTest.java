@@ -11,6 +11,10 @@ import java.util.Optional;
 
 import javax.ws.rs.core.UriInfo;
 
+import com.google.common.collect.Lists;
+import io.sytac.resumator.user.Profile;
+import io.sytac.resumator.user.ProfileCommandPayload;
+import io.sytac.resumator.utils.DateUtils;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.mockito.Mock;
@@ -60,6 +64,9 @@ public class CommonEmployeeTest {
     @Mock
     protected Employee employeeMock;
 
+    @Mock
+    protected Profile profileMock;
+
 
     @Before
     public void before() throws URISyntaxException {
@@ -73,7 +80,8 @@ public class CommonEmployeeTest {
         when(identityMock.getOrganizationId()).thenReturn(ORG_ID);
 
         when(employeeMock.getId()).thenReturn(UUID);
-        when(employeeMock.getEmail()).thenReturn(EMAIL);
+        when(employeeMock.getProfile()).thenReturn(profileMock);
+        when(profileMock.getEmail()).thenReturn(EMAIL);
 
         when(uriInfoMock.getAbsolutePath()).thenReturn(new URI(URI_ABSOLUTE_PATH));
         when(uriInfoMock.getBaseUri()).thenReturn(new URI(URI_BASE));
@@ -90,28 +98,26 @@ public class CommonEmployeeTest {
     
 
     protected EmployeeCommandPayload getEmployeeCommandPayload(boolean isAdmin, EmployeeType type) {
-        return new EmployeeCommandPayload(type,"title", "name", "surname", EMAIL, "0212238989", null,null,"1966-01-01","ANDORRAN", "Netherlands", "about", new ArrayList<>(),new ArrayList<>(),
-         		new ArrayList<>(), new ArrayList<>(), isAdmin);
+        final ProfileCommandPayload profileCommandPayload = new ProfileCommandPayload("title", "name", "surname", "1966-01-01", EMAIL,
+                "0212238989", "ANDORRAN", "Amsterdam", "Netherlands", "about", null, null, isAdmin);
+        return new EmployeeCommandPayload(type, profileCommandPayload, new ArrayList<>(),new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
     }
     
     protected EmployeeCommandPayload getEmployeeDetailedValidatableCommandPayload() {
+    	final List<Education> educations = Lists.newArrayList(
+                new Education(Degree.ASSOCIATE_DEGREE, "economics", "Baroek", "New York", "USA", 2012, 2005));
+    	final List<Course> courses = Lists.newArrayList(
+                new Course("course", "IT intro", 2020));
 
-    	Education education=new  Education(Degree.ASSOCIATE_DEGREE, "economics", "Baroek", "New York", "USA", 2012, 2005);
-    	List<Education> educations=new ArrayList<>();
-    	educations.add(education);
-    	
-    	Course course=new  Course("course", "IT intro", 2020);
-    	List<Course> courses=new ArrayList<>();
-    	courses.add(course);
-    	
-      	return new EmployeeCommandPayload(null,"title", "name", "surname", EMAIL, "02122381132", null,null,"2020-01-01","HAYMATLOS", "Netherlands", "about", educations,courses,
-        		new ArrayList<>(), new ArrayList<>(),true);
+        final ProfileCommandPayload profileCommandPayload = new ProfileCommandPayload("title", "name", "surname",
+                "2020-01-01", EMAIL, "02122381132", "BOLIVIANIAN", "Amsterdam", "Netherlands", "about", null, null, true);
+      	return new EmployeeCommandPayload(null, profileCommandPayload, educations, courses, new ArrayList<>(), new ArrayList<>());
 
 	}
     
     protected EmployeeCommandPayload getEmployeeValidatableCommandPayload() {
- 		
-     	return new EmployeeCommandPayload(null,"title", "name", null, "email", "0212238sa32", null,null,"2020-01-01","ANDORRAN", "Netherlands", "about", new ArrayList<>(),new ArrayList<>(),
-         		new ArrayList<>(), new ArrayList<>(),true);
+        final ProfileCommandPayload profileCommandPayload = new ProfileCommandPayload("title", "name", null,
+                "2010-01-01", "email", "0212238sa32", "ANDORRAN", "Amsterdam", "Netherlands", "about", null, null, true);
+     	return new EmployeeCommandPayload(null, profileCommandPayload, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
  	}
 }

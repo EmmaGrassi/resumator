@@ -98,12 +98,7 @@ public class InMemoryProfileRepository implements ProfileRepository {
             throw new IllegalArgumentException(String.format("Profile with email '%s' not found in the repository", profileEmail));
         }
 
-        final Profile profile = createFromCommand(profileId, command);
-        profiles.put(profileEmail, profile);
-
-        events.publish(command);
-
-        return profile;
+        return profiles.put(profileEmail, createFromCommand(profileId, command));
     }
 
     @Override

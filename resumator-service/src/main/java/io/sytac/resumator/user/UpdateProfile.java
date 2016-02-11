@@ -3,6 +3,7 @@ package io.sytac.resumator.user;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import io.sytac.resumator.command.CommandFactory;
+import io.sytac.resumator.events.EventPublisher;
 import io.sytac.resumator.http.BaseResource;
 import io.sytac.resumator.security.Identity;
 import io.sytac.resumator.security.Roles;
@@ -35,11 +36,13 @@ public class UpdateProfile extends BaseResource {
 
     private final ProfileRepository profileRepository;
     private final CommandFactory descriptors;
+    private final EventPublisher events;
 
     @Inject
-    public UpdateProfile(ProfileRepository profileRepository, final CommandFactory descriptors) {
+    public UpdateProfile(ProfileRepository profileRepository, final CommandFactory descriptors, final EventPublisher events) {
         this.profileRepository = profileRepository;
         this.descriptors = descriptors;
+        this.events = events;
     }
 
     @PUT
@@ -69,6 +72,9 @@ public class UpdateProfile extends BaseResource {
 
         final UpdateProfileCommand command = descriptors.updateProfileCommand(profile.getId(), payload);
         final Profile updatedProfile = profileRepository.update(command);
+
+        events.publish(command);
+
         return buildRepresentation(uriInfo, updatedProfile);
     }
 

@@ -1,15 +1,13 @@
 package io.sytac.resumator.user;
 
+import com.google.api.client.util.Lists;
 import io.sytac.resumator.command.AbstractCommand;
 import io.sytac.resumator.events.EventPublisher;
 import io.sytac.resumator.model.enums.Nationality;
 import io.sytac.resumator.utils.DateUtils;
 
 import javax.inject.Inject;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -103,12 +101,20 @@ public class InMemoryProfileRepository implements ProfileRepository {
 
     @Override
     public void remove(AbstractCommand command) {
-        // NOP
+        final String profileId = Optional.ofNullable(command.getHeader().getId())
+                .orElseThrow(() -> new IllegalArgumentException("Failed to remove profile because profileId is null or empty"));
+
+        final String profileEmail = profileIdToEmail.get(profileId);
+        if (!profiles.containsKey(profileEmail)) {
+            throw new IllegalArgumentException(String.format("Profile with email '%s' does not exist", profileEmail));
+        }
+
+        profiles.remove(profileEmail);
     }
 
     @Override
     public List<Profile> getAll() {
-        return null;
+        return Collections.unmodifiableList(new ArrayList<>(profiles.values()));
     }
 
 

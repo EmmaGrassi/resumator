@@ -1,4 +1,4 @@
-package io.sytac.resumator.employee;
+package io.sytac.resumator.user;
 
 import io.sytac.resumator.security.Roles;
 import org.apache.http.HttpStatus;
@@ -20,36 +20,36 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 /**
- * Tests the RemoveEmployees resource
+ * Tests the RemoveProfile resource
  */
 @RunWith(MockitoJUnitRunner.class)
-public class RemoveEmployeeTest extends CommonEmployeeTest {
+public class RemoveProfileTest extends CommonProfileTest {
 
     @Mock
-    private RemoveEmployeeCommand removeEmployeeCommandMock;
+    private RemoveProfileCommand removeProfileCommandMock;
 
     @InjectMocks
-    private RemoveEmployee removeEmployee;
+    private RemoveProfile removeProfile;
 
 
     @Before
     public void before() throws URISyntaxException {
         super.before();
-        when(descriptorsMock.removeEmployeeCommand(eq(UUID), eq(DOMAIN))).thenReturn(removeEmployeeCommandMock);
-        doNothing().when(organizationMock).removeEmployee(eq(removeEmployeeCommandMock));
+        when(descriptorsMock.removeProfileCommand(eq(UUID))).thenReturn(removeProfileCommandMock);
+        doNothing().when(profileRepositoryMock).remove(eq(removeProfileCommandMock));
     }
 
     @Test
-    public void testRemoveEmployeesOk() throws NoPermissionException {
-        final Response response = removeEmployee.removeEmployee(EMAIL, identityMock);
+    public void testRemoveProfileOk() throws NoPermissionException {
+        final Response response = removeProfile.doRemove(EMAIL, identityMock);
         assertNotNull(response);
         assertEquals(response.getStatus(), HttpStatus.SC_NO_CONTENT);
     }
 
     @Test
-    public void testRemoveEmployeesNotFound() throws NoPermissionException {
-        when(organizationMock.getEmployeeByEmail(eq(EMAIL))).thenReturn(null);
-        final Response response = removeEmployee.removeEmployee(EMAIL, identityMock);
+    public void testRemoveProfileNotFound() throws NoPermissionException {
+        when(profileRepositoryMock.getProfileByEmail(eq(EMAIL))).thenReturn(null);
+        final Response response = removeProfile.doRemove(EMAIL, identityMock);
         assertNotNull(response);
         assertEquals(response.getStatus(), HttpStatus.SC_NOT_FOUND);
     }
@@ -57,6 +57,6 @@ public class RemoveEmployeeTest extends CommonEmployeeTest {
     @Test(expected = NoPermissionException.class)
     public void testRemoveEmployeesDifferentEmails() throws NoPermissionException {
         when(identityMock.hasRole(eq(Roles.ADMIN))).thenReturn(false);
-        removeEmployee.removeEmployee(WRONG_EMAIL, identityMock);
+        removeProfile.doRemove(WRONG_EMAIL, identityMock);
     }
 }

@@ -2,9 +2,7 @@ package io.sytac.resumator.command;
 
 import io.sytac.resumator.employee.*;
 import io.sytac.resumator.organization.NewOrganizationCommand;
-import io.sytac.resumator.user.ProfileCommandPayload;
-import io.sytac.resumator.user.NewProfileCommand;
-import io.sytac.resumator.user.UpdateProfileCommand;
+import io.sytac.resumator.user.*;
 
 import java.util.Map;
 import java.util.UUID;
@@ -47,8 +45,13 @@ public class CommandFactory {
         return new NewProfileCommand(header, payload);
     }
 
-    public UpdateProfileCommand updateProfileCommand(final String employeeId, final ProfileCommandPayload payload) {
-        final CommandHeader header = CommandHeader.builder().id(employeeId).build();
+    public UpdateProfileCommand updateProfileCommand(final String profileId, final ProfileCommandPayload payload) {
+        final CommandHeader header = CommandHeader.builder().id(profileId).build();
         return new UpdateProfileCommand(header, payload);
+    }
+
+    public RemoveProfileCommand removeProfileCommand(final String profileId) {
+        final CommandHeader header = CommandHeader.builder().id(profileId).build();
+        return new RemoveProfileCommand(header, new RemoveProfileCommandPayload(profileId));
     }
 }

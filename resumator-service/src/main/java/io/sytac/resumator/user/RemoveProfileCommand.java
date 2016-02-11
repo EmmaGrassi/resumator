@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.sytac.resumator.command.AbstractCommand;
 import io.sytac.resumator.command.CommandHeader;
-import io.sytac.resumator.employee.RemoveEmployeeCommandPayload;
 import io.sytac.resumator.model.Event;
 
 import java.util.UUID;
@@ -25,7 +24,7 @@ public class RemoveProfileCommand extends AbstractCommand {
     @SuppressWarnings("unused")
     @JsonCreator
     public RemoveProfileCommand(@JsonProperty("header") final CommandHeader header,
-                                @JsonProperty("payload") final RemoveEmployeeCommandPayload payload) {
+                                @JsonProperty("payload") final RemoveProfileCommandPayload payload) {
         super(header, payload);
     }
 

@@ -5,6 +5,7 @@ import io.sytac.resumator.employee.RemoveEmployeeCommand;
 import io.sytac.resumator.employee.UpdateEmployeeCommand;
 import io.sytac.resumator.organization.NewOrganizationCommand;
 import io.sytac.resumator.user.NewProfileCommand;
+import io.sytac.resumator.user.RemoveProfileCommand;
 import io.sytac.resumator.user.UpdateProfileCommand;
 
 /**
@@ -16,12 +17,15 @@ import io.sytac.resumator.user.UpdateProfileCommand;
  */
 public class EventExecutorFactory {
 
-    public static EventExecutor getInstance(String eventType, ReplayEventConfig config) {
+    public static EventExecutor getInstance(final String eventType, final ReplayEventConfig config) {
         if (NewProfileCommand.EVENT_TYPE.equals(eventType)) {
             return new NewProfileEventExecutor(config);
         }
         if (UpdateProfileCommand.EVENT_TYPE.equals(eventType)) {
             return new UpdateProfileEventExecutor(config);
+        }
+        if (RemoveProfileCommand.EVENT_TYPE.equals(eventType)) {
+            return new RemoveProfileEventExecutor(config);
         }
 
         if (NewEmployeeCommand.EVENT_TYPE.equals(eventType)) {
@@ -33,6 +37,7 @@ public class EventExecutorFactory {
         if (RemoveEmployeeCommand.EVENT_TYPE.equals(eventType)) {
             return new RemoveEmployeeEventExecutor(config);
         }
+
         if (NewOrganizationCommand.EVENT_TYPE.equals(eventType)) {
             return new NewOrganizationEventExecutor(config);
         }

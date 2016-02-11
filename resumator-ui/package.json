@@ -32,9 +32,11 @@
     "redux-thunk": "^1.0.3",
     "request": "^2.65.0",
     "request-promise": "^1.0.2",
+    "seamless-immutable": "^5.0.1",
     "superagent": "^1.7.0",
     "tcomb-form": "^0.7.10",
-    "tcomb-form-types": "^1.1.0"
+    "tcomb-form-types": "^1.1.0",
+    "whatwg-fetch": "^0.11.0"
   },
   "devDependencies": {
     "babel": "^6.3.13",

@@ -8,18 +8,19 @@ import Nav from 'react-bootstrap/lib/Nav';
 import NavDropdown from 'react-bootstrap/lib/NavDropdown';
 import NavItem from 'react-bootstrap/lib/NavItem';
 
-import actions from '../../../actions';
+import logout from '../../../actions/user/logout';
+import login from '../../../actions/user/login';
 
 function mapStateToProps(state) {
   return {
-    user: state.user.toJS()
+    session: state.user.session.toJS()
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    login: (data) => dispatch(actions.user.login(data)),
-    logout: () => dispatch(actions.user.logout()),
+    login: (data) => dispatch(login(data)),
+    logout: () => dispatch(logout()),
   };
 }
 
@@ -67,10 +68,10 @@ class RightNav extends React.Component {
   }
 
   render() {
-    const { user } = this.props;
+    const { session } = this.props;
 
-    if (user.idToken) {
-      const title = `${user.name} ${user.surname}`;
+    if (session.idToken) {
+      const title = `${session.name} ${session.surname}`;
 
       return (
         <Nav pullRight>

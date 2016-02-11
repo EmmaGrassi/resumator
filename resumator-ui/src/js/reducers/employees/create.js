@@ -1,6 +1,6 @@
 import immutable from 'immutable';
 
-import item from './common/item';
+import employee from '../common/employee';
 
 const defaults = immutable.Map({
   isSaving: false,
@@ -8,7 +8,7 @@ const defaults = immutable.Map({
   // TODO: Check if this is needed.
   email: null,
 
-  item: item
+  item: employee
 });
 
 function create(state = defaults, action = {}) {

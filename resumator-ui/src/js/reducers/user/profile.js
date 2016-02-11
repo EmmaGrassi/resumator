@@ -8,24 +8,23 @@ const defaults = immutable.Map({
   item: employee
 });
 
-function show(state = defaults, action = {}) {
+function profile(state = defaults, action = {}) {
   switch (action.type) {
-    case 'employees:show:start':
+    case 'user:getProfile:start':
       return state
         .set('isFetching', true);
 
-    case 'employees:show:success':
+    case 'user:getProfile:success':
       return state
         .set('isFetching', false)
-        .set('item', immutable.fromJS(action.response));
+        .set('item', immutable.fromJS(action.payload));
 
-    case 'employees:show:failure':
-      return state
-        .set('isFetching', false);
+    case 'user:getProfile:failure':
+      return defaults;
 
     default:
       return state;
   }
 }
 
-export default show;
+export default profile;

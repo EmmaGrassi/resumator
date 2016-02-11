@@ -1,5 +1,6 @@
 import Loader from 'react-loader';
 import React from 'react';
+import _ from 'lodash';
 import { Button, ButtonGroup, ButtonToolbar, Col, Glyphicon, Grid, Row, Table } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { pushPath } from 'redux-simple-router';
@@ -9,7 +10,7 @@ import removeAction from '../../../actions/employees/remove';
 
 function mapStateToProps(state) {
   return {
-    employees: state.employees
+    list: state.employees.list.toJS()
   };
 }
 
@@ -61,14 +62,14 @@ class List extends React.Component {
   }
 
   render() {
-    const data = this.props.employees.list.toJS();
+    const data = this.props.list;
     const items = data.items;
     const isFetching = data.isFetching;
 
     let rows;
 
     if (items && items.length) {
-      rows = items.map((v, i) => {
+      rows = _items.map((v, i) => {
         const email = v.email;
         const name = v.name;
         const surname = v.surname;
@@ -77,8 +78,8 @@ class List extends React.Component {
           key={i}
           onClick={this.handleRowButtonClick.bind(this, email)}
           style={{
-          cursor: 'pointer'
-        }}
+            cursor: 'pointer'
+          }}
         >
           <td
             style={{

@@ -19,7 +19,7 @@ function normalizeString(string) {
 
 function mapStateToProps(state) {
   return {
-    employees: state.employees
+    show: state.employees.show.toJS()
   };
 }
 
@@ -36,20 +36,16 @@ class Show extends React.Component {
   }
 
   handleEditButtonClick() {
-    const data = this.props.employees.show.toJS();
-
-    this.props.navigateToEmployeesEdit(data.item.email);
+    this.props.navigateToEmployeesEdit(this.props.show.item.email);
   }
 
   getCourses() {
-    const data = this.props.employees.show.toJS();
-
     return (
       <Row>
         <Col xs={12}>
           <h2>Courses</h2>
           <ListGroup>
-            {data.item.courses.map((v, i) => {
+            {this.props.show.item.courses.map((v, i) => {
               let {
                 name,
                 year,
@@ -70,14 +66,12 @@ class Show extends React.Component {
   }
 
   getEducation() {
-    const data = this.props.employees.show.toJS();
-
     return (
       <Row>
         <Col xs={12}>
           <h2>Education</h2>
           <ListGroup>
-            {data.item.education.map((v, i) => {
+            {this.props.show.item.education.map((v, i) => {
               let {
                 city,
                 country,
@@ -105,14 +99,12 @@ class Show extends React.Component {
   }
 
   getExperience() {
-    const data = this.props.employees.show.toJS();
-
     return (
       <Row>
         <Col xs={12}>
           <h2>Experience</h2>
           <div>
-            {data.item.experience.map((v, i) => {
+            {this.props.show.item.experience.map((v, i) => {
               let {
                 city,
                 companyName,
@@ -143,7 +135,7 @@ class Show extends React.Component {
               methodologies = methodologies.join(', ');
 
               let hr;
-              if (i !== data.item.experience.length - 1) {
+              if (i !== this.props.show.item.experience.length - 1) {
                 hr = <hr/>;
               }
 
@@ -173,18 +165,16 @@ class Show extends React.Component {
   }
 
   getLanguages() {
-    const data = this.props.employees.show.toJS();
-
     return (
       <Row>
         <Col xs={12}>
           <h2>Languages</h2>
           <div>
-            {data.item.languages.map((v, i) => {
+            {this.props.show.item.languages.map((v, i) => {
               let { name, proficiency } = v;
 
               let hr;
-              if (i !== data.item.experience.length - 1) {
+              if (i !== this.props.show.item.experience.length - 1) {
                 hr = <hr/>;
               }
 
@@ -204,10 +194,8 @@ class Show extends React.Component {
   }
 
   render() {
-    const data = this.props.employees.show.toJS();
-
-    const item = data.item;
-    const isFetching = data.isFetching;
+    const item = this.props.show.item;
+    const isFetching = this.props.show.isFetching;
 
     const courses = this.getCourses();
     const education = this.getEducation();

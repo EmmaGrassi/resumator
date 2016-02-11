@@ -8,7 +8,6 @@ import actions from '../../../actions';
 
 function mapStateToProps(state) {
   return {
-    employees: state.employees
   };
 }
 

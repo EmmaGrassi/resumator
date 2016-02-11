@@ -1,11 +1,11 @@
 import immutable from 'immutable';
 
-import item from './common/item';
+import employee from '../common/employee';
 
 const defaults = immutable.Map({
   isFetching: false,
 
-  item: item
+  item: employee
 });
 
 function edit(state = defaults, action = {}) {

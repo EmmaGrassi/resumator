@@ -10,7 +10,7 @@ import { Provider } from 'react-redux';
 import { syncReduxAndRouter } from 'redux-simple-router';
 
 // Redux
-import actions from './actions';
+import initialize from './actions/initialize';
 import store from './store';
 
 // Components
@@ -44,12 +44,43 @@ function getRouteAttribute(routes, attribute) {
   }
 }
 
-function handleEnter(nextState, replaceState) {
-  const requireAuth = getRouteAttribute(nextState.routes, 'requireAuth');
-
+// Returns true if the user has a session.
+function hasSession() {
+  // This needs to be taken from the cookie directly, not the Redux store.
   const idToken = cookies.get('idToken');
 
-  if (requireAuth && !idToken) {
+  return !!idToken;
+}
+
+// TODO: Implement.
+function hasOwnProfile(nextState) {
+  return false;
+}
+
+// TODO: Implement.
+function hasAdmin(nextState) {
+  return false;
+}
+
+// Gets run on every route enter.
+function handleEnter(nextState, replaceState) {
+  const requireSession = getRouteAttribute(nextState.routes, 'requireSession');
+
+  if (requireSession && !hasSession(nextState)) {
+    replaceState(null, '/');
+    return;
+  }
+
+  const requireOwnProfile = getRouteAttribute(nextState.routes, 'requireOwnProfile');
+
+  if (requireOwnProfile && !hasOwnProfile(nextState)) {
+    replaceState(null, '/');
+    return;
+  }
+
+  const requireAdmin = getRouteAttribute(nextState.routes, 'requireAdmin');
+
+  if (requireAdmin && !hasAdmin(nextState)) {
     replaceState(null, '/');
     return;
   }
@@ -58,7 +89,7 @@ function handleEnter(nextState, replaceState) {
 const router = (
   <Provider store={store}>
     <Router history={history}>
-      <Route path="admin" component={ AdminContainer } onEnter={handleEnter} requireAuth={true}>
+      <Route path="admin" component={ AdminContainer } onEnter={handleEnter} requireSession={true}>
         <IndexRoute component={ AdminHome } onEnter={handleEnter}/>
 
         <Route path="employees" component={ AdminEmployeesList } onEnter={handleEnter}>
@@ -71,7 +102,7 @@ const router = (
       <Route path="/" component={ PublicContainer } onEnter={handleEnter}>
         <IndexRoute component={ PublicHome } onEnter={handleEnter}/>
 
-        <Route path="employees" requireAuth={true}>
+        <Route path="employees" requireSession={true}>
           <IndexRoute component={ PublicEmployeesList } onEnter={handleEnter}/>
 
           <Route path="new" component={ PublicEmployeesCreate } onEnter={handleEnter}/>
@@ -98,8 +129,7 @@ gapi.load('auth2', () => {
     hosted_domain: 'sytac.io'
   });
 
-  // Make sure the cookie information is stored in the store.
-  store.dispatch(actions.user.getCookie());
+  store.dispatch(initialize());
 
   // When the DOM is ready, render to it.
   domready(() => {

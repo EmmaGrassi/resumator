@@ -1,10 +1,7 @@
-package io.sytac.resumator.employee;
+package io.sytac.resumator.command;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.sytac.resumator.command.Command;
-import io.sytac.resumator.command.CommandHeader;
-import io.sytac.resumator.command.CommandPayload;
 import io.sytac.resumator.model.Event;
 
 import java.sql.Timestamp;
@@ -12,17 +9,17 @@ import java.util.Date;
 import java.util.Optional;
 
 /**
- * Describes the intent to create a new Employee
+ * Describes the intent to create an abstract command
  *
- * @author Carlo Sciolla
+ * @author Dmitry Ryazanov
  * @since 0.1
  */
-public abstract class AbstractEmployeeCommand implements Command<CommandHeader, CommandPayload> {
+public abstract class AbstractCommand implements Command<CommandHeader, CommandPayload> {
 
     private final CommandHeader header;
     private final CommandPayload payload;
 
-    public AbstractEmployeeCommand(final CommandHeader header, final CommandPayload payload) {
+    public AbstractCommand(final CommandHeader header, final CommandPayload payload) {
         this.payload = payload;
         this.header = header;
     }

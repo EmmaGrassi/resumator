@@ -90,9 +90,7 @@ public class Organization {
         employees.remove(employeeEmail);
     }
 
-    private Profile profileFromCommand(final String profileId, final Command command) {
-        final ProfileCommandPayload payload = (ProfileCommandPayload)command.getPayload();
-
+    private Profile profileFromCommand(final ProfileCommandPayload payload) {
         return Profile.builder()
                 .title(payload.getTitle())
                 .name(payload.getName())
@@ -115,26 +113,10 @@ public class Organization {
         final EmployeeType employeeType = Optional.ofNullable(payload.getType())
                 .orElse(determineEmployeeType(payload.getProfile().getEmail()));
         
-        final Profile profile = Profile.builder()
-                .title(payload.getProfile().getTitle())
-                .name(payload.getProfile().getName())
-                .surname(payload.getProfile().getSurname())
-                .dateOfBirth(DateUtils.convert(payload.getProfile().getDateOfBirth()))
-                .email(payload.getProfile().getEmail())
-                .phoneNumber(payload.getProfile().getPhonenumber())
-                .nationality(Nationality.valueOf(payload.getProfile().getNationality()))
-                .cityOfResidence(payload.getProfile().getCityOfResidence())
-                .countryOfResidence(payload.getProfile().getCountryOfResidence())
-                .gitHub(payload.getProfile().getGithub())
-                .linkedIn(payload.getProfile().getLinkedin())
-                .aboutMe(payload.getProfile().getAboutMe())
-                .admin(payload.getProfile().isAdmin())
-                .build();
-        
         return Employee.builder()
                 .id(employeeId)
                 .type(employeeType)
-                .profile(profile)
+                .profile(profileFromCommand(payload.getProfile()))
                 .educations(payload.getEducation())
                 .courses(payload.getCourses())
                 .experiences(payload.getExperience())

@@ -1,24 +1,7 @@
 package io.sytac.resumator.employee;
 
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.when;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import javax.ws.rs.core.UriInfo;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
-import io.sytac.resumator.user.Profile;
-import io.sytac.resumator.user.ProfileCommandPayload;
-import io.sytac.resumator.utils.DateUtils;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.mockito.Mock;
-
 import io.sytac.resumator.command.CommandFactory;
 import io.sytac.resumator.events.EventPublisher;
 import io.sytac.resumator.model.Course;
@@ -28,6 +11,26 @@ import io.sytac.resumator.organization.Organization;
 import io.sytac.resumator.organization.OrganizationRepository;
 import io.sytac.resumator.security.Identity;
 import io.sytac.resumator.security.Roles;
+import io.sytac.resumator.user.Profile;
+import io.sytac.resumator.user.ProfileCommandPayload;
+import org.apache.http.HttpStatus;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.mockito.Mock;
+
+import javax.naming.NoPermissionException;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
+import java.io.Reader;
+import java.io.StringReader;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.*;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.when;
 
 /**
  * Tests the NewEmployees resource
@@ -120,4 +123,23 @@ public class CommonEmployeeTest {
                 "2010-01-01", "email", "0212238sa32", "ANDORRAN", "Amsterdam", "Netherlands", "about", null, null, true);
      	return new EmployeeCommandPayload(null, profileCommandPayload, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
  	}
+
+    @SuppressWarnings("unchecked")
+    protected Map<String, String> getValidationErrors(final Response response) throws NoPermissionException {
+        final Map<String, Object> validationErrors;
+
+        assertNotNull(response);
+        assertEquals(response.getStatus(), HttpStatus.SC_BAD_REQUEST);
+
+        try {
+            final Reader reader = new StringReader(response.getEntity().toString());
+            validationErrors = new ObjectMapper().readValue(reader, HashMap.class);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("An error occurred with http response");
+        } catch (Exception e) {
+            throw new RuntimeException("Test failed: ", e);
+        }
+
+        return (Map<String, String>) validationErrors.get("fields");
+    }
 }

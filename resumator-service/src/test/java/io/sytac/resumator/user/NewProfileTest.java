@@ -1,6 +1,5 @@
 package io.sytac.resumator.user;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.sytac.resumator.security.Roles;
 import org.apache.http.HttpStatus;
 import org.eclipse.jetty.http.HttpHeader;
@@ -13,21 +12,17 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import javax.naming.NoPermissionException;
 import javax.ws.rs.core.Response;
-import java.io.Reader;
-import java.io.StringReader;
 import java.net.URISyntaxException;
-import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
- * Tests the NewEmployees resource
+ * Tests the NewProfile resource
  */
 @RunWith(MockitoJUnitRunner.class)
 public class NewProfileTest extends CommonProfileTest {
@@ -84,7 +79,9 @@ public class NewProfileTest extends CommonProfileTest {
 
     @Test
     public void testNewEmployeesValidation() throws NoPermissionException {
-        final Map<String, String> fields = getValidationErrors(getProfileValidatableCommandPayload());
+        final Response response = newProfile.newProfile(getProfileValidatableCommandPayload(), identityMock, uriInfoMock);
+        final Map<String, String> fields = getValidationErrors(response);
+
         assertNotNull("email validation is not done.", fields.get("email"));
         assertNotNull("phonenumber validation is not done.", fields.get("phonenumber"));
         assertNotNull("surname validation is not done.", fields.get("surname"));
@@ -92,28 +89,10 @@ public class NewProfileTest extends CommonProfileTest {
 
     @Test
     public void testNewEmployeesDetailedValidation() throws NoPermissionException {
-        final Map<String, String> fields = getValidationErrors(getProfileDetailedValidatableCommandPayload());
+        final Response response = newProfile.newProfile(getProfileDetailedValidatableCommandPayload(), identityMock, uriInfoMock);
+        final Map<String, String> fields = getValidationErrors(response);
+
         assertNotNull("dateOfBirth validation is not done.", fields.get("dateOfBirth"));
         assertNotNull("nationality validation is not done.", fields.get("nationality"));
-    }
-
-    @SuppressWarnings("unchecked")
-    private Map<String, String> getValidationErrors(ProfileCommandPayload profileCommandPayload) throws NoPermissionException {
-        final Map<String, Object> validationErrors;
-        final Response response = newProfile.newProfile(profileCommandPayload, identityMock, uriInfoMock);
-
-        assertNotNull(response);
-        assertEquals(response.getStatus(), HttpStatus.SC_BAD_REQUEST);
-
-        try {
-            final Reader reader = new StringReader(response.getEntity().toString());
-            validationErrors = new ObjectMapper().readValue(reader, HashMap.class);
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("An error occurred with http response");
-        } catch (Exception e) {
-            throw new RuntimeException("Test failed: ", e);
-        }
-
-        return (Map<String, String>) validationErrors.get("fields");
     }
 }

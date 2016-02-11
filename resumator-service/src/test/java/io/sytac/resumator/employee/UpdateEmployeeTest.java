@@ -1,23 +1,7 @@
 package io.sytac.resumator.employee;
 
-import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.when;
-
-import java.io.Reader;
-import java.io.StringReader;
-import java.net.URISyntaxException;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.naming.NoPermissionException;
-import javax.naming.OperationNotSupportedException;
-import javax.ws.rs.core.Response;
-
+import io.sytac.resumator.model.exceptions.InvalidOrganizationException;
+import io.sytac.resumator.security.Roles;
 import org.apache.http.HttpStatus;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,10 +10,17 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import javax.naming.NoPermissionException;
+import javax.naming.OperationNotSupportedException;
+import javax.ws.rs.core.Response;
+import java.net.URISyntaxException;
+import java.util.Map;
 
-import io.sytac.resumator.model.exceptions.InvalidOrganizationException;
-import io.sytac.resumator.security.Roles;
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.junit.Assert.*;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.when;
 
 /**
  * Tests the UpdateEmployees resource
@@ -117,26 +108,12 @@ public class UpdateEmployeeTest extends CommonEmployeeTest {
     @SuppressWarnings("unchecked")
 	@Test
     public void testNewEmployeesDetailedValidation() throws NoPermissionException, OperationNotSupportedException {
-        final Response response = updateEmployee.updateEmployee(EMAIL,getEmployeeDetailedValidatableCommandPayload(), identityMock, uriInfoMock);
-        assertNotNull(response);
-        assertEquals(response.getStatus(), HttpStatus.SC_BAD_REQUEST);
-        Map<String,Object> validationErrors= new HashMap<>();
+        final Response response = updateEmployee.updateEmployee(EMAIL, getEmployeeDetailedValidatableCommandPayload(), identityMock, uriInfoMock);
+        final Map<String, String> fields = getValidationErrors(response);
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        Reader reader = new StringReader(response.getEntity().toString());
-        
-        try {
-			validationErrors = objectMapper.readValue(reader, HashMap.class);
-		} catch (Exception e) {
-			throw new IllegalArgumentException("An error occured with http response");
-		}
-        Map<String,String> fields=(Map<String, String>) validationErrors.get("fields");
         assertNotNull("education start year validation is not done.", fields.get("education.startyear"));
         assertNotNull("dateOfBirth validation is not done.", fields.get("dateOfBirth"));
         assertNotNull("nationality validation is not done.", fields.get("nationality"));
         assertNotNull("course year validation is not done.", fields.get("course.year"));
-
     }
-
-
 }

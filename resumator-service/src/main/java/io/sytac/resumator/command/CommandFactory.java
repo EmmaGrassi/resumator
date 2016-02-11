@@ -4,6 +4,7 @@ import io.sytac.resumator.employee.*;
 import io.sytac.resumator.organization.NewOrganizationCommand;
 import io.sytac.resumator.user.ProfileCommandPayload;
 import io.sytac.resumator.user.NewProfileCommand;
+import io.sytac.resumator.user.UpdateProfileCommand;
 
 import java.util.Map;
 import java.util.UUID;
@@ -44,5 +45,10 @@ public class CommandFactory {
     public NewProfileCommand newProfileCommand(final ProfileCommandPayload payload) {
         final CommandHeader header = CommandHeader.builder().id(UUID.randomUUID().toString()).build();
         return new NewProfileCommand(header, payload);
+    }
+
+    public UpdateProfileCommand updateProfileCommand(final String employeeId, final ProfileCommandPayload payload) {
+        final CommandHeader header = CommandHeader.builder().id(employeeId).build();
+        return new UpdateProfileCommand(header, payload);
     }
 }

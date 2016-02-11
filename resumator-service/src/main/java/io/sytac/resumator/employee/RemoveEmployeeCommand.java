@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.sytac.resumator.command.AbstractCommand;
 import io.sytac.resumator.command.CommandHeader;
 import io.sytac.resumator.model.Event;
 
@@ -16,7 +17,7 @@ import java.util.UUID;
  * @since 0.1
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class RemoveEmployeeCommand extends AbstractEmployeeCommand {
+public class RemoveEmployeeCommand extends AbstractCommand {
 
     public static final String EVENT_TYPE = "removeEmployee";
 

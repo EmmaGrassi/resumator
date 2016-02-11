@@ -51,7 +51,7 @@ public class NewEmployeeTest extends CommonEmployeeTest {
         final Response response = newEmployee.newEmployee(getEmployeeCommandPayload(), identityMock, uriInfoMock);
         assertNotNull(response);
         assertEquals(HttpStatus.SC_CREATED, response.getStatus());
-        assertEquals(URI_ABSOLUTE_PATH + "/" + EMAIL, response.getHeaderString(HttpHeaders.LOCATION.toString()));
+        assertEquals(URI_ABSOLUTE_PATH + "/" + EMAIL, response.getHeaderString(HttpHeaders.LOCATION));
     }
 
     @Test(expected = InvalidOrganizationException.class)
@@ -91,12 +91,13 @@ public class NewEmployeeTest extends CommonEmployeeTest {
         Response response = newEmployee.newEmployee(getEmployeeCommandPayload(false, EmployeeType.EMPLOYEE), identityMock, uriInfoMock);
 
         assertThat(response.getStatus(), equalTo(HttpStatus.SC_CREATED));
-
     }
     
  	@Test
     public void testNewEmployeesValidation() throws NoPermissionException {
-        final Map<String, String> fields = getValidationErrors(getEmployeeValidatableCommandPayload());
+        final Response response = newEmployee.newEmployee(getEmployeeValidatableCommandPayload(), identityMock, uriInfoMock);
+        final Map<String, String> fields = getValidationErrors(response);
+
         assertNotNull("email validation is not done.", fields.get("email"));
         assertNotNull("phonenumber validation is not done.", fields.get("phonenumber"));
         assertNotNull("surname validation is not done.", fields.get("surname"));
@@ -104,29 +105,11 @@ public class NewEmployeeTest extends CommonEmployeeTest {
 
     @Test
     public void testNewEmployeesDetailedValidation() throws NoPermissionException {
-        final Map<String, String> fields = getValidationErrors(getEmployeeDetailedValidatableCommandPayload());
+        final Response response = newEmployee.newEmployee(getEmployeeDetailedValidatableCommandPayload(), identityMock, uriInfoMock);
+        final Map<String, String> fields = getValidationErrors(response);
+
         assertNotNull("education startyear validation is not done.", fields.get("education.startyear"));
         assertNotNull("dateOfBirth validation is not done.", fields.get("dateOfBirth"));
         assertNotNull("nationality validation is not done.", fields.get("nationality"));
-    }
-
-    @SuppressWarnings("unchecked")
-    private Map<String, String> getValidationErrors(EmployeeCommandPayload employeeCommandPayload) throws NoPermissionException {
-        final Map<String, Object> validationErrors;
-        final Response response = newEmployee.newEmployee(employeeCommandPayload, identityMock, uriInfoMock);
-
-        assertNotNull(response);
-        assertEquals(response.getStatus(), HttpStatus.SC_BAD_REQUEST);
-
-        try {
-            final Reader reader = new StringReader(response.getEntity().toString());
-            validationErrors = new ObjectMapper().readValue(reader, HashMap.class);
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("An error occurred with http response");
-        } catch (Exception e) {
-            throw new RuntimeException("Test failed: ", e);
-        }
-
-        return (Map<String, String>) validationErrors.get("fields");
     }
 }

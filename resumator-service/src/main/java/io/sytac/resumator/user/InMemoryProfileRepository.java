@@ -1,5 +1,6 @@
 package io.sytac.resumator.user;
 
+import io.sytac.resumator.command.AbstractCommand;
 import io.sytac.resumator.events.EventPublisher;
 import io.sytac.resumator.model.enums.Nationality;
 import io.sytac.resumator.utils.DateUtils;
@@ -44,13 +45,15 @@ public class InMemoryProfileRepository implements ProfileRepository {
     }
 
     @Override
-    public Profile register(final NewProfileCommand command) {
-        final Profile profile = this.add(command);
+    public Profile register(final AbstractCommand command) {
+        final Profile profile = add(command);
+
         events.publish(command);
+
         return profile;
     }
 
-    private Profile createFromPayload(final String accountId, final NewProfileCommand command) {
+    private Profile createFromCommand(final String accountId, final AbstractCommand command) {
         final ProfileCommandPayload payload = (ProfileCommandPayload)command.getPayload();
 
         return new Profile(accountId,
@@ -71,9 +74,9 @@ public class InMemoryProfileRepository implements ProfileRepository {
     }
 
     @Override
-    public Profile add(final NewProfileCommand command) {
+    public Profile add(final AbstractCommand command) {
         final String profileId = Optional.ofNullable(command.getHeader().getId()).orElse(UUID.randomUUID().toString());
-        final Profile profile = createFromPayload(profileId, command);
+        final Profile profile = createFromCommand(profileId, command);
         final Profile previous = profiles.putIfAbsent(profile.getEmail(), profile);
 
         if (previous != null) {
@@ -81,16 +84,30 @@ public class InMemoryProfileRepository implements ProfileRepository {
         }
 
         profileIdToEmail.put(profile.getId(), profile.getEmail());
+
         return profile;
     }
 
     @Override
-    public Profile update(UpdateProfileCommand command) {
-        return null;
+    public Profile update(AbstractCommand command) {
+        final String profileId = Optional.ofNullable(command.getHeader().getId())
+                .orElseThrow(() -> new IllegalArgumentException("Cannot update profile because profileId is null or empty"));
+
+        final String profileEmail = profileIdToEmail.get(profileId);
+        if (!profiles.containsKey(profileEmail)) {
+            throw new IllegalArgumentException(String.format("Profile with email '%s' not found in the repository", profileEmail));
+        }
+
+        final Profile profile = createFromCommand(profileId, command);
+        profiles.put(profileEmail, profile);
+
+        events.publish(command);
+
+        return profile;
     }
 
     @Override
-    public void remove(RemoveProfileCommand command) {
+    public void remove(AbstractCommand command) {
         // NOP
     }
 

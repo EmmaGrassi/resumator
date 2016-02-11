@@ -1,5 +1,7 @@
 package io.sytac.resumator.user;
 
+import io.sytac.resumator.command.AbstractCommand;
+
 import java.util.List;
 
 /**
@@ -14,16 +16,16 @@ public interface ProfileRepository {
     Profile getProfileByEmail(String email);
 
 
-    Profile register(NewProfileCommand command);
+    Profile register(AbstractCommand command);
 
 
-    Profile add(NewProfileCommand command);
+    Profile add(AbstractCommand command);
 
 
-    Profile update(UpdateProfileCommand command);
+    Profile update(AbstractCommand command);
 
 
-    void remove(RemoveProfileCommand command);
+    void remove(AbstractCommand command);
 
 
     List<Profile> getAll();

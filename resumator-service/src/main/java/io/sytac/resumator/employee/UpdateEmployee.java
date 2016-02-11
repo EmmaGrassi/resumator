@@ -8,8 +8,8 @@ import io.sytac.resumator.http.BaseResource;
 import io.sytac.resumator.model.exceptions.InvalidOrganizationException;
 import io.sytac.resumator.organization.Organization;
 import io.sytac.resumator.organization.OrganizationRepository;
-import io.sytac.resumator.security.Roles;
 import io.sytac.resumator.security.Identity;
+import io.sytac.resumator.security.Roles;
 import io.sytac.resumator.security.UserPrincipal;
 import io.sytac.resumator.user.ProfileValidator;
 import org.eclipse.jetty.http.HttpHeader;
@@ -20,7 +20,10 @@ import javax.inject.Inject;
 import javax.naming.NoPermissionException;
 import javax.naming.OperationNotSupportedException;
 import javax.ws.rs.*;
-import javax.ws.rs.core.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 import java.net.URI;
 import java.util.Map;
 import java.util.Optional;
@@ -54,8 +57,7 @@ public class UpdateEmployee extends BaseResource {
                                    @UserPrincipal final Identity identity,
                                    @Context final UriInfo uriInfo) throws NoPermissionException, OperationNotSupportedException {
 
-        final String checkedEmail = Optional.ofNullable(email).orElseThrow(IllegalArgumentException::new);
-        validateEmails(checkedEmail, payload.getProfile().getEmail());
+        validateEmails(email, payload.getProfile().getEmail());
         final Organization organization = organizations.get(identity.getOrganizationId()).orElseThrow(InvalidOrganizationException::new);
 
         if (!identity.hasRole(Roles.ADMIN)) {
@@ -102,8 +104,9 @@ public class UpdateEmployee extends BaseResource {
         }
     }
 
-    private void validateEmails(final String pathEmail, final String payloadEmail) throws OperationNotSupportedException {
-        if (!pathEmail.equals(payloadEmail)) {
+    private void validateEmails(final String emailInQuery, final String payloadEmail) throws OperationNotSupportedException {
+        final String checkedEmail = Optional.ofNullable(emailInQuery).orElseThrow(IllegalArgumentException::new);
+        if (!checkedEmail.equals(payloadEmail)) {
             throw new OperationNotSupportedException("Unable to change email address - operation is not supported");
         }
     }

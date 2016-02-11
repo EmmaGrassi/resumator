@@ -9,7 +9,7 @@ class Home extends React.Component {
           <Col xs={12}>
             <Jumbotron>
               <h1>Resumator</h1>
-              <p>Needs some explanation...</p>
+              <p>Needs some explanation.</p>
               <p><Button bsStyle="primary">Learn more</Button></p>
             </Jumbotron>
           </Col>

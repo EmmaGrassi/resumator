@@ -99,6 +99,24 @@ public class OrganizationTest {
         assertThat(actual.getType(), equalTo(payload.getType()));
     }
 
+    @Test
+    public void employeeExists_employeeExists_returnsTrue() {
+        final String email = "dummy@sytac.io";
+
+        when(employees.containsKey(email)).thenReturn(true);
+
+        assertThat(organization.employeeExists(email), equalTo(true));
+    }
+
+    @Test
+    public void employeeExists_employeeDoesNotExist_returnsFalse() {
+        final String email = "dummy@sytac.io";
+
+        when(employees.containsKey(email)).thenReturn(false);
+
+        assertThat(organization.employeeExists(email), equalTo(false));
+    }
+
     private Employee createCommand(EmployeeCommandPayload employeeCommandPayload) {
         final CommandHeader header = new CommandHeader.Builder()
                 .setId(UUID.randomUUID().toString())

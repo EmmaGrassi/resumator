@@ -18,10 +18,7 @@ import org.eclipse.jetty.http.HttpStatus;
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.naming.NoPermissionException;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.net.URI;
 import java.util.Map;
@@ -67,6 +64,10 @@ public class NewEmployee extends BaseResource {
         }
         
         final Organization organization = organizations.get(identity.getOrganizationId()).orElseThrow(InvalidOrganizationException::new);
+        if (organization.employeeExists(checkedEmail)) {
+            throw new BadRequestException("An employee with the given email address already exists");
+        }
+
         final String domain = organization.getDomain();
         Map<String, String> notValidatedFields=EmployeeValidator.validateEmployee(payload);
         if(notValidatedFields.size()>0)

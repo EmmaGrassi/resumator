@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.naming.NoPermissionException;
+import javax.ws.rs.BadRequestException;
 import javax.ws.rs.core.Response;
 
 import org.apache.http.HttpStatus;
@@ -99,7 +100,15 @@ public class NewEmployeeTest extends CommonEmployeeTest {
         Response response = newEmployee.newEmployee(getEmployeeCommandPayload(false, EmployeeType.EMPLOYEE), identityMock, uriInfoMock);
 
         assertThat(response.getStatus(), equalTo(HttpStatus.SC_CREATED));
+    }
 
+    @Test(expected = BadRequestException.class)
+    public void newEmployee_emailAlreadyInUse_badRequestExceptionIsThrown() throws NoPermissionException {
+        EmployeeCommandPayload payload = getEmployeeCommandPayload(false, EmployeeType.EMPLOYEE);
+
+        when(organizationMock.employeeExists(payload.getEmail())).thenReturn(true);
+
+        newEmployee.newEmployee(payload, identityMock, uriInfoMock);
     }
     
     @SuppressWarnings("unchecked")

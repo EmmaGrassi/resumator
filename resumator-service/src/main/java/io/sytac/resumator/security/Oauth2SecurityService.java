@@ -1,19 +1,12 @@
 package io.sytac.resumator.security;
 
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
-import com.google.api.client.http.HttpTransport;
-import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.common.collect.Sets;
-import io.sytac.resumator.Configuration;
-import io.sytac.resumator.employee.Employee;
-import io.sytac.resumator.organization.Organization;
-import io.sytac.resumator.organization.OrganizationRepository;
-import lombok.extern.slf4j.Slf4j;
+import static io.sytac.resumator.ConfigurationEntries.ADMIN_ACCOUNT_LIST;
+import static io.sytac.resumator.ConfigurationEntries.GOOGLE_APPS_DOMAIN_NAME;
+import static io.sytac.resumator.ConfigurationEntries.GOOGLE_CLIENT_ID;
+import static io.sytac.resumator.ConfigurationEntries.GOOGLE_SECRET;
+import static io.sytac.resumator.security.Roles.ADMIN;
+import static io.sytac.resumator.security.Roles.USER;
 
-import javax.inject.Inject;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.Collections;
@@ -22,9 +15,24 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
 
-import static io.sytac.resumator.ConfigurationEntries.*;
-import static io.sytac.resumator.security.Roles.ADMIN;
-import static io.sytac.resumator.security.Roles.USER;
+import javax.inject.Inject;
+
+import com.google.api.client.auth.oauth2.TokenResponseException;
+import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeTokenRequest;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.common.collect.Sets;
+
+import io.sytac.resumator.Configuration;
+import io.sytac.resumator.employee.Employee;
+import io.sytac.resumator.organization.Organization;
+import io.sytac.resumator.organization.OrganizationRepository;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Authentication service that validates Google JWT tokens
@@ -51,7 +59,8 @@ public class Oauth2SecurityService {
      * @return the associated user
      */
     public Optional<Identity> authenticateUser(final String idToken) {
-        final GoogleIdTokenVerifier verifier = buildVerifier();
+
+    	final GoogleIdTokenVerifier verifier = buildVerifier();
         final Optional<GoogleIdToken> idtoken = verify(verifier, idToken);
         return toUser(idtoken);
     }
@@ -124,5 +133,27 @@ public class Oauth2SecurityService {
                 .setAudience(Collections.singletonList(config.getProperty(GOOGLE_CLIENT_ID).get()))
                 .build();
     }
+    
+	public Optional<String> exchangeTokens(String token) throws IOException {
+
+		String clientId = config.getProperty(GOOGLE_CLIENT_ID).get();
+		String clientSecret = config.getProperty(GOOGLE_SECRET).get();
+
+		try {
+			GoogleTokenResponse tokenResponse = new GoogleAuthorizationCodeTokenRequest(new NetHttpTransport(),
+					JacksonFactory.getDefaultInstance(), "https://www.googleapis.com/oauth2/v4/token", clientId, clientSecret,
+					token, "").execute();
+
+			String accessToken = tokenResponse.getAccessToken();
+			
+			return Optional.of(accessToken);
+		} catch (TokenResponseException e) {
+			
+			log.warn("Couldn't validate one-time token.", e);
+		}
+		
+		return Optional.empty();
+
+	}
 
 }

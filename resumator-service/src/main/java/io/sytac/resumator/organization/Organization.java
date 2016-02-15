@@ -106,6 +106,10 @@ public class Organization {
                 .build();
     }
 
+    public boolean employeeExists(final String email) {
+        return employees.containsKey(email);
+    }
+
     public Employee getEmployeeByEmail(final String email) {
         return employees.get(email);
     }

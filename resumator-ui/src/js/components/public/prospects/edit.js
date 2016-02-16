@@ -2,7 +2,7 @@ import Loader from 'react-loader';
 import React from 'react';
 import { connect } from 'react-redux';
 
-import EditForm from '../shared/form/employee';
+import EditForm from '../../shared/form/employee';
 
 import actions from '../../../actions';
 
@@ -54,6 +54,7 @@ class Edit extends React.Component {
       >
         <EditForm
           value={data.item}
+          type="PROSPECT"
           handleSubmit={this.handleFormSubmit.bind(this, data.item.email)}
         />
       </Loader>

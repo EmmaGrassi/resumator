@@ -10,7 +10,7 @@ import { bindAll, map } from 'lodash';
 
 import countries from './countries';
 import nationalities from './nationalities';
-import TagsComponent from '../../../../lib/components/tcomb-form/tags';
+import TagsComponent from '../../../lib/components/tcomb-form/tags';
 
 const { Form } = tcombForm.form;
 
@@ -100,6 +100,8 @@ class EmployeeForm extends React.Component {
       value = JSON.stringify(value);
       value = JSON.parse(value);
 
+      value.type = this.refs.type.value;
+
       value.dateOfBirth = moment(value.dateOfBirth).format('YYYY-MM-DD');
 
       value.experience = map(value.experience, (v) => {
@@ -153,11 +155,14 @@ class EmployeeForm extends React.Component {
       }
     };
 
+    const type = this.props.type;
+
     return (
       <Grid>
         <Row>
           <Col xs={12}>
             <form onSubmit={this.handleSubmit.bind(this)}>
+              <input ref="type" type="hidden" name="type" value={type}/>
               <Form
                 ref="form"
                 type={EmployeeSchema}

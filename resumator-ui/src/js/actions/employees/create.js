@@ -3,6 +3,8 @@ import { pushPath } from 'redux-simple-router';
 
 import handleRequestError from '../../lib/handleRequestError';
 
+import employeeTypeToURL from '../../helpers/employeeTypeToURL';
+
 function create(data) {
   return (dispatch) => {
     dispatch({ type: 'employees:create:start' });
@@ -24,7 +26,7 @@ function create(data) {
 
         dispatch({ type: 'employees:create:success', response });
 
-        dispatch(pushPath(`/employees/${email}`));
+        dispatch(pushPath(`/${employeeTypeToURL(data.type)}/${email}`));
       });
   };
 }

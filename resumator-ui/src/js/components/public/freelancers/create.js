@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { pushPath } from 'redux-simple-router';
 
-import NewForm from '../shared/form/employee';
+import NewForm from '../../shared/form/employee';
 
 import actions from '../../../actions';
 
@@ -24,14 +24,11 @@ class Create extends React.Component {
   }
 
   render() {
-    const options = {
-    };
-
     return (
       <div>
         <NewForm
           ref="employeeForm"
-          options={options}
+          type="FREELANCER"
           handleSubmit={this.handleFormSubmit.bind(this)}
         />
       </div>

@@ -16,11 +16,11 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchListData: () => dispatch(listAction('EMPLOYEE')),
+    fetchListData: () => dispatch(listAction('FREELANCER')),
     removeListEntry: (email) => dispatch(removeAction(email)),
-    navigateToEdit: (email) => dispatch(pushPath(`/employees/${email}/edit`, {})),
-    navigateToNew: () => dispatch(pushPath(`/employees/new`, {})),
-    navigateToShow: (email) => dispatch(pushPath(`/employees/${email}`, {}))
+    navigateToEdit: (email) => dispatch(pushPath(`/freelancers/${email}/edit`, {})),
+    navigateToNew: () => dispatch(pushPath(`/freelancers/new`, {})),
+    navigateToShow: (email) => dispatch(pushPath(`/freelancers/${email}`, {}))
   };
 }
 

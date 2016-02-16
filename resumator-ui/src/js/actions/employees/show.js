@@ -28,3 +28,17 @@ function show(email) {
 }
 
 export default show;
+
+/*
+
+store
+  .user
+    .profile
+    .session
+  .employees
+    .create
+    .edit
+    .list
+    .show
+
+*/

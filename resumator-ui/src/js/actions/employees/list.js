@@ -3,11 +3,11 @@ import request from 'superagent';
 import employeeList from '../../services/employee/list';
 import handleRequestError from '../../lib/handleRequestError';
 
-function list() {
+function list(type) {
   return (dispatch) => {
     dispatch({ type: 'employees:list:start' });
 
-    employeeList((error, result) => {
+    employeeList(type, (error, result) => {
       if (error) {
         dispatch({ type: 'employees:list:failure', payload: error, error: true });
         return;

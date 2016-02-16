@@ -1,8 +1,8 @@
 import request from 'superagent';
 
-export default function list(cb) {
+export default function list(type, cb) {
   request
-    .get(`/api/employees`)
+    .get(`/api/employees?type=${type}`)
     .set('Content-Type', 'application/json')
     .end((error, response) => {
       if (error) {

@@ -33,6 +33,8 @@ class TopBar extends React.Component {
       nav = (
         <Nav>
           <NavItem eventKey={1} href="#/employees">Employees</NavItem>
+          <NavItem eventKey={2} href="#/freelancers">Freelancers</NavItem>
+          <NavItem eventKey={3} href="#/prospects">Prospects</NavItem>
         </Nav>
       );
     }

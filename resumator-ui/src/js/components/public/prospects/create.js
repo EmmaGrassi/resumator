@@ -14,7 +14,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     createEmployee: (data) => dispatch(actions.employees.create(data)),
-    navigateToShow: (email) => dispatch(pushPath(`/employees/${email}`, {}))
+    navigateToShow: (email) => dispatch(pushPath(`/prospects/${email}`, {}))
   };
 }
 

@@ -59,6 +59,12 @@ const LanguageProficiencySchema = tcombForm.enums({
   NATIVE: 'Native'
 });
 
+const EmployeeTypeSchema = tcombForm.enums({
+	  EMPLOYEE: 'Employee',
+	  FREELANCER: 'Freelancer',
+	  PROSPECT: 'Prospect'
+	});
+
 const LanguageSkillSchema = tcombForm.struct({
   name: tcombForm.String,
 
@@ -66,8 +72,10 @@ const LanguageSkillSchema = tcombForm.struct({
 });
 
 const EmployeeSchema = tcombForm.struct({
+  type: EmployeeTypeSchema,
+  
   title: tcombForm.String,
-
+  
   name: tcombForm.String,
   surname: tcombForm.String,
 
@@ -87,7 +95,8 @@ const EmployeeSchema = tcombForm.struct({
   education: tcombForm.list(EducationSchema),
   courses: tcombForm.list(CoursesSchema),
   experience: tcombForm.list(ExperienceSchema),
-  languages: tcombForm.list(LanguageSkillSchema)
+  languages: tcombForm.list(LanguageSkillSchema)  
+  
 });
 
 class EmployeeForm extends React.Component {
@@ -99,8 +108,6 @@ class EmployeeForm extends React.Component {
     if (value) {
       value = JSON.stringify(value);
       value = JSON.parse(value);
-
-      value.type = this.refs.type.value;
 
       value.dateOfBirth = moment(value.dateOfBirth).format('YYYY-MM-DD');
 
@@ -155,14 +162,11 @@ class EmployeeForm extends React.Component {
       }
     };
 
-    const type = this.props.type;
-
     return (
       <Grid>
         <Row>
           <Col xs={12}>
             <form onSubmit={this.handleSubmit.bind(this)}>
-              <input ref="type" type="hidden" name="type" value={type}/>
               <Form
                 ref="form"
                 type={EmployeeSchema}

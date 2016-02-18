@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function tag(){
-    IMAGE="test-${1}"
+    IMAGE="${PREFIX}${1}"
     docker tag ${IMAGE} ${DOCKER_ADDRESS}/${IMAGE}:${TAG} 2>&1 > /dev/null
     echo "Tagged ${IMAGE}:${TAG}"
 }
@@ -17,8 +17,10 @@ function docker_tag(){
     if [ "${BRANCH}" == "master" ]
     then
         TAG="latest"
+        PREFIX=""
     else
         TAG="develop"
+        PREFIX="test-"
     fi
 }
 

@@ -1,13 +1,33 @@
-#!/bin/sh
-if [ $(git -C ${SEMAPHORE_PROJECT_DIR} rev-parse --abbrev-ref HEAD) = "master" ]
-then
-    dockerAddress="${SYTAC_DOCKER_HOST}:${SYTAC_DOCKER_PORT}"
+#!/bin/bash
 
-    docker login -p=${DOCKER_REGISTRY_PASSWORD} -u=deployer -e deploy@sytac.io $dockerAddress
-    docker tag resumator-service $dockerAddress/resumator-service
-    docker tag resumator-ui $dockerAddress/resumator-ui
-    docker tag resumator-load-balancer $dockerAddress/resumator-load-balancer
-    docker push $dockerAddress/resumator-service
-    docker push $dockerAddress/resumator-ui
-    docker push $dockerAddress/resumator-load-balancer
+function tag(){
+    IMAGE=${1}
+    docker tag ${IMAGE} ${DOCKER_ADDRESS}/${IMAGE}:${TAG}
+}
+
+function push(){
+    IMAGE=${1}
+    docker push ${DOCKER_ADDRESS}/${IMAGE}:${TAG}
+}
+
+function docker_tag(){
+    BRANCH=$(git status | head -n1 | cut -f3 -d' ')
+    if [ "${BRANCH}" == "master" ]
+    then
+        TAG="latest"
+    else
+        TAG="develop"
+    fi
+}
+
+docker_tag
+if [ "${TAG}x" != "x" ]
+then
+    DOCKER_ADDRESS="${SYTAC_DOCKER_HOST}:${SYTAC_DOCKER_PORT}"
+    docker login -p=${DOCKER_REGISTRY_PASSWORD} -u=deployer -e deploy@sytac.io $DOCKER_ADDRESS
+    for IMAGE in resumator-service resumator-ui resumator-load-balancer
+    do
+        tag ${IMAGE}
+        push ${IMAGE}
+    done
 fi

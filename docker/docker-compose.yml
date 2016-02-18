@@ -1,5 +1,5 @@
 service:
-  image: localhost:5000/resumator-service
+  image: docker.sytac.io:443/resumator-service
   command: -Dresumator.http.context.path=api/
   links:
     - db
@@ -10,9 +10,9 @@ db:
     - POSTGRES_PASSWORD=resumator
     - POSTGRES_DB=resumator
 ui:
-  image: localhost:5000/resumator-ui
+  image: docker.sytac.ieo:443/resumator-ui
 lb:
-  image: localhost:5000/resumator-load-balancer
+  image: docker.sytac.io:443/resumator-load-balancer
   ports:
     - "8000:80"
   links:

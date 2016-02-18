@@ -1,14 +1,14 @@
 #!/bin/bash
 
 function tag(){
-    IMAGE="${PREFIX}${1}"
-    docker tag ${IMAGE} ${DOCKER_ADDRESS}/${IMAGE}:${TAG} 2>&1 > /dev/null
+    IMAGE="${1}"
+    docker tag ${IMAGE} ${DOCKER_ADDRESS}/${PREFIX}${IMAGE}:${TAG} 2>&1 > /dev/null
     echo "Tagged ${IMAGE}:${TAG}"
 }
 
 function push(){
     IMAGE=${1}
-    docker push ${DOCKER_ADDRESS}/${IMAGE}:${TAG} 2>&1 > /dev/null
+    docker push ${DOCKER_ADDRESS}/${PREFIX}${IMAGE}:${TAG} 2>&1 > /dev/null
     echo "Pushed ${IMAGE}:${TAG}"
 }
 

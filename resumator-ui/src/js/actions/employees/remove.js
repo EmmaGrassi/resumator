@@ -3,7 +3,7 @@ import request from 'superagent';
 import handleRequestError from '../../lib/handleRequestError';
 import list from './list';
 
-function remove(email) {
+function remove(type,email) {
   return (dispatch) => {
     dispatch({ type: 'employees:remove:start' });
 
@@ -21,7 +21,7 @@ function remove(email) {
 
         dispatch({ type: 'employees:remove:success', response });
 
-        dispatch(list());
+        dispatch(list(type));
       });
   };
 }

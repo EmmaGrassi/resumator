@@ -11,9 +11,11 @@ import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 import org.eclipse.jetty.http.HttpStatus;
 
@@ -39,7 +41,6 @@ public class LoginEndpoint extends BaseResource {
 	Oauth2SecurityService securityService;
 	
 	private static final String COOKIE_PATH="/";
-	private static final String COOKIE_DOMAIN="resumator.sytac.io";
 	
     @Inject
     public LoginEndpoint(final Oauth2SecurityService securityService) {
@@ -48,20 +49,21 @@ public class LoginEndpoint extends BaseResource {
 
     @POST
     @Produces({RepresentationFactory.HAL_JSON})
-    public Response exchangeTokens(@HeaderParam(HEADER_PARAM_TOKEN) String  token) throws NoPermissionException, IOException {
+    public Response exchangeTokens(@HeaderParam(HEADER_PARAM_TOKEN) String  token,@Context UriInfo ui) throws NoPermissionException, IOException {
     	
         Optional<String> authOneTimeToken = Optional.ofNullable(token);
         Optional<GoogleResponse> response=securityService.exchangeTokens(authOneTimeToken.get());
+        String domain=ui.getBaseUri().getHost();
         
         if(response.get().getAccessToken().isEmpty())
         	return Response.status(HttpStatus.BAD_REQUEST_400).build();       	
         
-        return buildLoginRepresentation(response.get());
+        return buildLoginRepresentation(response.get(),domain);
 
     }
     
 
-    private Response buildLoginRepresentation(GoogleResponse googleResponse) {
+    private Response buildLoginRepresentation(GoogleResponse googleResponse,String domain) {
         
     	  final Representation halResource = rest.newRepresentation()
                   .withProperty("email", googleResponse.getEmail());
@@ -70,10 +72,10 @@ public class LoginEndpoint extends BaseResource {
         calendar.add(Calendar.DAY_OF_MONTH, 2);
         int maxAge=60*60*48;//2 days
       
-        Cookie cookieToken=new Cookie(Oauth2AuthenticationFilter.AUTHENTICATION_COOKIE, googleResponse.getAccessToken(),COOKIE_PATH,COOKIE_DOMAIN);
-        Cookie cookieName=new Cookie("name", googleResponse.getName(),COOKIE_PATH,COOKIE_DOMAIN);
-        Cookie cookieSurname=new Cookie("surname", googleResponse.getSurname(),COOKIE_PATH,COOKIE_DOMAIN);
-        Cookie cookieEmail=new Cookie("email", googleResponse.getEmail(),COOKIE_PATH,COOKIE_DOMAIN);
+        Cookie cookieToken=new Cookie(Oauth2AuthenticationFilter.AUTHENTICATION_COOKIE, googleResponse.getAccessToken(),COOKIE_PATH,domain);
+        Cookie cookieName=new Cookie("name", googleResponse.getName(),COOKIE_PATH,domain);
+        Cookie cookieSurname=new Cookie("surname", googleResponse.getSurname(),COOKIE_PATH,domain);
+        Cookie cookieEmail=new Cookie("email", googleResponse.getEmail(),COOKIE_PATH,domain);
         
         Response response=Response.ok(halResource.toString(RepresentationFactory.HAL_JSON))
         		.status(HttpStatus.OK_200)

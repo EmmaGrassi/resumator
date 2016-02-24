@@ -50,7 +50,7 @@ function getRouteAttribute(routes, attribute) {
 // Returns true if the user has a session.
 function hasSession() {
   // This needs to be taken from the cookie directly, not the Redux store.
-  const idToken = cookies.get('idToken');
+  const idToken = cookies.get('resumatorJWT');
 
   return !!idToken;
 }

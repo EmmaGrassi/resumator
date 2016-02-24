@@ -6,19 +6,16 @@ const cookiesOptions = {
 };
 
 export default function get() {
-  const idToken = cookies.get('idToken', cookiesOptions);
-  const expiresAt = cookies.get('expiresAt', cookiesOptions);
+
   const email = cookies.get('email', cookiesOptions);
   const name = cookies.get('name', cookiesOptions);
   const surname = cookies.get('surname', cookiesOptions);
-  const imageUrl = cookies.get('imageUrl', cookiesOptions);
+  const idToken = cookies.get('resumatorJWT', cookiesOptions);
 
   return {
-    idToken,
-    expiresAt,
+   idToken,
     email,
     name,
-    surname,
-    imageUrl
+    surname
   }
 }

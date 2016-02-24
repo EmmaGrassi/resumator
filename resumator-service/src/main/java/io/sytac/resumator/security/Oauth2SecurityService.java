@@ -134,7 +134,7 @@ public class Oauth2SecurityService {
                 .build();
     }
     
-	public Optional<String> exchangeTokens(String token) throws IOException {
+	public Optional<GoogleResponse> exchangeTokens(String token) throws IOException {
 
 		String clientId = config.getProperty(GOOGLE_CLIENT_ID).get();
 		String clientSecret = config.getProperty(GOOGLE_SECRET).get();
@@ -142,11 +142,17 @@ public class Oauth2SecurityService {
 		try {
 			GoogleTokenResponse tokenResponse = new GoogleAuthorizationCodeTokenRequest(new NetHttpTransport(),
 					JacksonFactory.getDefaultInstance(), "https://www.googleapis.com/oauth2/v4/token", clientId, clientSecret,
-					token, "").execute();
+					token, "postmessage").execute();
 
-			String accessToken = tokenResponse.getAccessToken();
+			String accessToken = tokenResponse.getIdToken();
 			
-			return Optional.of(accessToken);
+			GoogleIdToken idToken = tokenResponse.parseIdToken();
+			GoogleIdToken.Payload payload = idToken.getPayload();
+			String email = payload.getEmail();	
+			String name = (String) payload.getUnknownKeys().get("given_name");
+			String surname = (String) payload.getUnknownKeys().get("family_name");
+			
+			return Optional.of(GoogleResponse.builder().accessToken(accessToken).name(name).surname(surname).email(email).build());
 		} catch (TokenResponseException e) {
 			
 			log.warn("Couldn't validate one-time token.", e);

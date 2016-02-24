@@ -2,11 +2,8 @@ import immutable from 'immutable';
 
 const defaults = immutable.Map({
   idToken: null,
-  expiresAt: null,
-
   name: null,
   surname: null,
-  imageUrl: null,
   email: null
 });
 
@@ -15,19 +12,15 @@ function session(state = defaults, { type, payload } = {}) {
     case 'user:initialize:success':
       return state
         .set('idToken', payload.idToken)
-        .set('expiresAt', payload.expiresAt)
         .set('name', payload.name)
         .set('surname', payload.surname)
-        .set('imageUrl', payload.imageUrl)
         .set('email', payload.email);
 
     case 'user:login:success':
       return state
         .set('idToken', payload.idToken)
-        .set('expiresAt', payload.expiresAt)
         .set('name', payload.name)
         .set('surname', payload.surname)
-        .set('imageUrl', payload.imageUrl)
         .set('email', payload.email);
 
     case 'user:login:failure':

@@ -15,7 +15,7 @@ function initialize() {
 
     const cookieData = cookieGet();
 
-    if (cookieData.email) {
+    if (cookieData.idToken && cookieData.email) {
       profileGet(cookieData.email, function(error, profile) {
         if (error) {
           if (error.error.status === 404) {

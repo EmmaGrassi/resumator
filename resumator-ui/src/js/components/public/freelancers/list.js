@@ -17,7 +17,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     fetchListData: () => dispatch(listAction('FREELANCER')),
-    removeListEntry: (email) => dispatch(removeAction(email)),
+    removeListEntry: (type,email) => dispatch(removeAction(type,email)),
     navigateToEdit: (email) => dispatch(pushPath(`/freelancers/${email}/edit`, {})),
     navigateToNew: () => dispatch(pushPath(`/freelancers/new`, {})),
     navigateToShow: (email) => dispatch(pushPath(`/freelancers/${email}`, {}))
@@ -54,7 +54,7 @@ class List extends React.Component {
       return;
     }
 
-    this.props.removeListEntry(email);
+    this.props.removeListEntry('FREELANCER',email);
   }
 
   componentWillMount() {

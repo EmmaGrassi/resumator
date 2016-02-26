@@ -9,7 +9,6 @@ import static org.mockito.Mockito.when;
 import java.io.Reader;
 import java.io.StringReader;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,8 +30,6 @@ import static org.hamcrest.core.IsEqual.equalTo;
 
 import io.sytac.resumator.model.exceptions.InvalidOrganizationException;
 import io.sytac.resumator.security.Roles;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
 /**

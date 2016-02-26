@@ -71,8 +71,10 @@ class List extends React.Component {
     if (items && items.length) {
       rows = items.map((v, i) => {
         const email = v.email;
-        const name = v.name;
-        const surname = v.surname;
+        const fullName = v.fullName;
+        const client = v.client;
+        const title = v.title;
+        const phone = v.phone;
 
         return <tr
           key={i}
@@ -86,15 +88,30 @@ class List extends React.Component {
             verticalAlign: 'middle'
           }}
           >
-            {name}
+            {fullName}
           </td>
+     		<td
+       		style={{
+       	  verticalAlign: 'middle'
+      }}
+      >
+        {client}
+      </td>
           <td
             style={{
             verticalAlign: 'middle'
           }}
           >
-            {surname}
+            {title}
           </td>
+          <td
+          style={{
+          verticalAlign: 'middle'
+          }}
+          >
+          {phone}
+          </td>
+
           <td>
             <ButtonGroup>
               <Button onClick={this.handleEditButtonClick.bind(this, email)}><Glyphicon glyph="pencil"/> Edit</Button>
@@ -107,7 +124,7 @@ class List extends React.Component {
       rows = (
         <tr>
           <td
-            colSpan="3"
+            colSpan="5"
             style={{
               textAlign: 'center'
             }}
@@ -132,7 +149,9 @@ class List extends React.Component {
                     <th>
                       Name
                     </th>
-                    <th>Surname</th>
+                    <th>Current Client</th>
+                    <th>Title</th>
+                    <th>Phone</th>
                     <th
                       style={{
                         width: '20%'

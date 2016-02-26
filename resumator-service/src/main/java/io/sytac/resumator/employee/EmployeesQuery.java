@@ -3,6 +3,7 @@ package io.sytac.resumator.employee;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import io.sytac.resumator.http.BaseResource;
+import io.sytac.resumator.model.Experience;
 import io.sytac.resumator.organization.Organization;
 import io.sytac.resumator.organization.OrganizationRepository;
 import io.sytac.resumator.security.Identity;
@@ -82,7 +83,7 @@ public class EmployeesQuery extends BaseResource {
         }
 
         return representation;
-    }
+    }	
 
     /**
      * Translates an {@link Employee} coarsely into a HAL representation
@@ -92,10 +93,13 @@ public class EmployeesQuery extends BaseResource {
      * @return The {@link Representation} of the {@link Employee}
      */
     private Representation represent(final Employee employee, final UriInfo uriInfo) {
+    	String client=getCurrentClient(employee);
         return rest.newRepresentation()
                 .withProperty("email", employee.getEmail())
-                .withProperty("name", employee.getName())
-                .withProperty("surname", employee.getSurname())
+                .withProperty("fullName", employee.getName()+" "+employee.getSurname())
+                .withProperty("client", client)
+                .withProperty("title", employee.getTitle())
+                .withProperty("phone", employee.getPhoneNumber())
                 .withLink(REL_SELF, resourceLink(uriInfo, EmployeeQuery.class, employee.getEmail()));
     }
 
@@ -112,5 +116,16 @@ public class EmployeesQuery extends BaseResource {
 
     private URI createURIForPage(UriInfo uriInfo, int page) {
         return UriBuilder.fromUri(uriInfo.getRequestUri()).replaceQueryParam(QUERY_PARAM_PAGE, page).build();
+    }
+    
+    private String getCurrentClient(Employee employee){
+    	
+    	List<Experience> experiences=Optional.ofNullable(employee.getExperiences()).orElse(new ArrayList<Experience>());
+    	
+    	String currentClient=experiences.stream().filter(exp->!exp.getEndDate().isPresent()).sorted(Comparator.comparing(Experience::getStartDate)).findFirst().map(Experience::getCompanyName).orElse("");
+    	
+    	return currentClient;
+    	
+   
     }
 }

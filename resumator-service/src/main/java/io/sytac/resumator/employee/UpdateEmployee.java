@@ -52,6 +52,10 @@ public class UpdateEmployee extends BaseResource {
                                    final EmployeeCommandPayload payload,
                                    @UserPrincipal final Identity identity,
                                    @Context final UriInfo uriInfo) throws NoPermissionException, OperationNotSupportedException {
+    	
+        Map<String, String> notValidatedFields=EmployeeValidator.validateEmployee(payload);
+        if(notValidatedFields.size()>0)
+        	return buildValidationFailedRepresentation(uriInfo, notValidatedFields);
 
         final String checkedEmail = Optional.ofNullable(email).orElseThrow(IllegalArgumentException::new);
         validateEmails(checkedEmail, payload.getEmail());
@@ -67,9 +71,6 @@ public class UpdateEmployee extends BaseResource {
             return Response.status(HttpStatus.NOT_FOUND_404).build();
         }
         
-                Map<String, String> notValidatedFields=EmployeeValidator.validateEmployee(payload);
-        if(notValidatedFields.size()>0)
-        	return buildValidationFailedRepresentation(uriInfo, notValidatedFields);
 
         final UpdateEmployeeCommand command = descriptors.updateEmployeeCommand(employee.getId(), payload, organization.getDomain());
         final Employee updatedEmployee = organization.updateEmployee(command);

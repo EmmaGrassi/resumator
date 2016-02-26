@@ -52,6 +52,10 @@ public class NewEmployee extends BaseResource {
                                 @UserPrincipal final Identity identity,
                                 @Context final UriInfo uriInfo) throws NoPermissionException {
 
+        Map<String, String> notValidatedFields=EmployeeValidator.validateEmployee(payload);
+        if(notValidatedFields.size()>0)
+        	return buildValidationFailedRepresentation(uriInfo, notValidatedFields);
+
         final String checkedEmail = Optional.ofNullable(payload.getEmail()).orElseThrow(IllegalArgumentException::new);
         if (!identity.hasRole(Roles.ADMIN)) {
             if (!checkedEmail.equals(identity.getName())) {
@@ -69,9 +73,6 @@ public class NewEmployee extends BaseResource {
         }
 
         final String domain = organization.getDomain();
-        Map<String, String> notValidatedFields=EmployeeValidator.validateEmployee(payload);
-        if(notValidatedFields.size()>0)
-        	return buildValidationFailedRepresentation(uriInfo, notValidatedFields);
 
         final NewEmployeeCommand command = descriptors.newEmployeeCommand(payload, domain);
         final Employee newEmployee = organization.addEmployee(command);

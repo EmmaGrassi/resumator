@@ -10,7 +10,7 @@ test-db:
     - POSTGRES_PASSWORD=resumator
     - POSTGRES_DB=resumator
 test-ui:
-  image: docker.sytac.ieo:443/resumator-ui-test
+  image: docker.sytac.io:443/resumator-ui-test
 test-lb:
   image: docker.sytac.io:443/resumator-load-balancer-test
   ports:

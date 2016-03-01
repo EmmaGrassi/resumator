@@ -13,7 +13,8 @@ import RightNav from './right-nav';
 
 function mapStateToProps(state) {
   return {
-    session: state.user.session.toJS()
+    session: state.user.session.toJS(),
+    profile: state.user.profile.toJS()
   };
 }
 
@@ -29,7 +30,7 @@ class TopBar extends React.Component {
 
     let nav = '';
 
-    if (session.idToken) {
+    if (this.props.session.idToken && this.props.profile.item.admin) {
       nav = (
         <Nav>
           <NavItem eventKey={1} href="#/employees">Employees</NavItem>

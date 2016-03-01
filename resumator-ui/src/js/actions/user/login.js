@@ -31,7 +31,7 @@ function login(data) {
           if (error) {
             if (error.error.status === 404) {
               dispatch(pushPath(`/employees/new`));
-              dispatch({ type: 'user:getProfile:success', payload: profile });
+              dispatch({ type: 'user:getProfile:start', payload: profile });
               dispatch({ type: 'user:login:success', payload: cookieData });
 
               return;

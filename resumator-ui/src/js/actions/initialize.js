@@ -19,7 +19,7 @@ function initialize() {
       profileGet(cookieData.email, function(error, profile) {
         if (error) {
           if (error.error.status === 404) {
-            dispatch({ type: 'user:getProfile:success', payload: profile });
+            dispatch({ type: 'user:getProfile:start', payload: profile });
             dispatch({ type: 'user:initialize:success', payload: cookieData });
 
             return;

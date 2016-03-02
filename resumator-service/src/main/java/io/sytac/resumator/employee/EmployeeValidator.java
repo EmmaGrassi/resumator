@@ -1,11 +1,13 @@
 package io.sytac.resumator.employee;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
@@ -48,7 +50,7 @@ public class EmployeeValidator {
 				fields.put("nationality", "Nationality should be within the accepted list.");
 			}
 	    	
-	    	List<Education> educations=employee.getEducation();
+	    	List<Education> educations=Optional.ofNullable(employee.getEducation()).orElse(new ArrayList<Education>());
 	    	
 	    	educations.forEach(education -> {
 	            if(education.getStartYear()>education.getEndYear()) {
@@ -56,7 +58,8 @@ public class EmployeeValidator {
 	            }
 	    	});
 	    	
-	    	List<Course> courses=employee.getCourses();
+
+	    	List<Course> courses=Optional.ofNullable(employee.getCourses()).orElse(new ArrayList<Course>());
 	    	
 	    	courses.forEach(course -> {
 	    		if(new GregorianCalendar().get(Calendar.YEAR)<course.getYear()){

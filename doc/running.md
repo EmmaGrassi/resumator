@@ -8,10 +8,10 @@ To run the Resumator you need to have the following things in place:
 
 ### As a Docker container
 
-The preferred way to run the Resumator service is by its Docker container. Once you have [built](running.md) the container, you should be able to run it as follows:
+The preferred way to run the Resumator service is by its Docker container. Once you have [built](building.md) the container, you should be able to run it as follows:
 
 ```shell
-docker run -i -t --rm -p 9090:9090 ${image} -Dresumator.http.context.path=api/
+docker run -i -t --rm -p 9090:9090 ${image} -D resumator.http.context.path=api/
 ```
 
 The port mapping makes sure that the default Resumator port `9090` is visible on the Docker host as well. If you [configure](configure.md) it to run at some other port, you need to adjust the port mapping accordingly.

@@ -1,9 +1,9 @@
-service:
+test-service:
   image: resumator-service
   command: -Dresumator.http.context.path=api/
   links:
-    - db
-db:
+    - test-db
+test-db:
   image: postgres
   environment:
     - POSTGRES_USER=resumator
@@ -11,15 +11,15 @@ db:
     - POSTGRES_DB=resumator
   ports:
     - "5432:5432"
-ui:
+test-ui:
   image: resumator-ui
   volumes:
     - ../resumator-ui/docker/nginx-dev.conf:/etc/nginx/conf.d/resumator.conf
     - ../resumator-ui/build:/usr/share/nginx/html/
-lb:
+test-lb:
   image: resumator-load-balancer
   ports:
     - "8000:80"
   links:
-    - ui
-    - service
+    - test-ui
+    - test-service

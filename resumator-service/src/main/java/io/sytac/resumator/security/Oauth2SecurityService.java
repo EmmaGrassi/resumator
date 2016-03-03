@@ -69,6 +69,7 @@ public class Oauth2SecurityService {
     private Optional<Identity> toUser(final Optional<GoogleIdToken> idToken) {
         return idToken.flatMap(token -> {
             final Optional<Organization> organization = organizations.fromDomain(token.getPayload().getHostedDomain());
+            log.info("token to user: "+token.getPayload().getHostedDomain()+" "+token.getPayload().getEmail()+" "+organization.isPresent());
             return organization.map(org -> new Identity(org.getId(),
                     token.getPayload().getEmail(),
                     getRoles(org, token.getPayload())));
@@ -114,9 +115,11 @@ public class Oauth2SecurityService {
                             config.getProperty(GOOGLE_CLIENT_ID)
                                   .map(id -> id.equals(payload.getAuthorizedParty()))
                                   .orElse(false)))) {
+            	log.info("Token validation succeeded ");
                 return Optional.of(token);
             }
         }
+        log.info("Token validation failed ");
         return Optional.empty();
     }
 

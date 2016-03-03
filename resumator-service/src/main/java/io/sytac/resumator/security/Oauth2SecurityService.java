@@ -60,6 +60,7 @@ public class Oauth2SecurityService {
      */
     public Optional<Identity> authenticateUser(final String idToken) {
 
+    	log.info("user authentication in google started");
     	final GoogleIdTokenVerifier verifier = buildVerifier();
         final Optional<GoogleIdToken> idtoken = verify(verifier, idToken);
         return toUser(idtoken);
@@ -92,6 +93,8 @@ public class Oauth2SecurityService {
         final GoogleIdToken token;
         try {
             token = verifier.verify(idtoken);
+            log.info("Token verify finished: "+token.getPayload().getHostedDomain()+" "+token.getPayload().getAuthorizedParty()+" "+token.getPayload().getEmail());
+            log.info("Token validation starting ");
             return validate(token);
         } catch (GeneralSecurityException | IOException e) {
             log.warn("Couldn't validate the Google JWT", e);

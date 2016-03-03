@@ -7,6 +7,9 @@ import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.SecurityContext;
+
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
 import java.util.Optional;
 
@@ -17,6 +20,7 @@ import java.util.Optional;
  * @since 0.1
  */
 @Priority(Priorities.AUTHENTICATION)
+@Slf4j
 public class Oauth2AuthenticationFilter implements ContainerRequestFilter {
 
     public static final String AUTHENTICATION_COOKIE = "resumatorJWT";
@@ -32,6 +36,7 @@ public class Oauth2AuthenticationFilter implements ContainerRequestFilter {
     public void filter(ContainerRequestContext requestContext) throws IOException {
     	if(!"/api/login".equals(requestContext.getUriInfo().getRequestUri().getPath())){
             Optional<Cookie> authCookie = Optional.ofNullable(requestContext.getCookies().get(AUTHENTICATION_COOKIE));
+            log.info("Cookie retrieved: "+authCookie.get());
             SecurityContext securityContext = defineSecurityContext(authCookie);
             requestContext.setSecurityContext(securityContext);
 

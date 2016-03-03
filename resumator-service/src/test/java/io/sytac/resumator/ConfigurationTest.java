@@ -42,7 +42,7 @@ public class ConfigurationTest {
     @Test
     public void systemPropertiesWinOverDefault(){
         final String serviceName = configuration.getProperty(SERVICE_NAME).get();
-        assertEquals("Static configuration was not found", "The Resumator", serviceName);
+        assertEquals("Static configuration was not found", "Sytac Resumator", serviceName);
 
         final String override = "foobar";
         withConfig(() -> {

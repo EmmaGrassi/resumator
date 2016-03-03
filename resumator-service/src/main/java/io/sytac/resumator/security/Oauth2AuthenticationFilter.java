@@ -36,7 +36,7 @@ public class Oauth2AuthenticationFilter implements ContainerRequestFilter {
     public void filter(ContainerRequestContext requestContext) throws IOException {
     	if(!"/api/login".equals(requestContext.getUriInfo().getRequestUri().getPath())){
             Optional<Cookie> authCookie = Optional.ofNullable(requestContext.getCookies().get(AUTHENTICATION_COOKIE));
-            log.info("Cookie retrieved: "+authCookie.get());
+            log.info("Cookie retrieved: "+authCookie.isPresent());
             SecurityContext securityContext = defineSecurityContext(authCookie);
             requestContext.setSecurityContext(securityContext);
 

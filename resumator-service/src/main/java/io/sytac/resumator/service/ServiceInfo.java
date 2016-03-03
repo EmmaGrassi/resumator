@@ -37,6 +37,7 @@ public class ServiceInfo extends BaseResource {
         return rest.newRepresentation()
                 .withProperty("app-name", config.getProperty(SERVICE_NAME).orElse("--"))
                 .withProperty("app-version", config.getProperty(SERVICE_VERSION).orElse("--"))
+                .withProperty("hash", config.getProperty(SERVICE_HASH).orElse("--"))
                 .withLink("self", uriInfo.getRequestUri())
                 .withLink("employees", resourceLink(uriInfo, EmployeesQuery.class));
     }

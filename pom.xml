@@ -14,6 +14,12 @@
         <module>resumator-service</module>
     </modules>
 
+    <scm>
+        <connection>scm:git:git://github.com/sytac/resumator.git</connection>
+        <developerConnection>scm:git:git@github.com:sytac/resumator.git</developerConnection>
+        <url>https://github.com/sytac/resumator</url>
+    </scm>
+
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -40,6 +46,23 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>buildnumber-maven-plugin</artifactId>
+                <version>1.4</version>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>create</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <doCheck>false</doCheck>   <!-- don't fail in case of local modifications -->
+                    <doUpdate>false</doUpdate> <!-- don't automatically update from remote -->
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>docker-maven-plugin</artifactId>

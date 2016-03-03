@@ -21,6 +21,7 @@ public interface ConfigurationEntries {
     // Advertised service details
     String SERVICE_NAME    = "resumator.service.name";
     String SERVICE_VERSION = "resumator.service.version";
+    String SERVICE_HASH    = "resumator.service.hash";
 
     // SQL database access
     String SQL_FILES_DIR_CONFIG = "resumator.db.sql.dir";

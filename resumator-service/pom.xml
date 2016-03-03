@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>resumator</artifactId>
-    <name>The Resumator Service</name>
+    <name>Sytac Resumator</name>
 
     <parent>
         <groupId>io.sytac.resumator</groupId>
@@ -192,6 +192,12 @@
     </dependencies>
 
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
         <plugins>
             <!-- Execute the application with maven exec:java -->
             <plugin>

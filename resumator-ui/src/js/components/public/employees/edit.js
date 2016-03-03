@@ -2,40 +2,48 @@ import Loader from 'react-loader';
 import React from 'react';
 import { connect } from 'react-redux';
 
-import EditForm from '../../shared/form/employee';
+import EditForm from '../../shared/form1/employee';
 
-import actions from '../../../actions';
+import edit from '../../../actions/employees/edit';
+import update from '../../../actions/employees/update';
 
 function mapStateToProps(state) {
+  const edit = state.employees.edit.toJS();
+
   return {
-    edit: state.employees.edit.toJS()
+    isFetching: edit.isFetching,
+    item: edit.item,
+
+    hasFailed: edit.hasFailed,
+    errors: edit.errors,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    editEmployee: (email) => dispatch(actions.employees.edit(email)),
-    updateEmployee: (email, data) => dispatch(actions.employees.update(email, data))
-  }
+    editEmployee: (email) => dispatch(edit(email)),
+    updateEmployee: (email, data) => dispatch(update(email, data)),
+  };
 }
 
 class Edit extends React.Component {
   componentWillMount() {
-    this.props.editEmployee(this.props.params.userId)
-  }
-
-  handleFormSubmit(email, data) {
-    this.props.updateEmployee(email, data);
+    // TODO: Change this to email.
+    this.props.editEmployee(this.props.params.userId);
   }
 
   render() {
-    const data = this.props.edit;
-    const isFetching = data.isFetching;
+    const {
+      isFetching,
+      hasFailed,
+      item,
+      errors,
+    } = this.props;
 
-    if (data.item) {
-      data.item.dateOfBirth = new Date(data.item.dateOfBirth);
+    if (item) {
+      item.dateOfBirth = new Date(item.dateOfBirth);
 
-      data.item.experience = data.item.experience.map((v, i) => {
+      item.experience = item.experience.map((v, i) => {
         if (v.startDate) {
           v.startDate = new Date(v.startDate);
         }
@@ -53,9 +61,11 @@ class Edit extends React.Component {
         loaded={!isFetching}
       >
         <EditForm
-          value={data.item}
+          values={item}
           type="EMPLOYEE"
-          handleSubmit={this.handleFormSubmit.bind(this, data.item.email)}
+          handleSubmit={this.props.updateEmployee.bind(this, item.email)}
+          hasFailed={hasFailed}
+          errors={errors}
         />
       </Loader>
     );

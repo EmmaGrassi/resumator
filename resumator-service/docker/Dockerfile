@@ -18,7 +18,7 @@ WORKDIR /usr/local/resumator
 COPY resumator-0.1-SNAPSHOT.jar /usr/local/resumator/resumator.jar
 
 # Install the startup script
-COPY resumator.sh /usr/local/resumator
+COPY resumator.sh /usr/local/resumator/resumator.sh
 RUN chmod +x /usr/local/resumator/resumator.sh
 
 EXPOSE 9090

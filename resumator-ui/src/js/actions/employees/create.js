@@ -1,34 +1,34 @@
-import request from 'superagent';
 import { pushPath } from 'redux-simple-router';
-
-import handleRequestError from '../../lib/handleRequestError';
 
 import employeeTypeToURL from '../../helpers/employeeTypeToURL';
 
-function create(data) {
+import createService from '../../services/employee/create';
+
+export default function create(data) {
   return (dispatch) => {
     dispatch({ type: 'employees:create:start' });
 
-    request
-      .post(`/api/employees`)
-      .send(data)
-      .set('Content-Type', 'application/json')
-      .end((error, response) => {
-        if (error) {
-          dispatch({ type: 'employees:create:failure', error });
+    data.type = data.type || 'EMPLOYEE';
+    data.courses = data.courses || [];
+    data.education = data.education || [];
+    data.experience = data.experience || [];
+    data.languages = data.languages || [];
 
-          handleRequestError(dispatch, error);
+    createService(data, (error, results) => {
+      if (error) {
+        dispatch({ type: 'employees:create:failure', errors: results });
+        return;
+      }
 
-          return;
-        }
+      // So it makes sense in the code below..
+      const { email } = results;
 
-        const { email } = JSON.parse(response.text);
+      // TODO: Don't really want to emit this here?
+      dispatch({ type: 'employees:getProfile:success', payload: results });
 
-        dispatch({ type: 'employees:create:success', response });
+      dispatch({ type: 'employees:create:success', payload: email });
 
-        dispatch(pushPath(`/${employeeTypeToURL(data.type)}/${email}`));
-      });
+      dispatch(pushPath(`/${employeeTypeToURL(data.type)}/${email}/edit`));
+    });
   };
 }
-
-export default create;

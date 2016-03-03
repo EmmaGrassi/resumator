@@ -1,7 +1,6 @@
 import request from 'superagent';
 
 import employeeList from '../../services/employee/list';
-import handleRequestError from '../../lib/handleRequestError';
 
 function list(type) {
   return (dispatch) => {

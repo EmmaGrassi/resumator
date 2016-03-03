@@ -1,38 +1,38 @@
-import cookies from 'cookies-js';
-import { pushPath } from 'redux-simple-router';
+// import { pushPath } from 'redux-simple-router';
 
 import cookieGet from '../services/user/cookie/get';
+import cookieClear from '../services/user/cookie/clear';
 import profileGet from '../services/user/profile/get';
-
-const cookiesOptions = {
-  path: '/',
-  domain: window.location.hostname
-};
 
 function initialize() {
   return (dispatch) => {
-    dispatch({ type: 'user:initialize:start' })
+    dispatch({ type: 'user:initialize:start' });
 
     const cookieData = cookieGet();
 
     if (cookieData.idToken && cookieData.email) {
-      profileGet(cookieData.email, function(error, profile) {
+      profileGet(cookieData.email, (error, profile) => {
         if (error) {
           if (error.error.status === 404) {
-            dispatch({ type: 'user:getProfile:start', payload: profile });
+            // TODO: Don't send getProfile actions from the initialize action?
+            //       Call an initialize Service and have that service call the
+            //       getprofile service instead.
+            dispatch({ type: 'user:getProfile:success', payload: profile });
             dispatch({ type: 'user:initialize:success', payload: cookieData });
 
             return;
-
-          } else {
-            cookieClear();
-
-            dispatch({ type: 'user:initialize:failure' });
-
-            return;
           }
+
+          cookieClear();
+
+          dispatch({ type: 'user:initialize:failure' });
+
+          return;
         }
 
+        // TODO: Don't send getProfile actions from the initialize action? Call
+        //       an initialize Service and have that service call the getprofile
+        //       service instead.
         dispatch({ type: 'user:getProfile:success', payload: profile });
         dispatch({ type: 'user:initialize:success', payload: cookieData });
       });

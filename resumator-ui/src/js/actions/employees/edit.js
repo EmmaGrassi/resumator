@@ -1,32 +1,20 @@
-import request from 'superagent';
+import editService from '../../services/employee/edit';
 
-import handleRequestError from '../../lib/handleRequestError';
-import list from './list';
-
-function edit(email) {
+export default function edit(email) {
   return (dispatch) => {
     dispatch({ type: 'employees:edit:start' });
 
-    request
-      .get(`/api/employees/${email}`)
-      .set('Content-Type', 'application/json')
-      .end((error, _response) => {
-        if (error) {
-          dispatch({ type: 'employees:edit:failure', error });
+    debugger;
 
-          handleRequestError(dispatch, error);
+    editService(email, (error, results) => {
+      if (error) {
+        dispatch({ type: 'employees:edit:failure', errors: results });
+        return;
+      }
 
-          return;
-        }
+      debugger;
 
-        const response = JSON.parse(_response.text);
-
-        delete response._links;
-
-        dispatch({ type: 'employees:edit:success', response });
-      });
+      dispatch({ type: 'employees:edit:success', payload: results });
+    });
   };
 }
-
-export default edit;
-

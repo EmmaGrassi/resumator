@@ -17,7 +17,7 @@ function edit(state = defaults, action = {}) {
     case 'employees:edit:success':
       return state
         .set('isFetching', false)
-        .set('item', immutable.fromJS(action.response));
+        .set('item', immutable.fromJS(action.payload));
 
     case 'employees:edit:failure':
       return state

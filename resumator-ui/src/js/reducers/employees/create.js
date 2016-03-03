@@ -4,11 +4,10 @@ import employee from '../common/employee';
 
 const defaults = immutable.Map({
   isSaving: false,
-
-  // TODO: Check if this is needed.
+  hasFailed: false,
   email: null,
-
-  item: employee
+  item: employee,
+  errors: immutable.Map(),
 });
 
 function create(state = defaults, action = {}) {
@@ -18,15 +17,17 @@ function create(state = defaults, action = {}) {
         .set('isSaving', true);
 
     case 'employees:create:success':
-      const email = action.response.email;
-
       return state
         .set('isSaving', false)
-        .set('email', email);
+        .set('hasFailed', false)
+        .set('email', action.payload)
+        .set('errors', immutable.Map());
 
     case 'employees:create:failure':
       return state
-        .set('isSaving', false);
+        .set('isSaving', false)
+        .set('hasFailed', true)
+        .set('errors', action.errors);
 
     default:
       return state;

@@ -1,6 +1,5 @@
 import request from 'superagent';
 
-import handleRequestError from '../../lib/handleRequestError';
 import list from './list';
 
 function remove(type,email) {
@@ -13,9 +12,6 @@ function remove(type,email) {
       .end((error, response) => {
         if (error) {
           dispatch({ type: 'employees:remove:failure', error });
-
-          handleRequestError(dispatch, error);
-
           return;
         }
 

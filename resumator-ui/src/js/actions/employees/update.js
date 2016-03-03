@@ -1,8 +1,6 @@
 import request from 'superagent';
 import { pushPath } from 'redux-simple-router';
 
-import handleRequestError from '../../lib/handleRequestError';
-
 function update(email, data) {
   return (dispatch) => {
     dispatch({ type: 'employees:update:start' });
@@ -14,9 +12,6 @@ function update(email, data) {
       .end((error, response) => {
         if (error) {
           dispatch({ type: 'employees:update:failure', error });
-
-          handleRequestError(dispatch, error);
-
           return;
         }
 

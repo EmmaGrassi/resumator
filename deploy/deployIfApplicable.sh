@@ -2,12 +2,12 @@
 
 function tag(){
     IMAGE="${1}"
-    docker tag ${IMAGE} ${DOCKER_ADDRESS}/${PREFIX}${IMAGE}:${TAG}
+    docker tag ${IMAGE} ${DOCKER_ADDRESS}/${IMAGE}:${TAG}
 }
 
 function push(){
     IMAGE=${1}
-    docker push ${DOCKER_ADDRESS}/${PREFIX}${IMAGE}:${TAG}
+    docker push ${DOCKER_ADDRESS}/${IMAGE}:${TAG}
 }
 
 function docker_tag(){
@@ -15,10 +15,8 @@ function docker_tag(){
     if [ "${BRANCH}" == "master" ]
     then
         TAG="latest"
-        PREFIX=""
     else
         TAG="develop"
-        PREFIX="test-"
     fi
 }
 

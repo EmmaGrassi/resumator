@@ -34,7 +34,7 @@ import PublicProspectsShow from './components/public/prospects/show';
 const rootElement = document.getElementById('root');
 
 const history = createHistory({
-  queryKey: false
+  queryKey: false,
 });
 
 syncReduxAndRouter(history, store);
@@ -94,50 +94,50 @@ const router = (
   <Provider store={store}>
     <Router history={history}>
       <Route path="/" component={ PublicContainer } onEnter={handleEnter}>
-        <IndexRoute component={ PublicHome } onEnter={handleEnter}/>
+        <IndexRoute component={ PublicHome } onEnter={handleEnter} />
 
-        <Route path="new" component={ PublicEmployeesCreate } onEnter={handleEnter}/>
+        <Route path="new" component={ PublicEmployeesCreate } onEnter={handleEnter} />
 
-        <Route path="employees" requireSession={true}>
-          <IndexRoute component={ PublicEmployeesList } onEnter={handleEnter}/>
+        <Route path="employees" requireSession>
+          <IndexRoute component={ PublicEmployeesList } onEnter={handleEnter} />
 
-          <Route path="new" component={ PublicEmployeesCreate } onEnter={handleEnter}/>
+          <Route path="new" component={ PublicEmployeesCreate } onEnter={handleEnter} />
 
           <Route path=":userId">
-            <IndexRoute component={ PublicEmployeesShow } onEnter={handleEnter}/>
+            <IndexRoute component={ PublicEmployeesShow } onEnter={handleEnter} />
 
-            <Route path="edit" component={ PublicEmployeesEdit } onEnter={handleEnter}/>
+            <Route path="edit" component={ PublicEmployeesEdit } onEnter={handleEnter} />
           </Route>
         </Route>
 
-        <Route path="freelancers" requireSession={true}>
-          <IndexRoute component={ PublicFreelancersList } onEnter={handleEnter}/>
+        <Route path="freelancers" requireSession>
+          <IndexRoute component={ PublicFreelancersList } onEnter={handleEnter} />
 
-          <Route path="new" component={ PublicFreelancersCreate } onEnter={handleEnter}/>
+          <Route path="new" component={ PublicFreelancersCreate } onEnter={handleEnter} />
 
           <Route path=":userId">
-            <IndexRoute component={ PublicFreelancersShow } onEnter={handleEnter}/>
+            <IndexRoute component={ PublicFreelancersShow } onEnter={handleEnter} />
 
-            <Route path="edit" component={ PublicFreelancersEdit } onEnter={handleEnter}/>
+            <Route path="edit" component={ PublicFreelancersEdit } onEnter={handleEnter} />
           </Route>
         </Route>
 
-        <Route path="prospects" requireSession={true}>
-          <IndexRoute component={ PublicProspectsList } onEnter={handleEnter}/>
+        <Route path="prospects" requireSession>
+          <IndexRoute component={ PublicProspectsList } onEnter={handleEnter} />
 
-          <Route path="new" component={ PublicProspectsCreate } onEnter={handleEnter}/>
+          <Route path="new" component={ PublicProspectsCreate } onEnter={handleEnter} />
 
           <Route path=":userId">
-            <IndexRoute component={ PublicProspectsShow } onEnter={handleEnter}/>
+            <IndexRoute component={ PublicProspectsShow } onEnter={handleEnter} />
 
-            <Route path="edit" component={ PublicProspectsEdit } onEnter={handleEnter}/>
+            <Route path="edit" component={ PublicProspectsEdit } onEnter={handleEnter} />
           </Route>
         </Route>
 
         <Route path=":userId">
-          <IndexRoute component={ PublicEmployeesShow } onEnter={handleEnter}/>
+          <IndexRoute component={ PublicEmployeesShow } onEnter={handleEnter} />
 
-          <Route path="edit" component={ PublicEmployeesEdit } onEnter={handleEnter}/>
+          <Route path="edit" component={ PublicEmployeesEdit } onEnter={handleEnter} />
         </Route>
 
         <Route path="not-authorized" component={NotAuthorized} />
@@ -149,10 +149,10 @@ const router = (
 );
 
 // Load auth2 into the gapi object.
-gapi.load('auth2', () => {
-  window.googleAuth = gapi.auth2.init({
+window.gapi.load('auth2', () => {
+  window.googleAuth = window.gapi.auth2.init({
     client_id: '49560145160-80v99olfohmo0etbo6hugpo337p5d1nl.apps.googleusercontent.com',
-    hosted_domain: 'sytac.io'
+    hosted_domain: 'sytac.io',
   });
 
   store.dispatch(initialize());

@@ -16,8 +16,6 @@ export default function create(data) {
     data.languages = data.languages || [];
 
     createService(data, (error, results) => {
-      debugger;
-
       if (error) {
         dispatch({ type: 'employees:create:failure', errors: results });
         return;
@@ -27,8 +25,6 @@ export default function create(data) {
       const email = results;
 
       profileGetService(email, (error, results) => {
-        debugger;
-
         if (error) {
           dispatch({ type: 'employees:create:failure', errors: results });
           return;

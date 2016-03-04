@@ -3,6 +3,19 @@ import React from 'react';
 import TopBar from './navigation/top-bar';
 
 class Container extends React.Component {
+
+  constructor(props){
+    super(props);
+    this.props = props;
+    this.state = {
+
+    }
+  }
+
+  componentDidMount(){
+    if( $ && $.material ) $.material.init();
+  }
+
   render() {
     return (
       <div>

@@ -3,8 +3,10 @@ package io.sytac.resumator.store.sql;
 import io.sytac.resumator.AbstractResumatorTest;
 import io.sytac.resumator.Configuration;
 import io.sytac.resumator.events.EventPublisher;
+import io.sytac.resumator.exception.ResumatorInternalException;
 import io.sytac.resumator.model.Event;
 import io.sytac.resumator.store.IllegalInsertOrderException;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -74,7 +76,7 @@ public class SqlStoreTest extends AbstractResumatorTest {
         store.put(event2);
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test(expected = ResumatorInternalException.class)
     public void cannotStoreInReadOnlyMode(){
         store.setReadOnly(true);
         store.put(createRandomEvent());

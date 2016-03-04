@@ -2,24 +2,30 @@ package io.sytac.resumator.employee;
 
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
+
 import io.sytac.resumator.command.CommandFactory;
 import io.sytac.resumator.events.EventPublisher;
+import io.sytac.resumator.exception.ResumatorUserInputException;
 import io.sytac.resumator.http.BaseResource;
 import io.sytac.resumator.model.exceptions.InvalidOrganizationException;
 import io.sytac.resumator.organization.Organization;
 import io.sytac.resumator.organization.OrganizationRepository;
-import io.sytac.resumator.security.Roles;
 import io.sytac.resumator.security.Identity;
+import io.sytac.resumator.security.Roles;
 import io.sytac.resumator.security.UserPrincipal;
+
 import org.eclipse.jetty.http.HttpHeader;
 import org.eclipse.jetty.http.HttpStatus;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.naming.NoPermissionException;
-import javax.naming.OperationNotSupportedException;
 import javax.ws.rs.*;
-import javax.ws.rs.core.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
+
 import java.net.URI;
 import java.util.Map;
 import java.util.Optional;
@@ -51,7 +57,7 @@ public class UpdateEmployee extends BaseResource {
     public Response updateEmployee(@PathParam("email") final String email,
                                    final EmployeeCommandPayload payload,
                                    @UserPrincipal final Identity identity,
-                                   @Context final UriInfo uriInfo) throws NoPermissionException, OperationNotSupportedException {
+                                   @Context final UriInfo uriInfo) throws NoPermissionException {
     	
         Map<String, String> notValidatedFields=EmployeeValidator.validateEmployee(payload);
         if(notValidatedFields.size()>0)
@@ -99,9 +105,9 @@ public class UpdateEmployee extends BaseResource {
         }
     }
 
-    private void validateEmails(final String pathEmail, final String payloadEmail) throws OperationNotSupportedException {
+    private void validateEmails(final String pathEmail, final String payloadEmail)  {
         if (!pathEmail.equals(payloadEmail)) {
-            throw new OperationNotSupportedException("Unable to change email address - operation is not supported");
+            throw new ResumatorUserInputException("Unable to change email address - operation is not supported");
         }
     }
 

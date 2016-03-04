@@ -1,5 +1,6 @@
 package io.sytac.resumator;
 
+import io.sytac.resumator.exception.ResumatorInternalException;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
@@ -68,7 +69,7 @@ public class Configuration {
             // cannot happen, file should be retrieved through class loader
         } catch (IOException e) {
             log.error("Cannot read the static configuration file, exiting");
-            throw new IllegalStateException(e);
+            throw new ResumatorInternalException("Cannot read the static configuration file",e.getCause());
         }
 
         return properties;

@@ -5,11 +5,13 @@ import io.sytac.resumator.employee.NewEmployeeCommand;
 import io.sytac.resumator.employee.RemoveEmployeeCommand;
 import io.sytac.resumator.employee.UpdateEmployeeCommand;
 import io.sytac.resumator.events.EventPublisher;
+import io.sytac.resumator.exception.ResumatorInternalException;
 import io.sytac.resumator.model.Event;
 import io.sytac.resumator.organization.NewOrganizationCommand;
 import io.sytac.resumator.store.EventStore;
 import io.sytac.resumator.store.IllegalInsertOrderException;
 import io.sytac.resumator.store.sql.mapper.EventMapper;
+
 import org.apache.ibatis.datasource.pooled.PooledDataSource;
 import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.session.Configuration;
@@ -21,6 +23,7 @@ import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 
 import javax.inject.Inject;
 import javax.sql.DataSource;
+
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -88,7 +91,7 @@ public class SqlStore implements EventStore {
 
     private void assertWriteAllowed() {
         if(readOnly.get()) {
-            throw new IllegalStateException("The system is in read only mode");
+            throw new ResumatorInternalException("The system is in read only mode");
         }
     }
 

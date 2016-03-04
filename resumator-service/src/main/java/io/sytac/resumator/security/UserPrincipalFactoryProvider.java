@@ -1,5 +1,7 @@
 package io.sytac.resumator.security;
 
+import io.sytac.resumator.exception.ResumatorInternalException;
+
 import org.glassfish.hk2.api.Factory;
 import org.glassfish.hk2.api.ServiceLocator;
 import org.glassfish.jersey.server.internal.inject.AbstractContainerRequestValueFactory;
@@ -11,6 +13,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.SecurityContext;
+
 import java.security.Principal;
 
 /**
@@ -43,7 +46,7 @@ public class UserPrincipalFactoryProvider extends AbstractValueFactoryProvider {
                     return (Identity) user;
                 }
 
-                throw new IllegalStateException("Identity is missing, this should never happen.");
+                throw new ResumatorInternalException("Identity is missing, this should never happen.");
             }
         };
     }

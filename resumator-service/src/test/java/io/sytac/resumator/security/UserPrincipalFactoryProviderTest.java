@@ -1,6 +1,8 @@
 package io.sytac.resumator.security;
 
+import io.sytac.resumator.exception.ResumatorInternalException;
 import io.sytac.resumator.model.Course;
+
 import org.glassfish.hk2.api.Factory;
 import org.glassfish.jersey.server.model.Parameter;
 import org.junit.Test;
@@ -10,12 +12,15 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import javax.ws.rs.core.SecurityContext;
+
 import java.util.Collections;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * Test for {@link UserPrincipalFactoryProvider}.
@@ -41,7 +46,7 @@ public class UserPrincipalFactoryProviderTest {
         assertThat(valueFactory.provide(), equalTo(identity));
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test(expected = ResumatorInternalException.class)
     public void testValueFactoryThrowsISEWhenUserNotPresent() throws Exception {
         // Should never happen
         Parameter parameter = mock(Parameter.class);

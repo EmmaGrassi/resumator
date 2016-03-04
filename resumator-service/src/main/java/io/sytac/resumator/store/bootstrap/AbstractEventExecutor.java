@@ -1,7 +1,9 @@
 package io.sytac.resumator.store.bootstrap;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import io.sytac.resumator.command.Command;
+import io.sytac.resumator.exception.ResumatorInternalException;
 import io.sytac.resumator.organization.Organization;
 import io.sytac.resumator.organization.OrganizationRepository;
 
@@ -32,7 +34,7 @@ public abstract class AbstractEventExecutor implements EventExecutor {
         final Optional<String> domain = command.getHeader().getDomain();
         if (!id.isPresent() || !domain.isPresent()) {
             String errorMessage = "Cannot replay '" + command.getType() + "' event without id and/or domain information in the header";
-            throw new IllegalStateException(errorMessage);
+            throw new ResumatorInternalException(errorMessage);
         }
     }
 

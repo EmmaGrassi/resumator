@@ -1,22 +1,10 @@
 package io.sytac.resumator.employee;
 
-import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.when;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.Reader;
-import java.io.StringReader;
-import java.net.URISyntaxException;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.naming.NoPermissionException;
-import javax.naming.OperationNotSupportedException;
-import javax.ws.rs.core.Response;
+import io.sytac.resumator.exception.ResumatorUserInputException;
+import io.sytac.resumator.model.exceptions.InvalidOrganizationException;
+import io.sytac.resumator.security.Roles;
 
 import org.apache.http.HttpStatus;
 import org.junit.Before;
@@ -26,10 +14,22 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import javax.naming.NoPermissionException;
+import javax.ws.rs.core.Response;
 
-import io.sytac.resumator.model.exceptions.InvalidOrganizationException;
-import io.sytac.resumator.security.Roles;
+import java.io.Reader;
+import java.io.StringReader;
+import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.when;
 
 /**
  * Tests the UpdateEmployees resource
@@ -52,7 +52,7 @@ public class UpdateEmployeeTest extends CommonEmployeeTest {
     }
 
     @Test
-    public void testUpdateEmployeesOk() throws NoPermissionException, OperationNotSupportedException {
+    public void testUpdateEmployeesOk() throws NoPermissionException  {
         final Response response = updateEmployee.updateEmployee(EMAIL, getEmployeeCommandPayload(), identityMock, uriInfoMock);
         assertNotNull(response);
         assertEquals(response.getStatus(), HttpStatus.SC_OK);
@@ -60,7 +60,7 @@ public class UpdateEmployeeTest extends CommonEmployeeTest {
     }
 
     @Test
-    public void testUpdateEmployeesNotFound() throws NoPermissionException, OperationNotSupportedException {
+    public void testUpdateEmployeesNotFound() throws NoPermissionException  {
         when(organizationMock.getEmployeeByEmail(eq(EMAIL))).thenReturn(null);
         final Response response = updateEmployee.updateEmployee(EMAIL, getEmployeeCommandPayload(), identityMock, uriInfoMock);
         assertNotNull(response);
@@ -68,31 +68,31 @@ public class UpdateEmployeeTest extends CommonEmployeeTest {
     }
 
     @Test(expected = InvalidOrganizationException.class)
-    public void testUpdateEmployeesWrongOrganisation() throws NoPermissionException, OperationNotSupportedException {
+    public void testUpdateEmployeesWrongOrganisation() throws NoPermissionException  {
         when(organizationRepositoryMock.get(eq(ORG_ID))).thenThrow(InvalidOrganizationException.class);
         updateEmployee.updateEmployee(EMAIL, getEmployeeCommandPayload(), identityMock, uriInfoMock);
     }
 
     @Test(expected = NoPermissionException.class)
-    public void testUpdateEmployeesWithNoPermissions() throws NoPermissionException, OperationNotSupportedException {
+    public void testUpdateEmployeesWithNoPermissions() throws NoPermissionException  {
         when(identityMock.getName()).thenReturn(WRONG_EMAIL);
         when(identityMock.hasRole(eq(Roles.ADMIN))).thenReturn(false);
         updateEmployee.updateEmployee(EMAIL, getEmployeeCommandPayload(), identityMock, uriInfoMock);
     }
 
-    @Test(expected = OperationNotSupportedException.class)
-    public void testUpdateEmployeesDifferentEmailInPayload() throws NoPermissionException, OperationNotSupportedException {
+    @Test(expected = ResumatorUserInputException.class)
+    public void testUpdateEmployeesDifferentEmailInPayload() throws NoPermissionException  {
         updateEmployee.updateEmployee(WRONG_EMAIL, getEmployeeCommandPayload(), identityMock, uriInfoMock);
     }
 
     @Test(expected = NoPermissionException.class)
-    public void testUpdateEmployeesNotAdminChangeAdminFlag() throws NoPermissionException, OperationNotSupportedException {
+    public void testUpdateEmployeesNotAdminChangeAdminFlag() throws NoPermissionException {
         when(identityMock.hasRole(eq(Roles.ADMIN))).thenReturn(false);
         updateEmployee.updateEmployee(EMAIL, getEmployeeCommandPayload(true), identityMock, uriInfoMock);
     }
 
     @Test
-    public void updateEmployee_nonAdminNotChangingEmployeeType_responseStatusIsOk() throws NoPermissionException, OperationNotSupportedException {
+    public void updateEmployee_nonAdminNotChangingEmployeeType_responseStatusIsOk() throws NoPermissionException  {
         when(identityMock.hasRole(eq(Roles.ADMIN))).thenReturn(false);
         Response response = updateEmployee.updateEmployee(EMAIL, getEmployeeCommandPayload(), identityMock, uriInfoMock);
 
@@ -100,13 +100,13 @@ public class UpdateEmployeeTest extends CommonEmployeeTest {
     }
 
     @Test(expected = NoPermissionException.class)
-    public void updateEmployee_nonAdminChangingEmployeeType_permissionExceptionIsThrown() throws NoPermissionException, OperationNotSupportedException {
+    public void updateEmployee_nonAdminChangingEmployeeType_permissionExceptionIsThrown() throws NoPermissionException {
         when(identityMock.hasRole(eq(Roles.ADMIN))).thenReturn(false);
         updateEmployee.updateEmployee(EMAIL, getEmployeeCommandPayload(false, EmployeeType.FREELANCER), identityMock, uriInfoMock);
     }
 
     @Test
-    public void updateEmployee_adminChangingEmployeeType_responseStatusIsOk() throws NoPermissionException, OperationNotSupportedException {
+    public void updateEmployee_adminChangingEmployeeType_responseStatusIsOk() throws NoPermissionException  {
         when(identityMock.hasRole(eq(Roles.ADMIN))).thenReturn(true);
         Response response = updateEmployee.updateEmployee(EMAIL,
                 getEmployeeCommandPayload(true, EmployeeType.FREELANCER), identityMock, uriInfoMock);
@@ -116,7 +116,7 @@ public class UpdateEmployeeTest extends CommonEmployeeTest {
     
     @SuppressWarnings("unchecked")
 	@Test
-    public void testNewEmployeesDetailedValidation() throws NoPermissionException, OperationNotSupportedException {
+    public void testNewEmployeesDetailedValidation() throws NoPermissionException {
         final Response response = updateEmployee.updateEmployee(EMAIL,getEmployeeDetailedValidatableCommandPayload(), identityMock, uriInfoMock);
         assertNotNull(response);
         assertEquals(response.getStatus(), HttpStatus.SC_BAD_REQUEST);

@@ -2,10 +2,12 @@ package io.sytac.resumator.store;
 
 import io.sytac.resumator.command.CommandFactory;
 import io.sytac.resumator.events.EventPublisher;
+import io.sytac.resumator.exception.ResumatorInternalException;
 import io.sytac.resumator.model.Event;
 import io.sytac.resumator.organization.InMemoryOrganizationRepository;
 import io.sytac.resumator.organization.NewOrganizationCommand;
 import io.sytac.resumator.organization.Organization;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -46,7 +48,7 @@ public class InMemoryOrganizationRepositoryTest {
         assertEquals("The stored organization doesn't match the input one!", "name", stored.getName());
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test(expected = ResumatorInternalException.class)
     public void cannotOverrideOrganizations() {
         final NewOrganizationCommand one = newOrgCommand("one", "domain");
         final NewOrganizationCommand two = newOrgCommand("two", "domain");

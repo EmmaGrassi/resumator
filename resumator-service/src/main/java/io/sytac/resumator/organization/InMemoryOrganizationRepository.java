@@ -1,8 +1,10 @@
 package io.sytac.resumator.organization;
 
 import io.sytac.resumator.events.EventPublisher;
+import io.sytac.resumator.exception.ResumatorInternalException;
 
 import javax.inject.Inject;
+
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -48,7 +50,7 @@ public class InMemoryOrganizationRepository implements OrganizationRepository {
     @Override
     public Organization addOrganization(final Organization org) {
         if (organizations.containsKey(org.getDomain())) {
-            throw new IllegalStateException("Cannot add an organization that already exists");
+            throw new ResumatorInternalException("Cannot add an organization that already exists");
         }
 
         organizations.put(org.getDomain(), org);

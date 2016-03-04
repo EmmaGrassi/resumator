@@ -1,12 +1,15 @@
 package io.sytac.resumator.store.bootstrap;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.sytac.resumator.exception.ResumatorInternalException;
 import io.sytac.resumator.model.Event;
 import io.sytac.resumator.organization.OrganizationRepository;
 import io.sytac.resumator.store.EventStore;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Inject;
+
 import java.io.IOException;
 
 /**
@@ -43,7 +46,7 @@ public class Bootstrap {
             final ReplayEventConfig replayEventConfig = new ReplayEventConfig(orgs, objectMapper);
             EventExecutorFactory.getInstance(event.getType(), replayEventConfig).execute(event);
         } catch (IOException e) {
-            throw new IllegalStateException("The following exception occurred while replaying events: ", e);
+            throw new ResumatorInternalException("The following exception occurred while replaying events: ", e.getCause());
         }
     }
 }

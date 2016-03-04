@@ -3,6 +3,7 @@ package io.sytac.resumator.store.bootstrap;
 import io.sytac.resumator.employee.NewEmployeeCommand;
 import io.sytac.resumator.employee.RemoveEmployeeCommand;
 import io.sytac.resumator.employee.UpdateEmployeeCommand;
+import io.sytac.resumator.exception.ResumatorInternalException;
 import io.sytac.resumator.organization.NewOrganizationCommand;
 
 /**
@@ -28,6 +29,6 @@ public class EventExecutorFactory {
             return new NewOrganizationEventExecutor(config);
         }
 
-        throw new IllegalStateException("Could not format the following unknown event type: " + eventType);
+        throw new ResumatorInternalException("Could not format the following unknown event type: " + eventType);
     }
 }

@@ -101,6 +101,7 @@ class EmployeeForm extends React.Component {
       errors,
       values,
       handleSubmit,
+      handleChange,
     } = this.props;
 
     return (
@@ -130,6 +131,7 @@ class EmployeeForm extends React.Component {
               values={values}
               errors={errors}
               handleSubmit={handleSubmit}
+              handleChange={handleChange}
             />
           </Col>
         </Row>

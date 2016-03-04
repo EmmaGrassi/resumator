@@ -20,6 +20,11 @@ class PersonalForm extends React.Component {
     };
   }
 
+  componentWillMount() {
+    // Sets the passed values in the props from the parent component into the state.
+    this.setState(this.props.values);
+  }
+
   componentWillReceiveProps({ values }) {
     this.setState(values);
   }

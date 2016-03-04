@@ -1,5 +1,6 @@
 import Loader from 'react-loader';
 import React from 'react';
+import moment from 'moment';
 import { connect } from 'react-redux';
 
 import EditForm from '../../shared/form1/employee';
@@ -41,23 +42,21 @@ class Edit extends React.Component {
       params,
     } = this.props;
 
-    /*
     if (item) {
-      item.dateOfBirth = new Date(item.dateOfBirth);
+      item.dateOfBirth = moment(item.dateOfBirth).format('YYYY-MM-DD');
 
       item.experience = item.experience.map((v, i) => {
         if (v.startDate) {
-          v.startDate = new Date(v.startDate);
+          v.startDate = moment(v.startDate).format('YYYY-MM-DD');
         }
 
         if (v.endDate) {
-          v.endDate = new Date(v.endDate);
+          v.endDate = moment(v.endDate).format('YYYY-MM-DD');
         }
 
         return v;
       });
     }
-    */
 
     return (
       <Loader

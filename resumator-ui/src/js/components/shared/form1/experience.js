@@ -79,7 +79,7 @@ class ExperienceForm extends React.Component {
         ref="shortDescription"
         type="textarea"
         placeholder="Short description"
-        label="Shorkt description"
+        label="Short description"
       />
     );
   }

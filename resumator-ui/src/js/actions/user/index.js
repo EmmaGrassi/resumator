@@ -3,5 +3,5 @@ import logout from './logout';
 
 export default {
   login,
-  logout
-}
+  logout,
+};

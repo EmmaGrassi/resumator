@@ -11,7 +11,7 @@ const cookiesOptions = {
   domain: window.location.hostname
 };
 
-function login(data) {
+export default function login(data) {
   return (dispatch) => {
     dispatch({ type: 'user:login:start' });
 
@@ -55,5 +55,3 @@ function login(data) {
     });
   };
 }
-
-export default login;

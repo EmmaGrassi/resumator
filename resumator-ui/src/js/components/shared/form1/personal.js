@@ -2,24 +2,6 @@ import React from 'react';
 import { Button, Col, Input, Row } from 'react-bootstrap';
 
 class PersonalForm extends React.Component {
-  constructor(options) {
-    super(options);
-
-    this.state = {
-      title: null,
-      name: null,
-      surname: null,
-      email: null,
-      phonenumber: null,
-      currentResidence: null,
-      github: null,
-      linkedin: null,
-      dateOfBirth: null,
-      nationality: null,
-      aboutMe: null,
-    };
-  }
-
   componentWillMount() {
     // Sets the passed values in the props from the parent component into the state.
     this.setState(this.props.values);
@@ -29,10 +11,10 @@ class PersonalForm extends React.Component {
     this.setState(values);
   }
 
+  // TODO: Change state into props.
+  // Use an action.
   handleChange(name, event) {
-    this.setState({
-      [name]: this.refs[name].getValue(),
-    });
+    this.props.handleChange(name, this.refs[name].getValue());
   }
 
   handleSubmit(event) {

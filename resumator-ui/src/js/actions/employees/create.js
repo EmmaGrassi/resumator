@@ -9,12 +9,6 @@ export default function create(data) {
   return (dispatch) => {
     dispatch({ type: 'employees:create:start' });
 
-    data.type = data.type || 'EMPLOYEE';
-    data.courses = data.courses || [];
-    data.education = data.education || [];
-    data.experience = data.experience || [];
-    data.languages = data.languages || [];
-
     createService(data, (error, results) => {
       if (error) {
         dispatch({ type: 'employees:create:failure', errors: results });

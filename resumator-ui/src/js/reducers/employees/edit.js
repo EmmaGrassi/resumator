@@ -4,8 +4,11 @@ import employee from '../common/employee';
 
 const defaults = immutable.Map({
   isFetching: false,
-
-  item: employee
+  isSaving: false,
+  hasFailed: false,
+  email: null,
+  item: employee,
+  errors: immutable.Map(),
 });
 
 function edit(state = defaults, action = {}) {
@@ -21,7 +24,28 @@ function edit(state = defaults, action = {}) {
 
     case 'employees:edit:failure':
       return state
-        .set('isFetching', false);
+        .set('isFetching', false)
+        .set('hasFailed', true)
+        .set('errors', action.errors);
+
+    case 'employees:edit:change':
+      return state
+        .setIn(['item', action.payload.key], action.payload.value);
+
+    case 'employees:update:start':
+      return state
+        .set('isSaving', true);
+
+    case 'employees:update:success':
+      return state
+        .set('isSaving', false)
+        .set('hasFailed', false);
+
+    case 'employees:update:failure':
+      return state
+        .set('isFetching', false)
+        .set('hasFailed', true)
+        .set('errors', action.errors);
 
     default:
       return state;

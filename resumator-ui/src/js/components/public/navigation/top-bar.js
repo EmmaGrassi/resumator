@@ -24,6 +24,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 class TopBar extends React.Component {
+
   render() {
     let nav = '';
 

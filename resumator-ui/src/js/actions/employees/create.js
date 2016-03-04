@@ -3,6 +3,7 @@ import { pushPath } from 'redux-simple-router';
 import employeeTypeToURL from '../../helpers/employeeTypeToURL';
 
 import createService from '../../services/employee/create';
+import profileGetService from '../../services/user/profile/get';
 
 export default function create(data) {
   return (dispatch) => {
@@ -15,20 +16,31 @@ export default function create(data) {
     data.languages = data.languages || [];
 
     createService(data, (error, results) => {
+      debugger;
+
       if (error) {
         dispatch({ type: 'employees:create:failure', errors: results });
         return;
       }
 
       // So it makes sense in the code below..
-      const { email } = results;
+      const email = results;
 
-      // TODO: Don't really want to emit this here?
-      dispatch({ type: 'employees:getProfile:success', payload: results });
+      profileGetService(email, (error, results) => {
+        debugger;
 
-      dispatch({ type: 'employees:create:success', payload: email });
+        if (error) {
+          dispatch({ type: 'employees:create:failure', errors: results });
+          return;
+        }
 
-      dispatch(pushPath(`/${employeeTypeToURL(data.type)}/${email}/edit`));
+        // TODO: Don't really want to emit this here?
+        dispatch({ type: 'user:getProfile:success', payload: results });
+
+        dispatch({ type: 'employees:create:success', payload: email });
+
+        dispatch(pushPath(`/${employeeTypeToURL(data.type)}/${email}/edit`));
+      });
     });
   };
 }

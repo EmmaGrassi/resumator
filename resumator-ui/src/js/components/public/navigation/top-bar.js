@@ -13,14 +13,13 @@ import RightNav from './right-nav';
 
 function mapStateToProps(state) {
   return {
+    profile: state.user.profile.toJS(),
     session: state.user.session.toJS(),
-    profile: state.user.profile.toJS()
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    navigateToHome: () => dispatch(pushPath('/'))
   };
 }
 
@@ -44,11 +43,11 @@ class TopBar extends React.Component {
           <NavbarBrand>
             <a href="#">Resumator</a>
           </NavbarBrand>
-          <NavbarToggle/>
+          <NavbarToggle />
         </NavbarHeader>
         <NavbarCollapse>
           {nav}
-          <RightNav/>
+          <RightNav />
         </NavbarCollapse>
       </Navbar>
     );
@@ -56,4 +55,3 @@ class TopBar extends React.Component {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TopBar);
-

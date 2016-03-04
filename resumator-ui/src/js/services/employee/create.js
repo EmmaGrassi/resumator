@@ -20,14 +20,6 @@ export default function create(data, cb) {
 
       const { email } = JSON.parse(response.text);
 
-      profileGet(email, (error, results) => {
-        if (error) {
-          return cb(error);
-        }
-
-        // Don't care about these results here, those will be picked up by the
-        // correct reducer
-        return cb(null, results);
-      });
+      cb(null, email);
     });
 }

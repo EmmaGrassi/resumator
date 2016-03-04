@@ -85,10 +85,10 @@ class EmployeeForm extends React.Component {
 
     return this.state.items.map((v, i) => {
       if (i === 0) {
-        return <NavItem eventKey={i + 1} ref={`${v}Tab`}>{v}</NavItem>;
+        return <NavItem key={i} eventKey={i + 1} ref={`${v}Tab`}>{v}</NavItem>;
       }
 
-      return <NavItem eventKey={i + 1} ref={`${v}Tab`} disabled={!email}>{v}</NavItem>;
+      return <NavItem key={i} eventKey={i + 1} ref={`${v}Tab`} disabled={!email}>{v}</NavItem>;
     });
   }
 
@@ -139,4 +139,3 @@ class EmployeeForm extends React.Component {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(EmployeeForm);
-

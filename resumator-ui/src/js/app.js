@@ -137,7 +137,9 @@ const router = (
         <Route path=":userId">
           <IndexRoute component={ PublicEmployeesShow } onEnter={handleEnter} />
 
-          <Route path="edit" component={ PublicEmployeesEdit } onEnter={handleEnter} />
+          <Route path="edit" onEnter={handleEnter}>
+            <Route path=":pageNumber" component={ PublicEmployeesEdit } onEnter={handleEnter} />
+          </Route>
         </Route>
 
         <Route path="not-authorized" component={NotAuthorized} />

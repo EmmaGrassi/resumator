@@ -20,30 +20,20 @@ class PersonalForm extends React.Component {
     };
   }
 
-  // Don't use state, use props instead. Save the complete state in the
-  // .edit/.create item and use an action to update the store state whenever any
-  // input changes value.
+  componentWillReceiveProps({ values }) {
+    this.setState(values);
+  }
+
   handleChange(name, event) {
+    this.setState({
+      [name]: this.refs[name].getValue(),
+    });
   }
 
   handleSubmit(event) {
     event.preventDefault();
 
-    const values = {
-      title: this.refs.title.getValue(),
-      name: this.refs.name.getValue(),
-      surname: this.refs.surname.getValue(),
-      email: this.refs.email.getValue(),
-      phonenumber: this.refs.phonenumber.getValue(),
-      currentResidence: this.refs.currentResidence.getValue(),
-      github: this.refs.github.getValue(),
-      linkedin: this.refs.linkedin.getValue(),
-      dateOfBirth: this.refs.dateOfBirth.getValue(),
-      nationality: this.refs.nationality.getValue(),
-      aboutMe: this.refs.aboutMe.getValue(),
-    };
-
-    this.props.handleSubmit(values);
+    this.props.handleSubmit(this.state);
   }
 
   // TODO: Do not render these for users that can not see them.
@@ -53,323 +43,308 @@ class PersonalForm extends React.Component {
   renderTitle() {
     const { isSaving, hasFailed, errors, values } = this.props;
 
-    if (hasFailed && errors.title) {
-      return (
-        <Input
-          onChange={this.handleChange.bind(this, 'title')}
+    const inputName = 'title';
+    const inputLabel = 'Title';
 
-          ref="title"
-          type="text"
-          placeholder="Title"
-          label="Title"
+    const props = {
+      ref: inputName,
+      type: 'text',
+      placeholder: inputLabel,
+      label: inputLabel,
 
-          bsStyle="error"
-          help={errors.title}
-          hasFeedback
+      disabled: isSaving,
+      value: this.state[inputName],
+      onChange: this.handleChange.bind(this, inputName),
+    };
 
-          disabled={isSaving}
-        />
-      );
+    if (hasFailed && errors[inputName]) {
+      props.bsStyle = 'error';
+      props.help = errors[inputName];
+      props.hasFeedback = true;
     }
 
     return (
-      <Input
-        ref="title"
-        type="text"
-        placeholder="Title"
-        label="Title"
-        disabled={isSaving}
-      />
+      <Input {...props} />
     );
   }
 
   renderName() {
-    const { hasFailed, errors } = this.props;
+    const { isSaving, hasFailed, errors, values } = this.props;
 
-    if (hasFailed) {
-      if (errors.name) {
-        return (
-          <Input
-            ref="name"
-            type="text"
-            placeholder="Name"
-            label="Name"
+    const inputName = 'name';
+    const inputLabel = 'Name';
 
-            bsStyle="error"
-            help={errors.name}
-            hasFeedback
-          />
-        );
-      }
+    const props = {
+      ref: inputName,
+      type: 'text',
+      placeholder: inputLabel,
+      label: inputLabel,
+
+      disabled: isSaving,
+      value: this.state[inputName],
+      onChange: this.handleChange.bind(this, inputName),
+    };
+
+    if (hasFailed && errors[inputName]) {
+      props.bsStyle = 'error';
+      props.help = errors[inputName];
+      props.hasFeedback = true;
     }
+
     return (
-      <Input
-        ref="name"
-        type="text"
-        placeholder="Name"
-        label="Name"
-      />
+      <Input {...props} />
     );
   }
 
   renderSurname() {
-    const { hasFailed, errors } = this.props;
+    const { isSaving, hasFailed, errors, values } = this.props;
 
-    if (hasFailed) {
-      if (errors.surname) {
-        return (
-          <Input
-            ref="surname"
-            type="text"
-            placeholder="Surame"
-            label="Surame"
+    const inputName = 'surname';
+    const inputLabel = 'Surname';
 
-            bsStyle="error"
-            help={errors.surname}
-            hasFeedback
-          />
-        );
-      }
+    const props = {
+      ref: inputName,
+      type: 'text',
+      placeholder: inputLabel,
+      label: inputLabel,
+
+      disabled: isSaving,
+      value: this.state[inputName],
+      onChange: this.handleChange.bind(this, inputName),
+    };
+
+    if (hasFailed && errors[inputName]) {
+      props.bsStyle = 'error';
+      props.help = errors[inputName];
+      props.hasFeedback = true;
     }
+
     return (
-      <Input
-        ref="surname"
-        type="text"
-        placeholder="Surame"
-        label="Surame"
-      />
+      <Input {...props} />
     );
   }
 
   renderEmail() {
-    const { hasFailed, errors } = this.props;
+    const { isSaving, hasFailed, errors, values } = this.props;
 
-    if (hasFailed) {
-      if (errors.email) {
-        return (
-          <Input
-            ref="email"
-            type="email"
-            placeholder="Email"
-            label="Email"
+    const inputName = 'email';
+    const inputLabel = 'Email';
 
-            bsStyle="error"
-            help={errors.email}
-            hasFeedback
-          />
-        );
-      }
+    const props = {
+      ref: inputName,
+      type: 'email',
+      placeholder: inputLabel,
+      label: inputLabel,
+
+      disabled: isSaving,
+      value: this.state[inputName],
+      onChange: this.handleChange.bind(this, inputName),
+    };
+
+    if (hasFailed && errors[inputName]) {
+      props.bsStyle = 'error';
+      props.help = errors[inputName];
+      props.hasFeedback = true;
     }
+
     return (
-      <Input
-        ref="email"
-        type="email"
-        placeholder="Email"
-        label="Email"
-      />
+      <Input {...props} />
     );
   }
 
   renderPhonenumber() {
-    const { hasFailed, errors } = this.props;
+    const { isSaving, hasFailed, errors, values } = this.props;
 
-    if (hasFailed) {
-      if (errors.phonenumber) {
-        return (
-          <Input
-            ref="phonenumber"
-            type="number"
-            placeholder="Phonenumber"
-            label="Phonenumber"
+    const inputName = 'phonenumber';
+    const inputLabel = 'Phonenumber';
 
-            bsStyle="error"
-            help={errors.phonenumber}
-            hasFeedback
-          />
-        );
-      }
+    const props = {
+      ref: inputName,
+      type: 'text',
+      placeholder: inputLabel,
+      label: inputLabel,
+
+      disabled: isSaving,
+      value: this.state[inputName],
+      onChange: this.handleChange.bind(this, inputName),
+    };
+
+    if (hasFailed && errors[inputName]) {
+      props.bsStyle = 'error';
+      props.help = errors[inputName];
+      props.hasFeedback = true;
     }
+
     return (
-      <Input
-        ref="phonenumber"
-        type="number"
-        placeholder="Phonenumber"
-        label="Phonenumber"
-      />
+      <Input {...props} />
     );
   }
 
   renderCurrentResidence() {
-    const { hasFailed, errors } = this.props;
+    const { isSaving, hasFailed, errors, values } = this.props;
 
-    if (hasFailed) {
-      if (errors.currentResidence) {
-        return (
-          <Input
-            ref="currentResidence"
-            type="text"
-            placeholder="Current residence"
-            label="Current residence"
+    const inputName = 'currentResidence';
+    const inputLabel = 'Current residence';
 
-            bsStyle="error"
-            help={errors.currentResidence}
-            hasFeedback
-          />
-        );
-      }
+    const props = {
+      ref: inputName,
+      type: 'text',
+      placeholder: inputLabel,
+      label: inputLabel,
+
+      disabled: isSaving,
+      value: this.state[inputName],
+      onChange: this.handleChange.bind(this, inputName),
+    };
+
+    if (hasFailed && errors[inputName]) {
+      props.bsStyle = 'error';
+      props.help = errors[inputName];
+      props.hasFeedback = true;
     }
+
     return (
-      <Input
-        ref="currentResidence"
-        type="text"
-        placeholder="Current residence"
-        label="Current residence"
-      />
+      <Input {...props} />
     );
   }
 
   renderGithub() {
-    const { hasFailed, errors } = this.props;
+    const { isSaving, hasFailed, errors, values } = this.props;
 
-    if (hasFailed) {
-      if (errors.github) {
-        return (
-          <Input
-            ref="github"
-            type="text"
-            placeholder="Github"
-            label="Github"
+    const inputName = 'github';
+    const inputLabel = 'Github';
 
-            bsStyle="error"
-            help={errors.github}
-            hasFeedback
-          />
-        );
-      }
+    const props = {
+      ref: inputName,
+      type: 'text',
+      placeholder: inputLabel,
+      label: inputLabel,
+
+      disabled: isSaving,
+      value: this.state[inputName],
+      onChange: this.handleChange.bind(this, inputName),
+    };
+
+    if (hasFailed && errors[inputName]) {
+      props.bsStyle = 'error';
+      props.help = errors[inputName];
+      props.hasFeedback = true;
     }
+
     return (
-      <Input
-        ref="github"
-        type="text"
-        placeholder="Github"
-        label="Github"
-      />
+      <Input {...props} />
     );
   }
 
   renderLinkedin() {
-    const { hasFailed, errors } = this.props;
+    const { isSaving, hasFailed, errors, values } = this.props;
 
-    if (hasFailed) {
-      if (errors.linkedin) {
-        return (
-          <Input
-            ref="linkedin"
-            type="text"
-            placeholder="Linkedin"
-            label="Linkedin"
+    const inputName = 'linkedin';
+    const inputLabel = 'Linkedin';
 
-            bsStyle="error"
-            help={errors.linkedin}
-            hasFeedback
-          />
-        );
-      }
+    const props = {
+      ref: inputName,
+      type: 'text',
+      placeholder: inputLabel,
+      label: inputLabel,
+
+      disabled: isSaving,
+      value: this.state[inputName],
+      onChange: this.handleChange.bind(this, inputName),
+    };
+
+    if (hasFailed && errors[inputName]) {
+      props.bsStyle = 'error';
+      props.help = errors[inputName];
+      props.hasFeedback = true;
     }
+
     return (
-      <Input
-        ref="linkedin"
-        type="text"
-        placeholder="Linkedin"
-        label="Linkedin"
-      />
+      <Input {...props} />
     );
   }
 
   renderDateOfBirth() {
-    const { hasFailed, errors } = this.props;
+    const { isSaving, hasFailed, errors, values } = this.props;
 
-    if (hasFailed) {
-      if (errors.dateOfBirth) {
-        return (
-          <Input
-            ref="dateOfBirth"
-            type="date"
-            placeholder="Date of birth"
-            label="Date of birth"
+    const inputName = 'dateOfBirth';
+    const inputLabel = 'Date of birth';
 
-            bsStyle="error"
-            help={errors.dateOfBirth}
-            hasFeedback
-          />
-        );
-      }
+    const props = {
+      ref: inputName,
+      type: 'date',
+      placeholder: inputLabel,
+      label: inputLabel,
+
+      disabled: isSaving,
+      value: this.state[inputName],
+      onChange: this.handleChange.bind(this, inputName),
+    };
+
+    if (hasFailed && errors[inputName]) {
+      props.bsStyle = 'error';
+      props.help = errors[inputName];
+      props.hasFeedback = true;
     }
+
     return (
-      <Input
-        ref="dateOfBirth"
-        type="date"
-        placeholder="Date of birth"
-        label="Date of birth"
-      />
+      <Input {...props} />
     );
   }
 
   renderNationality() {
-    const { hasFailed, errors } = this.props;
+    const { isSaving, hasFailed, errors, values } = this.props;
 
-    if (hasFailed) {
-      if (errors.nationality) {
-        return (
-          <Input
-            ref="nationality"
-            type="text"
-            placeholder="Nationality"
-            label="Nationality"
+    const inputName = 'nationality';
+    const inputLabel = 'Nationality';
 
-            bsStyle="error"
-            help={errors.nationality}
-            hasFeedback
-          />
-        );
-      }
+    const props = {
+      ref: inputName,
+      type: 'text',
+      placeholder: inputLabel,
+      label: inputLabel,
+
+      disabled: isSaving,
+      value: this.state[inputName],
+      onChange: this.handleChange.bind(this, inputName),
+    };
+
+    if (hasFailed && errors[inputName]) {
+      props.bsStyle = 'error';
+      props.help = errors[inputName];
+      props.hasFeedback = true;
     }
+
     return (
-      <Input
-        ref="nationality"
-        type="text"
-        placeholder="Nationality"
-        label="Nationality"
-      />
+      <Input {...props} />
     );
   }
 
   renderAboutMe() {
-    const { hasFailed, errors } = this.props;
+    const { isSaving, hasFailed, errors, values } = this.props;
 
-    if (hasFailed) {
-      if (errors.aboutMe) {
-        return (
-          <Input
-            ref="aboutMe"
-            type="textarea"
-            placeholder="About me"
-            label="About me"
+    const inputName = 'aboutMe';
+    const inputLabel = 'About me';
 
-            bsStyle="error"
-            help={errors.aboutMe}
-            hasFeedback
-          />
-        );
-      }
+    const props = {
+      ref: inputName,
+      type: 'textarea',
+      placeholder: inputLabel,
+      label: inputLabel,
+
+      disabled: isSaving,
+      value: this.state[inputName],
+      onChange: this.handleChange.bind(this, inputName),
+    };
+
+    if (hasFailed && errors[inputName]) {
+      props.bsStyle = 'error';
+      props.help = errors[inputName];
+      props.hasFeedback = true;
     }
+
     return (
-      <Input
-        ref="aboutMe"
-        type="textarea"
-        placeholder="About me"
-        label="About me"
-      />
+      <Input {...props} />
     );
   }
 

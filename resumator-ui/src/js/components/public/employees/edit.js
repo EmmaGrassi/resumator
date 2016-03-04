@@ -38,8 +38,10 @@ class Edit extends React.Component {
       hasFailed,
       item,
       errors,
+      params,
     } = this.props;
 
+    /*
     if (item) {
       item.dateOfBirth = new Date(item.dateOfBirth);
 
@@ -55,6 +57,7 @@ class Edit extends React.Component {
         return v;
       });
     }
+    */
 
     return (
       <Loader

@@ -4,8 +4,7 @@ import employee from '../common/employee';
 
 const defaults = immutable.Map({
   isFetching: false,
-
-  item: employee
+  item: employee,
 });
 
 function profile(state = defaults, action = {}) {

@@ -28,7 +28,7 @@ function login(data) {
           if (error.error.status === 404) {
             dispatch(pushPath('/employees/new'));
 
-            dispatch({ type: 'user:getProfile:success', payload: profile });
+            dispatch({ type: 'user:getProfile:success', payload: {} });
             dispatch({ type: 'user:login:success', payload: cookieData });
 
             return;
@@ -53,7 +53,6 @@ function login(data) {
         }
       });
     });
-
   };
 }
 

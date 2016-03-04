@@ -26,8 +26,6 @@ function mapDispatchToProps(dispatch) {
 
 class TopBar extends React.Component {
   render() {
-    const { session } = this.props;
-
     let nav = '';
 
     if (this.props.session.idToken && this.props.profile.item.admin) {
@@ -40,18 +38,20 @@ class TopBar extends React.Component {
       );
     }
 
-    return <Navbar>
-      <NavbarHeader>
-        <NavbarBrand>
-          <a href="#">Resumator</a>
-        </NavbarBrand>
-        <NavbarToggle/>
-      </NavbarHeader>
-      <NavbarCollapse>
-        {nav}
-        <RightNav/>
-      </NavbarCollapse>
-    </Navbar>;
+    return (
+      <Navbar>
+        <NavbarHeader>
+          <NavbarBrand>
+            <a href="#">Resumator</a>
+          </NavbarBrand>
+          <NavbarToggle/>
+        </NavbarHeader>
+        <NavbarCollapse>
+          {nav}
+          <RightNav/>
+        </NavbarCollapse>
+      </Navbar>
+    );
   }
 }
 

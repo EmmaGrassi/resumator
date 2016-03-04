@@ -17,7 +17,7 @@ function initialize() {
             // TODO: Don't send getProfile actions from the initialize action?
             //       Call an initialize Service and have that service call the
             //       getprofile service instead.
-            dispatch({ type: 'user:getProfile:success', payload: profile });
+            dispatch({ type: 'user:getProfile:success', payload: {} });
             dispatch({ type: 'user:initialize:success', payload: cookieData });
 
             return;

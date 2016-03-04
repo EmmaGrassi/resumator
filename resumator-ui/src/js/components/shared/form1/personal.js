@@ -20,7 +20,7 @@ class PersonalForm extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
 
-    this.props.handleSubmit(this.state);
+    this.props.handleSubmit();
   }
 
   // TODO: Do not render these for users that can not see them.
@@ -40,7 +40,7 @@ class PersonalForm extends React.Component {
       label: inputLabel,
 
       disabled: isSaving,
-      value: this.state[inputName],
+      value: this.props.values[inputName],
       onChange: this.handleChange.bind(this, inputName),
     };
 
@@ -68,7 +68,7 @@ class PersonalForm extends React.Component {
       label: inputLabel,
 
       disabled: isSaving,
-      value: this.state[inputName],
+      value: this.props.values[inputName],
       onChange: this.handleChange.bind(this, inputName),
     };
 
@@ -96,7 +96,7 @@ class PersonalForm extends React.Component {
       label: inputLabel,
 
       disabled: isSaving,
-      value: this.state[inputName],
+      value: this.props.values[inputName],
       onChange: this.handleChange.bind(this, inputName),
     };
 
@@ -124,7 +124,7 @@ class PersonalForm extends React.Component {
       label: inputLabel,
 
       disabled: isSaving,
-      value: this.state[inputName],
+      value: this.props.values[inputName],
       onChange: this.handleChange.bind(this, inputName),
     };
 
@@ -152,7 +152,7 @@ class PersonalForm extends React.Component {
       label: inputLabel,
 
       disabled: isSaving,
-      value: this.state[inputName],
+      value: this.props.values[inputName],
       onChange: this.handleChange.bind(this, inputName),
     };
 
@@ -180,7 +180,7 @@ class PersonalForm extends React.Component {
       label: inputLabel,
 
       disabled: isSaving,
-      value: this.state[inputName],
+      value: this.props.values[inputName],
       onChange: this.handleChange.bind(this, inputName),
     };
 
@@ -208,7 +208,7 @@ class PersonalForm extends React.Component {
       label: inputLabel,
 
       disabled: isSaving,
-      value: this.state[inputName],
+      value: this.props.values[inputName],
       onChange: this.handleChange.bind(this, inputName),
     };
 
@@ -236,7 +236,7 @@ class PersonalForm extends React.Component {
       label: inputLabel,
 
       disabled: isSaving,
-      value: this.state[inputName],
+      value: this.props.values[inputName],
       onChange: this.handleChange.bind(this, inputName),
     };
 
@@ -264,7 +264,7 @@ class PersonalForm extends React.Component {
       label: inputLabel,
 
       disabled: isSaving,
-      value: this.state[inputName],
+      value: this.props.values[inputName],
       onChange: this.handleChange.bind(this, inputName),
     };
 
@@ -280,7 +280,7 @@ class PersonalForm extends React.Component {
   }
 
   renderNationality() {
-    const { isSaving, hasFailed, errors, values } = this.props;
+    const { isSaving, hasFailed, errors } = this.props;
 
     const inputName = 'nationality';
     const inputLabel = 'Nationality';
@@ -292,7 +292,7 @@ class PersonalForm extends React.Component {
       label: inputLabel,
 
       disabled: isSaving,
-      value: this.state[inputName],
+      value: this.props.values[inputName],
       onChange: this.handleChange.bind(this, inputName),
     };
 
@@ -320,7 +320,7 @@ class PersonalForm extends React.Component {
       label: inputLabel,
 
       disabled: isSaving,
-      value: this.state[inputName],
+      value: this.props.values[inputName],
       onChange: this.handleChange.bind(this, inputName),
     };
 

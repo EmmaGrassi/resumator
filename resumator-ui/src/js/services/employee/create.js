@@ -2,16 +2,12 @@ import request from 'superagent';
 
 import profileGet from '../user/profile/get';
 
-export default function create(data, cb) {
-  data.type = data.type || 'EMPLOYEE';
-  data.courses = data.courses || [];
-  data.education = data.education || [];
-  data.experience = data.experience || [];
-  data.languages = data.languages || [];
+import sanitizeEmployee from './helpers/sanitizeEmployee';
 
+export default function create(data, cb) {
   request
     .post('/api/employees')
-    .send(data)
+    .send(sanitizeEmployee(data))
     .set('Content-Type', 'application/json')
     .end((error, response) => {
       if (error) {

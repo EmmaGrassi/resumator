@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import NewForm from '../../shared/form1/employee';
 
 import create from '../../../actions/employees/create';
+import createChange from '../../../actions/employees/createChange';
 
 function mapStateToProps(state) {
   const create = state.employees.create.toJS();
@@ -16,7 +17,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    createEmployee: (data) => dispatch(create(data)),
+    createEmployee: () => dispatch(create()),
+    changeEmployee: (k, v) => dispatch(createChange(k, v)),
   };
 }
 
@@ -28,6 +30,7 @@ class Create extends React.Component {
           ref="employeeForm"
           type="EMPLOYEE"
           handleSubmit={this.props.createEmployee}
+          handleChange={this.props.changeEmployee.bind(this)}
           hasFailed={this.props.hasFailed}
           errors={this.props.errors}
         />

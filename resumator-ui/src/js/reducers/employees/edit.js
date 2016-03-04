@@ -43,7 +43,7 @@ function edit(state = defaults, action = {}) {
 
     case 'employees:update:failure':
       return state
-        .set('isFetching', false)
+        .set('isSaving', false)
         .set('hasFailed', true)
         .set('errors', action.errors);
 

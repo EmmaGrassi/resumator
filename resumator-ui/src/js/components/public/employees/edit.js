@@ -24,7 +24,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     editEmployee: (email) => dispatch(edit(email)),
-    updateEmployee: (email, data) => dispatch(update(email, data)),
+    updateEmployee: (email) => dispatch(update(email)),
     changeEmployee: (k, v) => dispatch(editChange(k, v)),
   };
 }

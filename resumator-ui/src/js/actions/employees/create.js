@@ -1,13 +1,17 @@
 import { pushPath } from 'redux-simple-router';
 
+import store from '../../store';
+
 import employeeTypeToURL from '../../helpers/employeeTypeToURL';
 
 import createService from '../../services/employee/create';
 import profileGetService from '../../services/user/profile/get';
 
-export default function create(data) {
+export default function create() {
   return (dispatch) => {
     dispatch({ type: 'employees:create:start' });
+
+    const data = store.getState().employees.create.toJS().item;
 
     createService(data, (error, results) => {
       if (error) {

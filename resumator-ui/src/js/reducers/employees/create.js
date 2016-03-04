@@ -29,6 +29,10 @@ function create(state = defaults, action = {}) {
         .set('hasFailed', true)
         .set('errors', action.errors);
 
+    case 'employees:edit:change':
+      return state
+        .setIn(['item', action.payload.key], action.payload.value);
+
     default:
       return state;
   }

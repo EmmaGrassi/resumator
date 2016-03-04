@@ -12,7 +12,9 @@ const reducer = combineReducers(Object.assign({}, reducers, {
 const store = compose(
   applyMiddleware(
     thunkMiddleware,
-    loggerMiddleware()
+    loggerMiddleware({
+      collapsed: true,
+    })
   )
 )(createStore)(reducer);
 

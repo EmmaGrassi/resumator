@@ -3,6 +3,8 @@ testservice:
   command: -Dresumator.http.context.path=api/
   links:
     - testdb
+  volumes:
+    - ${RESUMATOR_CONFIG}:/etc/resumator
 testdb:
   image: postgres
   environment:

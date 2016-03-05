@@ -1,22 +1,22 @@
-testservice:
-  image: docker.sytac.io:443/resumator-service:develop
+service:
+  image: docker.sytac.io:443/resumator-service:latest
   command: -Dresumator.http.context.path=api/
   links:
-    - testdb
+    - db
   volumes:
     - ${RESUMATOR_CONFIG}:/root/.resumator
-testdb:
+db:
   image: postgres
   environment:
     - POSTGRES_USER=resumator
     - POSTGRES_PASSWORD=resumator
     - POSTGRES_DB=resumator
-testui:
-  image: docker.sytac.io:443/resumator-ui:develop
-testlb:
-  image: docker.sytac.io:443/resumator-load-balancer:develop
+ui:
+  image: docker.sytac.io:443/resumator-ui:latest
+lb:
+  image: docker.sytac.io:443/resumator-load-balancer:latest
   ports:
-    - "9000:80"
+    - "8000:80"
   links:
-    - testui
-    - testservice
+    - ui
+    - service

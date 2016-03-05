@@ -153,7 +153,7 @@ const router = (
 // Load auth2 into the gapi object.
 window.gapi.load('auth2', () => {
   window.googleAuth = window.gapi.auth2.init({
-    client_id: '49560145160-80v99olfohmo0etbo6hugpo337p5d1nl.apps.googleusercontent.com',
+    client_id: '51676129755-uau4n1hquet98qspphptkkjb4rlnsqjh.apps.googleusercontent.com',
     hosted_domain: 'sytac.io',
   });
 

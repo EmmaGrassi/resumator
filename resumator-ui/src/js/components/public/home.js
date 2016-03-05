@@ -18,9 +18,9 @@ class Home extends React.Component {
           <Col xs={12}>
             <header style={headerStyles}>
               <img src="http://sytac.io/images/sytac-hexagon-long.svg" />
-              <h1>Resumator</h1>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-              <p><Button bsStyle="primary">Learn more</Button></p>
+              <h1>Sytac Resumator™</h1>
+              <p>Hassle free CV management for your company.</p>
+              <p><Button bsStyle="link"><a href="http://sytac.io">Learn more</a></Button></p>
             </header>
           </Col>
         </Row>

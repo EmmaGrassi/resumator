@@ -1,10 +1,12 @@
 testservice:
   image: resumator-service
-  command: -Dresumator.http.context.path=api/
+  command: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -Dresumator.http.context.path=api/
   links:
     - testdb
   volumes:
     - ${RESUMATOR_CONFIG}:/root/.resumator
+  ports:
+    - "5005:5005"
 testdb:
   image: postgres
   environment:
@@ -21,7 +23,7 @@ testui:
 testlb:
   image: resumator-load-balancer
   ports:
-    - "8000:80"
+    - "9000:80"
   links:
     - testui
     - testservice

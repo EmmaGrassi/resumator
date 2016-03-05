@@ -4,7 +4,7 @@ testservice:
   links:
     - testdb
   volumes:
-    - ${RESUMATOR_CONFIG}:/etc/resumator
+    - ${RESUMATOR_CONFIG}:/root/.resumator
 testdb:
   image: postgres
   environment:

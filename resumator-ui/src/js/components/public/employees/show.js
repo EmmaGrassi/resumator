@@ -232,7 +232,7 @@ class Show extends React.Component {
               <span className="pull-right">
                 <ButtonGroup>
                   <Button bsStyle="primary" onClick={this.handleEditButtonClick.bind(this)}>Edit</Button>
-                  <Button bsStyle="default" href={docxURL}>DOCX</Button>
+                  <Button bsStyle="default" href={docxURL} download={true}>DOCX</Button>
                 </ButtonGroup>
               </span>
 

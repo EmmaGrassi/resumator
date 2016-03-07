@@ -4,7 +4,7 @@ service:
   links:
     - db
   volumes:
-    - ${RESUMATOR_CONFIG}:/root/.resumator
+    - ${RESUMATOR_CONFIG}:/root/.resumator/config.properties
   ports:
     - "5005:5005"
 db:

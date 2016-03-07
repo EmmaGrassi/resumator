@@ -32,3 +32,22 @@ mvn clean install; RESUMATOR_CONFIG=~/.resumator/config.properties docker-compos
 
 ## License
 All the code and documentation in this repository are distributed under [MIT license](https://opensource.org/licenses/MIT).
+
+
+
+## Layout
+
+```
+   Load balancer :9000
+    |_______________|
+            |
+            |
+       _____|____
+     /           \
+    /              \
+Service :9090     UI:80   
+    |
+    |
+  DB:5432
+
+```

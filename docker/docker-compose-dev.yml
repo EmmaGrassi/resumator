@@ -1,13 +1,13 @@
-service:
+testservice:
   image: resumator-service
   command: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -Dresumator.http.context.path=api/
   links:
-    - db
+    - testdb
   volumes:
     - ${RESUMATOR_CONFIG}:/root/.resumator/config.properties
   ports:
     - "5005:5005"
-db:
+testdb:
   image: postgres
   environment:
     - POSTGRES_USER=resumator
@@ -15,15 +15,15 @@ db:
     - POSTGRES_DB=resumator
   ports:
     - "5432:5432"
-ui:
+testui:
   image: resumator-ui
   volumes:
     - ../resumator-ui/docker/nginx-dev.conf:/etc/nginx/conf.d/resumator.conf
     - ../resumator-ui/build:/usr/share/nginx/html/
-lb:
+testlb:
   image: resumator-load-balancer
   ports:
-    - "8000:80"
+    - "9000:80"
   links:
-    - ui
-    - service
+    - testui
+    - testservice

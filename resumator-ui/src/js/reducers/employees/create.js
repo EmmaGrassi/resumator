@@ -33,6 +33,10 @@ function create(state = defaults, action = {}) {
       return state
         .setIn(['item', action.payload.key], action.payload.value);
 
+    case 'employees:create:change':
+      return state
+        .setIn(['item', action.payload.key], action.payload.value);
+
     default:
       return state;
   }

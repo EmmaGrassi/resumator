@@ -9,6 +9,7 @@ import {
   Row,
 } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import { pushPath } from 'redux-simple-router';
 
 import create from '../../../actions/employees/create';
 
@@ -17,6 +18,14 @@ import ExperienceForm from './experience';
 import EducationForm from './education';
 import CoursesForm from './courses';
 import LanguagesForm from './languages';
+
+const navItems = [
+  'Personal',
+  'Experience',
+  'Education',
+  'Courses',
+  'Languages',
+];
 
 const forms = {
   Personal: PersonalForm,
@@ -34,6 +43,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    navigateTo: (email, value) => dispatch(pushPath(`/employees/${email}/edit/${value.toLowerCase()}`)),
   };
 }
 
@@ -42,21 +52,40 @@ class EmployeeForm extends React.Component {
     super(options);
 
     this.state = {
-      items: [
-        'Personal',
-        'Experience',
-        'Education',
-        'Courses',
-        'Languages',
-      ],
-
       activeKey: 1,
       selectedTab: 'Personal',
     };
   }
 
+  componentWillMount() {
+    this.getActiveSection();
+  }
+
+  componentWillReceiveProps() {
+    this.getActiveSection();
+  }
+
   getEmail() {
     return this.props.profile && this.props.profile.item && this.props.profile.item.email;
+  }
+
+  getActiveSection() {
+    if (this.props.section) {
+      // TODO: Remove the defer
+      setTimeout(() => {
+        const key = navItems
+          .findIndex(elem => elem.toLowerCase() === this.props.section);
+        this.setState({
+          activeKey: key + 1,
+          selectedTab: navItems[key],
+        });
+      }, 0);
+    } else {
+      this.setState({
+        activeKey: 1,
+        selectedTab: 'Personal',
+      });
+    }
   }
 
   handleTabSelect(event) {
@@ -68,22 +97,13 @@ class EmployeeForm extends React.Component {
       return;
     }
 
-    // TODO: Kill tom for this.
-    const target = event.target;
-    const value = target.text;
-    const tabComponent = this.refs[`${value}Tab`];
-    const newActiveKey = tabComponent.props.eventKey;
-
-    this.setState({
-      activeKey: newActiveKey,
-      selectedTab: value,
-    });
+    this.props.navigateTo(email, event.target.text);
   }
 
   renderNavItems() {
     const email = this.getEmail();
 
-    return this.state.items.map((v, i) => {
+    return navItems.map((v, i) => {
       if (i === 0) {
         return <NavItem key={i} eventKey={i + 1} ref={`${v}Tab`}>{v}</NavItem>;
       }

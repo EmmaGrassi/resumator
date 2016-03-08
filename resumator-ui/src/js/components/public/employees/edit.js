@@ -68,6 +68,7 @@ class Edit extends React.Component {
         <EditForm
           values={item}
           type="EMPLOYEE"
+          section={params.section}
           handleSubmit={this.props.updateEmployee.bind(this, item.email)}
           handleChange={this.props.changeEmployee.bind(this)}
           hasFailed={hasFailed}

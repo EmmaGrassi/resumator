@@ -8,6 +8,7 @@ import EditForm from '../../shared/form1/employee';
 import edit from '../../../actions/employees/edit';
 import update from '../../../actions/employees/update';
 import editChange from '../../../actions/employees/editChange';
+import addEntry from '../../../actions/employees/addEntry';
 
 function mapStateToProps(state) {
   const edit = state.employees.edit.toJS();
@@ -27,6 +28,7 @@ function mapDispatchToProps(dispatch) {
     editEmployee: (email) => dispatch(edit(email)),
     updateEmployee: (email) => dispatch(update(email)),
     changeEmployee: (k, v) => dispatch(editChange(k, v)),
+    addEntry: (name) => {dispatch(addEntry(name))},
   };
 }
 
@@ -66,8 +68,9 @@ class Edit extends React.Component {
         loaded={!isFetching}
       >
         <EditForm
-          values={item}
           type="EMPLOYEE"
+          values={item}
+          addEntry={this.props.addEntry}
           section={params.section}
           handleSubmit={this.props.updateEmployee.bind(this, item.email)}
           handleChange={this.props.changeEmployee.bind(this)}

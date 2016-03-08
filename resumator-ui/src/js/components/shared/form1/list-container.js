@@ -2,26 +2,14 @@ import React from 'react';
 import { Button, Col, Input, Row, Alert } from 'react-bootstrap';
 
 class ListContainer extends React.Component {
-  constructor(options) {
-    super(options);
-
-    this.state = {
-      forms: [
-        {},
-      ],
-    };
-  }
-
-  componentWillReceiveProps() {
+  componentWillReceiveProps(props, state) {
     console.log('componentWillReceiveProps');
-  }
 
-  addForm() {
-    console.log('addForm');
+    const currentValues = props.formProps.values[props.name];
 
-    this.setState({
-      forms: this.state.forms.concat([{}]),
-    });
+    if (!currentValues.length) {
+      props.addEntry(props.name);
+    }
   }
 
   removeForm(index) {
@@ -31,7 +19,7 @@ class ListContainer extends React.Component {
   handleAdd(event) {
     event.preventDefault();
 
-    this.addForm();
+    this.props.addEntry(this.props.name);
   }
 
   renderSaveButton() {
@@ -64,13 +52,17 @@ class ListContainer extends React.Component {
     console.log('render');
 
     const {
+      name,
       form,
       formProps,
     } = this.props;
 
+    // Upper case for creating the Element in JSX.
     const Form = form;
 
-    const forms = this.state.forms.map((values, iterator) => {
+    const currentValues = formProps.values[name];
+
+    const forms = currentValues.map((values, iterator) => {
       formProps.values = values;
       formProps.key = iterator;
 

@@ -19,6 +19,8 @@ import EducationForm from './education';
 import CoursesForm from './courses';
 import LanguagesForm from './languages';
 
+import ListContainer from './list-container';
+
 const navItems = [
   'Personal',
   'Experience',
@@ -55,6 +57,11 @@ class EmployeeForm extends React.Component {
       activeKey: 1,
       selectedTab: 'Personal',
     };
+  }
+
+  addEntry(name) {
+
+    debugger;
   }
 
   componentWillMount() {
@@ -128,33 +135,53 @@ class EmployeeForm extends React.Component {
       isSaving,
       hasFailed,
       errors,
-      values,
       handleSubmit,
       handleChange,
+      values,
     };
 
     switch (this.state.selectedTab) {
       case 'Experience':
         component = (
-          <ListContainer form={forms.Experience} formProps={formProps} />
+          <ListContainer
+            name="experience"
+            form={forms.Experience}
+            formProps={formProps}
+            addEntry={this.props.addEntry}
+          />
         );
         break;
 
       case 'Education':
         component = (
-          <ListContainer form={forms.Education} formProps={formProps} />
+          <ListContainer
+            name="education"
+            form={forms.Education}
+            formProps={formProps}
+            addEntry={this.props.addEntry}
+          />
         );
         break;
 
       case 'Courses':
         component = (
-          <ListContainer form={forms.Courses} formProps={formProps} />
+          <ListContainer
+            name="courses"
+            form={forms.Courses}
+            formProps={formProps}
+            addEntry={this.props.addEntry}
+          />
         );
         break;
 
       case 'Languages':
         component = (
-          <ListContainer form={forms.Languages} formProps={formProps} />
+          <ListContainer
+            name="languages"
+            form={forms.Languages}
+            formProps={formProps}
+            addEntry={this.props.addEntry}
+          />
         );
         break;
 

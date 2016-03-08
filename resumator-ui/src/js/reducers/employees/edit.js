@@ -47,6 +47,17 @@ function edit(state = defaults, action = {}) {
         .set('hasFailed', true)
         .set('errors', action.errors);
 
+    case 'employees:addEntry':
+      const type = action.payload;
+
+      const result = state
+        .getIn(['item', type]);
+
+      return state
+        .setIn(['item', type], result.push({}));
+
+      return state;
+
     default:
       return state;
   }

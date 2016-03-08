@@ -335,12 +335,6 @@ class PersonalForm extends React.Component {
     );
   }
 
-  renderAlerts() {
-    if( !this.props.alerts ) return;
-    return this.props.alerts
-      .map((alert, i) => <Alert bsStyle={alert.level} key={i}>{alert.message}</Alert>);
-  }
-
   render() {
     return (
       <form onSubmit={this.handleSubmit.bind(this)}>
@@ -410,9 +404,6 @@ class PersonalForm extends React.Component {
             >
               Save
             </Button>
-          </Col>
-          <Col xs={10}>
-            {this.renderAlerts()}
           </Col>
         </Row>
       </form>

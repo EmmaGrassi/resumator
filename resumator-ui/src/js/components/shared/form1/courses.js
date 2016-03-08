@@ -7,6 +7,10 @@ import {
 } from 'react-bootstrap';
 
 class CoursesForm extends React.Component {
+  handleChange(name, event) {
+    this.props.handleChange(name, this.refs[name].getValue());
+  }
+
   renderName() {
     return (
       <Input
@@ -14,6 +18,7 @@ class CoursesForm extends React.Component {
         type="text"
         placeholder="Name"
         label="Name"
+        onChange={this.onChange.bind(this, 'name')}
       />
     );
   }

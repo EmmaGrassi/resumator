@@ -148,6 +148,7 @@ class EmployeeForm extends React.Component {
             form={forms.Experience}
             formProps={formProps}
             addEntry={this.props.addEntry}
+            handleSubmit={this.props.handleSubmit}
           />
         );
         break;
@@ -159,6 +160,7 @@ class EmployeeForm extends React.Component {
             form={forms.Education}
             formProps={formProps}
             addEntry={this.props.addEntry}
+            handleSubmit={this.props.handleSubmit}
           />
         );
         break;
@@ -170,6 +172,7 @@ class EmployeeForm extends React.Component {
             form={forms.Courses}
             formProps={formProps}
             addEntry={this.props.addEntry}
+            handleSubmit={this.props.handleSubmit}
           />
         );
         break;
@@ -181,6 +184,7 @@ class EmployeeForm extends React.Component {
             form={forms.Languages}
             formProps={formProps}
             addEntry={this.props.addEntry}
+            handleSubmit={this.props.handleSubmit}
           />
         );
         break;

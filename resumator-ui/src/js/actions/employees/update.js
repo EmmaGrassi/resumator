@@ -1,3 +1,4 @@
+import { isEmpty } from 'lodash';
 import { pushPath } from 'redux-simple-router';
 
 import store from '../../store';
@@ -14,6 +15,11 @@ export default function update(email) {
     dispatch({ type: 'employees:update:start' });
 
     const data = store.getState().employees.edit.toJS().item;
+
+    data.experience = data.experience.filter(x => !isEmpty(x));
+    data.education = data.education.filter(x => !isEmpty(x));
+    data.courses = data.courses.filter(x => !isEmpty(x));
+    data.languages = data.languages.filter(x => !isEmpty(x));
 
     updateService(email, data, (error, results) => {
       if (error) {

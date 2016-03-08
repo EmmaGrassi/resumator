@@ -3,8 +3,6 @@ import { Button, Col, Input, Row, Alert } from 'react-bootstrap';
 
 class ListContainer extends React.Component {
   componentWillReceiveProps(props, state) {
-    console.log('componentWillReceiveProps');
-
     const currentValues = props.formProps.values[props.name];
 
     if (!currentValues.length) {
@@ -49,8 +47,6 @@ class ListContainer extends React.Component {
   }
 
   render() {
-    console.log('render');
-
     const {
       name,
       form,
@@ -63,8 +59,10 @@ class ListContainer extends React.Component {
     const currentValues = formProps.values[name];
 
     const forms = currentValues.map((values, iterator) => {
+      formProps.currentValues = currentValues;
       formProps.values = values;
       formProps.key = iterator;
+      formProps.index = iterator;
 
       return <Form {...formProps} />;
     });

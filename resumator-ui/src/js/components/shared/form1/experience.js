@@ -7,14 +7,40 @@ import {
 } from 'react-bootstrap';
 
 class ExperienceForm extends React.Component {
+  handleChange(name, event) {
+    this.props.values[name] = this.refs[name].getValue();
+
+    this.props.handleChange('experience', this.props.currentValues);
+  }
+
   renderTitle() {
+    const { isSaving, hasFailed, errors, values } = this.props;
+
+    const inputName = 'title';
+    const inputLabel = 'Title';
+
+    const props = {
+      ref: inputName,
+      type: 'text',
+      placeholder: inputLabel,
+      label: inputLabel,
+
+      disabled: isSaving,
+
+      // TODO: Implement this.
+      value: values[inputName],
+
+      onChange: this.handleChange.bind(this, inputName),
+    };
+
+    if (hasFailed && errors[inputName]) {
+      props.bsStyle = 'error';
+      props.help = errors[inputName];
+      props.hasFeedback = true;
+    }
+
     return (
-      <Input
-        ref="title"
-        type="text"
-        placeholder="Title"
-        label="Title"
-      />
+      <Input {...props} />
     );
   }
 

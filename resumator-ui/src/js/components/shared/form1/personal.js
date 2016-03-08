@@ -2,25 +2,8 @@ import React from 'react';
 import { Button, Col, Input, Row, Alert } from 'react-bootstrap';
 
 class PersonalForm extends React.Component {
-  componentWillMount() {
-    // Sets the passed values in the props from the parent component into the state.
-    this.setState(this.props.values);
-  }
-
-  componentWillReceiveProps({ values }) {
-    this.setState(values);
-  }
-
-  // TODO: Change state into props.
-  // Use an action.
   handleChange(name, event) {
     this.props.handleChange(name, this.refs[name].getValue());
-  }
-
-  handleSubmit(event) {
-    event.preventDefault();
-
-    this.props.handleSubmit();
   }
 
   // TODO: Do not render these for users that can not see them.
@@ -337,7 +320,7 @@ class PersonalForm extends React.Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit.bind(this)}>
+      <form onSubmit={this.props.handleSubmit}>
         <Row>
           <Col xs={12}>
             {this.renderTitle()}
@@ -401,7 +384,7 @@ class PersonalForm extends React.Component {
             <div className="pull-right">
               <Button
                 bsStyle="primary"
-                onClick={this.handleSubmit.bind(this)}
+                onClick={this.props.handleSubmit}
               >
                 Save
               </Button>

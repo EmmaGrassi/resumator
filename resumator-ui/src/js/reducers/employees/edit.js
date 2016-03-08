@@ -1,4 +1,5 @@
 import immutable from 'immutable';
+import { isNumber } from 'lodash';
 
 import employee from '../common/employee';
 
@@ -29,8 +30,14 @@ function edit(state = defaults, action = {}) {
         .set('errors', action.errors);
 
     case 'employees:edit:change':
-      return state
-        .setIn(['item', action.payload.key], action.payload.value);
+      console.log('action', action);
+
+      const newState = state
+        .setIn(['item', action.payload.key], immutable.fromJS(action.payload.value));
+
+      console.log(newState.toJS());
+
+      return newState;
 
     case 'employees:update:start':
       return state
@@ -54,7 +61,8 @@ function edit(state = defaults, action = {}) {
         .getIn(['item', type]);
 
       return state
-        .setIn(['item', type], result.push({}));
+        .setIn(['item', type], result.push({
+        }));
 
       return state;
 

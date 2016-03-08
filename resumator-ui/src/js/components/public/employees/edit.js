@@ -27,8 +27,13 @@ function mapDispatchToProps(dispatch) {
   return {
     editEmployee: (email) => dispatch(edit(email)),
     updateEmployee: (email) => dispatch(update(email)),
-    changeEmployee: (k, v) => dispatch(editChange(k, v)),
-    addEntry: (name) => {dispatch(addEntry(name))},
+    changeEmployee: (k, v) => {
+      dispatch(editChange(k, v))
+    },
+
+    addEntry: (name) => {
+      dispatch(addEntry(name))
+    },
   };
 }
 

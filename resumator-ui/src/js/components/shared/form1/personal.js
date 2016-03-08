@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Col, Input, Row } from 'react-bootstrap';
+import { Button, Col, Input, Row, Alert } from 'react-bootstrap';
 
 class PersonalForm extends React.Component {
   componentWillMount() {
@@ -335,6 +335,12 @@ class PersonalForm extends React.Component {
     );
   }
 
+  renderAlerts() {
+    if( !this.props.alerts ) return;
+    return this.props.alerts
+      .map((alert, i) => <Alert bsStyle={alert.level} key={i}>{alert.message}</Alert>);
+  }
+
   render() {
     return (
       <form onSubmit={this.handleSubmit.bind(this)}>
@@ -397,13 +403,16 @@ class PersonalForm extends React.Component {
         </Row>
 
         <Row>
-          <Col xs={12}>
+          <Col xs={2}>
             <Button
               bsStyle="primary"
               onClick={this.handleSubmit.bind(this)}
             >
               Save
             </Button>
+          </Col>
+          <Col xs={10}>
+            {this.renderAlerts()}
           </Col>
         </Row>
       </form>

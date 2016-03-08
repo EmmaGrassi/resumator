@@ -60,10 +60,10 @@ const LanguageProficiencySchema = tcombForm.enums({
 });
 
 const EmployeeTypeSchema = tcombForm.enums({
-	  EMPLOYEE: 'Employee',
-	  FREELANCER: 'Freelancer',
-	  PROSPECT: 'Prospect'
-	});
+  EMPLOYEE: 'Employee',
+  FREELANCER: 'Freelancer',
+  PROSPECT: 'Prospect'
+});
 
 const LanguageSkillSchema = tcombForm.struct({
   name: tcombForm.String,

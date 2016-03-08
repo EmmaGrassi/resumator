@@ -4,7 +4,7 @@ testservice:
   links:
     - testdb
   volumes:
-    - ${RESUMATOR_CONFIG}:/root/.resumator/config.properties
+    - ${RESUMATOR_CONFIG}:/root/.resumator
   ports:
     - "5005:5005"
 testdb:

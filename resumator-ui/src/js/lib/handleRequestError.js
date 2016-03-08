@@ -7,12 +7,12 @@ function handleRequestError(dispatch, error) {
   if (error.status === 401) {
     dispatch(pushPath(`/not-authorized`));
   }
-  
+
   else if (error.status === 403) {
-	    //redirect to homepage,force to login
-	    cookieClear();
-	    dispatch(pushPath(`/`));
-	  }
+    //redirect to homepage,force to login
+    cookieClear();
+    dispatch(pushPath(`/`));
+  }
 }
 
 export default handleRequestError;

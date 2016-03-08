@@ -112,9 +112,7 @@ class EmployeeForm extends React.Component {
     });
   }
 
-  render() {
-    const CurrentFormComponent = forms[this.state.selectedTab];
-
+  renderSelectedTab() {
     const {
       isSaving,
       hasFailed,
@@ -124,6 +122,55 @@ class EmployeeForm extends React.Component {
       handleChange,
     } = this.props;
 
+    let component;
+
+    const formProps = {
+      isSaving,
+      hasFailed,
+      errors,
+      values,
+      handleSubmit,
+      handleChange,
+    };
+
+    switch (this.state.selectedTab) {
+      case 'Experience':
+        component = (
+          <ListContainer form={forms.Experience} formProps={formProps} />
+        );
+        break;
+
+      case 'Education':
+        component = (
+          <ListContainer form={forms.Education} formProps={formProps} />
+        );
+        break;
+
+      case 'Courses':
+        component = (
+          <ListContainer form={forms.Courses} formProps={formProps} />
+        );
+        break;
+
+      case 'Languages':
+        component = (
+          <ListContainer form={forms.Languages} formProps={formProps} />
+        );
+        break;
+
+      case 'Personal':
+      default:
+        component = (
+          <forms.Personal {...formProps} />
+        );
+
+        break;
+    }
+
+    return component;
+  }
+
+  render() {
     return (
       <Grid>
         <Row>
@@ -145,14 +192,7 @@ class EmployeeForm extends React.Component {
           }}
         >
           <Col xs={12}>
-            <CurrentFormComponent
-              isSaving={isSaving}
-              hasFailed={hasFailed}
-              values={values}
-              errors={errors}
-              handleSubmit={handleSubmit}
-              handleChange={handleChange}
-            />
+            {this.renderSelectedTab()}
           </Col>
         </Row>
       </Grid>

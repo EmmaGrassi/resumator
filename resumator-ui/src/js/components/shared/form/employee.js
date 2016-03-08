@@ -73,9 +73,9 @@ const LanguageSkillSchema = tcombForm.struct({
 
 const EmployeeSchema = tcombForm.struct({
   type: EmployeeTypeSchema,
-  
+
   title: tcombForm.String,
-  
+
   name: tcombForm.String,
   surname: tcombForm.String,
 

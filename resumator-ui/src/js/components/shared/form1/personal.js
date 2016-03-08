@@ -397,13 +397,15 @@ class PersonalForm extends React.Component {
         </Row>
 
         <Row>
-          <Col xs={2}>
-            <Button
-              bsStyle="primary"
-              onClick={this.handleSubmit.bind(this)}
-            >
-              Save
-            </Button>
+          <Col xs={12}>
+            <div className="pull-right">
+              <Button
+                bsStyle="primary"
+                onClick={this.handleSubmit.bind(this)}
+              >
+                Save
+              </Button>
+            </div>
           </Col>
         </Row>
       </form>

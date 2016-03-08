@@ -18,6 +18,7 @@ var runSequence = require('run-sequence');
 var source = require('vinyl-source-stream');
 var uglify = require('gulp-uglify');
 var watchify = require('watchify');
+var eslint = require('gulp-eslint');
 
 // Error handling
 function handleError(taskName, _error) {
@@ -32,7 +33,7 @@ function getBundle(path) {
     entries: path,
     // TODO: Find a good way not to do this in production.
     debug: true,
-    transform: []
+    transform: [],
   });
 }
 function runBundle() {
@@ -233,11 +234,18 @@ gulp.task('watchTests', 'Watches the source tests directory and re-runs tests wh
   cb();
 });
 
+gulp.task('lint', 'Lints all the Javascript sources', function watchTests() {
+  return gulp.src('src/js/**/*.js')
+    .pipe(eslint())
+    .pipe(eslint.format())
+});
+
 gulp.task('develop', 'Runs all tasks required for development.', function(cb) {
   runSequence(
     'cleanDirectory',
 
     [
+      'lint',
       'compileBabel',
       'compileCopy',
       'compileImages',
@@ -262,6 +270,7 @@ gulp.task('production', 'Runs all tasks required for production.', function(cb) 
     'cleanDirectory',
 
     [
+      'lint',
       'compileBabel',
       'compileCopy',
       'compileImages',

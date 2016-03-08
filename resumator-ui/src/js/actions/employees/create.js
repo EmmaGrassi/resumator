@@ -7,6 +7,9 @@ import employeeTypeToURL from '../../helpers/employeeTypeToURL';
 import createService from '../../services/employee/create';
 import profileGetService from '../../services/user/profile/get';
 
+import showAlert from '../alerts/show';
+import hideAlert from '../alerts/hide';
+
 export default function create() {
   return (dispatch) => {
     dispatch({ type: 'employees:create:start' });
@@ -32,6 +35,15 @@ export default function create() {
         dispatch({ type: 'user:getProfile:success', payload: results });
 
         dispatch({ type: 'employees:create:success', payload: email });
+        dispatch(showAlert({
+          level: 'warning',
+          message: `Created new user: ${email}, Please continue filling in the rest of the info.`,
+          id: `user:created[${email}]`,
+        }));
+
+        setTimeout(() => {
+          dispatch(hideAlert({ id: `user:created[${email}]` }));
+        }, 5000);
 
         dispatch(pushPath(`/${employeeTypeToURL(data.type)}/${email}/edit`));
       });

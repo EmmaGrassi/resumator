@@ -1,30 +1,45 @@
 import Loader from 'react-loader';
 import React from 'react';
 import _ from 'lodash';
-import { Button, ButtonGroup, ButtonToolbar, Col, Glyphicon, Grid, Row, Table } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { pushPath } from 'redux-simple-router';
+
+import {
+  Button,
+  ButtonGroup,
+  ButtonToolbar,
+  Col,
+  Glyphicon,
+  Grid,
+  Row,
+  Table,
+} from 'react-bootstrap';
 
 import listAction from '../../../actions/employees/list';
 import removeAction from '../../../actions/employees/remove';
 
 function mapStateToProps(state) {
   return {
-    list: state.employees.list.toJS()
+    list: state.employees.list.toJS(),
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     fetchListData: () => dispatch(listAction('FREELANCER')),
-    removeListEntry: (type,email) => dispatch(removeAction(type,email)),
+    removeListEntry: (type, email) => dispatch(removeAction(type, email)),
     navigateToEdit: (email) => dispatch(pushPath(`/freelancers/${email}/edit`, {})),
-    navigateToNew: () => dispatch(pushPath(`/freelancers/new`, {})),
-    navigateToShow: (email) => dispatch(pushPath(`/freelancers/${email}`, {}))
+    navigateToNew: () => dispatch(pushPath('/freelancers/new', {})),
+    navigateToShow: (email) => dispatch(pushPath(`/freelancers/${email}`, {})),
   };
 }
 
 class List extends React.Component {
+
+  componentWillMount() {
+    this.props.fetchListData();
+  }
+
   handleRowButtonClick(email, event) {
     event.preventDefault();
 
@@ -54,12 +69,9 @@ class List extends React.Component {
       return;
     }
 
-    this.props.removeListEntry('FREELANCER',email);
+    this.props.removeListEntry('FREELANCER', email);
   }
 
-  componentWillMount() {
-    this.props.fetchListData();
-  }
 
   render() {
     const data = this.props.list;
@@ -70,54 +82,58 @@ class List extends React.Component {
 
     if (items && items.length) {
       rows = items.map((v, i) => {
-          const email = v.email;
-          const fullName = v.fullName;
-          const client = v.client;
-          const title = v.title;
-          const phone = v.phone;
+        const email = v.email;
+        const fullName = v.fullName;
+        const client = v.client;
+        const title = v.title;
+        const phone = v.phone;
 
-        return <tr
+        return (<tr
           key={i}
           onClick={this.handleRowButtonClick.bind(this, email)}
           style={{
-            cursor: 'pointer'
+            cursor: 'pointer',
           }}
         >
         <td
-	        style={{
-	        verticalAlign: 'middle'
-	      }}
-	      >
-	        {fullName}
-	      </td>
-	 		<td
-	   		style={{
-	   	  verticalAlign: 'middle'
-	  }}
-	  >
-	    {client}
-	  </td>
-	      <td
-	        style={{
-	        verticalAlign: 'middle'
-	      }}
-	      >
-	        {title}
-	      </td>
-	      <td
-	      style={{
-	      verticalAlign: 'middle'
-	      }}
-	      >
-	      {phone}
-	      </td>
+          style={{
+            verticalAlign: 'middle',
+          }}
+        >
+          {fullName}
+        </td>
+       <td
+         style={{
+           verticalAlign: 'middle',
+         }}
+       >
+      {client}
+    </td>
+        <td
+          style={{
+            verticalAlign: 'middle',
+          }}
+        >
+          {title}
+        </td>
+        <td
+          style={{
+            verticalAlign: 'middle',
+          }}
+        >
+        {phone}
+        </td>
           <td>
             <ButtonGroup>
-              <Button onClick={this.handleEditButtonClick.bind(this, email)}><Glyphicon glyph="pencil"/> Edit</Button>
-              <Button onClick={this.handleRemoveButtonClick.bind(this, email)} bsStyle="danger"><Glyphicon glyph="trash" /> Remove</Button>
+              <Button onClick={this.handleEditButtonClick.bind(this, email)}>
+                <Glyphicon glyph="pencil" />
+              </Button>
+              <Button onClick={this.handleRemoveButtonClick.bind(this, email)} bsStyle="danger">
+                <Glyphicon glyph="trash" />
+              </Button>
             </ButtonGroup>
           </td>
-        </tr>;
+        </tr>);
       });
     } else {
       rows = (
@@ -125,7 +141,7 @@ class List extends React.Component {
           <td
             colSpan="5"
             style={{
-              textAlign: 'center'
+              textAlign: 'center',
             }}
           >
             No Content
@@ -142,16 +158,16 @@ class List extends React.Component {
         <Grid>
           <Row>
             <Col xs={12}>
-              <Table striped condensed hover responsive>
+              <Table condensed hover responsive>
                 <thead>
                   <tr>
-                  	<th>Name</th>
-                  	<th>Current Client</th>
-                  	<th>Title</th>
-                  	<th>Phone</th>
+                    <th>Name</th>
+                    <th>Current Client</th>
+                    <th>Title</th>
+                    <th>Phone</th>
                     <th
                       style={{
-                        width: '20%'
+                        width: '20%',
                       }}
                     >
                       Actions
@@ -168,7 +184,9 @@ class List extends React.Component {
             <Col xs={12}>
               <ButtonToolbar>
                 <ButtonGroup>
-                  <Button bsStyle="success" onClick={this.handleNewButtonClick.bind(this)}><Glyphicon glyph="plus"/> New</Button>
+                  <Button bsStyle="success" onClick={this.handleNewButtonClick.bind(this)}>
+                    <Glyphicon glyph="plus" /> New
+                  </Button>
                 </ButtonGroup>
               </ButtonToolbar>
             </Col>

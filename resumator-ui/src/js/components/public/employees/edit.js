@@ -11,6 +11,7 @@ import editChange from '../../../actions/employees/editChange';
 
 function mapStateToProps(state) {
   const edit = state.employees.edit.toJS();
+  const alertState = state.alerts.toJS();
 
   return {
     isFetching: edit.isFetching,

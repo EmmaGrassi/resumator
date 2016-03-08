@@ -28,7 +28,7 @@ function mapDispatchToProps(dispatch) {
   return {
     fetchListData: () => dispatch(listAction('EMPLOYEE')),
     removeListEntry: (type, email) => dispatch(removeAction(type, email)),
-    navigateToEdit: (email) => dispatch(pushPath('/employees/${email}/edit', {})),
+    navigateToEdit: (email) => dispatch(pushPath(`/employees/${email}/edit`, {})),
     navigateToNew: () => dispatch(pushPath('/employees/new', {})),
     navigateToShow: (email) => dispatch(pushPath(`/employees/${email}`, {})),
   };

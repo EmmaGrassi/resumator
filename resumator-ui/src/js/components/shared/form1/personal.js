@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Col, Input, Row } from 'react-bootstrap';
+import { Button, Col, Input, Row, Alert } from 'react-bootstrap';
 
 class PersonalForm extends React.Component {
   componentWillMount() {
@@ -397,7 +397,7 @@ class PersonalForm extends React.Component {
         </Row>
 
         <Row>
-          <Col xs={12}>
+          <Col xs={2}>
             <Button
               bsStyle="primary"
               onClick={this.handleSubmit.bind(this)}

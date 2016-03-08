@@ -20,7 +20,7 @@ const item = immutable.Map({
 
   experience: immutable.List(),
 
-  languages: immutable.List()
+  languages: immutable.List(),
 });
 
 export default item;

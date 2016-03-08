@@ -1,12 +1,11 @@
 import { Button, Col, Grid, Jumbotron, Row } from 'react-bootstrap';
 import React from 'react';
 
-
 const headerStyles = {
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-around',
-  alignItems: 'center'
+  alignItems: 'center',
 };
 
 class Home extends React.Component {

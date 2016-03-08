@@ -29,20 +29,20 @@ class RightNav extends React.Component {
     event.preventDefault();
 
     // TODO: Error handling. Apparently the catch on this is not valid.
-    
+
     window.googleAuth.grantOfflineAccess({'redirect_uri': 'postmessage'}).then(this.handleLogInSuccess.bind(this));
   }
 
   handleLogInSuccess(googleResponse) {
-    const authCode = googleResponse.code; 
-    
-    
+    const authCode = googleResponse.code;
+
+
     this.props.login(authCode);
   }
 
   // TODO: Implement
   handleLogInError() {
-     console.error(arguments);
+   console.error(arguments);
   }
 
   handleLogOutButtonClick(event) {

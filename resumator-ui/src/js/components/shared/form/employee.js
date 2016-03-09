@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
 import { pushPath } from 'redux-simple-router';
 
 import create from '../../../actions/employees/create';
+import createChange from '../../../actions/employees/createChange';
 
 import PersonalForm from './personal';
 import ExperienceForm from './experience';
@@ -46,6 +47,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     navigateTo: (email, value) => dispatch(pushPath(`/employees/${email}/edit/${value.toLowerCase()}`)),
+    createChange: (k, v) => dispatch(createChange(k, v)),
   };
 }
 
@@ -116,22 +118,24 @@ class EmployeeForm extends React.Component {
 
   renderSelectedTab() {
     const {
-      isSaving,
-      hasFailed,
       errors,
-      values,
-      handleSubmit,
       handleChange,
+      handleSubmit,
+      hasFailed,
+      isSaving,
+      register,
+      values,
     } = this.props;
 
     let component;
 
     const formProps = {
-      isSaving,
-      hasFailed,
       errors,
-      handleSubmit,
       handleChange,
+      handleSubmit,
+      hasFailed,
+      isSaving,
+      register,
       values,
     };
 

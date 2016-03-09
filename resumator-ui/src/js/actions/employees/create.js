@@ -16,6 +16,8 @@ export default function create() {
 
     const data = store.getState().employees.create.toJS().item;
 
+    console.log('create action data', data);
+
     createService(data, (error, results) => {
       if (error) {
         dispatch({ type: 'employees:create:failure', errors: results });

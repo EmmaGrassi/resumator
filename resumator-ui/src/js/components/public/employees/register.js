@@ -23,15 +23,26 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-class Create extends React.Component {
+class Register extends React.Component {
+  componentWillReceiveProps(props) {
+    console.log('props', props);
+
+    if (!props.session.name) {
+      return;
+    }
+
+    this.props.changeEmployee('name', props.session.name);
+    this.props.changeEmployee('surname', props.session.surname);
+    this.props.changeEmployee('email', props.session.email);
+  }
+
   render() {
     return (
       <div>
         <NewForm
           ref="employeeForm"
           type="EMPLOYEE"
-          values={{}}
-          sessionValues={this.props.session}
+          values={this.props.create.item}
           handleSubmit={this.props.createEmployee}
           handleChange={this.props.changeEmployee.bind(this)}
           hasFailed={this.props.create.hasFailed}
@@ -42,4 +53,4 @@ class Create extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Create);
+export default connect(mapStateToProps, mapDispatchToProps)(Register);

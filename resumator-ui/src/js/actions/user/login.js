@@ -47,7 +47,7 @@ export default function login(data) {
       profileGet(googleProfile.email, (error, profile) => {
         if (error) {
           if (error.error.status === 404) {
-            dispatch(pushPath('/employees/new'));
+            dispatch(pushPath('/employees/register'));
 
             dispatch({ type: 'user:getProfile:success', payload: {} });
             dispatch({ type: 'user:login:success', payload: cookieData });

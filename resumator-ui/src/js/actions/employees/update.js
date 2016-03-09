@@ -18,8 +18,7 @@ export default function update(email) {
   }
 
   function experienceWithLists(exp) {
-    debugger;
-    return ["technologies", "methodologies"]
+    return ['technologies', 'methodologies']
       .map(field => exp[field])
       .filter(x => !isEmpty(x))
       .map(x => console.log(x));

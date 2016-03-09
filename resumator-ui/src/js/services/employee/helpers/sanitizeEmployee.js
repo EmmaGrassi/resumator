@@ -7,7 +7,7 @@ export default function sanitizeEmployee(data) {
   data.experience = data.experience || [];
   data.languages = data.languages || [];
 
-  data.dateOfBirth = moment(data.dateOfBirth).format('YYYY-MM-DD');
+  data.dateOfBirth = data.dateOfBirth && (data.dateOfBirth).format('YYYY-MM-DD');
 
   return data;
 }

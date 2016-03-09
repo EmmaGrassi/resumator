@@ -1,6 +1,9 @@
 package io.sytac.resumator.employee;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Digits;
@@ -60,6 +63,14 @@ public class EmployeeCommandPayload implements CommandPayload {
     private final List<Language> languages;
     private final boolean admin;
 
+    private static <T> List<T> fromNullableList(final List<T> list) {
+        return Optional.ofNullable(list)
+                        .map(l -> l.stream()
+                                   .filter(elem -> elem != null)
+                                   .collect(Collectors.toList()))
+                        .orElse(Collections.emptyList());
+    }
+
     @JsonCreator
     public EmployeeCommandPayload(@JsonProperty("type") final EmployeeType type,
                                   @JsonProperty("title") final String title,
@@ -92,8 +103,8 @@ public class EmployeeCommandPayload implements CommandPayload {
         this.aboutMe = aboutMe;
         this.education = education;
         this.courses = courses;
-        this.experience = experience;
-        this.languages = languages;
+        this.experience = fromNullableList(experience);
+        this.languages = fromNullableList(languages);
         this.admin = admin;
     }
 }

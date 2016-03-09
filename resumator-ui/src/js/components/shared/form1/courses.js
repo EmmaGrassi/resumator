@@ -22,15 +22,15 @@ class CoursesForm extends FormComponent {
   }
 
   renderName() {
-    return this.getInput('name');
+    return this.getInput('name', null, true);
   }
 
   renderYear() {
-    return this.getInput('year', 'number');
+    return this.getInput('year', 'number', true);
   }
 
   renderDescription() {
-    return this.getInput('description', 'textarea');
+    return this.getInput('description', 'textarea', true);
   }
 
   render() {

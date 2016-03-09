@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Col, Input, Row, Alert } from 'react-bootstrap';
 
 import nationalities from '../../../data/nationalities';
+import labelize from '../../../helpers/labelize';
 
 class PersonalForm extends React.Component {
   handleChange(name, event) {
@@ -16,7 +17,7 @@ class PersonalForm extends React.Component {
     const { isSaving, hasFailed, errors, values } = this.props;
 
     const inputName = 'title';
-    const inputLabel = 'Title';
+    const inputLabel = labelize(inputName, '*');
 
     const props = {
       ref: inputName,
@@ -44,7 +45,7 @@ class PersonalForm extends React.Component {
     const { isSaving, hasFailed, errors, values } = this.props;
 
     const inputName = 'name';
-    const inputLabel = 'Name';
+    const inputLabel = labelize(inputName, '*');
 
     const props = {
       ref: inputName,
@@ -72,7 +73,7 @@ class PersonalForm extends React.Component {
     const { isSaving, hasFailed, errors, values } = this.props;
 
     const inputName = 'surname';
-    const inputLabel = 'Surname';
+    const inputLabel = labelize(inputName, '*');
 
     const props = {
       ref: inputName,
@@ -100,7 +101,7 @@ class PersonalForm extends React.Component {
     const { isSaving, hasFailed, errors, values } = this.props;
 
     const inputName = 'email';
-    const inputLabel = 'Email';
+    const inputLabel = labelize(inputName, '*');
 
     const props = {
       ref: inputName,
@@ -128,7 +129,7 @@ class PersonalForm extends React.Component {
     const { isSaving, hasFailed, errors, values } = this.props;
 
     const inputName = 'phonenumber';
-    const inputLabel = 'Phonenumber';
+    const inputLabel = labelize(inputName, '*');
 
     const props = {
       ref: inputName,
@@ -156,7 +157,7 @@ class PersonalForm extends React.Component {
     const { isSaving, hasFailed, errors, values } = this.props;
 
     const inputName = 'currentResidence';
-    const inputLabel = 'Current residence';
+    const inputLabel = labelize(inputName, '*');
 
     const props = {
       ref: inputName,
@@ -240,7 +241,7 @@ class PersonalForm extends React.Component {
     const { isSaving, hasFailed, errors, values } = this.props;
 
     const inputName = 'dateOfBirth';
-    const inputLabel = 'Date of birth';
+    const inputLabel = labelize(inputName, '*');
 
     const props = {
       ref: inputName,
@@ -268,7 +269,7 @@ class PersonalForm extends React.Component {
     const { isSaving, hasFailed, errors } = this.props;
 
     const inputName = 'nationality';
-    const inputLabel = 'Nationality';
+    const inputLabel = labelize(inputName, '*');
 
     const props = {
       ref: inputName,
@@ -298,7 +299,7 @@ class PersonalForm extends React.Component {
     const { isSaving, hasFailed, errors, values } = this.props;
 
     const inputName = 'aboutMe';
-    const inputLabel = 'About me';
+    const inputLabel = labelize(inputName, '*');
 
     const props = {
       ref: inputName,

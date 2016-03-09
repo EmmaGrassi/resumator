@@ -5,8 +5,6 @@ class ListContainer extends React.Component {
   componentWillReceiveProps(props, state) {
     const currentValues = props.formProps.values[props.name];
 
-    console.log('---d-d-d-d-d>> ', currentValues);
-
     if (!currentValues.length) {
       props.addEntry(props.name);
     }

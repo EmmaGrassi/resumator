@@ -22,19 +22,19 @@ class EducationForm extends FormComponent {
   }
 
   renderDegree() {
-    return this.getInput('degree');
+    return this.getInput('degree', null, true);
   }
 
   renderFieldOfStudy() {
-    return this.getInput('fieldOfStudy');
+    return this.getInput('fieldOfStudy', null, true);
   }
 
   renderSchool() {
-    return this.getInput('school');
+    return this.getInput('school', null, true);
   }
 
   renderCity() {
-    return this.getInput('city');
+    return this.getInput('city', null, true);
   }
 
   renderCountry() {

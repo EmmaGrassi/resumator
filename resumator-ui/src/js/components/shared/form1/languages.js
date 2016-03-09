@@ -22,11 +22,11 @@ class LanguagesForm extends FormComponent {
   }
 
   renderName() {
-    return this.getInput('name');
+    return this.getInput('name', null, true);
   }
 
   renderProficiency() {
-    return this.getInput('proficiency');
+    return this.getInput('proficiency', null, true);
   }
 
   render() {

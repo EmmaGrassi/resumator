@@ -10,10 +10,10 @@ import labelize from '../../../helpers/labelize';
 
 class FormComponent extends React.Component {
 
-  getInput(name, type) {
+  getInput(name, type, required) {
     const { isSaving, hasFailed, errors, values } = this.props;
     const inputName = name;
-    const inputLabel = labelize(name);
+    const inputLabel = required ? labelize(name, '*') : labelize(name);
 
     const props = {
       ref: inputName,

@@ -8,6 +8,7 @@ import {
 
 import FormComponent from './form';
 import countries from '../../../data/countries';
+import labelize from '../../../helpers/labelize';
 
 class ExperienceForm extends FormComponent {
 
@@ -23,22 +24,22 @@ class ExperienceForm extends FormComponent {
   }
 
   renderTitle() {
-    return this.getInput('title');
+    return this.getInput('title', null, true);
   }
 
   renderCompanyName() {
-    return this.getInput('companyName');
+    return this.getInput('companyName', null, true);
   }
 
   renderCity() {
-    return this.getInput('city');
+    return this.getInput('city', null, true);
   }
 
   renderCountry() {
     const { isSaving, hasFailed, errors } = this.props;
 
     const inputName = 'country';
-    const inputLabel = 'Country';
+    const inputLabel = labelize(inputName, '*');
 
     const props = {
       ref: inputName,
@@ -65,23 +66,23 @@ class ExperienceForm extends FormComponent {
   }
 
   renderStartDate() {
-    return this.getInput('startDate', 'date');
+    return this.getInput('startDate', 'date', true);
   }
 
   renderEndDate() {
-    return this.getInput('endDate', 'date');
+    return this.getInput('endDate', 'date', true);
   }
 
   renderShortDescription() {
-    return this.getInput('shortDescription', 'textarea');
+    return this.getInput('shortDescription', 'textarea', true);
   }
 
   renderTechnologies() {
-    return this.getInput('technologies');
+    return this.getInput('technologies', null, true);
   }
 
   renderMethodologies() {
-    return this.getInput('methodologies');
+    return this.getInput('methodologies', null, true);
   }
 
   render() {

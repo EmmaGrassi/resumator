@@ -45,7 +45,7 @@ export default function create() {
           dispatch(hideAlert({ id: `user:created[${email}]` }));
         }, 5000);
 
-        dispatch(pushPath(`/${employeeTypeToURL(data.type)}/${email}/edit`));
+        dispatch(pushPath(`/${employeeTypeToURL(data.type)}/${email}/edit/experience`));
       });
     });
   };

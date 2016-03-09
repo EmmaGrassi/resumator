@@ -59,45 +59,40 @@ class EmployeeForm extends React.Component {
     };
   }
 
-  addEntry(name) {
-
-    debugger;
-  }
-
   componentWillMount() {
-    this.getActiveSection();
+    this.getActiveSection(this.props);
   }
 
-  componentWillReceiveProps() {
-    this.getActiveSection();
+  componentWillReceiveProps(props, state) {
+    this.getActiveSection(props);
   }
 
   getEmail() {
     return this.props.profile && this.props.profile.item && this.props.profile.item.email;
   }
 
-  getActiveSection() {
-    if (this.props.section) {
-      // TODO: Remove the defer
-      setTimeout(() => {
-        const key = navItems
-          .findIndex(elem => elem.toLowerCase() === this.props.section);
-        this.setState({
-          activeKey: key + 1,
-          selectedTab: navItems[key],
-        });
-      }, 0);
-    } else {
+  getActiveSection(props) {
+    const { section } = props;
+
+    if (!section) {
       this.setState({
         activeKey: 1,
         selectedTab: 'Personal',
       });
+
+      return;
     }
+
+    const key = navItems
+      .findIndex(elem => elem.toLowerCase() === section);
+
+    this.setState({
+      activeKey: key + 1,
+      selectedTab: navItems[key],
+    });
   }
 
   handleTabSelect(event) {
-    event.preventDefault();
-
     const email = this.getEmail();
 
     if (!email) {

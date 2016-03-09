@@ -10,7 +10,7 @@ import labelize from '../../../helpers/labelize';
 
 class FormComponent extends React.Component {
 
-  getInput(name, type, required) {
+  getInput(name, type, required, placeholder) {
     const { isSaving, hasFailed, errors, values } = this.props;
     const inputName = name;
     const inputLabel = required ? labelize(name, '*') : labelize(name);
@@ -18,7 +18,7 @@ class FormComponent extends React.Component {
     const props = {
       ref: inputName,
       type: type || 'text',
-      placeholder: inputLabel,
+      placeholder: placeholder || inputLabel,
       label: inputLabel,
 
       disabled: isSaving,
@@ -26,7 +26,7 @@ class FormComponent extends React.Component {
       // TODO: Implement this.
       value: values[inputName],
 
-      onChange: this.handleChange.bind(this, inputName),
+      onChange: this.handleChange.bind(this, inputName)
     };
 
     if (hasFailed && errors[inputName]) {

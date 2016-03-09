@@ -6,82 +6,73 @@ import {
   Input,
 } from 'react-bootstrap';
 
-class EducationForm extends React.Component {
+import FormComponent from './form';
+import countries from '../../../data/countries';
+
+class EducationForm extends FormComponent {
+
+  constructor(props) {
+    super(props);
+    this.props = props;
+  }
+
+  handleChange(name, event) {
+    this.props.values[name] = this.refs[name].getValue();
+    this.props.handleChange('education', this.props.currentValues);
+  }
+
   renderDegree() {
-    return (
-      <Input
-        ref="degree"
-        type="text"
-        placeholder="Degree"
-        label="Degree"
-      />
-    );
+    return this.getInput('degree');
   }
 
   renderFieldOfStudy() {
-    return (
-      <Input
-        ref="fieldOfStudy"
-        type="text"
-        placeholder="Field of study"
-        label="Field of study"
-      />
-    );
+    return this.getInput('fieldOfStudy');
   }
 
   renderSchool() {
-    return (
-      <Input
-        ref="school"
-        type="text"
-        placeholder="School"
-        label="School"
-      />
-    );
+    return this.getInput('school');
   }
 
   renderCity() {
-    return (
-      <Input
-        ref="degree"
-        type="text"
-        placeholder="City"
-        label="City"
-      />
-    );
+    return this.getInput('city');
   }
 
   renderCountry() {
+    const { isSaving, hasFailed, errors } = this.props;
+
+    const inputName = 'country';
+    const inputLabel = 'Country';
+
+    const props = {
+      ref: inputName,
+      type: 'select',
+      placeholder: inputLabel,
+      label: inputLabel,
+
+      disabled: isSaving,
+      value: this.props.values[inputName],
+      onChange: this.handleChange.bind(this, inputName),
+    };
+
+    if (hasFailed && errors[inputName]) {
+      props.bsStyle = 'error';
+      props.help = errors[inputName];
+      props.hasFeedback = true;
+    }
+
     return (
-      <Input
-        ref="country"
-        type="text"
-        placeholder="Country"
-        label="Country"
-      />
+      <Input {...props} >
+        {Object.keys(countries).map(key => <option value={key}>{countries[key]}</option>)}
+      </Input>
     );
   }
 
   renderStartYear() {
-    return (
-      <Input
-        ref="startYear"
-        type="number"
-        placeholder="Start year"
-        label="Start year"
-      />
-    );
+    return this.getInput('startYear', 'number');
   }
 
   renderEndYear() {
-    return (
-      <Input
-        ref="endYear"
-        type="number"
-        placeholder="End year"
-        label="End year"
-      />
-    );
+    return this.getInput('endYear', 'number');
   }
 
   render() {

@@ -6,27 +6,27 @@ import {
   Input,
 } from 'react-bootstrap';
 
-class LanguagesForm extends React.Component {
+import FormComponent from './form';
+
+class LanguagesForm extends FormComponent {
+
+  constructor(props) {
+    super(props);
+    this.props = props;
+  }
+
+  handleChange(name, event) {
+    this.props.values[name] = this.refs[name].getValue();
+
+    this.props.handleChange('languages', this.props.currentValues);
+  }
+
   renderName() {
-    return (
-      <Input
-        ref="name"
-        type="text"
-        placeholder="Name"
-        label="Name"
-      />
-    );
+    return this.getInput('name');
   }
 
   renderProficiency() {
-    return (
-      <Input
-        ref="proficiency"
-        type="text"
-        placeholder="Proficiency"
-        label="Proficiency"
-      />
-    );
+    return this.getInput('proficiency');
   }
 
   render() {
@@ -47,4 +47,3 @@ class LanguagesForm extends React.Component {
 }
 
 export default LanguagesForm;
-

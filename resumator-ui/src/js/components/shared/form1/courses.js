@@ -6,43 +6,31 @@ import {
   Input,
 } from 'react-bootstrap';
 
-class CoursesForm extends React.Component {
+import FormComponent from './form';
+
+class CoursesForm extends FormComponent {
+
+  constructor(props) {
+    super(props);
+    this.props = props;
+  }
+
   handleChange(name, event) {
-    this.props.handleChange(name, this.refs[name].getValue());
+    this.props.values[name] = this.refs[name].getValue();
+
+    this.props.handleChange('courses', this.props.currentValues);
   }
 
   renderName() {
-    return (
-      <Input
-        ref="name"
-        type="text"
-        placeholder="Name"
-        label="Name"
-        onChange={this.onChange.bind(this, 'name')}
-      />
-    );
+    return this.getInput('name');
   }
 
   renderYear() {
-    return (
-      <Input
-        ref="year"
-        type="number"
-        placeholder="Year"
-        label="Year"
-      />
-    );
+    return this.getInput('year', 'number');
   }
 
   renderDescription() {
-    return (
-      <Input
-        ref="description"
-        type="textarea"
-        placeholder="Description"
-        label="Description"
-      />
-    );
+    return this.getInput('description', 'textarea');
   }
 
   render() {
@@ -71,4 +59,3 @@ class CoursesForm extends React.Component {
 }
 
 export default CoursesForm;
-

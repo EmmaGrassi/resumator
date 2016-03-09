@@ -1,6 +1,8 @@
 import React from 'react';
 import { Button, Col, Input, Row, Alert } from 'react-bootstrap';
 
+import nationalities from '../../../data/nationalities';
+
 class PersonalForm extends React.Component {
   handleChange(name, event) {
     this.props.handleChange(name, this.refs[name].getValue());
@@ -270,7 +272,7 @@ class PersonalForm extends React.Component {
 
     const props = {
       ref: inputName,
-      type: 'text',
+      type: 'select',
       placeholder: inputLabel,
       label: inputLabel,
 
@@ -286,7 +288,9 @@ class PersonalForm extends React.Component {
     }
 
     return (
-      <Input {...props} />
+      <Input {...props} >
+        {Object.keys(nationalities).map(key => <option value={key}>{nationalities[key]}</option>)}
+      </Input>
     );
   }
 

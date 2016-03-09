@@ -1,6 +1,6 @@
-import _ from 'lodash';
+import toHashMap from '../helpers/toHashMap';
 
-const countries = [
+export default toHashMap([
   { value: '', label: '' },
   { value: 'AF', label: 'Afghanistan' },
   { value: 'AX', label: '\u00c5land Islands' },
@@ -254,13 +254,5 @@ const countries = [
   { value: 'EH', label: 'Western Sahara' },
   { value: 'YE', label: 'Yemen' },
   { value: 'ZM', label: 'Zambia' },
-  { value: 'ZW', label: 'Zimbabw' }
-];
-
-const object = {};
-
-_.each(countries, x => {
-  object[x.value] = x.label;
-});
-
-export default object;
+  { value: 'ZW', label: 'Zimbabw' },
+]);

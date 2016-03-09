@@ -6,36 +6,14 @@ import {
   Input,
 } from 'react-bootstrap';
 
-import labelize from '../../../helpers/labelize';
+import FormComponent from './form';
+import countries from '../../../data/countries';
 
-class ExperienceForm extends React.Component {
+class ExperienceForm extends FormComponent {
 
-  getInput(name, type) {
-    const { isSaving, hasFailed, errors, values } = this.props;
-    const inputName = name;
-    const inputLabel = labelize(name);
-
-    const props = {
-      ref: inputName,
-      type: type || 'text',
-      placeholder: inputLabel,
-      label: inputLabel,
-
-      disabled: isSaving,
-
-      // TODO: Implement this.
-      value: values[inputName],
-
-      onChange: this.handleChange.bind(this, inputName),
-    };
-
-    if (hasFailed && errors[inputName]) {
-      props.bsStyle = 'error';
-      props.help = errors[inputName];
-      props.hasFeedback = true;
-    }
-
-    return (<Input {...props} />);
+  constructor(props) {
+    super(props);
+    this.props = props;
   }
 
   handleChange(name, event) {
@@ -57,7 +35,33 @@ class ExperienceForm extends React.Component {
   }
 
   renderCountry() {
-    return this.getInput('country');
+    const { isSaving, hasFailed, errors } = this.props;
+
+    const inputName = 'country';
+    const inputLabel = 'Country';
+
+    const props = {
+      ref: inputName,
+      type: 'select',
+      placeholder: inputLabel,
+      label: inputLabel,
+
+      disabled: isSaving,
+      value: this.props.values[inputName],
+      onChange: this.handleChange.bind(this, inputName),
+    };
+
+    if (hasFailed && errors[inputName]) {
+      props.bsStyle = 'error';
+      props.help = errors[inputName];
+      props.hasFeedback = true;
+    }
+
+    return (
+      <Input {...props} >
+        {Object.keys(countries).map(key => <option value={key}>{countries[key]}</option>)}
+      </Input>
+    );
   }
 
   renderStartDate() {

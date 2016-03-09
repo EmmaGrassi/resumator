@@ -167,16 +167,18 @@ public class EmployeeQuery extends BaseResource {
     private Map<String, String> getExperienceMappings(List<Experience> experiences) {
         Map<String, String> result = new HashMap<>();
 
-        for (int i = 1; i <= experiences.size(); i++) {
-            Experience experience = experiences.get(i - 1);
-            result.put("Experience.Position" + i, experience.getTitle());
-            result.put("Experience.Period" + i, getPeriod(experience.getStartDate(), experience.getEndDate()));
-            result.put("Experience.CompanyName" + i, experience.getCompanyName());
-            result.put("Experience.City" + i, experience.getCity());
-            result.put("Experience.Country" + i, experience.getCountry());
-            result.put("Experience.Description" + i, experience.getShortDescription());
-            result.put("Experience.Technologies" + i, StringUtils.join(experience.getTechnologies(), ", "));
-            result.put("Experience.Methodologies" + i, StringUtils.join(experience.getMethodologies(), ", "));
+        if(experiences != null) {
+            for (int i = 1; i <= experiences.size(); i++) {
+                Experience experience = experiences.get(i - 1);
+                result.put("Experience.Position" + i, experience.getTitle());
+                result.put("Experience.Period" + i, getPeriod(experience.getStartDate(), experience.getEndDate()));
+                result.put("Experience.CompanyName" + i, experience.getCompanyName());
+                result.put("Experience.City" + i, experience.getCity());
+                result.put("Experience.Country" + i, experience.getCountry());
+                result.put("Experience.Description" + i, experience.getShortDescription());
+                result.put("Experience.Technologies" + i, StringUtils.join(experience.getTechnologies(), ", "));
+                result.put("Experience.Methodologies" + i, StringUtils.join(experience.getMethodologies(), ", "));
+            }
         }
 
         return result;
@@ -185,14 +187,16 @@ public class EmployeeQuery extends BaseResource {
     private Map<String, String> getEducationMappings(List<Education> educations) {
         Map<String, String> result = new HashMap<>();
 
-        for (int i = 1; i <= educations.size(); i++) {
-            Education education = educations.get(i - 1);
-            result.put("Education.Degree" + i, education.getDegree().asText());
-            result.put("Education.Field" + i, education.getFieldOfStudy());
-            result.put("Education.School" + i, education.getSchool());
-            result.put("Education.City" + i, education.getCity());
-            result.put("Education.Country" + i, education.getCountry());
-            result.put("Education.Period" + i, getPeriod(education.getStartYear(), education.getEndYear()));
+        if(educations != null) {
+            for (int i = 1; i <= educations.size(); i++) {
+                Education education = educations.get(i - 1);
+                result.put("Education.Degree" + i, education.getDegree().asText());
+                result.put("Education.Field" + i, education.getFieldOfStudy());
+                result.put("Education.School" + i, education.getSchool());
+                result.put("Education.City" + i, education.getCity());
+                result.put("Education.Country" + i, education.getCountry());
+                result.put("Education.Period" + i, getPeriod(education.getStartYear(), education.getEndYear()));
+            }
         }
 
         return result;
@@ -201,11 +205,13 @@ public class EmployeeQuery extends BaseResource {
     private Map<String, String> getCourseMappings(List<Course> courses) {
         Map<String, String> result = new HashMap<>();
 
-        for (int i = 1; i <= courses.size(); i++) {
-            Course course = courses.get(i - 1);
+        if(courses != null){
+            for (int i = 1; i <= courses.size(); i++) {
+                Course course = courses.get(i - 1);
 
-            result.put("Course.Name" + i, course.getName());
-            result.put("Course.Year" + i, String.valueOf(course.getYear()));
+                result.put("Course.Name" + i, course.getName());
+                result.put("Course.Year" + i, String.valueOf(course.getYear()));
+            }
         }
 
         return result;
@@ -214,11 +220,13 @@ public class EmployeeQuery extends BaseResource {
     private Map<String, String> getLanguageMappings(List<Language> languages) {
         Map<String, String> result = new HashMap<>();
 
-        for (int i = 1; i <= languages.size(); i++) {
-            Language language = languages.get(i - 1);
+        if(languages != null) {
+            for (int i = 1; i <= languages.size(); i++) {
+                Language language = languages.get(i - 1);
 
-            result.put("Language.Name" + i, language.getName());
-            result.put("Language.Proficiency" + i, language.getProficiency().asText());
+                result.put("Language.Name" + i, language.getName());
+                result.put("Language.Proficiency" + i, language.getProficiency().asText());
+            }
         }
 
         return result;

@@ -20,6 +20,7 @@ import org.glassfish.hk2.api.Immediate;
 import org.glassfish.hk2.api.InjectionResolver;
 import org.glassfish.hk2.api.TypeLiteral;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
+import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.jetty.JettyHttpContainerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
@@ -67,6 +68,7 @@ public class ResumatorApp {
         rc = registerEventPublisher(rc);
         rc = registerCommandFactory(rc);
         rc = registerJSONSupport(rc);
+        rc = registerInclusiveJSONSupport(rc);
         rc = registerUriRewriteSupport(rc);
         rc = registerSecurity(rc);
         rc = registerRepositories(rc);
@@ -151,6 +153,12 @@ public class ResumatorApp {
             }
         });
     }
+    
+    //This is needed to deserialize JSON inputs into Java Objects when the data is sent to the server.
+    private ResourceConfig registerInclusiveJSONSupport(final ResourceConfig rc) {
+	return rc.register(ObjectMapperProvider.class).register(JacksonFeature.class);
+        
+        }
 
     private ResourceConfig registerEventPublisher(final ResourceConfig rc) {
         return rc.register(new AbstractBinder() {

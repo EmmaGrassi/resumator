@@ -29,7 +29,7 @@ export default function update(email) {
 
       dispatch(hideAlert({ id: 'user:update' }));
       dispatch(showAlert({
-        level: 'warning',
+        level: 'success',
         message: `Updated user: ${email}`,
         id: 'user:updated',
       }));

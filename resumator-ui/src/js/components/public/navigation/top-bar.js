@@ -27,6 +27,11 @@ class TopBar extends React.Component {
 
   render() {
     let nav = '';
+    const homeURL = (this.props.session.idToken &&
+        !this.props.profile.item.admin &&
+        this.props.profile.item.type) ?
+        `#/${this.props.profile.item.type.toLowerCase()}s/${this.props.session.email}` :
+        '#/';
 
     if (this.props.session.idToken && this.props.profile.item.admin) {
       nav = (
@@ -38,11 +43,12 @@ class TopBar extends React.Component {
       );
     }
 
+
     return (
       <Navbar>
         <NavbarHeader>
           <NavbarBrand>
-            <a href="#">Resumator</a>
+            <a href={homeURL}>Resumator</a>
           </NavbarBrand>
           <NavbarToggle />
         </NavbarHeader>

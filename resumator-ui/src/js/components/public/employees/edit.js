@@ -33,7 +33,7 @@ function mapDispatchToProps(dispatch) {
 
     addEntry: (name) => {
       dispatch(addEntry(name));
-    },
+    }
   };
 }
 

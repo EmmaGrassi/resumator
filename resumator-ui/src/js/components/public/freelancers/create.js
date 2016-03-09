@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { pushPath } from 'redux-simple-router';
 
-import NewForm from '../../shared/form/employee';
+import NewForm from '../../shared/form1/employee';
 
 import actions from '../../../actions';
 

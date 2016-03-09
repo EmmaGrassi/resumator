@@ -2,7 +2,7 @@ import Loader from 'react-loader';
 import React from 'react';
 import { connect } from 'react-redux';
 
-import EditForm from '../../shared/form/employee';
+import EditForm from '../../shared/form1/employee';
 
 import actions from '../../../actions';
 

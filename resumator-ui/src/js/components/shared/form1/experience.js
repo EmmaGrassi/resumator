@@ -6,22 +6,18 @@ import {
   Input,
 } from 'react-bootstrap';
 
+import labelize from '../../../helpers/labelize';
+
 class ExperienceForm extends React.Component {
-  handleChange(name, event) {
-    this.props.values[name] = this.refs[name].getValue();
 
-    this.props.handleChange('experience', this.props.currentValues);
-  }
-
-  renderTitle() {
+  getInput(name, type) {
     const { isSaving, hasFailed, errors, values } = this.props;
-
-    const inputName = 'title';
-    const inputLabel = 'Title';
+    const inputName = name;
+    const inputLabel = labelize(name);
 
     const props = {
       ref: inputName,
-      type: 'text',
+      type: type || 'text',
       placeholder: inputLabel,
       label: inputLabel,
 
@@ -39,97 +35,49 @@ class ExperienceForm extends React.Component {
       props.hasFeedback = true;
     }
 
-    return (
-      <Input {...props} />
-    );
+    return (<Input {...props} />);
+  }
+
+  handleChange(name, event) {
+    this.props.values[name] = this.refs[name].getValue();
+
+    this.props.handleChange('experience', this.props.currentValues);
+  }
+
+  renderTitle() {
+    return this.getInput('title');
   }
 
   renderCompanyName() {
-    return (
-      <Input
-        ref="companyName"
-        type="text"
-        placeholder="Company Name"
-        label="Company Name"
-      />
-    );
+    return this.getInput('companyName');
   }
 
   renderCity() {
-    return (
-      <Input
-        ref="degree"
-        type="text"
-        placeholder="City"
-        label="City"
-      />
-    );
+    return this.getInput('city');
   }
 
   renderCountry() {
-    return (
-      <Input
-        ref="country"
-        type="text"
-        placeholder="Country"
-        label="Country"
-      />
-    );
+    return this.getInput('country');
   }
 
   renderStartDate() {
-    return (
-      <Input
-        ref="startDate"
-        type="date"
-        placeholder="Start date"
-        label="Start date"
-      />
-    );
+    return this.getInput('startDate', 'date');
   }
 
   renderEndDate() {
-    return (
-      <Input
-        ref="endDate"
-        type="date"
-        placeholder="End date"
-        label="End date"
-      />
-    );
+    return this.getInput('endDate', 'date');
   }
 
   renderShortDescription() {
-    return (
-      <Input
-        ref="shortDescription"
-        type="textarea"
-        placeholder="Short description"
-        label="Short description"
-      />
-    );
+    return this.getInput('shortDescription', 'textarea');
   }
 
   renderTechnologies() {
-    return (
-      <Input
-        ref="technologies"
-        type="text"
-        placeholder="Technologies"
-        label="Technologies"
-      />
-    );
+    return this.getInput('technologies');
   }
 
   renderMethodologies() {
-    return (
-      <Input
-        ref="methodologies"
-        type="text"
-        placeholder="Methodologies"
-        label="Methodologies"
-      />
-    );
+    return this.getInput('methodologies');
   }
 
   render() {

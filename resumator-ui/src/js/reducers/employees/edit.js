@@ -30,14 +30,8 @@ function edit(state = defaults, action = {}) {
         .set('errors', action.errors);
 
     case 'employees:edit:change':
-      console.log('action', action);
-
-      const newState = state
+      return state
         .setIn(['item', action.payload.key], immutable.fromJS(action.payload.value));
-
-      console.log(newState.toJS());
-
-      return newState;
 
     case 'employees:update:start':
       return state
@@ -56,15 +50,11 @@ function edit(state = defaults, action = {}) {
 
     case 'employees:addEntry':
       const type = action.payload;
-
       const result = state
         .getIn(['item', type]);
 
       return state
-        .setIn(['item', type], result.push({
-        }));
-
-      return state;
+        .setIn(['item', type], result.push({}));
 
     default:
       return state;

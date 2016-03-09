@@ -39,7 +39,7 @@ class FormComponent extends React.Component {
   }
 
   handleChange(name, event) {
-    console.error('Unimpleneted method, go to your form Component and implenent handleChange method');
+    console.error('Unimplemented method, go to your form Component and implement handleChange method');
   }
 }
 

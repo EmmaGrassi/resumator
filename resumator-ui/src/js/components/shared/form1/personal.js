@@ -289,7 +289,7 @@ class PersonalForm extends React.Component {
 
     return (
       <Input {...props} >
-        {Object.keys(nationalities).map(key => <option value={key}>{nationalities[key]}</option>)}
+        {Object.keys(nationalities).map((key, i) => <option key={i} value={key}>{nationalities[key]}</option>)}
       </Input>
     );
   }

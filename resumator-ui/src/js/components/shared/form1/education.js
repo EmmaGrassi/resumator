@@ -62,7 +62,7 @@ class EducationForm extends FormComponent {
 
     return (
       <Input {...props} >
-        {Object.keys(countries).map(key => <option value={key}>{countries[key]}</option>)}
+        {Object.keys(countries).map((key, i) => <option key={i} value={key}>{countries[key]}</option>)}
       </Input>
     );
   }

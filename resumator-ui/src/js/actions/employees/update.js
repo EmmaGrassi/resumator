@@ -12,16 +12,19 @@ import hideAlert from '../alerts/hide';
 
 export default function update(email) {
   function asList(str, separator) {
-    return map(str.split(separator), (s) => {
-      s.trim();
-    });
+    return str.split(separator).map((s) => s.trim());
   }
 
   function experienceWithLists(exp) {
-    return ['technologies', 'methodologies']
-      .map(field => exp[field])
-      .filter(x => !isEmpty(x))
-      .map(x => console.log(x));
+    if(exp.technologies) {
+      exp.technologies = asList(exp.technologies);
+    }
+
+    if(exp.methodologies) {
+      exp.methodologies = asList(exp.methodologies);
+    }
+
+    return exp;
   }
 
   return (dispatch) => {
@@ -44,7 +47,7 @@ export default function update(email) {
       dispatch(showAlert({
         level: 'success',
         message: `Updated user: ${email}`,
-        id: 'user:updated',
+        id: 'user:updated'
       }));
 
       setTimeout(() => {

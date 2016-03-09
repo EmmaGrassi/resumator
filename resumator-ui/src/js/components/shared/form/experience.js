@@ -82,7 +82,7 @@ class ExperienceForm extends FormComponent {
   }
 
   renderMethodologies() {
-    return this.getInput('methodologies', null, false, "Separate values with commas, e.g.: SCRUM, RUP, ...");
+    return this.getInput('methodologies', null, true, "Separate values with commas, e.g.: SCRUM, RUP, ...");
   }
 
   render() {

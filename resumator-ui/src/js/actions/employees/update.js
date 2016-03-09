@@ -11,12 +11,26 @@ import showAlert from '../alerts/show';
 import hideAlert from '../alerts/hide';
 
 export default function update(email) {
+  function asList(str, separator) {
+    return map(str.split(separator), (s) => {
+      s.trim();
+    });
+  }
+
+  function experienceWithLists(exp) {
+    debugger;
+    return ["technologies", "methodologies"]
+      .map(field => exp[field])
+      .filter(x => !isEmpty(x))
+      .map(x => console.log(x));
+  }
+
   return (dispatch) => {
     dispatch({ type: 'employees:update:start' });
 
     const data = store.getState().employees.edit.toJS().item;
 
-    data.experience = data.experience.filter(x => !isEmpty(x));
+    data.experience = data.experience.filter(x => !isEmpty(x)).map(experienceWithLists);
     data.education = data.education.filter(x => !isEmpty(x));
     data.courses = data.courses.filter(x => !isEmpty(x));
     data.languages = data.languages.filter(x => !isEmpty(x));

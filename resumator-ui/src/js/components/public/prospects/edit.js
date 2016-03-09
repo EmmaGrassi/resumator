@@ -1,47 +1,67 @@
 import Loader from 'react-loader';
 import React from 'react';
+import moment from 'moment';
 import { connect } from 'react-redux';
 
-import EditForm from '../../shared/form1/employee';
+import EditForm from '../../shared/form/employee';
 
-import actions from '../../../actions';
+import edit from '../../../actions/employees/edit';
+import update from '../../../actions/employees/update';
+import editChange from '../../../actions/employees/editChange';
+import addEntry from '../../../actions/employees/addEntry';
 
 function mapStateToProps(state) {
+  const edit = state.employees.edit.toJS();
+  const alertState = state.alerts.toJS();
+
   return {
-    edit: state.employees.edit.toJS()
+    isFetching: edit.isFetching,
+    item: edit.item,
+
+    hasFailed: edit.hasFailed,
+    errors: edit.errors,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    editEmployee: (email) => dispatch(actions.employees.edit(email)),
-    updateEmployee: (email, data) => dispatch(actions.employees.update(email, data))
-  }
+    editEmployee: (email) => dispatch(edit(email)),
+    updateEmployee: (email) => dispatch(update(email)),
+    changeEmployee: (k, v) => {
+      dispatch(editChange(k, v));
+    },
+
+    addEntry: (name) => {
+      dispatch(addEntry(name));
+    }
+  };
 }
 
 class Edit extends React.Component {
   componentWillMount() {
-    this.props.editEmployee(this.props.params.userId)
-  }
-
-  handleFormSubmit(email, data) {
-    this.props.updateEmployee(email, data);
+    // TODO: Change this to email.
+    this.props.editEmployee(this.props.params.userId);
   }
 
   render() {
-    const data = this.props.edit;
-    const isFetching = data.isFetching;
+    const {
+      isFetching,
+      hasFailed,
+      item,
+      errors,
+      params,
+      } = this.props;
 
-    if (data.item) {
-      data.item.dateOfBirth = new Date(data.item.dateOfBirth);
+    if (item) {
+      item.dateOfBirth = moment(item.dateOfBirth).format('YYYY-MM-DD');
 
-      data.item.experience = data.item.experience.map((v, i) => {
+      item.experience = item.experience.map((v, i) => {
         if (v.startDate) {
-          v.startDate = new Date(v.startDate);
+          v.startDate = moment(v.startDate).format('YYYY-MM-DD');
         }
 
         if (v.endDate) {
-          v.endDate = new Date(v.endDate);
+          v.endDate = moment(v.endDate).format('YYYY-MM-DD');
         }
 
         return v;
@@ -53,9 +73,14 @@ class Edit extends React.Component {
         loaded={!isFetching}
       >
         <EditForm
-          value={data.item}
           type="PROSPECT"
-          handleSubmit={this.handleFormSubmit.bind(this, data.item.email)}
+          values={item}
+          addEntry={this.props.addEntry}
+          section={params.section}
+          handleSubmit={this.props.updateEmployee.bind(this, item.email)}
+          handleChange={this.props.changeEmployee.bind(this)}
+          hasFailed={hasFailed}
+          errors={errors}
         />
       </Loader>
     );

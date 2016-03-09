@@ -1,35 +1,39 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { pushPath } from 'redux-simple-router';
 
-import NewForm from '../../shared/form1/employee';
+import NewForm from '../../shared/form/employee';
 
-import actions from '../../../actions';
+import create from '../../../actions/employees/create';
+import createChange from '../../../actions/employees/createChange';
 
 function mapStateToProps(state) {
+  const create = state.employees.create.toJS();
+
   return {
+    hasFailed: create.hasFailed,
+    errors: create.errors,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    createEmployee: (data) => dispatch(actions.employees.create(data)),
-    navigateToShow: (email) => dispatch(pushPath(`/freelancers/${email}`, {}))
+    createEmployee: () => dispatch(create()),
+    changeEmployee: (k, v) => dispatch(createChange(k, v)),
   };
 }
 
 class Create extends React.Component {
-  handleFormSubmit(data) {
-    this.props.createEmployee(data);
-  }
-
   render() {
     return (
       <div>
         <NewForm
           ref="employeeForm"
           type="FREELANCER"
-          handleSubmit={this.handleFormSubmit.bind(this)}
+          values={{}}
+          handleSubmit={this.props.createEmployee}
+          handleChange={this.props.changeEmployee.bind(this)}
+          hasFailed={this.props.hasFailed}
+          errors={this.props.errors}
         />
       </div>
     );

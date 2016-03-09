@@ -3,7 +3,7 @@ import React from 'react';
 import moment from 'moment';
 import { connect } from 'react-redux';
 
-import EditForm from '../../shared/form1/employee';
+import EditForm from '../../shared/form/employee';
 
 import edit from '../../../actions/employees/edit';
 import update from '../../../actions/employees/update';

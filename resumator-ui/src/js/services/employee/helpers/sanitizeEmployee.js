@@ -1,7 +1,7 @@
 import moment from 'moment';
 
 export default function sanitizeEmployee(data) {
-  data.type = data.type || 'EMPLOYEE';
+  data.type = data.type || 'PROSPECT';
   data.courses = data.courses || [];
   data.education = data.education || [];
   data.experience = data.experience || [];

@@ -46,7 +46,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    navigateTo: (email, value) => dispatch(pushPath(`/employees/${email}/edit/${value.toLowerCase()}`)),
+    navigateTo: (email, type, route) => dispatch(pushPath(`/${type}/${email}/edit/${route.toLowerCase()}`)),
     createChange: (k, v) => dispatch(createChange(k, v)),
   };
 }
@@ -99,9 +99,9 @@ class EmployeeForm extends React.Component {
 
   handleTabSelect(event) {
     const email = this.getEmail();
-    console.log('email, event.target.text', email, event.target.text);
+    const type = this.props.values.type.toLowerCase() + 's';
     if (!email) return;
-    this.props.navigateTo(email, event.target.text);
+    this.props.navigateTo(email, type, event.target.text);
   }
 
   renderNavItems() {

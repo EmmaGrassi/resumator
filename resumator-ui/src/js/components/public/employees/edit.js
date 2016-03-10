@@ -19,7 +19,6 @@ function mapStateToProps(state) {
   return {
     isFetching: edit.isFetching,
     item: edit.item,
-
     hasFailed: edit.hasFailed,
     errors: edit.errors,
   };

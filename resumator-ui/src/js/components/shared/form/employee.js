@@ -41,6 +41,7 @@ const forms = {
 function mapStateToProps(state) {
   return {
     profile: state.user.profile.toJS(),
+    session: state.user.session.toJS(),
   };
 }
 
@@ -99,7 +100,7 @@ class EmployeeForm extends React.Component {
 
   handleTabSelect(event) {
     const email = this.getEmail();
-    const type = this.props.values.type.toLowerCase() + 's';
+    const type = `${this.props.values.type.toLowerCase()}s`;
     if (!email) return;
     this.props.navigateTo(email, type, event.target.text);
   }
@@ -126,6 +127,7 @@ class EmployeeForm extends React.Component {
       register,
       values,
       handleCancel,
+      profile,
     } = this.props;
 
     let component;
@@ -138,6 +140,7 @@ class EmployeeForm extends React.Component {
       isSaving,
       register,
       values,
+      profile,
       handleCancel,
     };
 

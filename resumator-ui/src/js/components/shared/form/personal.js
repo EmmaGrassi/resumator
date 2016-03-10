@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Col, Input, Row, Alert } from 'react-bootstrap';
 
 import nationalities from '../../../data/nationalities';
+import types from '../../../data/types';
 import labelize from '../../../helpers/labelize';
 
 class PersonalForm extends React.Component {
@@ -9,8 +10,54 @@ class PersonalForm extends React.Component {
     this.props.handleChange(name, this.refs[name].getValue());
   }
 
+  renderFirstRow() {
+    if (this.props.profile.item.admin) {
+      return (<Row>
+        <Col xs={6}>
+          {this.renderType()}
+        </Col>
+        <Col xs={6}>
+          {this.renderTitle()}
+        </Col>
+      </Row>);
+    } else {
+      return (<Row>
+        <Col xs={12}>
+          {this.renderTitle()}
+        </Col>
+      </Row>);
+    }
+  }
+
   // TODO: Do not render these for users that can not see them.
   renderType() {
+    const { isSaving, hasFailed, errors, values } = this.props;
+
+    const inputName = 'type';
+    const inputLabel = labelize(inputName, '*');
+
+    const props = {
+      ref: inputName,
+      type: 'select',
+      placeholder: inputLabel,
+      label: inputLabel,
+
+      disabled: isSaving,
+      value: this.props.values[inputName],
+      onChange: this.handleChange.bind(this, inputName),
+    };
+
+    if (hasFailed && errors[inputName]) {
+      props.bsStyle = 'error';
+      props.help = errors[inputName];
+      props.hasFeedback = true;
+    }
+
+    return (
+      <Input {...props}>
+        {Object.keys(types).map((key, i) => <option key={i} value={key}>{types[key]}</option>)}
+      </Input>
+    );
   }
 
   renderTitle() {
@@ -326,12 +373,7 @@ class PersonalForm extends React.Component {
   render() {
     return (
       <form onSubmit={this.props.handleSubmit}>
-        <Row>
-          <Col xs={12}>
-            {this.renderTitle()}
-          </Col>
-        </Row>
-
+        {this.renderFirstRow()}
         <Row>
           <Col xs={6}>
             {this.renderName()}

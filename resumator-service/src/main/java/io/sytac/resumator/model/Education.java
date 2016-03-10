@@ -2,8 +2,10 @@ package io.sytac.resumator.model;
 
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.Range;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -32,9 +34,9 @@ public class Education {
     private final String city;
 	@NotBlank(message = "country is mandatory")
     private final String country;
-    @Digits(message = "Education startYear should consist of digits", fraction = 0, integer = 4)
+    @Range(min = 1960, max = 2030 ,message= "Education startYear should consist of 4 digits")
     private final int startYear;
-    @Digits(message = "Education endYear should consist of digits", fraction = 0, integer = 4)
+    @Range(min = 1960, max = 2030,message= "Education  endYear should consist of 4 digits")
     private final int endYear;
 
     @JsonCreator

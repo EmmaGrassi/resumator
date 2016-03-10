@@ -131,10 +131,10 @@ public class UpdateEmployeeTest extends CommonEmployeeTest {
 			throw new IllegalArgumentException("An error occured with http response");
 		}
         Map<String,String> fields=(Map<String, String>) validationErrors.get("fields");
-        assertNotNull("Education startyear validation is not done.", fields.get("Education.startyear"));
+        assertNotNull("Education startyear validation is not done.", fields.get("education[0].startYear"));
         assertNotNull("dateOfBirth validation is not done.", fields.get("dateOfBirth"));
         assertNotNull("nationality validation is not done.", fields.get("nationality"));
-        assertNotNull("course year validation is not done.", fields.get("course.year"));
+        assertNotNull("course year validation is not done.", fields.get("course[0].year"));
 
     }
 

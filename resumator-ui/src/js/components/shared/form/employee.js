@@ -81,7 +81,6 @@ class EmployeeForm extends React.Component {
         activeKey: 1,
         selectedTab: 'Personal',
       });
-
       return;
     }
 
@@ -97,10 +96,7 @@ class EmployeeForm extends React.Component {
   handleTabSelect(event) {
     const email = this.getEmail();
 
-    if (!email) {
-      return;
-    }
-
+    if (!email) return;
     this.props.navigateTo(email, event.target.text);
   }
 

@@ -2,7 +2,16 @@ import React from 'react';
 import { Button, Col, Input, Row, Alert } from 'react-bootstrap';
 
 class ListContainer extends React.Component {
+
+  componentWillMount() {
+    this.handleEmptyValues(this.props);
+  }
+
   componentWillReceiveProps(props, state) {
+    this.handleEmptyValues(props);
+  }
+
+  handleEmptyValues(props) {
     const currentValues = props.formProps.values[props.name];
 
     if (!currentValues.length) {

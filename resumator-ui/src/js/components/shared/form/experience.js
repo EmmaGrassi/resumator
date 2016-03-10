@@ -49,7 +49,7 @@ class ExperienceForm extends FormComponent {
 
       disabled: isSaving,
       value: this.props.values[inputName],
-      onChange: this.handleChange.bind(this, inputName)
+      onChange: this.handleChange.bind(this, inputName),
     };
 
     if (hasFailed && errors[inputName]) {
@@ -78,11 +78,11 @@ class ExperienceForm extends FormComponent {
   }
 
   renderTechnologies() {
-    return this.getInput('technologies', null, true, "Separate values with commas, e.g.: Java, JavaScript, ...");
+    return this.getInput('technologies', null, true, 'Separate values with commas, e.g.: Java, JavaScript, ...');
   }
 
   renderMethodologies() {
-    return this.getInput('methodologies', null, true, "Separate values with commas, e.g.: SCRUM, RUP, ...");
+    return this.getInput('methodologies', null, true, 'Separate values with commas, e.g.: SCRUM, RUP, ...');
   }
 
   render() {

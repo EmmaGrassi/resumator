@@ -33,7 +33,7 @@ function mapDispatchToProps(dispatch) {
 
     addEntry: (name) => {
       dispatch(addEntry(name));
-    }
+    },
   };
 }
 
@@ -54,7 +54,7 @@ class Edit extends React.Component {
 
     if (item) {
       item.dateOfBirth = moment(item.dateOfBirth).format('YYYY-MM-DD');
-
+      item.isSaved = true;
       item.experience = item.experience.map((v, i) => {
         if (v.startDate) {
           v.startDate = moment(v.startDate).format('YYYY-MM-DD');

@@ -46,7 +46,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    navigateTo: (email, value) => dispatch(pushPath(`/employees/${email}/edit/${value.toLowerCase()}`)),
+    navigateTo: (email, type, route) => dispatch(pushPath(`/${type}/${email}/edit/${route.toLowerCase()}`)),
     createChange: (k, v) => dispatch(createChange(k, v)),
   };
 }
@@ -70,7 +70,7 @@ class EmployeeForm extends React.Component {
   }
 
   getEmail() {
-    return this.props.profile && this.props.profile.item && this.props.profile.item.email;
+    return this.props.values && this.props.values.email;
   }
 
   getActiveSection(props) {
@@ -93,22 +93,26 @@ class EmployeeForm extends React.Component {
     });
   }
 
+  isSaved() {
+    return this.props.values.isSaved;
+  }
+
   handleTabSelect(event) {
     const email = this.getEmail();
-
+    const type = this.props.values.type.toLowerCase() + 's';
     if (!email) return;
-    this.props.navigateTo(email, event.target.text);
+    this.props.navigateTo(email, type, event.target.text);
   }
 
   renderNavItems() {
-    const email = this.getEmail();
-
+    // const email = this.getEmail();
+    const isSaved = this.isSaved();
     return navItems.map((v, i) => {
       if (i === 0) {
         return <NavItem key={i} eventKey={i + 1} ref={`${v}Tab`}>{v}</NavItem>;
       }
 
-      return <NavItem key={i} eventKey={i + 1} ref={`${v}Tab`} disabled={!email}>{v}</NavItem>;
+      return <NavItem key={i} eventKey={i + 1} ref={`${v}Tab`} disabled={!isSaved}>{v}</NavItem>;
     });
   }
 

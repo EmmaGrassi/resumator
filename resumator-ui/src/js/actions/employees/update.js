@@ -41,6 +41,13 @@ export default function update(email) {
     updateService(email, data, (error, results) => {
       if (error) {
         dispatch({ type: 'employees:update:failure', errors: results });
+
+        dispatch(showAlert({
+          level: 'danger',
+          message: `Failed to update user because of ${results}`,
+          id: 'user:update:failure',
+        }));
+
         return;
       }
 
@@ -48,12 +55,8 @@ export default function update(email) {
       dispatch(showAlert({
         level: 'success',
         message: `Updated user: ${email}`,
-        id: 'user:updated'
+        id: 'user:updated',
       }));
-
-      setTimeout(() => {
-        dispatch(hideAlert({ id: 'user:update' }));
-      }, 5000);
 
       dispatch({ type: 'employees:update:success', payload: results });
     });

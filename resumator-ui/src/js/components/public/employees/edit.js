@@ -7,7 +7,6 @@ import { pushPath } from 'redux-simple-router';
 import EditForm from '../../shared/form/employee';
 
 import edit from '../../../actions/employees/edit';
-import cancel from '../../../actions/employees/cancel';
 import update from '../../../actions/employees/update';
 import editChange from '../../../actions/employees/editChange';
 import addEntry from '../../../actions/employees/addEntry';

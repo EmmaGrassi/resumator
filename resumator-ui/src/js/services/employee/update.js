@@ -11,7 +11,14 @@ export default function update(email, data, cb) {
     .set('Content-Type', 'application/json')
     .end((error, response) => {
       if (error) {
-        return cb(error, JSON.parse(response.text).fields);
+        let errMessage = '';
+        try {
+          const err = JSON.parse(error);
+          errMessage = JSON.parse(error);
+        } catch (e) {
+          errMessage = error;
+        }
+        return cb(error, errMessage);
       }
 
       const { email } = JSON.parse(response.text);

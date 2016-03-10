@@ -70,7 +70,7 @@ class EmployeeForm extends React.Component {
   }
 
   getEmail() {
-    return this.props.profile && this.props.profile.item && this.props.profile.item.email;
+    return this.props.values && this.props.values.email;
   }
 
   getActiveSection(props) {
@@ -93,22 +93,26 @@ class EmployeeForm extends React.Component {
     });
   }
 
+  isSaved() {
+    return this.props.values.isSaved;
+  }
+
   handleTabSelect(event) {
     const email = this.getEmail();
-
+    console.log('email, event.target.text', email, event.target.text);
     if (!email) return;
     this.props.navigateTo(email, event.target.text);
   }
 
   renderNavItems() {
-    const email = this.getEmail();
-
+    // const email = this.getEmail();
+    const isSaved = this.isSaved();
     return navItems.map((v, i) => {
       if (i === 0) {
         return <NavItem key={i} eventKey={i + 1} ref={`${v}Tab`}>{v}</NavItem>;
       }
 
-      return <NavItem key={i} eventKey={i + 1} ref={`${v}Tab`} disabled={!email}>{v}</NavItem>;
+      return <NavItem key={i} eventKey={i + 1} ref={`${v}Tab`} disabled={!isSaved}>{v}</NavItem>;
     });
   }
 

@@ -30,7 +30,7 @@ class Create extends React.Component {
         <NewForm
           ref="employeeForm"
           type="EMPLOYEE"
-          values={{}}
+          values={{ isSaved: false }}
           sessionValues={this.props.session}
           handleSubmit={this.props.createEmployee}
           handleChange={this.props.changeEmployee.bind(this)}

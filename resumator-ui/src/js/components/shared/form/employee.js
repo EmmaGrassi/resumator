@@ -141,67 +141,16 @@ class EmployeeForm extends React.Component {
       handleCancel,
     };
 
-    switch (this.state.selectedTab) {
-      case 'Experience':
-        component = (
-          <ListContainer
-            name="experience"
-            form={forms.Experience}
-            formProps={formProps}
-            addEntry={this.props.addEntry}
-            handleSubmit={this.props.handleSubmit}
-            handleCancel={this.props.handleCancel}
-          />
-        );
-        break;
-
-      case 'Education':
-        component = (
-          <ListContainer
-            name="education"
-            form={forms.Education}
-            formProps={formProps}
-            addEntry={this.props.addEntry}
-            handleSubmit={this.props.handleSubmit}
-            handleCancel={this.props.handleCancel}
-          />
-        );
-        break;
-
-      case 'Courses':
-        component = (
-          <ListContainer
-            name="courses"
-            form={forms.Courses}
-            formProps={formProps}
-            addEntry={this.props.addEntry}
-            handleSubmit={this.props.handleSubmit}
-          />
-        );
-        break;
-
-      case 'Languages':
-        component = (
-          <ListContainer
-            name="languages"
-            form={forms.Languages}
-            formProps={formProps}
-            addEntry={this.props.addEntry}
-            handleSubmit={this.props.handleSubmit}
-          />
-        );
-        break;
-
-      case 'Personal':
-      default:
-        component = (
-          <forms.Personal {...formProps} />
-        );
-
-        break;
-    }
-
-    return component;
+    return (this.state.selectedTab === 'Personal') ?
+      (<forms.Personal {...formProps} />) :
+      (<ListContainer
+        name={this.state.selectedTab.toLowerCase()}
+        form={forms[this.state.selectedTab]}
+        formProps={formProps}
+        addEntry={this.props.addEntry}
+        handleSubmit={this.props.handleSubmit}
+        handleCancel={this.props.handleCancel}
+      />);
   }
 
   render() {

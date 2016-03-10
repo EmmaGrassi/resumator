@@ -18,6 +18,9 @@ function edit(state = defaults, action = {}) {
       return state
         .set('isFetching', true);
 
+    case 'employees:edit:cancel':
+      return state;
+
     case 'employees:edit:success':
       return state
         .set('isFetching', false)

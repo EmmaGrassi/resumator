@@ -20,9 +20,15 @@ class ListContainer extends React.Component {
     this.props.addEntry(this.props.name);
   }
 
-  renderSaveButton() {
+  renderActions() {
     return (
       <div className="pull-right">
+        <Button
+          bsStyle="danger"
+          onClick={this.props.handleCancel}
+        >
+          Cancel
+        </Button>
         <Button
           bsStyle="primary"
           onClick={this.props.handleSubmit}
@@ -78,7 +84,7 @@ class ListContainer extends React.Component {
         <Row>
           <Col xs={12}>
             {this.renderAddButton()}
-            {this.renderSaveButton()}
+            {this.renderActions()}
           </Col>
         </Row>
       </div>

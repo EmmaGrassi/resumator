@@ -125,6 +125,7 @@ class EmployeeForm extends React.Component {
       isSaving,
       register,
       values,
+      handleCancel,
     } = this.props;
 
     let component;
@@ -137,6 +138,7 @@ class EmployeeForm extends React.Component {
       isSaving,
       register,
       values,
+      handleCancel,
     };
 
     switch (this.state.selectedTab) {
@@ -148,6 +150,7 @@ class EmployeeForm extends React.Component {
             formProps={formProps}
             addEntry={this.props.addEntry}
             handleSubmit={this.props.handleSubmit}
+            handleCancel={this.props.handleCancel}
           />
         );
         break;
@@ -160,6 +163,7 @@ class EmployeeForm extends React.Component {
             formProps={formProps}
             addEntry={this.props.addEntry}
             handleSubmit={this.props.handleSubmit}
+            handleCancel={this.props.handleCancel}
           />
         );
         break;

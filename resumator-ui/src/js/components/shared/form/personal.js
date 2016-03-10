@@ -388,6 +388,12 @@ class PersonalForm extends React.Component {
           <Col xs={12}>
             <div className="pull-right">
               <Button
+                bsStyle="danger"
+                onClick={this.props.handleCancel}
+              >
+                Cancel
+              </Button>
+              <Button
                 bsStyle="primary"
                 onClick={this.props.handleSubmit}
               >

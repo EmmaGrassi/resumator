@@ -10,7 +10,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    navigateToHome: () => dispatch(pushPath('/'))
+    navigateToHome: () => dispatch(pushPath('/')),
   };
 }
 
@@ -39,4 +39,3 @@ class NotAuthorized extends React.Component {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(NotAuthorized);
-

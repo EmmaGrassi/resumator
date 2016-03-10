@@ -36,33 +36,7 @@ class ExperienceForm extends FormComponent {
   }
 
   renderCountry() {
-    const { isSaving, hasFailed, errors } = this.props;
-
-    const inputName = 'country';
-    const inputLabel = labelize(inputName, '*');
-
-    const props = {
-      ref: inputName,
-      type: 'select',
-      placeholder: inputLabel,
-      label: inputLabel,
-
-      disabled: isSaving,
-      value: this.props.values[inputName],
-      onChange: this.handleChange.bind(this, inputName),
-    };
-
-    if (hasFailed && errors[inputName]) {
-      props.bsStyle = 'error';
-      props.help = errors[inputName];
-      props.hasFeedback = true;
-    }
-
-    return (
-      <Input {...props} >
-        {Object.keys(countries).map((key, i) => <option key={i} value={key}>{countries[key]}</option>)}
-      </Input>
-    );
+    return this.getDropDown('country', countries, true);
   }
 
   renderStartDate() {

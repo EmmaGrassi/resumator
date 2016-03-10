@@ -38,7 +38,7 @@ export default function create() {
 
         dispatch({ type: 'employees:create:success', payload: email });
         dispatch(showAlert({
-          level: 'warning',
+          level: 'success',
           message: `Created new user: ${email}, Please continue filling in the rest of the info.`,
           id: `user:created[${email}]`,
         }));

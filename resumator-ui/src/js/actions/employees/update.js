@@ -1,4 +1,4 @@
-import { isEmpty } from 'lodash';
+import { isEmpty, isString } from 'lodash';
 import { pushPath } from 'redux-simple-router';
 
 import store from '../../store';
@@ -16,11 +16,11 @@ function asList(str, separator) {
 }
 
 function experienceWithLists(exp) {
-  if (exp.technologies) {
+  if (exp.technologies && isString(exp.technologies)) {
     exp.technologies = asList(exp.technologies, ',');
   }
 
-  if (exp.methodologies) {
+  if (exp.methodologies && isString(exp.methodologies)) {
     exp.methodologies = asList(exp.methodologies, ',');
   }
 

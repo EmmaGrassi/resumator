@@ -8,6 +8,7 @@ import {
 
 import FormComponent from './form';
 import countries from '../../../data/countries';
+import degrees from '../../../data/degrees';
 
 class EducationForm extends FormComponent {
 
@@ -22,7 +23,7 @@ class EducationForm extends FormComponent {
   }
 
   renderDegree() {
-    return this.getInput('degree', null, true);
+    return this.getDropDown('degree', degrees, true);
   }
 
   renderFieldOfStudy() {
@@ -38,33 +39,7 @@ class EducationForm extends FormComponent {
   }
 
   renderCountry() {
-    const { isSaving, hasFailed, errors } = this.props;
-
-    const inputName = 'country';
-    const inputLabel = 'Country';
-
-    const props = {
-      ref: inputName,
-      type: 'select',
-      placeholder: inputLabel,
-      label: inputLabel,
-
-      disabled: isSaving,
-      value: this.props.values[inputName],
-      onChange: this.handleChange.bind(this, inputName),
-    };
-
-    if (hasFailed && errors[inputName]) {
-      props.bsStyle = 'error';
-      props.help = errors[inputName];
-      props.hasFeedback = true;
-    }
-
-    return (
-      <Input {...props} >
-        {Object.keys(countries).map((key, i) => <option key={i} value={key}>{countries[key]}</option>)}
-      </Input>
-    );
+    return this.getDropDown('country', countries, true);
   }
 
   renderStartYear() {

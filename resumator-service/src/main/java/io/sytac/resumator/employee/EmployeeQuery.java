@@ -10,6 +10,7 @@ import io.sytac.resumator.organization.OrganizationRepository;
 import io.sytac.resumator.security.Identity;
 import io.sytac.resumator.security.Roles;
 import io.sytac.resumator.security.UserPrincipal;
+import io.sytac.resumator.utils.DateUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jetty.http.HttpStatus;
@@ -112,7 +113,7 @@ public class EmployeeQuery extends BaseResource {
                     .withProperty("phonenumber", emp.getPhoneNumber())
                     .withProperty("github", emp.getGitHub())
                     .withProperty("linkedin", emp.getLinkedIn())
-                    .withProperty("dateOfBirth", emp.getDateOfBirth())
+                    .withProperty("dateOfBirth", DateUtils.convert(emp.getDateOfBirth()))
                     .withProperty("nationality", emp.getNationality())
                     .withProperty("aboutMe", emp.getAboutMe())
                     .withProperty("currentResidence", emp.getCurrentResidence())

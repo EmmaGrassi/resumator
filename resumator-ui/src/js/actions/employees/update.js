@@ -10,23 +10,24 @@ import updateService from '../../services/employee/update';
 import showAlert from '../alerts/show';
 import hideAlert from '../alerts/hide';
 
+
+function asList(str, separator) {
+  return str.split(separator).map((s) => s.trim());
+}
+
+function experienceWithLists(exp) {
+  if (exp.technologies) {
+    exp.technologies = asList(exp.technologies, ',');
+  }
+
+  if (exp.methodologies) {
+    exp.methodologies = asList(exp.methodologies, ',');
+  }
+
+  return exp;
+}
+
 export default function update(email) {
-  function asList(str, separator) {
-    return str.split(separator).map((s) => s.trim());
-  }
-
-  function experienceWithLists(exp) {
-    if(exp.technologies) {
-      exp.technologies = asList(exp.technologies);
-    }
-
-    if(exp.methodologies) {
-      exp.methodologies = asList(exp.methodologies);
-    }
-
-    return exp;
-  }
-
   return (dispatch) => {
     dispatch({ type: 'employees:update:start' });
 

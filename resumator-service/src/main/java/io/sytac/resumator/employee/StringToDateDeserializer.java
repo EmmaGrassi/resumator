@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 
 import io.sytac.resumator.utils.DateUtils;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.IOException;
 import java.util.Date;
 
@@ -21,7 +23,10 @@ public class StringToDateDeserializer extends JsonDeserializer<Date> {
     public Date deserialize(JsonParser jsonparser,
             
 	DeserializationContext deserializationcontext) throws IOException {
-        String date = jsonparser.getText();       
+        String date = jsonparser.getText();   
+        
+        if(StringUtils.isEmpty(date))
+            return null;
             
         try {
 		return DateUtils.convert(date);

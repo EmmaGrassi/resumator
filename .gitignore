@@ -11,3 +11,5 @@ target/
 resumator.log
 resumator*.log.gz
 npm-debug.log
+tags
+**/tags

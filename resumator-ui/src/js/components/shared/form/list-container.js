@@ -19,10 +19,6 @@ class ListContainer extends React.Component {
     }
   }
 
-  removeForm(index) {
-    console.log('removeForm');
-  }
-
   handleAdd(event) {
     event.preventDefault();
 

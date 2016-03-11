@@ -9,6 +9,7 @@ import edit from '../../../actions/employees/edit';
 import update from '../../../actions/employees/update';
 import editChange from '../../../actions/employees/editChange';
 import addEntry from '../../../actions/employees/addEntry';
+import editCancel from '../../../actions/employees/editCancel';
 
 function mapStateToProps(state) {
   const edit = state.employees.edit.toJS();
@@ -33,6 +34,12 @@ function mapDispatchToProps(dispatch) {
 
     addEntry: (name) => {
       dispatch(addEntry(name));
+    },
+    handleCancel: () => {
+      const really = confirm('Are you sure you want to cancel? This will discard all changes');
+      if (really) {
+        dispatch(editCancel());
+      }
     },
   };
 }
@@ -79,6 +86,7 @@ class Edit extends React.Component {
           section={params.section}
           handleSubmit={this.props.updateEmployee.bind(this, item.email)}
           handleChange={this.props.changeEmployee.bind(this)}
+          handleCancel={this.props.handleCancel}
           hasFailed={hasFailed}
           errors={errors}
         />

@@ -156,7 +156,7 @@ public class ResumatorApp {
     
     //This is needed to deserialize JSON inputs into Java Objects when the data is sent to the server.
     private ResourceConfig registerInclusiveJSONSupport(final ResourceConfig rc) {
-	return rc.register(ObjectMapperProvider.class).register(JacksonFeature.class);
+	    return rc.register(ObjectMapperProvider.class).register(JacksonFeature.class);
         
         }
 

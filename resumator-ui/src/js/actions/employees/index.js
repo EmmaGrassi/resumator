@@ -11,5 +11,5 @@ export default {
   list,
   remove,
   show,
-  update
-}
+  update,
+};

@@ -1,4 +1,5 @@
 import request from 'superagent';
+import moment from 'moment';
 
 export default function edit(email, cb) {
   request

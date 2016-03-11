@@ -1,22 +1,23 @@
 package io.sytac.resumator.model;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
+import io.sytac.resumator.employee.StringToDateDeserializer;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.ToString;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 
-import io.sytac.resumator.utils.DateUtils;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.ToString;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * The working experience of an employee
@@ -57,9 +58,11 @@ public class Experience {
                       @JsonProperty("shortDescription") String shortDescription,
                       @JsonProperty("technologies") List<String> technologies,
                       @JsonProperty("methodologies") List<String> methodologies,
-                      @JsonProperty("startDate") String startDate,
-                      @JsonProperty("endDate") String endDate) {
+                      @JsonProperty("startDate") 
+    		      @JsonDeserialize(using = StringToDateDeserializer.class) Date startDate,
+                      @JsonProperty("endDate") 
+    		      @JsonDeserialize(using = StringToDateDeserializer.class)Date endDate) {
         this(companyName, title, city, country, shortDescription, technologies, methodologies,
-                DateUtils.convert(startDate), Optional.ofNullable(endDate).map(DateUtils::convert));
+                startDate, Optional.ofNullable(endDate));
     }
 }

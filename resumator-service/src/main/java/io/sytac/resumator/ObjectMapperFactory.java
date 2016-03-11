@@ -1,6 +1,7 @@
 package io.sytac.resumator;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -25,10 +26,12 @@ public class ObjectMapperFactory implements Factory<ObjectMapper> {
 
     public ObjectMapperFactory() {
         mapper = new ObjectMapper();
+        
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
         mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
         mapper.registerModule(initResumatorSerializers());
         mapper.registerModule(new Jdk8Module());
+        mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);        
     }
 
     protected SimpleModule initResumatorSerializers() {

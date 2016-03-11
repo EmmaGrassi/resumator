@@ -1,196 +1,199 @@
 import Loader from 'react-loader';
 import React from 'react';
 import moment from 'moment';
-import { Button, ButtonGroup, Col, Grid, Image, ListGroup, ListGroupItem, Row } from 'react-bootstrap';
 import { bindAll, map } from 'lodash';
 import { connect } from 'react-redux';
 import { pushPath } from 'redux-simple-router';
+
+import {
+  Button,
+  ButtonGroup,
+  Col,
+  Grid,
+  Image,
+  ListGroup,
+  ListGroupItem,
+  Row,
+} from 'react-bootstrap';
 
 import actions from '../../../actions';
 
 function normalizeString(string) {
   const words = string.split('_');
-  const casedWords = map(words, (w) => {
-    return `${w.substring(0, 1)}${w.substring(1).toLowerCase()}`;
-  });
-
+  const casedWords = map(words, (w) => `${w.substring(0, 1)}${w.substring(1).toLowerCase()}`);
   return casedWords.join(' ');
 }
 
 function mapStateToProps(state) {
   return {
-    show: state.employees.show.toJS()
+    show: state.employees.show.toJS(),
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     fetchEmployee: (email) => dispatch(actions.employees.show(email)),
-    navigateToEdit: (email) => dispatch(pushPath(`/employees/${email}/edit`))
-  }
+    navigateToEdit: (email) => dispatch(pushPath(`/employees/${email}/edit`)),
+  };
 }
 
 class Show extends React.Component {
   componentWillMount() {
-    this.props.fetchEmployee(this.props.params.userId)
-  }
-
-  handleEditButtonClick() {
-    this.props.navigateToEdit(this.props.show.item.email);
+    this.props.fetchEmployee(this.props.params.userId);
   }
 
   getCourses() {
     return (
-      <Row>
-        <Col xs={12}>
-          <h2>Courses</h2>
-          <ListGroup>
-            {this.props.show.item.courses.map((v, i) => {
-              let {
-                name,
-                year,
-                description
-              } = v;
+      <Col xs={6}>
+        <h2>Courses</h2>
+        <ListGroup>
+          {this.props.show.item.courses.map((v, i) => {
+            const {
+              name,
+              year,
+              description,
+            } = v;
 
-              return (
-                <ListGroupItem key={i}>
-                  <strong>{name} ({year})</strong><br/>
-                  {description}
-                </ListGroupItem>
-              );
-            })}
-          </ListGroup>
-        </Col>
-      </Row>
+            return (
+              <ListGroupItem key={i}>
+                <strong>{name} ({year})</strong><br />
+                {description}
+              </ListGroupItem>
+            );
+          })}
+        </ListGroup>
+      </Col>
     );
   }
 
   getEducation() {
     return (
-      <Row>
-        <Col xs={12}>
-          <h2>Education</h2>
-          <ListGroup>
-            {this.props.show.item.education.map((v, i) => {
-              let {
-                city,
-                country,
-                degree,
-                endYear,
-                fieldOfStudy,
-                school,
-                startYear
-              } = v;
+      <Col xs={6}>
+        <h2>Education</h2>
+        <ListGroup>
+          {this.props.show.item.education.map((v, i) => {
+            const {
+              city,
+              country,
+              endYear,
+              fieldOfStudy,
+              school,
+              startYear,
+            } = v;
 
-              degree = normalizeString(degree);
+            let { degree } = v;
+            degree = normalizeString(degree);
 
-              return (
-                <ListGroupItem key={i}>
-                  <strong>{degree} in {fieldOfStudy}</strong><br/>
-                  {school} in {city}, {country}<br/>
-                  {startYear} - {endYear}
-                </ListGroupItem>
-              );
-            })}
-          </ListGroup>
-        </Col>
-      </Row>
+            return (
+              <ListGroupItem key={i}>
+                <strong>{degree} in {fieldOfStudy}</strong><br />
+                {school} in {city}, {country}<br />
+                {startYear} - {endYear}
+              </ListGroupItem>
+            );
+          })}
+        </ListGroup>
+      </Col>
     );
   }
 
   getExperience() {
     return (
-      <Row>
-        <Col xs={12}>
-          <h2>Experience</h2>
-          <div>
-            {this.props.show.item.experience.map((v, i) => {
-              let {
-                city,
-                companyName,
-                country,
-                endDate,
-                methodologies,
-                shortDescription,
-                startDate,
-                technologies,
-                title
-              } = v;
+      <Col xs={6}>
+        <h2>Experience</h2>
+        <div>
+          {this.props.show.item.experience.map((v, i) => {
+            const {
+              city,
+              companyName,
+              country,
+              shortDescription,
+              title,
+            } = v;
 
-              startDate = moment(startDate);
-              endDate = moment(endDate);
+            let {
+              startDate,
+              endDate,
+              technologies,
+              methodologies,
+            } = v;
 
-              let difference = endDate.diff(startDate, 'years');
+            startDate = moment(startDate);
+            endDate = moment(endDate);
 
-              if (difference < 1) {
-                difference = `${endDate.diff(startDate, 'months')} months`;
-              } else {
-                difference = `${difference} years`;
-              }
+            let difference = endDate.diff(startDate, 'years');
 
-              const startYear = startDate.format('YYYY');
-              const endYear = endDate.format('YYYY');
+            if (difference < 1) {
+              difference = `${endDate.diff(startDate, 'months')} months`;
+            } else {
+              difference = `${difference} years`;
+            }
 
-              technologies = technologies.join(', ');
-              methodologies = methodologies.join(', ');
+            const startYear = startDate.format('YYYY');
+            const endYear = endDate.format('YYYY');
 
-              let hr;
-              if (i !== this.props.show.item.experience.length - 1) {
-                hr = <hr/>;
-              }
+            technologies = technologies.join(', ');
+            methodologies = methodologies.join(', ');
 
-              return (
-                <div key={i}>
-                  <h3
-                    style={{
-                      marginTop: '10px'
-                    }}
-                  >
-                    {title}
-                  </h3>
-                  <h4>{companyName} ({city}, {country})</h4>
-                  {startYear} - {endYear} ({difference})<br/>
-                  <br/>
-                  <p>{shortDescription}</p>
-                  <strong>Technologies:</strong> {technologies}<br/>
-                  <strong>Methodologies:</strong> {methodologies}<br/>
-                  {hr}
-                </div>
-              );
-            })}
-          </div>
-        </Col>
-      </Row>
+            let hr;
+            if (i !== this.props.show.item.experience.length - 1) {
+              hr = <hr />;
+            }
+
+            return (
+              <div key={i}>
+                <h3
+                  style={{
+                    marginTop: '10px',
+                  }}
+                >
+                  {title}
+                </h3>
+                <h4>{companyName} ({city}, {country})</h4>
+                {startYear} - {endYear} ({difference})<br />
+                <br />
+                <p>{shortDescription}</p>
+                <strong>Technologies:</strong> {technologies}<br />
+                <strong>Methodologies:</strong> {methodologies}<br />
+                {hr}
+              </div>
+            );
+          })}
+        </div>
+      </Col>
     );
   }
 
   getLanguages() {
     return (
-      <Row>
-        <Col xs={12}>
-          <h2>Languages</h2>
-          <div>
-            {this.props.show.item.languages.map((v, i) => {
-              let { name, proficiency } = v;
+      <Col xs={6}>
+        <h2>Languages</h2>
+        <div>
+          {this.props.show.item.languages.map((v, i) => {
+            let { proficiency } = v;
+            const { name } = v;
 
-              let hr;
-              if (i !== this.props.show.item.experience.length - 1) {
-                hr = <hr/>;
-              }
+            let hr;
+            if (i !== this.props.show.item.experience.length - 1) {
+              hr = <hr />;
+            }
 
-              proficiency = normalizeString(proficiency);
+            proficiency = normalizeString(proficiency);
 
-              return (
-                <div key={i}>
-                  <strong>{name} ({proficiency})</strong><br/>
-                  {hr}
-                </div>
-              );
-            })}
-          </div>
-        </Col>
-      </Row>
+            return (
+              <div key={i}>
+                <strong>{name} ({proficiency})</strong><br />
+                {hr}
+              </div>
+            );
+          })}
+        </div>
+      </Col>
     );
+  }
+
+  handleEditButtonClick() {
+    this.props.navigateToEdit(this.props.show.item.email);
   }
 
   render() {
@@ -202,20 +205,19 @@ class Show extends React.Component {
     const experience = this.getExperience();
     const languages = this.getLanguages();
 
-    let {
+    const {
       aboutMe,
       currentResidence,
-      dateOfBirth,
       email,
       github,
       id,
       linkedin,
       name,
-      nationality,
       phonenumber,
       surname,
-      title
+      title,
     } = item;
+    let { nationality, dateOfBirth } = item;
 
     const docxURL = `/api/employees/${email}/docx`;
 
@@ -231,8 +233,10 @@ class Show extends React.Component {
             <Col xs={12}>
               <span className="pull-right">
                 <ButtonGroup>
-                  <Button bsStyle="primary" onClick={this.handleEditButtonClick.bind(this)}>Edit</Button>
-                  <Button bsStyle="default" href={docxURL}>DOCX</Button>
+                  <Button bsStyle="primary" onClick={this.handleEditButtonClick.bind(this)}>
+                    Edit
+                  </Button>
+                  <Button bsStyle="default" href={docxURL} download>DOCX</Button>
                 </ButtonGroup>
               </span>
 
@@ -243,7 +247,7 @@ class Show extends React.Component {
                   <tr>
                     <td
                       style={{
-                        paddingRight: '15px'
+                        paddingRight: '15px',
                       }}
                     >
                       <strong>Name:</strong>
@@ -256,7 +260,7 @@ class Show extends React.Component {
                   <tr>
                     <td
                       style={{
-                        paddingRight: '15px'
+                        paddingRight: '15px',
                       }}
                     >
                       <strong>Nationality:</strong>
@@ -269,7 +273,7 @@ class Show extends React.Component {
                   <tr>
                     <td
                       style={{
-                        paddingRight: '15px'
+                        paddingRight: '15px',
                       }}
                     >
                       <strong>Date of Birth:</strong>
@@ -282,7 +286,7 @@ class Show extends React.Component {
                   <tr>
                     <td
                       style={{
-                        paddingRight: '15px'
+                        paddingRight: '15px',
                       }}
                     >
                       <strong>Email:</strong>
@@ -295,7 +299,7 @@ class Show extends React.Component {
                   <tr>
                     <td
                       style={{
-                        paddingRight: '15px'
+                        paddingRight: '15px',
                       }}
                     >
                       <strong>Phone:</strong>
@@ -308,7 +312,7 @@ class Show extends React.Component {
                   <tr>
                     <td
                       style={{
-                        paddingRight: '15px'
+                        paddingRight: '15px',
                       }}
                     >
                       <strong>Current residence:</strong>
@@ -321,7 +325,7 @@ class Show extends React.Component {
                   <tr>
                     <td
                       style={{
-                        paddingRight: '15px'
+                        paddingRight: '15px',
                       }}
                     >
                       <strong>Github:</strong>
@@ -334,7 +338,7 @@ class Show extends React.Component {
                   <tr>
                     <td
                       style={{
-                        paddingRight: '15px'
+                        paddingRight: '15px',
                       }}
                     >
                       <strong>Linkedin:</strong>
@@ -345,16 +349,21 @@ class Show extends React.Component {
                   </tr>
                 </tbody>
               </table>
-              <br/>
+              <br />
               <p>{aboutMe}</p>
             </Col>
           </Row>
+          <Row>
+            {education}
+            {courses}
 
-          {experience}
-          {education}
-          {languages}
-          {courses}
+          </Row>
+          <Row>
+            {experience}
+            {languages}
+          </Row>
         </Grid>
+        <br />
       </Loader>
     );
   }

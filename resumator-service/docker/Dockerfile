@@ -21,7 +21,7 @@ COPY resumator-0.1-SNAPSHOT.jar /usr/local/resumator/resumator.jar
 COPY resumator.sh /usr/local/resumator/resumator.sh
 RUN chmod +x /usr/local/resumator/resumator.sh
 
-EXPOSE 9090
+EXPOSE 8080
 
 # Run the app
 ENTRYPOINT ["/usr/local/resumator/resumator.sh"]

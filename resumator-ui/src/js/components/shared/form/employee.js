@@ -1,180 +1,192 @@
 import React from 'react';
-import moment from 'moment';
-import tcombForm from 'tcomb-form';
-import tcombFormTypes from 'tcomb-form-types';
-import { Button, Col, Grid, Input, Row } from 'react-bootstrap';
-import { bindAll, map } from 'lodash';
+import {
+  Button,
+  Col,
+  Grid,
+  Input,
+  Nav,
+  NavItem,
+  Row,
+} from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { pushPath } from 'redux-simple-router';
 
-// import DateTimeInput from 'react-bootstrap-datetimepicker';
-// import Select from 'react-select';
+import create from '../../../actions/employees/create';
+import createChange from '../../../actions/employees/createChange';
 
-import countries from './countries';
-import nationalities from './nationalities';
-import TagsComponent from '../../../lib/components/tcomb-form/tags';
+import PersonalForm from './personal';
+import ExperienceForm from './experience';
+import EducationForm from './education';
+import CoursesForm from './courses';
+import LanguagesForm from './languages';
 
-const { Form } = tcombForm.form;
+import ListContainer from './list-container';
 
-const CoursesSchema = tcombForm.struct({
-  name: tcombForm.String,
-  description: tcombForm.String,
-  year: tcombForm.Number
-});
+const navItems = [
+  'Personal',
+  'Experience',
+  'Education',
+  'Courses',
+  'Languages',
+];
 
-const DegreeSchema = tcombForm.enums({
-  ASSOCIATE_DEGREE: 'Associate Degree',
-  BACHELOR_DEGREE: 'Bachelor Degree',
-  MASTER_DEGREE: 'Master Degree',
-  ENGINEER_DEGREE: 'Engineer Degree',
-  DOCTORAL: 'Doctoral',
-  OTHER: 'Other'
-});
+const forms = {
+  Personal: PersonalForm,
+  Experience: ExperienceForm,
+  Education: EducationForm,
+  Courses: CoursesForm,
+  Languages: LanguagesForm,
+};
 
-const EducationSchema = tcombForm.struct({
-  degree: DegreeSchema,
-  fieldOfStudy: tcombForm.String,
-  school: tcombForm.String,
-  city: tcombForm.String,
-  country: tcombForm.enums(countries),
-  startYear: tcombForm.Number,
-  endYear: tcombForm.Number
-});
+function mapStateToProps(state) {
+  return {
+    profile: state.user.profile.toJS(),
+    session: state.user.session.toJS(),
+  };
+}
 
-const ExperienceSchema = tcombForm.struct({
-  companyName: tcombForm.String,
-  title: tcombForm.String,
-  city: tcombForm.String,
-  country: tcombForm.enums(countries),
-  startDate: tcombForm.Date,
-  endDate: tcombForm.maybe(tcombForm.Date),
-  shortDescription: tcombForm.String,
-  technologies: tcombForm.list(tcombForm.String),
-  methodologies: tcombForm.list(tcombForm.String)
-});
-
-const LanguageProficiencySchema = tcombForm.enums({
-  ELEMENTARY: 'Elementary',
-  LIMITED_WORKING: 'Limited Working Experience',
-  PROFESSIONAL_WORKING: 'Professional Working Experience',
-  FULL_PROFESSIONAL: 'Full Professional',
-  NATIVE: 'Native'
-});
-
-const EmployeeTypeSchema = tcombForm.enums({
-	  EMPLOYEE: 'Employee',
-	  FREELANCER: 'Freelancer',
-	  PROSPECT: 'Prospect'
-	});
-
-const LanguageSkillSchema = tcombForm.struct({
-  name: tcombForm.String,
-
-  proficiency: LanguageProficiencySchema
-});
-
-const EmployeeSchema = tcombForm.struct({
-  type: EmployeeTypeSchema,
-  
-  title: tcombForm.String,
-  
-  name: tcombForm.String,
-  surname: tcombForm.String,
-
-  email: tcombFormTypes.String.Email,
-  phonenumber: tcombForm.Number,
-
-  currentResidence: tcombForm.String,
-
-  github: tcombForm.maybe(tcombForm.String),
-  linkedin: tcombForm.maybe(tcombForm.String),
-
-  dateOfBirth: tcombForm.Date,
-  nationality: tcombForm.enums(nationalities),
-
-  aboutMe: tcombForm.String,
-
-  education: tcombForm.list(EducationSchema),
-  courses: tcombForm.list(CoursesSchema),
-  experience: tcombForm.list(ExperienceSchema),
-  languages: tcombForm.list(LanguageSkillSchema)  
-  
-});
+function mapDispatchToProps(dispatch) {
+  return {
+    navigateTo: (email, type, route) => dispatch(pushPath(`/${type}/${email}/edit/${route.toLowerCase()}`)),
+    createChange: (k, v) => dispatch(createChange(k, v)),
+  };
+}
 
 class EmployeeForm extends React.Component {
-  handleSubmit(event) {
-    event.preventDefault();
+  constructor(options) {
+    super(options);
 
-    let value = this.refs.form.getValue();
+    this.state = {
+      activeKey: 1,
+      selectedTab: 'Personal',
+    };
+  }
 
-    if (value) {
-      value = JSON.stringify(value);
-      value = JSON.parse(value);
+  componentWillMount() {
+    this.getActiveSection(this.props);
+  }
 
-      value.dateOfBirth = moment(value.dateOfBirth).format('YYYY-MM-DD');
+  componentWillReceiveProps(props, state) {
+    this.getActiveSection(props);
+  }
 
-      value.experience = map(value.experience, (v) => {
-        v.startDate = moment(v.startDate).format('YYYY-MM-DD');
+  getEmail() {
+    return this.props.values && this.props.values.email;
+  }
 
-        if(v.endDate) {
-          v.endDate = moment(v.endDate).format('YYYY-MM-DD');
-        }
+  getType() {
+    return this.props.values && this.props.values.type;
+  }
 
-        return v;
+  getActiveSection(props) {
+    const { section } = props;
+
+    if (!section) {
+      this.setState({
+        activeKey: 1,
+        selectedTab: 'Personal',
       });
-
-      this.props.handleSubmit(value);
+      return;
     }
+
+    const key = navItems
+      .findIndex(elem => elem.toLowerCase() === section);
+
+    this.setState({
+      activeKey: key + 1,
+      selectedTab: navItems[key],
+    });
+  }
+
+  isSaved() {
+    return this.props.values.isSaved;
+  }
+
+  handleTabSelect(event) {
+    const email = this.getEmail();
+    const type = this.getType();
+
+    if (!email || !type) {
+      return;
+    }
+
+    this.props.navigateTo(email, `${type.toLowerCase()}s`, event.target.text);
+  }
+
+  renderNavItems() {
+    // const email = this.getEmail();
+    const isSaved = this.isSaved();
+    return navItems.map((v, i) => {
+      if (i === 0) {
+        return <NavItem key={i} eventKey={i + 1} ref={`${v}Tab`}>{v}</NavItem>;
+      }
+
+      return <NavItem key={i} eventKey={i + 1} ref={`${v}Tab`} disabled={!isSaved}>{v}</NavItem>;
+    });
+  }
+
+  renderSelectedTab() {
+    const {
+      errors,
+      handleChange,
+      handleSubmit,
+      hasFailed,
+      isSaving,
+      register,
+      values,
+      handleCancel,
+      profile,
+    } = this.props;
+
+    let component;
+
+    const formProps = {
+      errors,
+      handleChange,
+      handleSubmit,
+      hasFailed,
+      isSaving,
+      register,
+      values,
+      profile,
+      handleCancel,
+    };
+
+    return (this.state.selectedTab === 'Personal') ?
+      (<forms.Personal {...formProps} />) :
+      (<ListContainer
+        name={this.state.selectedTab.toLowerCase()}
+        form={forms[this.state.selectedTab]}
+        formProps={formProps}
+        addEntry={this.props.addEntry}
+        handleSubmit={this.props.handleSubmit}
+        handleCancel={this.props.handleCancel}
+      />);
   }
 
   render() {
-    const options = {
-      fields: {
-        aboutMe: {
-          type: 'textarea'
-        },
-
-        courses: {
-          item: {
-            fields: {
-              description: {
-                type: 'textarea'
-              }
-            }
-          }
-        },
-
-        experience: {
-          item: {
-            fields: {
-              shortDescription: {
-                type: 'textarea'
-              },
-
-              technologies: {
-                factory: TagsComponent
-              },
-
-              methodologies: {
-                factory: TagsComponent
-              }
-            }
-          }
-        }
-      }
-    };
-
     return (
       <Grid>
         <Row>
           <Col xs={12}>
-            <form onSubmit={this.handleSubmit.bind(this)}>
-              <Form
-                ref="form"
-                type={EmployeeSchema}
-                options={options}
-                value={this.props.value}
-              />
-              <Button type="submit" bsStyle="primary">Save</Button>
-            </form>
+            <Nav
+              ref="tabs"
+              bsStyle="tabs"
+              onClick={this.handleTabSelect.bind(this)}
+              justified
+              activeKey={this.state.activeKey}
+            >
+              {this.renderNavItems()}
+            </Nav>
+          </Col>
+        </Row>
+        <Row
+          style={{
+            marginTop: '20px',
+          }}
+        >
+          <Col xs={12}>
+            {this.renderSelectedTab()}
           </Col>
         </Row>
       </Grid>
@@ -182,4 +194,4 @@ class EmployeeForm extends React.Component {
   }
 }
 
-export default EmployeeForm;
+export default connect(mapStateToProps, mapDispatchToProps)(EmployeeForm);

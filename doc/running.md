@@ -11,10 +11,10 @@ To run the Resumator you need to have the following things in place:
 The preferred way to run the Resumator service is by its Docker container. Once you have [built](building.md) the container, you should be able to run it as follows:
 
 ```shell
-docker run -i -t --rm -p 9090:9090 ${image} -D resumator.http.context.path=api/
+docker run -i -t --rm -p 8080:8080 ${image} -D resumator.http.context.path=api/
 ```
 
-The port mapping makes sure that the default Resumator port `9090` is visible on the Docker host as well. If you [configure](configure.md) it to run at some other port, you need to adjust the port mapping accordingly.
+The port mapping makes sure that the default Resumator port `8080` is visible on the Docker host as well. If you [configure](configure.md) it to run at some other port, you need to adjust the port mapping accordingly.
 
 The `resumator.http.context.path` configuration entry is required to enable interaction with the frontend application.
 
@@ -44,7 +44,7 @@ The following instructions document how to make everything work on an OSX box eq
 
 If you run the docker containers as above against the default docker machine, you will have two ports listening on the docker machine box:
 
-- 9090: the Java server
+- 8080: the Java server
 - XXXX: the web Frontend
 
 You now need to know what IP the docker machine is using:
@@ -66,7 +66,7 @@ server {
     }
 
     location /api/ {
-        proxy_pass http://${docker-machine IP}:9090/;
+        proxy_pass http://${docker-machine IP}:8080/;
         proxy_set_header  X-Real-IP $remote_addr;
         proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header  Host $http_host;

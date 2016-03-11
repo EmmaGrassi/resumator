@@ -1,15 +1,35 @@
 import { pushPath } from 'redux-simple-router';
 
 import cookieClear from '../../services/user/cookie/clear';
-// import cookieSet from '../../services/user/cookie/set';
+
 import cookieGet from '../../services/user/cookie/get';
 import serverLogin from '../../services/user/login/serverLogin';
 import profileGet from '../../services/user/profile/get';
+import showAlert from '../alerts/show';
 
 const cookiesOptions = {
   path: '/',
-  domain: window.location.hostname
+  domain: window.location.hostname,
 };
+
+function showLoginFailed(dispatch) {
+  const message = {
+    level: 'warning',
+    message: 'Login failed',
+    id: 'login:failed',
+  };
+  return dispatch(showAlert(message));
+}
+
+function showLoginSuccess(dispatch, email) {
+  const message = {
+    level: 'success',
+    message: `Logged in with email: ${email}`,
+    id: 'login:success',
+  };
+  return dispatch(showAlert(message));
+}
+
 
 export default function login(data) {
   return (dispatch) => {
@@ -18,6 +38,7 @@ export default function login(data) {
     serverLogin(data, (error, googleProfile) => {
       if (error) {
         dispatch({ type: 'user:login:failure', error });
+        showLoginFailed(dispatch);
         return;
       }
 
@@ -26,16 +47,19 @@ export default function login(data) {
       profileGet(googleProfile.email, (error, profile) => {
         if (error) {
           if (error.error.status === 404) {
-            dispatch(pushPath('/employees/new'));
+            dispatch(pushPath('/employees/register'));
 
             dispatch({ type: 'user:getProfile:success', payload: {} });
             dispatch({ type: 'user:login:success', payload: cookieData });
+
+            showLoginSuccess(dispatch, googleProfile.email);
 
             return;
           } else {
             cookieClear();
 
             dispatch({ type: 'user:login:failure' });
+            showLoginFailed(dispatch);
 
             return;
           }
@@ -43,6 +67,8 @@ export default function login(data) {
 
         dispatch({ type: 'user:getProfile:success', payload: profile });
         dispatch({ type: 'user:login:success', payload: cookieData });
+
+        showLoginSuccess(dispatch, googleProfile.email);
 
         if (profile) {
           if (profile.admin) {

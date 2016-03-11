@@ -13,6 +13,15 @@
       <resource>
         <filtering>true</filtering>
         <directory>src/main/resources</directory>
+        <excludes>
+          <exclude>*.docx</exclude>
+        </excludes>
+      </resource>
+      <resource>
+        <directory>src/main/resources</directory>
+        <includes>
+          <include>*.docx</include>
+        </includes>
       </resource>
     </resources>
     <plugins>

@@ -5,6 +5,7 @@ import profileGet from '../user/profile/get';
 import sanitizeEmployee from './helpers/sanitizeEmployee';
 
 export default function create(data, cb) {
+  if (typeof data.isSaved !== 'undefined') delete data.isSaved;
   request
     .post('/api/employees')
     .send(sanitizeEmployee(data))

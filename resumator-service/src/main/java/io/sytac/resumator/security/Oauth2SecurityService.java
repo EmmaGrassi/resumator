@@ -94,8 +94,6 @@ public class Oauth2SecurityService {
         final GoogleIdToken token;
         try {
             token = verifier.verify(idtoken);
-            log.info("Token verify finished: "+token.getPayload().getHostedDomain()+" "+token.getPayload().getAuthorizedParty()+" "+token.getPayload().getEmail());
-            log.info("Token validation starting ");
             return validate(token);
         } catch (GeneralSecurityException | IOException e) {
             log.warn("Couldn't validate the Google JWT", e);
@@ -106,6 +104,8 @@ public class Oauth2SecurityService {
 
     private Optional<GoogleIdToken> validate(final GoogleIdToken token) {
         if (token != null) {
+            log.info("Token verify finished: "+token.getPayload().getHostedDomain()+" "+token.getPayload().getAuthorizedParty()+" "+token.getPayload().getEmail());
+            log.info("Token validation starting ");
             GoogleIdToken.Payload payload = token.getPayload();
             if (assertCondition("Wrong Google domain", () ->
                     config.getProperty(GOOGLE_APPS_DOMAIN_NAME)

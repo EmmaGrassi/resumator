@@ -1,35 +1,47 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { pushPath } from 'redux-simple-router';
 
 import NewForm from '../../shared/form/employee';
 
-import actions from '../../../actions';
+import create from '../../../actions/employees/create';
+import createChange from '../../../actions/employees/createChange';
+import editCancel from '../../../actions/employees/editCancel';
 
 function mapStateToProps(state) {
+  const create = state.employees.create.toJS();
+
   return {
+    hasFailed: create.hasFailed,
+    errors: create.errors,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    createEmployee: (data) => dispatch(actions.employees.create(data)),
-    navigateToShow: (email) => dispatch(pushPath(`/freelancers/${email}`, {}))
+    createEmployee: () => dispatch(create()),
+    changeEmployee: (k, v) => dispatch(createChange(k, v)),
+    handleCancel: () => {
+      const really = confirm('Are you sure you want to cancel? This will discard all changes');
+      if (really) {
+        dispatch(editCancel());
+      }
+    },
   };
 }
 
 class Create extends React.Component {
-  handleFormSubmit(data) {
-    this.props.createEmployee(data);
-  }
-
   render() {
     return (
       <div>
         <NewForm
           ref="employeeForm"
           type="FREELANCER"
-          handleSubmit={this.handleFormSubmit.bind(this)}
+          values={{ isSaved: false }}
+          handleSubmit={this.props.createEmployee}
+          handleCancel={this.props.handleCancel}
+          handleChange={this.props.changeEmployee.bind(this)}
+          hasFailed={this.props.hasFailed}
+          errors={this.props.errors}
         />
       </div>
     );

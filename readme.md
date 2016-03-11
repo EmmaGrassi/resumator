@@ -25,10 +25,29 @@ Creation, storing, searching and exporting of Sytac Resumes:
 
 ## Usage
 ```
-mvn clean install; docker-compose -f ./docker/docker-compose-dev.yml up;
+mvn clean install; RESUMATOR_CONFIG=~/.resumator docker-compose -f ./docker/docker-compose-dev.yml up;
 ```
 
 3. Open your browser at `http://localhost:8080/resumator`
 
 ## License
 All the code and documentation in this repository are distributed under [MIT license](https://opensource.org/licenses/MIT).
+
+
+
+## Layout
+
+```
+   Load balancer :9000
+    |_______________|
+            |
+            |
+       _____|____
+     /           \
+    /              \
+Service :8080     UI:80   
+    |
+    |
+  DB:5432
+
+```

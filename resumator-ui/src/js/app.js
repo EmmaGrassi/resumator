@@ -20,6 +20,7 @@ import PublicContainer from './components/public/container';
 import PublicEmployeesCreate from './components/public/employees/create';
 import PublicEmployeesEdit from './components/public/employees/edit';
 import PublicEmployeesList from './components/public/employees/list';
+import PublicEmployeesRegister from './components/public/employees/register';
 import PublicEmployeesShow from './components/public/employees/show';
 import PublicFreelancersCreate from './components/public/freelancers/create';
 import PublicFreelancersEdit from './components/public/freelancers/edit';
@@ -34,7 +35,7 @@ import PublicProspectsShow from './components/public/prospects/show';
 const rootElement = document.getElementById('root');
 
 const history = createHistory({
-  queryKey: false,
+  queryKey: true,
 });
 
 syncReduxAndRouter(history, store);
@@ -103,10 +104,14 @@ const router = (
 
           <Route path="new" component={ PublicEmployeesCreate } onEnter={handleEnter} />
 
+          <Route path="register" component={ PublicEmployeesRegister } onEnter={handleEnter} />
+
           <Route path=":userId">
             <IndexRoute component={ PublicEmployeesShow } onEnter={handleEnter} />
 
-            <Route path="edit" component={ PublicEmployeesEdit } onEnter={handleEnter} />
+            <Route path="edit" component={ PublicEmployeesEdit }>
+              <Route path=":section" onEnter={handleEnter} />
+            </Route>
           </Route>
         </Route>
 
@@ -118,7 +123,9 @@ const router = (
           <Route path=":userId">
             <IndexRoute component={ PublicFreelancersShow } onEnter={handleEnter} />
 
-            <Route path="edit" component={ PublicFreelancersEdit } onEnter={handleEnter} />
+            <Route path="edit" component={ PublicFreelancersEdit }>
+              <Route path=":section" onEnter={handleEnter} />
+            </Route>
           </Route>
         </Route>
 
@@ -130,7 +137,9 @@ const router = (
           <Route path=":userId">
             <IndexRoute component={ PublicProspectsShow } onEnter={handleEnter} />
 
-            <Route path="edit" component={ PublicProspectsEdit } onEnter={handleEnter} />
+            <Route path="edit" component={ PublicProspectsEdit }>
+              <Route path=":section" onEnter={handleEnter} />
+            </Route>
           </Route>
         </Route>
 
@@ -164,4 +173,3 @@ window.gapi.load('auth2', () => {
     ReactDOM.render(router, rootElement);
   });
 });
-

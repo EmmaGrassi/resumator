@@ -8,7 +8,7 @@
     <parent>
         <groupId>io.sytac.resumator</groupId>
         <artifactId>resumator-parent</artifactId>
-        <version>0.1-SNAPSHOT</version>
+        <version>1.0</version>
     </parent>
 
     <properties>
@@ -196,6 +196,16 @@
             <resource>
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
+                <excludes>
+                    <exclude>*.docx</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+                <includes>
+                    <include>*.docx</include>
+                </includes>
             </resource>
         </resources>
         <plugins>

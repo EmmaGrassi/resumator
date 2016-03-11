@@ -1,14 +1,14 @@
 package io.sytac.resumator.model;
 
-import javax.validation.constraints.Digits;
-
-import org.hibernate.validator.constraints.NotBlank;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
+
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.Range;
 
 /**
  * A course / training followed by the employee
@@ -26,7 +26,7 @@ public class Course {
     private final String name;
     @NotBlank(message = "Course description is mandatory")
     private final String description;
-    @Digits(message = "course year should consist of digits", fraction = 0, integer = 4)
+    @Range(min = 1960, max = 2030 ,message= "Course year should consist of digits")
     private final int year;
 
     @JsonCreator

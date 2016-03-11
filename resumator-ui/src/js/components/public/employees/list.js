@@ -1,30 +1,45 @@
 import Loader from 'react-loader';
 import React from 'react';
 import _ from 'lodash';
-import { Button, ButtonGroup, ButtonToolbar, Col, Glyphicon, Grid, Row, Table } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { pushPath } from 'redux-simple-router';
+
+import {
+  Button,
+  ButtonGroup,
+  ButtonToolbar,
+  Col,
+  Glyphicon,
+  Grid,
+  Row,
+  Table,
+} from 'react-bootstrap';
 
 import listAction from '../../../actions/employees/list';
 import removeAction from '../../../actions/employees/remove';
 
 function mapStateToProps(state) {
   return {
-    list: state.employees.list.toJS()
+    list: state.employees.list.toJS(),
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     fetchListData: () => dispatch(listAction('EMPLOYEE')),
-    removeListEntry: (type,email) => dispatch(removeAction(type,email)),
+    removeListEntry: (type, email) => dispatch(removeAction(type, email)),
     navigateToEdit: (email) => dispatch(pushPath(`/employees/${email}/edit`, {})),
-    navigateToNew: () => dispatch(pushPath(`/employees/new`, {})),
-    navigateToShow: (email) => dispatch(pushPath(`/employees/${email}`, {}))
+    navigateToNew: () => dispatch(pushPath('/employees/new', {})),
+    navigateToShow: (email) => dispatch(pushPath(`/employees/${email}`, {})),
   };
 }
 
 class List extends React.Component {
+
+  componentWillMount() {
+    this.props.fetchListData();
+  }
+
   handleRowButtonClick(email, event) {
     event.preventDefault();
 
@@ -54,12 +69,9 @@ class List extends React.Component {
       return;
     }
 
-    this.props.removeListEntry('EMPLOYEE',email);
+    this.props.removeListEntry('EMPLOYEE', email);
   }
 
-  componentWillMount() {
-    this.props.fetchListData();
-  }
 
   render() {
     const data = this.props.list;
@@ -76,49 +88,53 @@ class List extends React.Component {
         const title = v.title;
         const phone = v.phone;
 
-        return <tr
+        return (<tr
           key={i}
           onClick={this.handleRowButtonClick.bind(this, email)}
           style={{
-            cursor: 'pointer'
+            cursor: 'pointer',
           }}
         >
           <td
             style={{
-            verticalAlign: 'middle'
-          }}
+              verticalAlign: 'middle',
+            }}
           >
             {fullName}
           </td>
-     		<td
-       		style={{
-       	  verticalAlign: 'middle'
-      }}
-      >
-        {client}
-      </td>
+         <td
+           style={{
+             verticalAlign: 'middle',
+           }}
+         >
+           {client}
+        </td>
           <td
             style={{
-            verticalAlign: 'middle'
-          }}
+              verticalAlign: 'middle',
+            }}
           >
             {title}
           </td>
           <td
-          style={{
-          verticalAlign: 'middle'
-          }}
+            style={{
+              verticalAlign: 'middle',
+            }}
           >
           {phone}
           </td>
 
-          <td>
+          <td style={{ textAlign: 'right' }}>
             <ButtonGroup>
-              <Button onClick={this.handleEditButtonClick.bind(this, email)}><Glyphicon glyph="pencil"/> Edit</Button>
-              <Button onClick={this.handleRemoveButtonClick.bind(this, email)} bsStyle="danger"><Glyphicon glyph="trash" /> Remove</Button>
+              <Button onClick={this.handleEditButtonClick.bind(this, email)}>
+                <Glyphicon glyph="pencil" />
+              </Button>
+              <Button onClick={this.handleRemoveButtonClick.bind(this, email)} bsStyle="danger">
+                <Glyphicon glyph="trash" />
+              </Button>
             </ButtonGroup>
           </td>
-        </tr>;
+        </tr>);
       });
     } else {
       rows = (
@@ -126,7 +142,7 @@ class List extends React.Component {
           <td
             colSpan="5"
             style={{
-              textAlign: 'center'
+              textAlign: 'center',
             }}
           >
             No Content
@@ -143,7 +159,7 @@ class List extends React.Component {
         <Grid>
           <Row>
             <Col xs={12}>
-              <Table striped condensed hover responsive>
+              <Table condensed hover responsive>
                 <thead>
                   <tr>
                     <th>
@@ -154,7 +170,7 @@ class List extends React.Component {
                     <th>Phone</th>
                     <th
                       style={{
-                        width: '20%'
+                        width: '20%',
                       }}
                     >
                       Actions
@@ -171,7 +187,9 @@ class List extends React.Component {
             <Col xs={12}>
               <ButtonToolbar>
                 <ButtonGroup>
-                  <Button bsStyle="success" onClick={this.handleNewButtonClick.bind(this)}><Glyphicon glyph="plus"/> New</Button>
+                  <Button bsStyle="success" onClick={this.handleNewButtonClick.bind(this)}>
+                    <Glyphicon glyph="plus" /> New
+                  </Button>
                 </ButtonGroup>
               </ButtonToolbar>
             </Col>

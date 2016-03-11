@@ -6,7 +6,7 @@ import { routeReducer } from 'redux-simple-router';
 import reducers from './reducers';
 
 const reducer = combineReducers(Object.assign({}, reducers, {
-  routing: routeReducer
+  routing: routeReducer,
 }));
 
 const store = compose(

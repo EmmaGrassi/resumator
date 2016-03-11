@@ -370,6 +370,32 @@ class PersonalForm extends React.Component {
     );
   }
 
+  renderCancelButton() {
+    if (this.props.register) {
+      return;
+    }
+
+    return (
+      <Button
+        bsStyle="danger"
+        onClick={this.props.handleCancel}
+      >
+        Cancel
+      </Button>
+    );
+  }
+
+  renderSaveButton() {
+    return (
+      <Button
+        bsStyle="primary"
+        onClick={this.props.handleSubmit}
+      >
+        Save
+      </Button>
+    );
+  }
+
   render() {
     return (
       <form onSubmit={this.props.handleSubmit}>
@@ -429,18 +455,8 @@ class PersonalForm extends React.Component {
         <Row>
           <Col xs={12}>
             <div className="pull-right">
-              <Button
-                bsStyle="danger"
-                onClick={this.props.handleCancel}
-              >
-                Cancel
-              </Button>
-              <Button
-                bsStyle="primary"
-                onClick={this.props.handleSubmit}
-              >
-                Save
-              </Button>
+              {this.renderCancelButton()}
+              {this.renderSaveButton()}
             </div>
           </Col>
         </Row>

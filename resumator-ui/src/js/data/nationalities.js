@@ -1,7 +1,7 @@
 import toHashMap from '../helpers/toHashMap';
 
 export default toHashMap([
-  { value: '', label: '' },
+  { value: '', label: '-' },
   { value: 'AFGHAN', label: 'Afghan' },
   { value: 'ALBANIAN', label: 'Albanian' },
   { value: 'ALGERIAN', label: 'Algerian' },

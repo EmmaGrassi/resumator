@@ -13,7 +13,7 @@ import login from '../../../actions/user/login';
 
 function mapStateToProps(state) {
   return {
-    session: state.user.session.toJS()
+    session: state.user.session.toJS(),
   };
 }
 
@@ -30,7 +30,8 @@ class RightNav extends React.Component {
 
     // TODO: Error handling. Apparently the catch on this is not valid.
 
-    window.googleAuth.grantOfflineAccess({'redirect_uri': 'postmessage'}).then(this.handleLogInSuccess.bind(this));
+    window.googleAuth.grantOfflineAccess({ redirect_uri: 'postmessage' })
+      .then(this.handleLogInSuccess.bind(this));
   }
 
   handleLogInSuccess(googleResponse) {
@@ -42,7 +43,7 @@ class RightNav extends React.Component {
 
   // TODO: Implement
   handleLogInError() {
-   console.error(arguments);
+    console.error(arguments);
   }
 
   handleLogOutButtonClick(event) {
@@ -65,18 +66,23 @@ class RightNav extends React.Component {
           </NavDropdown>
         </Nav>
       );
-    } else {
-      return (
-        <Nav pullRight>
-          <NavItem
-            eventKey={2}
-            onClick={this.handleLogInButtonClick.bind(this)}
-          >
-            Log In
-          </NavItem>
-        </Nav>
-      );
     }
+    return (
+      <Nav pullRight>
+      <NavItem
+        eventKey={2}
+        onClick={this.handleLogInButtonClick.bind(this)}
+      >
+        Sign up
+      </NavItem>
+        <NavItem
+          eventKey={2}
+          onClick={this.handleLogInButtonClick.bind(this)}
+        >
+          Log In
+        </NavItem>
+      </Nav>
+    );
   }
 }
 

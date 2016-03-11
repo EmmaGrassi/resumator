@@ -51,7 +51,7 @@ public class LocalEventPublisherTest {
     }
     private NewEmployeeCommand getEmployeeCommand() {
         final List<Education> education = Collections.singletonList(new Education(Education.Degree.MASTER_DEGREE, "Field", "SChool", "City", "Country", 2000, 2005));
-        final List<Course> courses = Collections.singletonList(new Course("Course1", "Course 1", "1994"));
+        final List<Course> courses = Collections.singletonList(new Course("Course1", "Course 1", 1994));
         final List<String> technologies = Arrays.asList("Java", "Turbo Pascal");
         final List<String> methodologies = Arrays.asList("Scrum", "Exreme programming");
 

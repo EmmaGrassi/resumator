@@ -1,17 +1,15 @@
 package io.sytac.resumator.model;
 
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
-import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.Range;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;
 import lombok.ToString;
+
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.Range;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * A school or university attended by the employee
@@ -24,18 +22,20 @@ import lombok.ToString;
 @ToString
 public class Education {
 
-	@NotNull(message = "degree is mandatory")
+    @NotNull(message = "degree is mandatory")
     private final Degree degree;
-	@NotBlank(message = "fieldOfStudy is mandatory")
+    @NotBlank(message = "fieldOfStudy is mandatory")
     private final String fieldOfStudy;
-	@NotBlank(message = "school is mandatory")
+    @NotBlank(message = "school is mandatory")
     private final String school;
-	@NotBlank(message = "city is mandatory")
+    @NotBlank(message = "city is mandatory")
     private final String city;
-	@NotBlank(message = "country is mandatory")
+    @NotBlank(message = "country is mandatory")
     private final String country;
+    @NotNull
     @Range(min = 1960, max = 2030 ,message= "Education startYear should consist of 4 digits")
     private final int startYear;
+    @NotNull
     @Range(min = 1960, max = 2030,message= "Education  endYear should consist of 4 digits")
     private final int endYear;
 

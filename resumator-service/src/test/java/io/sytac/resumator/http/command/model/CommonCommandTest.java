@@ -50,7 +50,7 @@ public class CommonCommandTest {
     public static final String DUTCH_LANGUAGE = "Dutch";
     public static final String COURSE_NAME = "Scala for dummies";
     public static final String COURSE_DESCRIPTION = "Scala for dummies description";
-    public static final String COURSE_YEAR = "1994";
+    public static final int COURSE_YEAR = 1994;
 
     @Getter
     private ObjectMapper objectMapper;

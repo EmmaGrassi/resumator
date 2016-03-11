@@ -18,9 +18,8 @@ import lombok.ToString;
 @ToString
 public class Language {
 
-	@NotBlank(message = "language name is mandatory")
+    @NotBlank(message = "language name is mandatory")
     private final String name;
-	@NotBlank(message = "language proficiency is mandatory")
     private final Proficiency proficiency;
 
     @JsonCreator

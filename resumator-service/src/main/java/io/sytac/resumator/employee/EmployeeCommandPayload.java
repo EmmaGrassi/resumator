@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
@@ -40,6 +41,7 @@ public class EmployeeCommandPayload implements CommandPayload {
     @NotBlank(message = "email is mandatory")
     @Email(message = "email format is not correct")
     private final String email;
+    @NotNull(message = "phonenumber is mandatory")
     @Digits(message = "phonenumber should consist of digits", fraction = 0, integer = 15)
     private final String phonenumber;
     private final String github;

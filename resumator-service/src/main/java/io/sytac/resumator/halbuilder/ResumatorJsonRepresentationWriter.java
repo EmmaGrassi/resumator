@@ -1,10 +1,10 @@
 package io.sytac.resumator.halbuilder;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.theoryinpractise.halbuilder.json.JsonRepresentationWriter;
+
+import io.sytac.resumator.ObjectMapperFactory;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -19,14 +19,11 @@ public class ResumatorJsonRepresentationWriter extends JsonRepresentationWriter 
     private final ObjectMapper objectMapper;
 
     public ResumatorJsonRepresentationWriter() {
-        objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new Jdk8Module());
-
-        /**
-         * Needed because halbuilder doesn't filter <code>null</code>s coming from {@link Jdk8Module}.
-         */
-        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+	
+	ObjectMapperFactory mapperFactory = new ObjectMapperFactory();
+        objectMapper = mapperFactory.provide();
     }
+    
 
     @Override
     protected JsonGenerator getJsonGenerator(Set<URI> flags, Writer writer) throws IOException {

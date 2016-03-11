@@ -9,20 +9,19 @@ import {
 import FormComponent from './form';
 
 class CoursesForm extends FormComponent {
-
   constructor(props) {
     super(props);
     this.props = props;
   }
 
-  handleChange(name, event) {
+  handleChange(name) {
     this.props.values[name] = this.refs[name].getValue();
 
     this.props.handleChange('courses', this.props.currentValues);
   }
 
   renderName() {
-    return this.getInput('name', null, true);
+    return this.getInput('name', null, true, null, true);
   }
 
   renderYear() {

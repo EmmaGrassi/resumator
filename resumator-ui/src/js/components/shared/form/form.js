@@ -10,8 +10,7 @@ import moment from 'moment';
 import labelize from '../../../helpers/labelize';
 
 class FormComponent extends React.Component {
-
-  getInput(name, type, required, placeholder) {
+  getInput(name, type, required, placeholder, autoFocus) {
     const { isSaving, hasFailed, errors, values } = this.props;
     const inputName = name;
     const inputLabel = required ? labelize(name, '*') : labelize(name);
@@ -28,6 +27,8 @@ class FormComponent extends React.Component {
       value: values[inputName],
 
       onChange: this.handleChange.bind(this, inputName),
+
+      autoFocus,
     };
 
     if (hasFailed && errors[inputName]) {
@@ -39,7 +40,7 @@ class FormComponent extends React.Component {
     return (<Input {...props} />);
   }
 
-  getDropDown(name, options, required) {
+  getDropDown(name, options, required, autoFocus) {
     const { isSaving, hasFailed, errors } = this.props;
 
     const inputName = name;
@@ -54,6 +55,8 @@ class FormComponent extends React.Component {
       disabled: isSaving,
       value: this.props.values[inputName],
       onChange: this.handleChange.bind(this, inputName),
+
+      autoFocus,
     };
 
     if (hasFailed && errors[inputName]) {
@@ -67,10 +70,6 @@ class FormComponent extends React.Component {
         {Object.keys(options).map((key, i) => <option key={i} value={key}>{options[key]}</option>)}
       </Input>
     );
-  }
-
-  handleChange(name, event) {
-    console.error('Unimplemented method, go to your form Component and implement handleChange method');
   }
 }
 

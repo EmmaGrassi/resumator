@@ -17,7 +17,7 @@ class ExperienceForm extends FormComponent {
     this.props = props;
   }
 
-  handleChange(name, event) {
+  handleChange(name) {
     this.props.values[name] = this.refs[name].getValue();
 
     this.props.handleChange('experience', this.props.currentValues);
@@ -28,7 +28,7 @@ class ExperienceForm extends FormComponent {
   }
 
   renderCompanyName() {
-    return this.getInput('companyName', null, true);
+    return this.getInput('companyName', null, true, null, true);
   }
 
   renderCity() {
@@ -52,11 +52,21 @@ class ExperienceForm extends FormComponent {
   }
 
   renderTechnologies() {
-    return this.getInput('technologies', null, true, 'Separate values with commas, e.g.: Java, JavaScript, ...');
+    return this.getInput(
+      'technologies',
+      null,
+      true,
+      'Separate values with commas, e.g.: Java, JavaScript, ...'
+    );
   }
 
   renderMethodologies() {
-    return this.getInput('methodologies', null, true, 'Separate values with commas, e.g.: SCRUM, RUP, ...');
+    return this.getInput(
+      'methodologies',
+      null,
+      true,
+      'Separate values with commas, e.g.: SCRUM, RUP, ...'
+    );
   }
 
   render() {

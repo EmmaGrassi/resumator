@@ -17,13 +17,14 @@ class EducationForm extends FormComponent {
     this.props = props;
   }
 
-  handleChange(name, event) {
+  handleChange(name) {
     this.props.values[name] = this.refs[name].getValue();
+
     this.props.handleChange('education', this.props.currentValues);
   }
 
   renderDegree() {
-    return this.getDropDown('degree', degrees, true);
+    return this.getDropDown('degree', degrees, true, true);
   }
 
   renderFieldOfStudy() {

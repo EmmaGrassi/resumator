@@ -35,11 +35,17 @@ class Register extends React.Component {
   }
 
   render() {
+    let register;
+    if (this.props.session.name) {
+      register = true;
+    }
+
     return (
       <div>
         <NewForm
           ref="employeeForm"
           type="EMPLOYEE"
+          register={register}
           values={this.props.create.item}
           handleSubmit={this.props.createEmployee}
           handleChange={this.props.changeEmployee.bind(this)}

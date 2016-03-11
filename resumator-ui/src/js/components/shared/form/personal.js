@@ -43,7 +43,7 @@ class PersonalForm extends React.Component {
       label: inputLabel,
 
       disabled: isSaving,
-      value: this.props.values[inputName],
+      value: values[inputName],
       onChange: this.handleChange.bind(this, inputName),
     };
 
@@ -73,7 +73,7 @@ class PersonalForm extends React.Component {
       label: inputLabel,
 
       disabled: isSaving,
-      value: this.props.values[inputName],
+      value: values[inputName],
       onChange: this.handleChange.bind(this, inputName),
     };
 
@@ -89,7 +89,7 @@ class PersonalForm extends React.Component {
   }
 
   renderName() {
-    const { isSaving, hasFailed, errors, values } = this.props;
+    const { register, isSaving, hasFailed, errors, values } = this.props;
 
     const inputName = 'name';
     const inputLabel = labelize(inputName, '*');
@@ -100,8 +100,8 @@ class PersonalForm extends React.Component {
       placeholder: inputLabel,
       label: inputLabel,
 
-      disabled: isSaving,
-      value: this.props.values[inputName],
+      disabled: register || isSaving,
+      value: values[inputName],
       onChange: this.handleChange.bind(this, inputName),
     };
 
@@ -117,7 +117,7 @@ class PersonalForm extends React.Component {
   }
 
   renderSurname() {
-    const { isSaving, hasFailed, errors, values } = this.props;
+    const { register, isSaving, hasFailed, errors, values } = this.props;
 
     const inputName = 'surname';
     const inputLabel = labelize(inputName, '*');
@@ -128,8 +128,8 @@ class PersonalForm extends React.Component {
       placeholder: inputLabel,
       label: inputLabel,
 
-      disabled: isSaving,
-      value: this.props.values[inputName],
+      disabled: register || isSaving,
+      value: values[inputName],
       onChange: this.handleChange.bind(this, inputName),
     };
 
@@ -145,7 +145,7 @@ class PersonalForm extends React.Component {
   }
 
   renderEmail() {
-    const { isSaving, hasFailed, errors, values } = this.props;
+    const { register, isSaving, hasFailed, errors, values } = this.props;
 
     const inputName = 'email';
     const inputLabel = labelize(inputName, '*');
@@ -156,8 +156,8 @@ class PersonalForm extends React.Component {
       placeholder: inputLabel,
       label: inputLabel,
 
-      disabled: isSaving,
-      value: this.props.values[inputName],
+      disabled: register || isSaving,
+      value: values[inputName],
       onChange: this.handleChange.bind(this, inputName),
     };
 
@@ -185,7 +185,7 @@ class PersonalForm extends React.Component {
       label: inputLabel,
 
       disabled: isSaving,
-      value: this.props.values[inputName],
+      value: values[inputName],
       onChange: this.handleChange.bind(this, inputName),
     };
 
@@ -213,7 +213,7 @@ class PersonalForm extends React.Component {
       label: inputLabel,
 
       disabled: isSaving,
-      value: this.props.values[inputName],
+      value: values[inputName],
       onChange: this.handleChange.bind(this, inputName),
     };
 
@@ -241,7 +241,7 @@ class PersonalForm extends React.Component {
       label: inputLabel,
 
       disabled: isSaving,
-      value: this.props.values[inputName],
+      value: values[inputName],
       onChange: this.handleChange.bind(this, inputName),
     };
 
@@ -269,7 +269,7 @@ class PersonalForm extends React.Component {
       label: inputLabel,
 
       disabled: isSaving,
-      value: this.props.values[inputName],
+      value: values[inputName],
       onChange: this.handleChange.bind(this, inputName),
     };
 
@@ -297,7 +297,7 @@ class PersonalForm extends React.Component {
       label: inputLabel,
 
       disabled: isSaving,
-      value: this.props.values[inputName],
+      value: values[inputName],
       onChange: this.handleChange.bind(this, inputName),
     };
 
@@ -313,7 +313,7 @@ class PersonalForm extends React.Component {
   }
 
   renderNationality() {
-    const { isSaving, hasFailed, errors } = this.props;
+    const { isSaving, hasFailed, errors, values } = this.props;
 
     const inputName = 'nationality';
     const inputLabel = labelize(inputName, '*');
@@ -325,7 +325,7 @@ class PersonalForm extends React.Component {
       label: inputLabel,
 
       disabled: isSaving,
-      value: this.props.values[inputName],
+      value: values[inputName],
       onChange: this.handleChange.bind(this, inputName),
     };
 
@@ -355,7 +355,7 @@ class PersonalForm extends React.Component {
       label: inputLabel,
 
       disabled: isSaving,
-      value: this.props.values[inputName],
+      value: values[inputName],
       onChange: this.handleChange.bind(this, inputName),
     };
 

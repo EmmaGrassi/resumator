@@ -25,8 +25,6 @@ function mapDispatchToProps(dispatch) {
 
 class Register extends React.Component {
   componentWillReceiveProps(props) {
-    console.log('props', props);
-
     if (!props.session.name) {
       return;
     }

@@ -8,6 +8,8 @@ import {
 
 import FormComponent from './form';
 
+import proficiencies from '../../../data/proficiencies';
+
 class LanguagesForm extends FormComponent {
 
   constructor(props) {
@@ -26,7 +28,7 @@ class LanguagesForm extends FormComponent {
   }
 
   renderProficiency() {
-    return this.getInput('proficiency', null, true);
+    return this.getDropDown('proficiency', proficiencies, true);
   }
 
   render() {

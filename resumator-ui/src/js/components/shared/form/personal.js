@@ -20,13 +20,13 @@ class PersonalForm extends React.Component {
           {this.renderTitle()}
         </Col>
       </Row>);
-    } else {
-      return (<Row>
-        <Col xs={12}>
-          {this.renderTitle()}
-        </Col>
-      </Row>);
     }
+
+    return (<Row>
+      <Col xs={12}>
+        {this.renderTitle()}
+      </Col>
+    </Row>);
   }
 
   // TODO: Do not render these for users that can not see them.

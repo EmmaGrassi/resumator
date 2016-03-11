@@ -1,42 +1,45 @@
 import Loader from 'react-loader';
 import React from 'react';
 import moment from 'moment';
-import { Button, ButtonGroup, Col, Grid, Image, ListGroup, ListGroupItem, Row } from 'react-bootstrap';
 import { bindAll, map } from 'lodash';
 import { connect } from 'react-redux';
 import { pushPath } from 'redux-simple-router';
+
+import {
+  Button,
+  ButtonGroup,
+  Col,
+  Grid,
+  Image,
+  ListGroup,
+  ListGroupItem,
+  Row,
+} from 'react-bootstrap';
 
 import actions from '../../../actions';
 
 function normalizeString(string) {
   const words = string.split('_');
-  const casedWords = map(words, (w) => {
-    return `${w.substring(0, 1)}${w.substring(1).toLowerCase()}`;
-  });
-
+  const casedWords = map(words, (w) => `${w.substring(0, 1)}${w.substring(1).toLowerCase()}`);
   return casedWords.join(' ');
 }
 
 function mapStateToProps(state) {
   return {
-    show: state.employees.show.toJS()
+    show: state.employees.show.toJS(),
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     fetchEmployee: (email) => dispatch(actions.employees.show(email)),
-    navigateToEdit: (email) => dispatch(pushPath(`/employees/${email}/edit`))
-  }
+    navigateToEdit: (email) => dispatch(pushPath(`/employees/${email}/edit`)),
+  };
 }
 
 class Show extends React.Component {
   componentWillMount() {
-    this.props.fetchEmployee(this.props.params.userId)
-  }
-
-  handleEditButtonClick() {
-    this.props.navigateToEdit(this.props.show.item.email);
+    this.props.fetchEmployee(this.props.params.userId);
   }
 
   getCourses() {
@@ -46,15 +49,15 @@ class Show extends React.Component {
           <h2>Courses</h2>
           <ListGroup>
             {this.props.show.item.courses.map((v, i) => {
-              let {
+              const {
                 name,
                 year,
-                description
+                description,
               } = v;
 
               return (
                 <ListGroupItem key={i}>
-                  <strong>{name} ({year})</strong><br/>
+                  <strong>{name} ({year})</strong><br />
                   {description}
                 </ListGroupItem>
               );
@@ -72,22 +75,22 @@ class Show extends React.Component {
           <h2>Education</h2>
           <ListGroup>
             {this.props.show.item.education.map((v, i) => {
-              let {
+              const {
                 city,
                 country,
-                degree,
                 endYear,
                 fieldOfStudy,
                 school,
-                startYear
+                startYear,
               } = v;
 
+              let { degree } = v;
               degree = normalizeString(degree);
 
               return (
                 <ListGroupItem key={i}>
-                  <strong>{degree} in {fieldOfStudy}</strong><br/>
-                  {school} in {city}, {country}<br/>
+                  <strong>{degree} in {fieldOfStudy}</strong><br />
+                  {school} in {city}, {country}<br />
                   {startYear} - {endYear}
                 </ListGroupItem>
               );
@@ -105,16 +108,19 @@ class Show extends React.Component {
           <h2>Experience</h2>
           <div>
             {this.props.show.item.experience.map((v, i) => {
-              let {
+              const {
                 city,
                 companyName,
                 country,
-                endDate,
-                methodologies,
                 shortDescription,
+                title,
+              } = v;
+
+              let {
                 startDate,
+                endDate,
                 technologies,
-                title
+                methodologies,
               } = v;
 
               startDate = moment(startDate);
@@ -136,24 +142,24 @@ class Show extends React.Component {
 
               let hr;
               if (i !== this.props.show.item.experience.length - 1) {
-                hr = <hr/>;
+                hr = <hr />;
               }
 
               return (
                 <div key={i}>
                   <h3
                     style={{
-                      marginTop: '10px'
+                      marginTop: '10px',
                     }}
                   >
                     {title}
                   </h3>
                   <h4>{companyName} ({city}, {country})</h4>
-                  {startYear} - {endYear} ({difference})<br/>
-                  <br/>
+                  {startYear} - {endYear} ({difference})<br />
+                  <br />
                   <p>{shortDescription}</p>
-                  <strong>Technologies:</strong> {technologies}<br/>
-                  <strong>Methodologies:</strong> {methodologies}<br/>
+                  <strong>Technologies:</strong> {technologies}<br />
+                  <strong>Methodologies:</strong> {methodologies}<br />
                   {hr}
                 </div>
               );
@@ -171,18 +177,19 @@ class Show extends React.Component {
           <h2>Languages</h2>
           <div>
             {this.props.show.item.languages.map((v, i) => {
-              let { name, proficiency } = v;
+              let { proficiency } = v;
+              const { name } = v;
 
               let hr;
               if (i !== this.props.show.item.experience.length - 1) {
-                hr = <hr/>;
+                hr = <hr />;
               }
 
               proficiency = normalizeString(proficiency);
 
               return (
                 <div key={i}>
-                  <strong>{name} ({proficiency})</strong><br/>
+                  <strong>{name} ({proficiency})</strong><br />
                   {hr}
                 </div>
               );
@@ -191,6 +198,10 @@ class Show extends React.Component {
         </Col>
       </Row>
     );
+  }
+
+  handleEditButtonClick() {
+    this.props.navigateToEdit(this.props.show.item.email);
   }
 
   render() {
@@ -202,20 +213,19 @@ class Show extends React.Component {
     const experience = this.getExperience();
     const languages = this.getLanguages();
 
-    let {
+    const {
       aboutMe,
       currentResidence,
-      dateOfBirth,
       email,
       github,
       id,
       linkedin,
       name,
-      nationality,
       phonenumber,
       surname,
-      title
+      title,
     } = item;
+    let { nationality, dateOfBirth } = item;
 
     const docxURL = `/api/employees/${email}/docx`;
 
@@ -231,8 +241,10 @@ class Show extends React.Component {
             <Col xs={12}>
               <span className="pull-right">
                 <ButtonGroup>
-                  <Button bsStyle="primary" onClick={this.handleEditButtonClick.bind(this)}>Edit</Button>
-                  <Button bsStyle="default" href={docxURL} download={true}>DOCX</Button>
+                  <Button bsStyle="primary" onClick={this.handleEditButtonClick.bind(this)}>
+                    Edit
+                  </Button>
+                  <Button bsStyle="default" href={docxURL} download>DOCX</Button>
                 </ButtonGroup>
               </span>
 
@@ -243,7 +255,7 @@ class Show extends React.Component {
                   <tr>
                     <td
                       style={{
-                        paddingRight: '15px'
+                        paddingRight: '15px',
                       }}
                     >
                       <strong>Name:</strong>
@@ -256,7 +268,7 @@ class Show extends React.Component {
                   <tr>
                     <td
                       style={{
-                        paddingRight: '15px'
+                        paddingRight: '15px',
                       }}
                     >
                       <strong>Nationality:</strong>
@@ -269,7 +281,7 @@ class Show extends React.Component {
                   <tr>
                     <td
                       style={{
-                        paddingRight: '15px'
+                        paddingRight: '15px',
                       }}
                     >
                       <strong>Date of Birth:</strong>
@@ -282,7 +294,7 @@ class Show extends React.Component {
                   <tr>
                     <td
                       style={{
-                        paddingRight: '15px'
+                        paddingRight: '15px',
                       }}
                     >
                       <strong>Email:</strong>
@@ -295,7 +307,7 @@ class Show extends React.Component {
                   <tr>
                     <td
                       style={{
-                        paddingRight: '15px'
+                        paddingRight: '15px',
                       }}
                     >
                       <strong>Phone:</strong>
@@ -308,7 +320,7 @@ class Show extends React.Component {
                   <tr>
                     <td
                       style={{
-                        paddingRight: '15px'
+                        paddingRight: '15px',
                       }}
                     >
                       <strong>Current residence:</strong>
@@ -321,7 +333,7 @@ class Show extends React.Component {
                   <tr>
                     <td
                       style={{
-                        paddingRight: '15px'
+                        paddingRight: '15px',
                       }}
                     >
                       <strong>Github:</strong>
@@ -334,7 +346,7 @@ class Show extends React.Component {
                   <tr>
                     <td
                       style={{
-                        paddingRight: '15px'
+                        paddingRight: '15px',
                       }}
                     >
                       <strong>Linkedin:</strong>
@@ -345,7 +357,7 @@ class Show extends React.Component {
                   </tr>
                 </tbody>
               </table>
-              <br/>
+              <br />
               <p>{aboutMe}</p>
             </Col>
           </Row>

@@ -75,6 +75,8 @@ class PersonalForm extends React.Component {
       disabled: isSaving,
       value: values[inputName],
       onChange: this.handleChange.bind(this, inputName),
+
+      autoFocus: true,
     };
 
     if (hasFailed && errors[inputName]) {

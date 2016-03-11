@@ -74,6 +74,10 @@ class EmployeeForm extends React.Component {
     return this.props.values && this.props.values.email;
   }
 
+  getType() {
+    return this.props.values && this.props.values.type;
+  }
+
   getActiveSection(props) {
     const { section } = props;
 
@@ -100,9 +104,13 @@ class EmployeeForm extends React.Component {
 
   handleTabSelect(event) {
     const email = this.getEmail();
-    const type = `${this.props.values.type.toLowerCase()}s`;
-    if (!email) return;
-    this.props.navigateTo(email, type, event.target.text);
+    const type = this.getType();
+
+    if (!email || !type) {
+      return;
+    }
+
+    this.props.navigateTo(email, `${type.toLowerCase()}s`, event.target.text);
   }
 
   renderNavItems() {

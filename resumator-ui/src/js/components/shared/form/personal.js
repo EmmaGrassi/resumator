@@ -4,8 +4,9 @@ import { Button, Col, Input, Row, Alert } from 'react-bootstrap';
 import nationalities from '../../../data/nationalities';
 import types from '../../../data/types';
 import labelize from '../../../helpers/labelize';
+import FormComponent from './form';
 
-class PersonalForm extends React.Component {
+class PersonalForm extends FormComponent {
   handleChange(name, event) {
     this.props.handleChange(name, this.refs[name].getValue());
   }
@@ -17,359 +18,64 @@ class PersonalForm extends React.Component {
           {this.renderType()}
         </Col>
         <Col xs={6}>
-          {this.renderTitle()}
+          {this.renderRole()}
         </Col>
       </Row>);
     }
 
     return (<Row>
       <Col xs={12}>
-        {this.renderTitle()}
+        {this.renderRole()}
       </Col>
     </Row>);
   }
 
-  // TODO: Do not render these for users that can not see them.
   renderType() {
-    const { isSaving, hasFailed, errors, values } = this.props;
-
-    const inputName = 'type';
-    const inputLabel = labelize(inputName, '*');
-
-    const props = {
-      ref: inputName,
-      type: 'select',
-      placeholder: inputLabel,
-      label: inputLabel,
-
-      disabled: isSaving,
-      value: values[inputName],
-      onChange: this.handleChange.bind(this, inputName),
-    };
-
-    if (hasFailed && errors[inputName]) {
-      props.bsStyle = 'error';
-      props.help = errors[inputName];
-      props.hasFeedback = true;
-    }
-
-    return (
-      <Input {...props}>
-        {Object.keys(types).map((key, i) => <option key={i} value={key}>{types[key]}</option>)}
-      </Input>
-    );
+    return this.getDropDown('type', types, true);
   }
 
-  renderTitle() {
-    const { isSaving, hasFailed, errors, values } = this.props;
-
-    const inputName = 'title';
-    const inputLabel = labelize(inputName, '*');
-
-    const props = {
-      ref: inputName,
-      type: 'text',
-      placeholder: inputLabel,
-      label: inputLabel,
-
-      disabled: isSaving,
-      value: values[inputName],
-      onChange: this.handleChange.bind(this, inputName),
-
-      autoFocus: true,
-    };
-
-    if (hasFailed && errors[inputName]) {
-      props.bsStyle = 'error';
-      props.help = errors[inputName];
-      props.hasFeedback = true;
-    }
-
-    return (
-      <Input {...props} />
-    );
+  renderRole() {
+    return this.getInput('role', null, true);
   }
 
   renderName() {
-    const { register, isSaving, hasFailed, errors, values } = this.props;
-
-    const inputName = 'name';
-    const inputLabel = labelize(inputName, '*');
-
-    const props = {
-      ref: inputName,
-      type: 'text',
-      placeholder: inputLabel,
-      label: inputLabel,
-
-      disabled: register || isSaving,
-      value: values[inputName],
-      onChange: this.handleChange.bind(this, inputName),
-    };
-
-    if (hasFailed && errors[inputName]) {
-      props.bsStyle = 'error';
-      props.help = errors[inputName];
-      props.hasFeedback = true;
-    }
-
-    return (
-      <Input {...props} />
-    );
+    return this.getInput('name', null, true);
   }
 
   renderSurname() {
-    const { register, isSaving, hasFailed, errors, values } = this.props;
-
-    const inputName = 'surname';
-    const inputLabel = labelize(inputName, '*');
-
-    const props = {
-      ref: inputName,
-      type: 'text',
-      placeholder: inputLabel,
-      label: inputLabel,
-
-      disabled: register || isSaving,
-      value: values[inputName],
-      onChange: this.handleChange.bind(this, inputName),
-    };
-
-    if (hasFailed && errors[inputName]) {
-      props.bsStyle = 'error';
-      props.help = errors[inputName];
-      props.hasFeedback = true;
-    }
-
-    return (
-      <Input {...props} />
-    );
+    return this.getInput('surname', null, true);
   }
 
   renderEmail() {
-    const { register, isSaving, hasFailed, errors, values } = this.props;
-
-    const inputName = 'email';
-    const inputLabel = labelize(inputName, '*');
-
-    const props = {
-      ref: inputName,
-      type: 'email',
-      placeholder: inputLabel,
-      label: inputLabel,
-
-      disabled: register || isSaving,
-      value: values[inputName],
-      onChange: this.handleChange.bind(this, inputName),
-    };
-
-    if (hasFailed && errors[inputName]) {
-      props.bsStyle = 'error';
-      props.help = errors[inputName];
-      props.hasFeedback = true;
-    }
-
-    return (
-      <Input {...props} />
-    );
+    return this.getInput('email', null, true);
   }
 
   renderPhonenumber() {
-    const { isSaving, hasFailed, errors, values } = this.props;
-
-    const inputName = 'phonenumber';
-    const inputLabel = labelize(inputName, '*');
-
-    const props = {
-      ref: inputName,
-      type: 'text',
-      placeholder: inputLabel,
-      label: inputLabel,
-
-      disabled: isSaving,
-      value: values[inputName],
-      onChange: this.handleChange.bind(this, inputName),
-    };
-
-    if (hasFailed && errors[inputName]) {
-      props.bsStyle = 'error';
-      props.help = errors[inputName];
-      props.hasFeedback = true;
-    }
-
-    return (
-      <Input {...props} />
-    );
+    return this.getInput('phonenumber', 'number', true);
   }
 
   renderCurrentResidence() {
-    const { isSaving, hasFailed, errors, values } = this.props;
-
-    const inputName = 'currentResidence';
-    const inputLabel = labelize(inputName, '*');
-
-    const props = {
-      ref: inputName,
-      type: 'text',
-      placeholder: inputLabel,
-      label: inputLabel,
-
-      disabled: isSaving,
-      value: values[inputName],
-      onChange: this.handleChange.bind(this, inputName),
-    };
-
-    if (hasFailed && errors[inputName]) {
-      props.bsStyle = 'error';
-      props.help = errors[inputName];
-      props.hasFeedback = true;
-    }
-
-    return (
-      <Input {...props} />
-    );
+    return this.getInput('currentResidence', null, true);
   }
 
   renderGithub() {
-    const { isSaving, hasFailed, errors, values } = this.props;
-
-    const inputName = 'github';
-    const inputLabel = 'Github';
-
-    const props = {
-      ref: inputName,
-      type: 'text',
-      placeholder: inputLabel,
-      label: inputLabel,
-
-      disabled: isSaving,
-      value: values[inputName],
-      onChange: this.handleChange.bind(this, inputName),
-    };
-
-    if (hasFailed && errors[inputName]) {
-      props.bsStyle = 'error';
-      props.help = errors[inputName];
-      props.hasFeedback = true;
-    }
-
-    return (
-      <Input {...props} />
-    );
+    return this.getInput('github', null, false);
   }
 
   renderLinkedin() {
-    const { isSaving, hasFailed, errors, values } = this.props;
-
-    const inputName = 'linkedin';
-    const inputLabel = 'Linkedin';
-
-    const props = {
-      ref: inputName,
-      type: 'text',
-      placeholder: inputLabel,
-      label: inputLabel,
-
-      disabled: isSaving,
-      value: values[inputName],
-      onChange: this.handleChange.bind(this, inputName),
-    };
-
-    if (hasFailed && errors[inputName]) {
-      props.bsStyle = 'error';
-      props.help = errors[inputName];
-      props.hasFeedback = true;
-    }
-
-    return (
-      <Input {...props} />
-    );
+    return this.getInput('linkedin', null, false);
   }
 
   renderDateOfBirth() {
-    const { isSaving, hasFailed, errors, values } = this.props;
-
-    const inputName = 'dateOfBirth';
-    const inputLabel = labelize(inputName, '*');
-
-    const props = {
-      ref: inputName,
-      type: 'date',
-      placeholder: inputLabel,
-      label: inputLabel,
-
-      disabled: isSaving,
-      value: values[inputName],
-      onChange: this.handleChange.bind(this, inputName),
-    };
-
-    if (hasFailed && errors[inputName]) {
-      props.bsStyle = 'error';
-      props.help = errors[inputName];
-      props.hasFeedback = true;
-    }
-
-    return (
-      <Input {...props} />
-    );
+    return this.getInput('dateOfBirth', 'date', true);
   }
 
   renderNationality() {
-    const { isSaving, hasFailed, errors, values } = this.props;
-
-    const inputName = 'nationality';
-    const inputLabel = labelize(inputName, '*');
-
-    const props = {
-      ref: inputName,
-      type: 'select',
-      placeholder: inputLabel,
-      label: inputLabel,
-
-      disabled: isSaving,
-      value: values[inputName],
-      onChange: this.handleChange.bind(this, inputName),
-    };
-
-    if (hasFailed && errors[inputName]) {
-      props.bsStyle = 'error';
-      props.help = errors[inputName];
-      props.hasFeedback = true;
-    }
-
-    return (
-      <Input {...props} >
-        {Object.keys(nationalities).map((key, i) => <option key={i} value={key}>{nationalities[key]}</option>)}
-      </Input>
-    );
+    return this.getDropDown('nationality', nationalities, true);
   }
 
   renderAboutMe() {
-    const { isSaving, hasFailed, errors, values } = this.props;
-
-    const inputName = 'aboutMe';
-    const inputLabel = labelize(inputName, '*');
-
-    const props = {
-      ref: inputName,
-      type: 'textarea',
-      placeholder: inputLabel,
-      label: inputLabel,
-
-      disabled: isSaving,
-      value: values[inputName],
-      onChange: this.handleChange.bind(this, inputName),
-    };
-
-    if (hasFailed && errors[inputName]) {
-      props.bsStyle = 'error';
-      props.help = errors[inputName];
-      props.hasFeedback = true;
-    }
-
-    return (
-      <Input {...props} />
-    );
+    return this.getInput('aboutMe', 'textarea', true);
   }
 
   renderCancelButton() {

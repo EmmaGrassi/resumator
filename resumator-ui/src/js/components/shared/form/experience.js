@@ -23,8 +23,8 @@ class ExperienceForm extends FormComponent {
     this.props.handleChange('experience', this.props.currentValues);
   }
 
-  renderTitle() {
-    return this.getInput('title', null, true);
+  renderRole() {
+    return this.getInput('role', null, true);
   }
 
   renderCompanyName() {
@@ -78,7 +78,7 @@ class ExperienceForm extends FormComponent {
           </Col>
 
           <Col xs={6}>
-            {this.renderTitle()}
+            {this.renderRole()}
           </Col>
         </Row>
 

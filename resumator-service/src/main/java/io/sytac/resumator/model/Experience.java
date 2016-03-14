@@ -33,8 +33,8 @@ public class Experience {
 
     @NotBlank(message = "companyName is mandatory")
     private final String companyName;
-    @NotBlank(message = "Experience title is mandatory")
-    private final String title;
+    @NotBlank(message = "Experience role is mandatory")
+    private final String role;
     @NotBlank(message = "Experience city is mandatory")
     private final String city;
     @NotBlank(message = "Experience country  is mandatory")
@@ -52,7 +52,7 @@ public class Experience {
 
     @JsonCreator
     public Experience(@JsonProperty("companyName") String companyName,
-                      @JsonProperty("title") String title,
+                      @JsonProperty("role") String role,
                       @JsonProperty("city") String city,
                       @JsonProperty("country") String country,
                       @JsonProperty("shortDescription") String shortDescription,
@@ -62,7 +62,7 @@ public class Experience {
     		      @JsonDeserialize(using = StringToDateDeserializer.class) Date startDate,
                       @JsonProperty("endDate") 
     		      @JsonDeserialize(using = StringToDateDeserializer.class)Date endDate) {
-        this(companyName, title, city, country, shortDescription, technologies, methodologies,
+        this(companyName, role, city, country, shortDescription, technologies, methodologies,
                 startDate, Optional.ofNullable(endDate));
     }
 }

@@ -106,7 +106,7 @@ public class EmployeeQuery extends BaseResource {
 
             final String representation = rest.newRepresentation()
                     .withProperty("type", emp.getType())
-                    .withProperty("title", emp.getTitle())
+                    .withProperty("role", emp.getRole())
                     .withProperty("name", emp.getName())
                     .withProperty("surname", emp.getSurname())
                     .withProperty("email", emp.getEmail())
@@ -155,7 +155,7 @@ public class EmployeeQuery extends BaseResource {
 
     private Map<String, String> getPersonaliaMappings(Employee employee) {
         Map<String, String> result = new HashMap<>();
-        result.put("JobTitle", employee.getTitle());
+        result.put("JobTitle", employee.getRole());
         result.put("FirstName", employee.getName());
         result.put("LastName", employee.getSurname());
         result.put("YearOfBirth", String.valueOf(getYearOfDate(employee.getDateOfBirth())));
@@ -171,7 +171,7 @@ public class EmployeeQuery extends BaseResource {
         if(experiences != null) {
             for (int i = 1; i <= experiences.size(); i++) {
                 Experience experience = experiences.get(i - 1);
-                result.put("Experience.Position" + i, experience.getTitle());
+                result.put("Experience.Position" + i, experience.getRole());
                 result.put("Experience.Period" + i, getPeriod(experience.getStartDate(), experience.getEndDate()));
                 result.put("Experience.CompanyName" + i, experience.getCompanyName());
                 result.put("Experience.City" + i, experience.getCity());

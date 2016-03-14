@@ -91,7 +91,7 @@ public class RESTTest extends JerseyTest {
             Map<String, Object> map = mapper.readerFor(Map.class).readValue(entityStream);
             return Employee.builder()
                     .id(map.get("id").toString())
-                    .title(map.get("title").toString())
+                    .role(map.get("role").toString())
                     .name(map.get("name").toString())
                     .surname(map.get("surname").toString())
                     .email(map.get("email").toString())

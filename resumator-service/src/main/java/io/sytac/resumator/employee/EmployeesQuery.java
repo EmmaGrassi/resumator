@@ -98,7 +98,7 @@ public class EmployeesQuery extends BaseResource {
                 .withProperty("email", employee.getEmail())
                 .withProperty("fullName", employee.getName()+" "+employee.getSurname())
                 .withProperty("client", client)
-                .withProperty("title", employee.getTitle())
+                .withProperty("role", employee.getRole())
                 .withProperty("phone", employee.getPhoneNumber())
                 .withLink(REL_SELF, resourceLink(uriInfo, EmployeeQuery.class, employee.getEmail()));
     }

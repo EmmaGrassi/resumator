@@ -34,7 +34,7 @@ public class CommonCommandTest {
     public static final String FIELD_OF_STUDY = "Field of study";
     public static final String SCHOOL = "School";
     public static final EmployeeType TYPE = EmployeeType.EMPLOYEE;
-    public static final String TITLE = "Title";
+    public static final String TITLE = "Role";
     public static final String COMPANY_NAME = "CompanyName";
     public static final String NAME = "Foo";
     public static final String SURNAME = "Bar";

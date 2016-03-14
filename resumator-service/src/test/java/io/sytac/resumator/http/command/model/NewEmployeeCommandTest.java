@@ -87,7 +87,7 @@ public class NewEmployeeCommandTest extends CommonCommandTest {
             "}," +
             "\"payload\":{" +
                 "\"type\":\"" + TYPE + "\"," +
-                "\"title\":\"" + TITLE + "\"," +
+                "\"role\":\"" + TITLE + "\"," +
                 "\"name\":\"" + NAME + "\"," +
                 "\"surname\":\"" + SURNAME + "\"," +
                 "\"email\":\"" + EMAIL + "\"," +
@@ -114,7 +114,7 @@ public class NewEmployeeCommandTest extends CommonCommandTest {
                 "}]," +
                 "\"experience\":[{" +
                     "\"companyName\":\"" + COMPANY_NAME + "\","+
-                    "\"title\":\"" + TITLE + "\"," +
+                    "\"role\":\"" + TITLE + "\"," +
                     "\"city\":\"" + CITY + "\"," +
                     "\"country\":\"" + COUNTRY + "\"," +
                     "\"shortDescription\":\"" + SHORT_DESCRIPTION + "\"," +

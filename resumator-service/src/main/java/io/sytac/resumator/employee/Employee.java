@@ -29,7 +29,7 @@ public class Employee {
 
     private final String id;
     private final EmployeeType type;
-    private final String title;
+    private final String role;
     private final String name;
     private final String surname;
     private final String email;
@@ -47,13 +47,13 @@ public class Employee {
     private final boolean admin;
 
     @Builder
-    Employee(String id, EmployeeType type, String title, String name, String surname, String email, String phoneNumber,
+    Employee(String id, EmployeeType type, String role, String name, String surname, String email, String phoneNumber,
              String gitHub, String linkedIn, Date dateOfBirth, Nationality nationality, String currentResidence,
              String aboutMe, List<Education> educations, List<Course> courses,
              List<Experience> experiences, List<Language> languages, boolean admin) {
         this.id = id == null ? UUID.randomUUID().toString() : id;
         this.type = type;
-        this.title = title;
+        this.role = role;
         this.name = name;
         this.surname = surname;
         this.email = email;

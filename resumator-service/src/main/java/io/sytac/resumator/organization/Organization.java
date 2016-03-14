@@ -87,7 +87,7 @@ public class Organization {
         return Employee.builder()
                 .id(employeeId)
                 .type(Optional.ofNullable(payload.getType()).orElse(determineEmployeeType(payload.getEmail())))
-                .title(payload.getTitle())
+                .role(payload.getRole())
                 .name(payload.getName())
                 .surname(payload.getSurname())
                 .email(payload.getEmail())

@@ -89,7 +89,7 @@ public class UpdateEmployeeCommandTest extends CommonCommandTest {
             "}," +
             "\"payload\":{" +
                 "\"type\":\"" + TYPE + "\"," +
-                "\"title\":\"" + TITLE + "\"," +
+                "\"role\":\"" + TITLE + "\"," +
                 "\"name\":\"" + NAME + "\"," +
                 "\"surname\":\"" + SURNAME + "\"," +
                 "\"email\":\"" + EMAIL + "\"," +
@@ -116,7 +116,7 @@ public class UpdateEmployeeCommandTest extends CommonCommandTest {
                 "}]," +
                 "\"experience\":[{" +
                     "\"companyName\":\"" + COMPANY_NAME + "\","+
-                    "\"title\":\"" + TITLE + "\"," +
+                    "\"role\":\"" + TITLE + "\"," +
                     "\"city\":\"" + CITY + "\"," +
                     "\"country\":\"" + COUNTRY + "\"," +
                     "\"shortDescription\":\"" + SHORT_DESCRIPTION + "\"," +

@@ -36,7 +36,7 @@ class Create extends React.Component {
         <NewForm
           ref="employeeForm"
           type="PROSPECT"
-          values={{ isSaved: false }}
+          values={{}}
           handleSubmit={this.props.createEmployee}
           handleCancel={this.props.handleCancel}
           handleChange={this.props.changeEmployee.bind(this)}

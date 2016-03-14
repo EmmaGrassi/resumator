@@ -61,7 +61,6 @@ class Edit extends React.Component {
 
     if (item) {
       item.dateOfBirth = moment(item.dateOfBirth).format('YYYY-MM-DD');
-      item.isSaved = true;
       item.experience = item.experience.map((v, i) => {
         if (v.startDate) {
           v.startDate = moment(v.startDate).format('YYYY-MM-DD');
@@ -83,6 +82,7 @@ class Edit extends React.Component {
           type="FREELANCER"
           values={item}
           addEntry={this.props.addEntry}
+          userId={params.userId}
           section={params.section}
           handleSubmit={this.props.updateEmployee.bind(this, item.email)}
           handleChange={this.props.changeEmployee.bind(this)}

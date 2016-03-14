@@ -63,43 +63,35 @@ class EmployeeForm extends React.Component {
   }
 
   componentWillMount() {
-    this.getActiveSection(this.props);
+    const activeKey = this.getActiveTabKey(this.props);
+    this.setState({
+      activeKey: activeKey + 1,
+      selectedTab: navItems[activeKey],
+    });
   }
 
   componentWillReceiveProps(props, state) {
-    this.getActiveSection(props);
+    const activeKey = this.getActiveTabKey(props);
+    this.setState({
+      activeKey: activeKey + 1,
+      selectedTab: navItems[activeKey],
+    });
+  }
+
+  getActiveTabKey({ section = 'personal' }) {
+    return navItems.findIndex(elem => elem.toLowerCase() === section);
   }
 
   getEmail() {
-    return this.props.values && this.props.values.email;
+    return this.props && this.props.userId;
   }
 
   getType() {
     return this.props.values && this.props.values.type;
   }
 
-  getActiveSection(props) {
-    const { section } = props;
-
-    if (!section) {
-      this.setState({
-        activeKey: 1,
-        selectedTab: 'Personal',
-      });
-      return;
-    }
-
-    const key = navItems
-      .findIndex(elem => elem.toLowerCase() === section);
-
-    this.setState({
-      activeKey: key + 1,
-      selectedTab: navItems[key],
-    });
-  }
-
   isSaved() {
-    return this.props.values.isSaved;
+    return !(typeof this.props.userId === 'undefined');
   }
 
   handleTabSelect(event) {
@@ -113,15 +105,21 @@ class EmployeeForm extends React.Component {
     this.props.navigateTo(email, `${type.toLowerCase()}s`, event.target.text);
   }
 
+
   renderNavItems() {
-    // const email = this.getEmail();
-    const isSaved = this.isSaved();
     return navItems.map((v, i) => {
       if (i === 0) {
         return <NavItem key={i} eventKey={i + 1} ref={`${v}Tab`}>{v}</NavItem>;
       }
 
-      return <NavItem key={i} eventKey={i + 1} ref={`${v}Tab`} disabled={!isSaved}>{v}</NavItem>;
+      return (
+        <NavItem
+          key={i} eventKey={i + 1}
+          ref={`${v}Tab`}
+          disabled={!this.isSaved()}
+        >
+          {v}
+        </NavItem>);
     });
   }
 

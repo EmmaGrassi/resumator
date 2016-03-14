@@ -71,7 +71,7 @@ class ExperienceForm extends FormComponent {
 
   render() {
     return (
-      <div>
+      <div className="multi-form">
         <Row>
           <Col xs={6}>
             {this.renderCompanyName()}

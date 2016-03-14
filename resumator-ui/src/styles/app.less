@@ -54,9 +54,22 @@
   width: 80px;
 }
 
+
 li.active {
   background: lighten(#00A093, 3%);
   transition: all .2s ease-out;
+}
+
+.multi-form {
+  margin-top: 1em;
+  padding-top: 1em;
+  border-top: 1px solid #647586;
+
+  &:first-child {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
+  }
 }
 
 @media print {

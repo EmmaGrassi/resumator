@@ -53,7 +53,7 @@ class EducationForm extends FormComponent {
 
   render() {
     return (
-      <div>
+      <div className="multi-form">
         <Row>
           <Col xs={12}>
             {this.renderDegree()}

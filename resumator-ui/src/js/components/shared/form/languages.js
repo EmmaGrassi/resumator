@@ -32,7 +32,7 @@ class LanguagesForm extends FormComponent {
 
   render() {
     return (
-      <div>
+      <div className="multi-form">
         <Row>
           <Col xs={6}>
             {this.renderName()}

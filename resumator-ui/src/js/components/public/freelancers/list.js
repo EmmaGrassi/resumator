@@ -85,7 +85,7 @@ class List extends React.Component {
         const email = v.email;
         const fullName = v.fullName;
         const client = v.client;
-        const title = v.title;
+        const role = v.role;
         const phone = v.phone;
 
         return (<tr
@@ -114,7 +114,7 @@ class List extends React.Component {
             verticalAlign: 'middle',
           }}
         >
-          {title}
+          {role}
         </td>
         <td
           style={{
@@ -163,7 +163,7 @@ class List extends React.Component {
                   <tr>
                     <th>Name</th>
                     <th>Current Client</th>
-                    <th>Title</th>
+                    <th>Role</th>
                     <th>Phone</th>
                     <th
                       style={{

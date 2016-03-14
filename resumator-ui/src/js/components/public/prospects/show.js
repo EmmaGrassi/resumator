@@ -113,7 +113,7 @@ class Show extends React.Component {
                 companyName,
                 country,
                 shortDescription,
-                title,
+                role,
               } = v;
 
               let {
@@ -152,7 +152,7 @@ class Show extends React.Component {
                       marginTop: '10px',
                     }}
                   >
-                    {title}
+                    {role}
                   </h3>
                   <h4>{companyName} ({city}, {country})</h4>
                   {startYear} - {endYear} ({difference})<br />
@@ -223,7 +223,7 @@ class Show extends React.Component {
       name,
       phonenumber,
       surname,
-      title,
+      role,
     } = item;
     let { nationality, dateOfBirth } = item;
 
@@ -248,7 +248,7 @@ class Show extends React.Component {
                 </ButtonGroup>
               </span>
 
-              <h1>{title}</h1>
+              <h1>{role}</h1>
 
               <table>
                 <tbody>

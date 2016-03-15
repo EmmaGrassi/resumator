@@ -1,13 +1,14 @@
 package io.sytac.resumator.store.bootstrap;
 
 
+import io.sytac.resumator.exception.ResumatorInternalException;
 import io.sytac.resumator.organization.NewOrganizationCommand;
 import io.sytac.resumator.organization.Organization;
 import io.sytac.resumator.organization.OrganizationRepository;
-import io.sytac.resumator.store.bootstrap.Bootstrap;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Inject;
+
 import java.util.Date;
 import java.util.Optional;
 
@@ -22,7 +23,12 @@ public class BootstrapRunner {
 
     @Inject
     public BootstrapRunner(final Bootstrap bootstrap, final OrganizationRepository orgs) {
-        bootstrap.replay();
+        try {
+	    bootstrap.replay();
+	} catch (ResumatorInternalException e) {
+	    log.error("Bootsrap failed due to the exception: "+e.getCause()+" Exiting the app.");
+	    System.exit(0);
+	}
 
         // Register organisation manually. Will be removed when NewOrganisation endpoint is implemented.
         NewOrganizationCommand organizationCommand = new NewOrganizationCommand("Sytac", "sytac.io", String.valueOf(new Date().getTime()));

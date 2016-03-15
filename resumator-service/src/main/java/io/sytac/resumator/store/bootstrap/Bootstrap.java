@@ -46,7 +46,7 @@ public class Bootstrap {
             final ReplayEventConfig replayEventConfig = new ReplayEventConfig(orgs, objectMapper);
             EventExecutorFactory.getInstance(event.getType(), replayEventConfig).execute(event);
         } catch (IOException e) {
-            throw new ResumatorInternalException("The following exception occurred while replaying events: ", e.getCause());
+            throw new ResumatorInternalException("The following exception occurred while replaying events: ", e);
         }
     }
 }

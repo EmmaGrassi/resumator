@@ -8,6 +8,7 @@
     "cookies-js": "^1.2.2",
     "domready": "^1.0.8",
     "express": "^4.13.3",
+    "fixed-data-table": "^0.6.0",
     "history": "^1.17.0",
     "immutable": "^3.7.6",
     "lodash": "^3.10.1",

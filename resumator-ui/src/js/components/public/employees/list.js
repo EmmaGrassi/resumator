@@ -1,5 +1,6 @@
 import Loader from 'react-loader';
 import React from 'react';
+import ReactTable from '../../shared/table';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import { pushPath } from 'redux-simple-router';
@@ -12,11 +13,17 @@ import {
   Glyphicon,
   Grid,
   Row,
-  Table,
 } from 'react-bootstrap';
 
 import listAction from '../../../actions/employees/list';
 import removeAction from '../../../actions/employees/remove';
+
+const rows = [
+  ['a1', 'b1', 'c1'],
+  ['a2', 'b2', 'c2'],
+  ['a3', 'b3', 'c3'],
+  // .... and more
+];
 
 function mapStateToProps(state) {
   return {
@@ -72,131 +79,138 @@ class List extends React.Component {
     this.props.removeListEntry('EMPLOYEE', email);
   }
 
+  renderTable() {
+    return (<ReactTable />);
+  }
+
 
   render() {
-    const data = this.props.list;
-    const items = data.items;
-    const isFetching = data.isFetching;
-
-    let rows;
-
-    if (items && items.length) {
-      rows = items.map((v, i) => {
-        const email = v.email;
-        const fullName = v.fullName;
-        const client = v.client;
-        const role = v.role;
-        const phone = v.phone;
-
-        return (<tr
-          key={i}
-          onClick={this.handleRowButtonClick.bind(this, email)}
-          style={{
-            cursor: 'pointer',
-          }}
-        >
-          <td
-            style={{
-              verticalAlign: 'middle',
-            }}
-          >
-            {fullName}
-          </td>
-         <td
-           style={{
-             verticalAlign: 'middle',
-           }}
-         >
-           {client}
-        </td>
-          <td
-            style={{
-              verticalAlign: 'middle',
-            }}
-          >
-            {role}
-          </td>
-          <td
-            style={{
-              verticalAlign: 'middle',
-            }}
-          >
-          {phone}
-          </td>
-
-          <td style={{ textAlign: 'right' }}>
-            <ButtonGroup>
-              <Button onClick={this.handleEditButtonClick.bind(this, email)}>
-                <Glyphicon glyph="pencil" />
-              </Button>
-              <Button onClick={this.handleRemoveButtonClick.bind(this, email)} bsStyle="danger">
-                <Glyphicon glyph="trash" />
-              </Button>
-            </ButtonGroup>
-          </td>
-        </tr>);
-      });
-    } else {
-      rows = (
-        <tr>
-          <td
-            colSpan="5"
-            style={{
-              textAlign: 'center',
-            }}
-          >
-            No Content
-          </td>
-        </tr>
-      );
-    }
-
-
-    return (
-      <Loader
-        loaded={!isFetching}
-      >
-        <Grid>
-          <Row>
-            <Col xs={12}>
-              <Table condensed hover responsive>
-                <thead>
-                  <tr>
-                    <th>
-                      Name
-                    </th>
-                    <th>Current Client</th>
-                    <th>Role</th>
-                    <th>Phone</th>
-                    <th
-                      style={{
-                        width: '20%',
-                      }}
-                    >
-                      Actions
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {rows}
-                </tbody>
-              </Table>
-            </Col>
-          </Row>
-          <Row>
-            <Col xs={12}>
-              <ButtonToolbar>
-                <ButtonGroup>
-                  <Button bsStyle="success" onClick={this.handleNewButtonClick.bind(this)}>
-                    <Glyphicon glyph="plus" /> New
-                  </Button>
-                </ButtonGroup>
-              </ButtonToolbar>
-            </Col>
-          </Row>
-        </Grid>
-      </Loader>
-    );
+    return (<div className="container">
+      {this.renderTable()}
+    </div>);
+    // const data = this.props.list;
+    // const items = data.items;
+    // const isFetching = data.isFetching;
+    //
+    // let rows;
+    //
+    // if (items && items.length) {
+    //   rows = items.map((v, i) => {
+    //     const email = v.email;
+    //     const fullName = v.fullName;
+    //     const client = v.client;
+    //     const role = v.role;
+    //     const phone = v.phone;
+    //
+    //     return (<tr
+    //       key={i}
+    //       onClick={this.handleRowButtonClick.bind(this, email)}
+    //       style={{
+    //         cursor: 'pointer',
+    //       }}
+    //     >
+    //       <td
+    //         style={{
+    //           verticalAlign: 'middle',
+    //         }}
+    //       >
+    //         {fullName}
+    //       </td>
+    //      <td
+    //        style={{
+    //          verticalAlign: 'middle',
+    //        }}
+    //      >
+    //        {client}
+    //     </td>
+    //       <td
+    //         style={{
+    //           verticalAlign: 'middle',
+    //         }}
+    //       >
+    //         {role}
+    //       </td>
+    //       <td
+    //         style={{
+    //           verticalAlign: 'middle',
+    //         }}
+    //       >
+    //       {phone}
+    //       </td>
+    //
+    //       <td style={{ textAlign: 'right' }}>
+    //         <ButtonGroup>
+    //           <Button onClick={this.handleEditButtonClick.bind(this, email)}>
+    //             <Glyphicon glyph="pencil" />
+    //           </Button>
+    //           <Button onClick={this.handleRemoveButtonClick.bind(this, email)} bsStyle="danger">
+    //             <Glyphicon glyph="trash" />
+    //           </Button>
+    //         </ButtonGroup>
+    //       </td>
+    //     </tr>);
+    //   });
+    // } else {
+    //   rows = (
+    //     <tr>
+    //       <td
+    //         colSpan="5"
+    //         style={{
+    //           textAlign: 'center',
+    //         }}
+    //       >
+    //         No Content
+    //       </td>
+    //     </tr>
+    //   );
+    // }
+    //
+    //
+    // return (
+    //   <Loader
+    //     loaded={!isFetching}
+    //   >
+    //     <Grid>
+    //       <Row>
+    //         <Col xs={12}>
+    //           <Table condensed hover responsive>
+    //             <thead>
+    //               <tr>
+    //                 <th>
+    //                   Name
+    //                 </th>
+    //                 <th>Current Client</th>
+    //                 <th>Role</th>
+    //                 <th>Phone</th>
+    //                 <th
+    //                   style={{
+    //                     width: '20%',
+    //                   }}
+    //                 >
+    //                   Actions
+    //                 </th>
+    //               </tr>
+    //             </thead>
+    //             <tbody>
+    //               {rows}
+    //             </tbody>
+    //           </Table>
+    //         </Col>
+    //       </Row>
+    //       <Row>
+    //         <Col xs={12}>
+    //           <ButtonToolbar>
+    //             <ButtonGroup>
+    //               <Button bsStyle="success" onClick={this.handleNewButtonClick.bind(this)}>
+    //                 <Glyphicon glyph="plus" /> New
+    //               </Button>
+    //             </ButtonGroup>
+    //           </ButtonToolbar>
+    //         </Col>
+    //       </Row>
+    //     </Grid>
+    //   </Loader>
+    // );
   }
 }
 

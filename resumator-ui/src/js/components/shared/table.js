@@ -94,18 +94,19 @@ class ReactTable extends React.Component {
 
   handleSearch(e){
     if (e.target.value.trim() !== '') {
-      this.applyFilter(e.target.value.toLowerCase());
+      this.applyFilter(e.target.value);
     }else {
       this.resetFilter();
     }
   }
 
   applyFilter(query){
+    const saneQuery = query.trim().toLowerCase()
     const newList = this.props.data
       .filter(x => {
         let returnIt = false;
         x.search.forEach(k => {
-          if (k.includes(query)) {
+          if (k.includes(saneQuery)) {
             returnIt = true;
           }
         });

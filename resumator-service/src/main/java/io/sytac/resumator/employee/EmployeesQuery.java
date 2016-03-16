@@ -100,6 +100,7 @@ public class EmployeesQuery extends BaseResource {
                 .withProperty("client", client)
                 .withProperty("role", employee.getRole())
                 .withProperty("phone", employee.getPhoneNumber())
+                .withProperty("experiences", employee.getExperiences())
                 .withLink(REL_SELF, resourceLink(uriInfo, EmployeeQuery.class, employee.getEmail()));
     }
 

@@ -7,55 +7,155 @@ import {
   Glyphicon,
 } from 'react-bootstrap';
 
+
+const SortTypes = {
+  ASC: 'ASC',
+  DESC: 'DESC',
+};
+
+function reverseSortDirection(sortDir) {
+  return sortDir === SortTypes.DESC ? SortTypes.ASC : SortTypes.DESC;
+}
+
+class SortHeaderCell extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this._onSortChange = this._onSortChange.bind(this);
+  }
+
+  render() {
+    var {sortDir, children, ...props} = this.props;
+    return (
+      <Cell {...props} onClick={this._onSortChange} className="sortHeader">
+        {children} {sortDir ? (sortDir === SortTypes.DESC ? '↓' : '↑') : ''}
+      </Cell>
+    );
+  }
+
+  _onSortChange(e) {
+    e.preventDefault();
+
+    if (this.props.onSortChange) {
+      this.props.onSortChange(
+        this.props.columnKey,
+        this.props.sortDir ?
+          reverseSortDirection(this.props.sortDir) :
+          SortTypes.DESC
+      );
+    }
+  }
+}
+
+
 class ReactTable extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      sortedDataList: this.props.data,
+      colSortDirection: {},
     };
   }
 
+  componentWillReceiveProps(nextProps){
+    this.setState({sortedDataList: nextProps.data});
+  }
+
+  _onSortChange(columnKey, sortDir) {
+      var sortIndexes = this.state.sortedDataList.slice();
+      sortIndexes.sort((a, b) => {
+        const valA = a[columnKey];
+        const valB = b[columnKey];
+        let sortVal = 0
+
+        if (valA < valB) sortVal = -1;
+        if (valA > valB) sortVal =  1;
+
+        if (sortVal !== 0 && sortDir === SortTypes.ASC) {
+          sortVal = sortVal * -1;
+        }
+        return sortVal
+      });
+
+      this.setState({
+        sortedDataList: sortIndexes,
+        colSortDirection: {
+          [columnKey]: sortDir,
+        },
+      });
+    }
+
   render() {
+    const {sortedDataList, colSortDirection} = this.state;
     return (
       <Table
-        rowsCount={this.props.data.length}
+        rowsCount={this.state.sortedDataList.length}
         rowHeight={50}
         headerHeight={50}
         width={1000}
         height={500}
       >
         <Column
-          header={<Cell>Name</Cell>}
+          columnKey="fullName"
+          header={
+            <SortHeaderCell
+              onSortChange={this._onSortChange.bind(this)}
+              sortDir={colSortDirection.fullName}>
+              Name
+            </SortHeaderCell>
+          }
           cell={props => (
             <Cell {...props}>
-              {this.props.data[props.rowIndex].fullName}
+              {this.state.sortedDataList[props.rowIndex].fullName}
             </Cell>
           )}
           width={200}
         />
         <Column
-          header={<Cell>Current client</Cell>}
+          columnKey="client"
+          header={
+            <SortHeaderCell
+              onSortChange={this._onSortChange.bind(this)}
+              sortDir={colSortDirection.client}>
+              Current client
+            </SortHeaderCell>
+          }
           cell={props => (
             <Cell {...props}>
-              {this.props.data[props.rowIndex].client}
+              {this.state.sortedDataList[props.rowIndex].client}
             </Cell>
           )}
           width={200}
         />
         <Column
-          header={<Cell>Role</Cell>}
+          columnKey="role"
+          header={
+            <SortHeaderCell
+              onSortChange={this._onSortChange.bind(this)}
+              sortDir={colSortDirection.role}>
+              Role
+            </SortHeaderCell>
+          }
           cell={props => (
             <Cell {...props}>
-              {this.props.data[props.rowIndex].role}
+              {this.state.sortedDataList[props.rowIndex].role}
             </Cell>
           )}
           width={200}
         />
         <Column
-          header={<Cell>Phone Number</Cell>}
+          columnKey="phone"
+          header={
+            <SortHeaderCell
+              onSortChange={this._onSortChange.bind(this)}
+              sortDir={colSortDirection.phone}>
+              Phone number
+            </SortHeaderCell>
+          }
           cell={props => (
             <Cell {...props}>
-              {this.props.data[props.rowIndex].phone}
+              {this.state.sortedDataList[props.rowIndex].phone}
             </Cell>
           )}
           width={200}
@@ -64,10 +164,17 @@ class ReactTable extends React.Component {
           header={<Cell>Actions</Cell>}
           cell={props => (
             <Cell {...props}>
-              <Button onClick={this.props.handleEditButtonClick.bind(this, this.props.data[props.rowIndex].email)}>
+              <Button onClick={this.props.handleOpen.bind(this, this.state.sortedDataList[props.rowIndex].email)}
+              >
+                <Glyphicon glyph="eye-open" />
+              </Button>
+              &nbsp;
+              <Button onClick={this.props.handleEdit.bind(this, this.state.sortedDataList[props.rowIndex].email)}
+              >
                 <Glyphicon glyph="pencil" />
               </Button>
-              <Button onClick={this.props.handleRemoveButtonClick.bind(this, this.props.data[props.rowIndex].email)}
+              &nbsp;
+              <Button onClick={this.props.handleRemove.bind(this, this.state.sortedDataList[props.rowIndex].email)}
                 bsStyle="danger"
               >
                 <Glyphicon glyph="trash" />
@@ -80,33 +187,4 @@ class ReactTable extends React.Component {
     );
   }
 }
-
 export default ReactTable;
-
-//
-// _onSortChange(columnKey, sortDir) {
-//   const sortIndexes = this._defaultSortIndexes.slice();
-//   sortIndexes.sort((indexA, indexB) => {
-//     let valueA = this._dataList[indexA][columnKey];
-//     let valueB = this._dataList[indexB][columnKey];
-//     let sortVal = 0;
-//     if (valueA > valueB) {
-//       sortVal = 1;
-//     }
-//     if (valueA < valueB) {
-//       sortVal = -1;
-//     }
-//     if (sortVal !== 0 && sortDir === SortTypes.ASC) {
-//       sortVal = sortVal * -1;
-//     }
-//
-//     return sortVal;
-//   });
-//
-//   this.setState({
-//     sortedDataList: new DataListWrapper(sortIndexes, this._dataList),
-//     colSortDirs: {
-//       [columnKey]: sortDir,
-//     },
-//   });
-// }

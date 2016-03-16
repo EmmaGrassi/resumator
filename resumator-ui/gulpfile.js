@@ -19,6 +19,8 @@ var source = require('vinyl-source-stream');
 var uglify = require('gulp-uglify');
 var watchify = require('watchify');
 var eslint = require('gulp-eslint');
+var LessPluginAutoPrefix = require('less-plugin-autoprefix');
+var autoprefix = new LessPluginAutoPrefix({ browsers: ['last 2 versions'] });
 
 // Error handling
 function handleError(taskName, _error) {
@@ -112,7 +114,9 @@ gulp.task('compileImages', 'Minifies all GIF, JPG, PNG and SVG images from the s
 gulp.task('compileLess', 'Compiles all LESS files to CSS from the source directory to the build directory.', function compileLess() {
   return gulp.src('src/styles/app.less')
     .pipe(plugins.changed('build'))
-    .pipe(plugins.less())
+    .pipe(plugins.less({
+      plugins: [autoprefix]
+    }))
     .pipe(plugins.cssnano())
     .pipe(gulp.dest('build/css'))
     .pipe(browserSync.reload({

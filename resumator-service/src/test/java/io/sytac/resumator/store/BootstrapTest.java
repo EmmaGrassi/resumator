@@ -72,13 +72,22 @@ public class BootstrapTest {
 
     private Event newEmployeeEvent() {
         final EmployeeCommandPayload employeeCommandPayload = new EmployeeCommandPayload(null, "title", "name", "surname", "email",
-                "phonenumber", "github", "linkedin", "1984-04-22", "ITALIAN", "", "", null, null, null, null, false);
+                "phonenumber", "github", "linkedin", "1984-04-22", "ITALIAN", "Amsterdam", "", null, null, null, null, false);
         final CommandHeader commandHeader = new CommandHeader.Builder()
                 .setId(UUID.randomUUID().toString())
                 .setDomain("acme.biz")
                 .build();
         final NewEmployeeCommand command = new NewEmployeeCommand(commandHeader, employeeCommandPayload);
         return command.asEvent(json);
+    }
+    
+    @Test
+    public void canSkipMigrateEvent() {
+	List<Event> events=Collections.singletonList(newEmployeeEvent());
+        when(store.getAll()).thenReturn(events);
+        bootstrap.migrate();
+        verify(store, times(0)).setReadOnly(true);
+        verify(store, times(0)).post(events.get(0));
     }
 
 }

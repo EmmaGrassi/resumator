@@ -24,9 +24,10 @@ public class BootstrapRunner {
     @Inject
     public BootstrapRunner(final Bootstrap bootstrap, final OrganizationRepository orgs) {
         try {
+            bootstrap.migrate();
 	    bootstrap.replay();
 	} catch (ResumatorInternalException e) {
-	    log.error("Bootsrap failed due to the exception: "+e.getCause()+" Exiting the app.");
+	    log.error("Bootsrap failed due to the exception: "+e.getCause()+e.getMessage()+". Exiting the app.");
 	    System.exit(0);
 	}
 

@@ -11,8 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import javax.inject.Inject;
 
 import java.io.IOException;
-import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -35,23 +33,8 @@ public class Bootstrap {
         this.objectMapper = objectMapper;
     }
 
-    /**
-     * This method is used to transfor employees having "title" attribute to the new format.
-     * We have changed "title" to "role" in our object model,which obliges us to do the transformation for the existing event data.
-     */
-    public void migrate() {
-        List<Event> events = store.getAll();
-        log.info("Migrating events in the old format,if any.");
- 
-	events.stream().filter(event->event.getPayload().contains("\"title\" :") && event.getPayload().contains("\"currentResidence\" :")).map(event->{
-	    String newPayload=event.getPayload().replace("\"title\" :", "\"role\" :");
-	    Event newEvent=new Event(event.getId(),event.getInsertOrder(),newPayload, new Timestamp(new Date().getTime()),event.getType());
-	    return newEvent;
-	}).forEach(event->store.post(event));
-
-    }
     public void replay() {
-	List<Event> events= store.getAll();
+        List<Event> events = store.getAll();
         log.info("Replaying events, setting store to read-only");
         store.setReadOnly(true);
 
@@ -69,5 +52,5 @@ public class Bootstrap {
             throw new ResumatorInternalException("The following exception occurred while replaying events: ", e);
         }
     }
-    
+
 }

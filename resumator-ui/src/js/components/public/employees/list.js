@@ -78,6 +78,7 @@ class List extends React.Component {
       handleOpen={this.handleRowButtonClick.bind(this)}
       handleEdit={this.handleEditButtonClick.bind(this)}
       handleRemove={this.handleRemoveButtonClick.bind(this)}
+      visibleKeys={['fullName', 'currentClient', 'role', 'phone']}
     />);
   }
 

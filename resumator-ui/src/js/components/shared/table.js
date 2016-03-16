@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Table, Column, Cell } from 'fixed-data-table';
+import labelize from '../../helpers/labelize'
 
 import {
   Button,
@@ -25,7 +26,7 @@ class SortHeaderCell extends React.Component {
   }
 
   render() {
-    var {sortDir, children, ...props} = this.props;
+    const {sortDir, children, ...props} = this.props;
     return (
       <Cell {...props} onClick={this._onSortChange} className="sortHeader">
         {children} {sortDir ? (sortDir === SortTypes.DESC ? '↓' : '↑') : ''}
@@ -88,6 +89,27 @@ class ReactTable extends React.Component {
 
   render() {
     const {sortedDataList, colSortDirection} = this.state;
+
+    const colums = this.props.visibleKeys.map((key, i)=> {
+      return (<Column
+        key={`${key}${i}`}
+        columnKey={key}
+        header={
+          <SortHeaderCell
+            onSortChange={this._onSortChange.bind(this)}
+            sortDir={colSortDirection[key]}>
+            {labelize(key, null)}
+          </SortHeaderCell>
+        }
+        cell={props => (
+          <Cell {...props}>
+            {this.state.sortedDataList[props.rowIndex][key]}
+          </Cell>
+        )}
+        width={200}
+      />);
+    });
+
     return (
       <Table
         rowsCount={this.state.sortedDataList.length}
@@ -96,70 +118,7 @@ class ReactTable extends React.Component {
         width={1000}
         height={500}
       >
-        <Column
-          columnKey="fullName"
-          header={
-            <SortHeaderCell
-              onSortChange={this._onSortChange.bind(this)}
-              sortDir={colSortDirection.fullName}>
-              Name
-            </SortHeaderCell>
-          }
-          cell={props => (
-            <Cell {...props}>
-              {this.state.sortedDataList[props.rowIndex].fullName}
-            </Cell>
-          )}
-          width={200}
-        />
-        <Column
-          columnKey="client"
-          header={
-            <SortHeaderCell
-              onSortChange={this._onSortChange.bind(this)}
-              sortDir={colSortDirection.client}>
-              Current client
-            </SortHeaderCell>
-          }
-          cell={props => (
-            <Cell {...props}>
-              {this.state.sortedDataList[props.rowIndex].client}
-            </Cell>
-          )}
-          width={200}
-        />
-        <Column
-          columnKey="role"
-          header={
-            <SortHeaderCell
-              onSortChange={this._onSortChange.bind(this)}
-              sortDir={colSortDirection.role}>
-              Role
-            </SortHeaderCell>
-          }
-          cell={props => (
-            <Cell {...props}>
-              {this.state.sortedDataList[props.rowIndex].role}
-            </Cell>
-          )}
-          width={200}
-        />
-        <Column
-          columnKey="phone"
-          header={
-            <SortHeaderCell
-              onSortChange={this._onSortChange.bind(this)}
-              sortDir={colSortDirection.phone}>
-              Phone number
-            </SortHeaderCell>
-          }
-          cell={props => (
-            <Cell {...props}>
-              {this.state.sortedDataList[props.rowIndex].phone}
-            </Cell>
-          )}
-          width={200}
-        />
+        {colums}
         <Column
           header={<Cell>Actions</Cell>}
           cell={props => (

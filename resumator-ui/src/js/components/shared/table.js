@@ -89,14 +89,9 @@ class ReactTable extends React.Component {
           [columnKey]: sortDir,
         },
       });
-    }
-
-  changeActiveSearchKey(e){
-    console.log('Search key changed', this.refs.activeSearchKey.getValue());
-    this.setState({activeSearchKey: this.refs.activeSearchKey.getValue()})
   }
 
-  handleSearchChange(e){
+  handleSearch(e){
     if( e.target.value !== '' ){
       this.applyFilter(e.target.value);
     }else {
@@ -106,7 +101,14 @@ class ReactTable extends React.Component {
 
   applyFilter(query){
     const newList = this.props.data
-      .filter(row => row[this.state.activeSearchKey].includes(query));
+      .reduce((prev, current) => {
+        prev.concat(Object.keys(current)
+          .forEach(key => {
+            if (current[key].includes(query)) prev.push(current);
+          }));
+        return prev;
+      }, []);
+
     this.setState({dataList: newList});
   }
 
@@ -143,23 +145,12 @@ class ReactTable extends React.Component {
     return (
       <div className="table-container">
         <Row>
-          <Col xs={2}>
-            <Input
-              ref='activeSearchKey'
-              type='select'
-              placeholder='Active search key'
-              onChange={this.changeActiveSearchKey.bind(this)}
-              value={this.state.activeSearchKey}
-            >
-              {this.props.visibleKeys.map((key, i) => <option key={i} value={key}>{labelize(key)}</option>)}
-            </Input>
-          </Col>
-          <Col xs={10}>
+          <Col xs={12}>
             <Input
               type="search"
-              placeholder={`Search by ${labelize(this.state.activeSearchKey, null)}`}
-              ref="keySearch"
-              onChange={this.handleSearchChange.bind(this)}
+              placeholder="Search"
+              ref="searchBar"
+              onChange={this.handleSearch.bind(this)}
             />
           </Col>
         </Row>

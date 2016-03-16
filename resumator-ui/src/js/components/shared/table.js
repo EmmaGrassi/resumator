@@ -2,6 +2,7 @@
 import React from 'react';
 import { Table, Column, Cell } from 'fixed-data-table';
 import labelize from '../../helpers/labelize'
+import _ from 'lodash';
 
 import {
   Button,
@@ -92,7 +93,7 @@ class ReactTable extends React.Component {
   }
 
   handleSearch(e){
-    if( e.target.value !== '' ){
+    if (e.target.value.trim() !== '') {
       this.applyFilter(e.target.value);
     }else {
       this.resetFilter();
@@ -101,13 +102,15 @@ class ReactTable extends React.Component {
 
   applyFilter(query){
     const newList = this.props.data
-      .reduce((prev, current) => {
-        prev.concat(Object.keys(current)
-          .forEach(key => {
-            if (current[key].includes(query)) prev.push(current);
-          }));
-        return prev;
-      }, []);
+      .filter(x => {
+        let returnIt = false;
+        x.search.forEach(k => {
+          if (k.includes(query)) {
+            returnIt = true;
+          }
+        });
+        return returnIt;
+      });
 
     this.setState({dataList: newList});
   }

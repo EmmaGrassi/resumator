@@ -1,4 +1,7 @@
 import request from 'superagent';
+import getSearchStrings from '../../helpers/getSearchStrings';
+
+const searchableKeys = ['fullName'];
 
 export default function list(type, cb) {
   request
@@ -15,7 +18,7 @@ export default function list(type, cb) {
       if (json._embedded && json._embedded.employees) {
         employees = json._embedded.employees.map((v) => {
           delete v._links;
-
+          v.search = getSearchStrings(v);
           return v;
         });
       } else {

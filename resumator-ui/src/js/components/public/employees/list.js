@@ -81,7 +81,6 @@ class List extends React.Component {
     />);
   }
 
-
   render() {
     const isFetching = this.props.list.isFetching;
     return (

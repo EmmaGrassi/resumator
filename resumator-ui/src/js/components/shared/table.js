@@ -94,7 +94,7 @@ class ReactTable extends React.Component {
 
   handleSearch(e){
     if (e.target.value.trim() !== '') {
-      this.applyFilter(e.target.value);
+      this.applyFilter(e.target.value.toLowerCase());
     }else {
       this.resetFilter();
     }

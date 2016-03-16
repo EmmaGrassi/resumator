@@ -7,14 +7,14 @@ function mapper(obj) {
       if (_.isArray(value)) {
         return value.map(item => mapper(item));
       }
-      return obj[key];
+      return obj[key].toLowerCase();
     });
   }
   if (_.isArray(obj)) {
-    return obj.map(x => obj[x]);
+    return obj.map(x => obj[x].toLowerCase());
   }
 
-  return obj;
+  return obj.toLowerCase();
 }
 
 export default function getSearchStrings(item, searchableKeys) {

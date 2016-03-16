@@ -1,5 +1,10 @@
 @import "./fixed-data-table";
 
+
+a {
+  cursor: pointer;
+}
+
 // Center the loader
 .less {
   position: fixed;
@@ -69,7 +74,13 @@
 }
 
 .public_fixedDataTable_header {
-  background-color: #31475A;
+  background-color: #586877;
+
+  a {
+    &:hover {
+      text-decoration: none;
+    }
+  }
 }
 
 

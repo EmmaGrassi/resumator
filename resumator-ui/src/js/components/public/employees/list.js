@@ -80,7 +80,18 @@ class List extends React.Component {
   }
 
   renderTable() {
-    return (<ReactTable />);
+    // const moreData = this.props.list.items.reduce((prev, current) => {
+    //   for (let i = 0; i < 30; i++) {
+    //     prev.push(current);
+    //   }
+    //   return prev;
+    // }, []);
+
+    return (<ReactTable
+      data={this.props.list.items}
+      handleEditButtonClick={this.handleEditButtonClick.bind(this)}
+      handleRemoveButtonClick={this.handleRemoveButtonClick.bind(this)}
+    />);
   }
 
 

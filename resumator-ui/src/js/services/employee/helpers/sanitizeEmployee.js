@@ -9,12 +9,13 @@ export default function sanitizeEmployee(data) {
   data.languages = data.languages || [];
 
   if (data.phonenumber) {
-    const withDutchCountryCode = data.phonenumber.substr(0, 2) === '06' ?
-      data.phonenumber.replace('06', '+316') :
-      data.phonenumber;
+    const withDutchCountryCode = data.phonenumber
+      .replace(/[{()}]/g, '')
+      .substr(0, 2) === '06' ?
+      data.phonenumber.replace('06', '+316').replace(/[{()}]/g, '') :
+      data.phonenumber.replace(/[{()}]/g, '');
 
     data.phonenumber = phone(withDutchCountryCode)[0] || data.phonenumber;
-    console.log(data.phonenumber);
   }
 
   data.experience = data.experience.map(exp => {

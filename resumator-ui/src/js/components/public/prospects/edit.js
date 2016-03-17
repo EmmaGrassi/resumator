@@ -38,7 +38,7 @@ function mapDispatchToProps(dispatch) {
     },
 
     removeEntry: (key, type) => {
-      const really = confirm(`Are you sure you want to remove this ${type}? This is unreversable.`);
+      const really = confirm(`Are you sure you want to remove this ${type}? This is irriversible.`);
       if (really) {
         dispatch(removeEntry(key, type));
       }

@@ -25,6 +25,11 @@ class ListContainer extends React.Component {
     this.props.addEntry(this.props.name);
   }
 
+  handleRemove(key, name, e) {
+    e.preventDefault();
+    this.props.removeEntry(key, name);
+  }
+
   renderActions() {
     return (
       <div className="pull-right">
@@ -69,11 +74,12 @@ class ListContainer extends React.Component {
 
     const currentValues = formProps.values[name];
 
-    const forms = currentValues.map((values, iterator) => {
+    const forms = currentValues.map((values, i) => {
       formProps.currentValues = currentValues;
       formProps.values = values;
-      formProps.key = iterator;
-      formProps.index = iterator;
+      formProps.key = formProps.index = i;
+      formProps.handleRemove = this.handleRemove.bind(this, i, name);
+      formProps.showRemoveButton = currentValues.length > 1;
 
       return <Form {...formProps} />;
     });

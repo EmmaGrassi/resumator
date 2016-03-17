@@ -157,6 +157,7 @@ class EmployeeForm extends React.Component {
         form={forms[this.state.selectedTab]}
         formProps={formProps}
         addEntry={this.props.addEntry}
+        removeEntry={this.props.removeEntry}
         handleSubmit={this.props.handleSubmit}
         handleCancel={this.props.handleCancel}
       />);

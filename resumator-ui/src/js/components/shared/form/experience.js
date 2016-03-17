@@ -82,6 +82,15 @@ class ExperienceForm extends FormComponent {
     );
   }
 
+  renderRemove() {
+    if (this.props.showRemoveButton) {
+      return (<div className="btn btn-danger"
+        onClick={this.props.handleRemove}
+      >Remove
+      </div>);
+    }
+  }
+
   render() {
     return (
       <div className="multi-form">
@@ -139,6 +148,7 @@ class ExperienceForm extends FormComponent {
             {this.renderShortDescription()}
           </Col>
         </Row>
+        {this.renderRemove()}
       </div>
     );
   }

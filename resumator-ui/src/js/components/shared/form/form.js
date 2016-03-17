@@ -10,7 +10,7 @@ import moment from 'moment';
 import labelize from '../../../helpers/labelize';
 
 class FormComponent extends React.Component {
-  getInput(name, type, required, placeholder, autoFocus) {
+  getInput(name, type, required, placeholder, autoFocus, attrs) {
     const { isSaving, hasFailed, errors, values } = this.props;
     const inputName = name;
     const inputLabel = required ? labelize(name, '*') : labelize(name);
@@ -20,15 +20,14 @@ class FormComponent extends React.Component {
       type: type || 'text',
       placeholder: placeholder || inputLabel,
       label: inputLabel,
-
       disabled: isSaving,
-
       // TODO: Implement this.
       value: values[inputName],
 
       onChange: this.handleChange.bind(this, inputName),
 
       autoFocus,
+      ...attrs,
     };
 
     if (hasFailed && errors[inputName]) {

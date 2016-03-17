@@ -14,6 +14,13 @@ export default function edit(email, cb) {
 
       delete json._links;
 
+      json.experience = json.experience.map(exp => {
+        if (!exp.endDate) {
+          exp.currentlyWorkHere = true;
+        }
+        return exp;
+      });
+
       cb(null, json);
     });
 }

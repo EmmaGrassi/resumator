@@ -47,6 +47,19 @@ class ExperienceForm extends FormComponent {
     return this.getInput('endDate', 'date', false);
   }
 
+  renderIWorkHere() {
+    const endDate = this.props.values.endDate;
+    const checkTheBox = !!endDate && new Date(endDate).getTime() > Date.now();
+    return this.getInput(
+      'currentlyWorkHere',
+      'checkbox',
+      false,
+      null,
+      false,
+      { checked: checkTheBox }
+    );
+  }
+
   renderShortDescription() {
     return this.getInput('shortDescription', 'textarea', true);
   }
@@ -65,7 +78,7 @@ class ExperienceForm extends FormComponent {
       'methodologies',
       null,
       true,
-      'Separate values with commas, e.g.: SCRUM, RUP, ...'
+      'Separate values with commas, e.g.: SCRUM, RUP, BEM ...'
     );
   }
 
@@ -107,7 +120,14 @@ class ExperienceForm extends FormComponent {
           </Col>
 
           <Col xs={6}>
-            {this.renderEndDate()}
+            <Row>
+              <Col xs={9}>
+                {this.renderEndDate()}
+              </Col>
+              <Col xs={3}>
+                {this.renderIWorkHere()}
+              </Col>
+            </Row>
           </Col>
         </Row>
 

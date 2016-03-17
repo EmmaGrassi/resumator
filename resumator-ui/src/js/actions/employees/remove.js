@@ -2,7 +2,7 @@ import request from 'superagent';
 
 import list from './list';
 
-function remove(type,email) {
+function remove(type, email) {
   return (dispatch) => {
     dispatch({ type: 'employees:remove:start' });
 

@@ -59,6 +59,12 @@ function edit(state = defaults, action = {}) {
       return state
         .setIn(['item', type], result.push({}));
 
+    case 'employees:removeEntry':
+      const tmpState = state.toJS();
+      tmpState.item[action.payload.type].splice(action.payload.key, 1);
+      const newState = immutable.fromJS(tmpState);
+      return newState;
+
     default:
       return state;
   }

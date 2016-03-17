@@ -51,6 +51,15 @@ class EducationForm extends FormComponent {
     return this.getInput('endYear', 'number');
   }
 
+  renderRemove() {
+    if (this.props.showRemoveButton) {
+      return (<div className="btn btn-danger"
+        onClick={this.props.handleRemove}
+      >Remove
+      </div>);
+    }
+  }
+
   render() {
     return (
       <div className="multi-form">
@@ -89,6 +98,7 @@ class EducationForm extends FormComponent {
             {this.renderEndYear()}
           </Col>
         </Row>
+        {this.renderRemove()}
       </div>
     );
   }

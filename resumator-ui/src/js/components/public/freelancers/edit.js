@@ -9,6 +9,7 @@ import edit from '../../../actions/employees/edit';
 import update from '../../../actions/employees/update';
 import editChange from '../../../actions/employees/editChange';
 import addEntry from '../../../actions/employees/addEntry';
+import removeEntry from '../../../actions/employees/removeEntry';
 import editCancel from '../../../actions/employees/editCancel';
 
 function mapStateToProps(state) {
@@ -35,6 +36,14 @@ function mapDispatchToProps(dispatch) {
     addEntry: (name) => {
       dispatch(addEntry(name));
     },
+
+    removeEntry: (key, type) => {
+      const really = confirm(`Are you sure you want to remove this ${type}? This is irriversible.`);
+      if (really) {
+        dispatch(removeEntry(key, type));
+      }
+    },
+
     handleCancel: () => {
       const really = confirm('Are you sure you want to cancel? This will discard all changes');
       if (really) {
@@ -82,6 +91,7 @@ class Edit extends React.Component {
           type="FREELANCER"
           values={item}
           addEntry={this.props.addEntry}
+          removeEntry={this.props.removeEntry}
           userId={params.userId}
           section={params.section}
           handleSubmit={this.props.updateEmployee.bind(this, item.email)}

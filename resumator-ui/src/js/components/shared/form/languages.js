@@ -30,6 +30,15 @@ class LanguagesForm extends FormComponent {
     return this.getDropDown('proficiency', proficiencies, true);
   }
 
+  renderRemove() {
+    if (this.props.showRemoveButton) {
+      return (<div className="btn btn-danger"
+        onClick={this.props.handleRemove}
+      >Remove
+      </div>);
+    }
+  }
+
   render() {
     return (
       <div className="multi-form">
@@ -42,6 +51,7 @@ class LanguagesForm extends FormComponent {
             {this.renderProficiency()}
           </Col>
         </Row>
+        {this.renderRemove()}
       </div>
     );
   }

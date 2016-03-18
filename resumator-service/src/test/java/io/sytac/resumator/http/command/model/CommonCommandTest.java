@@ -86,7 +86,7 @@ public class CommonCommandTest {
     }
 
     protected Education createEducation() {
-        return new Education(Education.Degree.MASTER_DEGREE, FIELD_OF_STUDY, SCHOOL, CITY, COUNTRY, 2000, 2005);
+        return new Education(Education.Degree.MASTER_DEGREE, FIELD_OF_STUDY, SCHOOL, CITY, COUNTRY, 2000, 2005,"");
     }
 
     protected Course createCourse() {

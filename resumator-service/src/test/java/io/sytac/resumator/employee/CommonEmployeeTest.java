@@ -96,7 +96,7 @@ public class CommonEmployeeTest {
     
     protected EmployeeCommandPayload getEmployeeDetailedValidatableCommandPayload() {
 
-    	Education education=new  Education(Degree.ASSOCIATE_DEGREE, "economics", "Baroek", "New York", "USA", 2012, 2005);
+    	Education education=new  Education(Degree.ASSOCIATE_DEGREE, "economics", "Baroek", "New York", "USA", 2012, 2005,"");
     	List<Education> educations=new ArrayList<>();
     	educations.add(education);
     	

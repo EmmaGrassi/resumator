@@ -19,7 +19,7 @@ function needToCheckTheBox(item) {
   if (!isNaN(endDateInMili) && endDateInMili > now || !!!endDate) {
     currentlyWorkHere = true;
   } else if (!!!currentlyWorkHere) {
-    currentlyWorkHere = currentlyWorkHere;
+    currentlyWorkHere = !!currentlyWorkHere;
   } else {
     currentlyWorkHere = false;
   }

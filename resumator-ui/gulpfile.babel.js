@@ -1,32 +1,28 @@
 // Node libraries
-var fs = require('fs');
+const fs = require('fs');
 
 // Gulp system
-var gulp = require('gulp');
-var plugins = require('gulp-load-plugins')();
-var gulpHelp = require('gulp-help');
-var gutil = require('gulp-util');
-gulp = gulpHelp(gulp);
+const gulp = require('gulp-help')(require('gulp'));
+const plugins = require('gulp-load-plugins')();
+const gutil = require('gulp-util');
 
 // Gulp plugins
-var browserify = require('browserify');
-var buffer = require('vinyl-buffer');
-var rimraf = require('rimraf');
-var browserSync = require('browser-sync');
-var pngquant = require('imagemin-pngquant');
-var runSequence = require('run-sequence');
-var source = require('vinyl-source-stream');
-var uglify = require('gulp-uglify');
-var watchify = require('watchify');
-var eslint = require('gulp-eslint');
-var LessPluginAutoPrefix = require('less-plugin-autoprefix');
-var autoprefix = new LessPluginAutoPrefix({ browsers: ['last 2 versions'] });
+const browserify = require('browserify');
+const buffer = require('vinyl-buffer');
+const rimraf = require('rimraf');
+const browserSync = require('browser-sync');
+const pngquant = require('imagemin-pngquant');
+const runSequence = require('run-sequence');
+const source = require('vinyl-source-stream');
+const uglify = require('gulp-uglify');
+const watchify = require('watchify');
+const eslint = require('gulp-eslint');
+const LessPluginAutoPrefix = require('less-plugin-autoprefix');
+const autoprefix = new LessPluginAutoPrefix({ browsers: ['last 2 versions'] });
 
 // Error handling
-function handleError(taskName, _error) {
-  const error = error.message && error.stack && error.message + '\n\n' + error.stack || error.message || error.stack || error;
-
-  gutil.log(error);
+function handleError(taskName, error) {
+  return gutil.log(error);
 }
 
 // Browserify
@@ -39,31 +35,29 @@ function getBundle(path) {
   });
 }
 function runBundle() {
-  return function(bundle, cb) {
-    bundle
-      .bundle()
-      .on('error', function (error) {
-        console.error(error.stack || error.message || error);
+  return (bundle, cb) => bundle.bundle()
+      .on('error', (error) => {
+        handleError(error);
         this.emit('end');
       })
       .pipe(source('app.bundle.js'))
       .pipe(gulp.dest('build/js'))
       .on('end', cb)
-      .pipe(browserSync.reload({
-        stream:true
-      }));
-  };
+      .pipe(browserSync.reload({ stream: true }));
 }
 
-gulp.task('cleanDirectory', 'Cleans the build directory, starting every run with a clean slate.', function(cb) {
-  rimraf('build/*', cb);
-});
+gulp.task(
+  'cleanDirectory',
+  'Cleans the build directory, starting every run with a clean slate.',
+  (cb) => rimraf('build/*', cb));
 
-gulp.task('compileBabel', 'Compiles all JavaScript files from ES2015 to ES5 with Babel.js from the source directory to the build directory.', function(cb) {
-  return gulp.src('src/**/*.js')
+gulp.task(
+  'compileBabel',
+  'Compiles all JavaScript files from ES2015 to ES5 with Babel.js from the source directory to the build directory.',
+  (cb) => gulp.src('src/**/*.js')
     .pipe(plugins.plumber({
-      errorHandler: function(error) {
-        console.log(error);
+      errorHandler: (error) => {
+        handleError(error);
         this.emit('end');
       }
     }))
@@ -71,7 +65,7 @@ gulp.task('compileBabel', 'Compiles all JavaScript files from ES2015 to ES5 with
     // TODO: Doesn't work.
     .pipe(plugins.sourcemaps.init())
     .pipe(plugins.babel({
-      presets: [ 'es2015', 'react', 'stage-0' ]
+      presets: ['es2015', 'react', 'stage-0'],
     }))
     .pipe(plugins.sourcemaps.write())
     .pipe(gulp.dest('build'))
@@ -181,10 +175,13 @@ gulp.task('runBrowsersyncServer', 'Runs a `live-server` HTTP server, serving all
 });
 
 gulp.task('runTests', 'Runs all tests from the source directory with Mocha.', function runTests() {
-  return gulp.src('test/**/*.js', { read: false })
+  return gulp.src('test/**/*.js')
     .pipe(plugins.mocha({
       recursive: true,
-      reporter: 'spec'
+      reporter: 'spec',
+      compiler: {
+        js: 'babel',
+      },
     }));
 });
 

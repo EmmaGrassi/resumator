@@ -4,6 +4,8 @@ import moment from 'moment';
 import { bindAll, map } from 'lodash';
 import { connect } from 'react-redux';
 import { pushPath } from 'redux-simple-router';
+import convertCountry from '../../../helpers/convertCountry';
+import convertProficiency from '../../../helpers/convertProficiency';
 
 import {
   Button,
@@ -87,7 +89,7 @@ class Show extends React.Component {
             return (
               <ListGroupItem key={i}>
                 <strong>{degree} in {fieldOfStudy}</strong><br />
-                {school} in {city}, {country}<br />
+                {school} in {city}, {convertCountry(country)}<br />
                 {startYear} - {endYear}
               </ListGroupItem>
             );
@@ -149,7 +151,7 @@ class Show extends React.Component {
                 >
                   {role}
                 </h3>
-                <h4>{companyName} ({city}, {country})</h4>
+                <h4>{companyName} ({city}, {convertCountry(country)})</h4>
                 {startYear} - {endYear} ({difference})<br />
                 <br />
                 <p>{shortDescription}</p>
@@ -170,7 +172,7 @@ class Show extends React.Component {
         <h2>Languages</h2>
         <div>
           {this.props.show.item.languages.map((v, i) => {
-            let { proficiency } = v;
+            const { proficiency } = v;
             const { name } = v;
 
             let hr;
@@ -178,11 +180,9 @@ class Show extends React.Component {
               hr = <hr />;
             }
 
-            proficiency = normalizeString(proficiency);
-
             return (
               <div key={i}>
-                <strong>{name} ({proficiency})</strong><br />
+                <strong>{name} ({convertProficiency(proficiency)})</strong><br />
                 {hr}
               </div>
             );

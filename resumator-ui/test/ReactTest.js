@@ -5,7 +5,7 @@ const enzyme = require('enzyme');
 const mount = enzyme.mount;
 const shallow = enzyme.shallow;
 
-const Home = require('../src/js/components/home');
+const Home = require('../src/js/components/public/home');
 const expect = chai.expect;
 
 describe('<Home />', () => {

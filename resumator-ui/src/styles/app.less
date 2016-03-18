@@ -5,6 +5,8 @@ a {
   cursor: pointer;
 }
 
+#root { margin-bottom: 2em; }
+
 // Center the loader
 .less {
   position: fixed;
@@ -82,8 +84,6 @@ a {
   cursor: pointer;
 }
 
-
-
 li.active {
   background: lighten(#00A093, 3%);
   transition: all .2s ease-out;
@@ -99,7 +99,13 @@ li.active {
     padding-top: 0;
     border-top: 0;
   }
+
+  &:last-child {
+    margin-bottom: 1em;
+  }
 }
+
+textarea { max-width: 100%; }
 
 @media print {
   @page :first {

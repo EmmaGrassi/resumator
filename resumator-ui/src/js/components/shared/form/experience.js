@@ -10,6 +10,23 @@ import FormComponent from './form';
 import countries from '../../../data/countries';
 import labelize from '../../../helpers/labelize';
 
+function needToCheckTheBox(item) {
+  let { currentlyWorkHere } = item;
+  const { endDate } = item;
+  const endDateInMili = new Date(endDate).getTime();
+  const now = Date.now();
+
+  if (!isNaN(endDateInMili) && endDateInMili > now || !!!endDate) {
+    currentlyWorkHere = true;
+  } else if (!!!currentlyWorkHere) {
+    currentlyWorkHere = !!currentlyWorkHere;
+  } else {
+    currentlyWorkHere = false;
+  }
+
+  return currentlyWorkHere;
+}
+
 class ExperienceForm extends FormComponent {
 
   constructor(props) {
@@ -47,6 +64,18 @@ class ExperienceForm extends FormComponent {
     return this.getInput('endDate', 'date', false);
   }
 
+  renderIWorkHere() {
+    return needToCheckTheBox(this.props.values) ?
+      this.getInput(
+        'currentlyWorkHere',
+        'checkbox',
+        false,
+        null,
+        false,
+        { checked: true }) :
+        this.getInput('currentlyWorkHere', 'checkbox', false, null, false, null);
+  }
+
   renderShortDescription() {
     return this.getInput('shortDescription', 'textarea', true);
   }
@@ -65,8 +94,17 @@ class ExperienceForm extends FormComponent {
       'methodologies',
       null,
       true,
-      'Separate values with commas, e.g.: SCRUM, RUP, ...'
+      'Separate values with commas, e.g.: SCRUM, RUP, BEM ...'
     );
+  }
+
+  renderRemove() {
+    if (this.props.showRemoveButton) {
+      return (<div className="btn btn-danger"
+        onClick={this.props.handleRemove}
+      >Remove
+      </div>);
+    }
   }
 
   render() {
@@ -98,7 +136,14 @@ class ExperienceForm extends FormComponent {
           </Col>
 
           <Col xs={6}>
-            {this.renderEndDate()}
+            <Row>
+              <Col xs={9}>
+                {this.renderEndDate()}
+              </Col>
+              <Col xs={3}>
+                {this.renderIWorkHere()}
+              </Col>
+            </Row>
           </Col>
         </Row>
 
@@ -119,6 +164,7 @@ class ExperienceForm extends FormComponent {
             {this.renderShortDescription()}
           </Col>
         </Row>
+        {this.renderRemove()}
       </div>
     );
   }

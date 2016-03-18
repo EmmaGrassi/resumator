@@ -32,6 +32,15 @@ class CoursesForm extends FormComponent {
     return this.getInput('description', 'textarea', true);
   }
 
+  renderRemove() {
+    if (this.props.showRemoveButton) {
+      return (<div className="btn btn-danger"
+        onClick={this.props.handleRemove}
+      >Remove
+      </div>);
+    }
+  }
+
   render() {
     return (
       <div className="multi-form">
@@ -52,6 +61,7 @@ class CoursesForm extends FormComponent {
             {this.renderDescription()}
           </Col>
         </Row>
+        {this.renderRemove()}
       </div>
     );
   }

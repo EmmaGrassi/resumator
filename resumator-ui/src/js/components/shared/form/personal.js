@@ -51,7 +51,7 @@ class PersonalForm extends FormComponent {
   }
 
   renderPhonenumber() {
-    return this.getInput('phonenumber', 'number', true);
+    return this.getInput('phonenumber', 'text', true);
   }
 
   renderCurrentResidence() {

@@ -35,7 +35,7 @@ public class Migrator {
         List<Event> events = store.getAll();
         log.info("Migrating events in the old format,if any.");
 
-        events.stream().filter(event -> checkIfRecordIsEligibleForMigration(event)).map(event -> {
+        events.stream().filter(event -> checkIfRecordIsOfTypeEmployee(event)).map(event -> {
             return transformEvent(event);
         }).forEach(event -> store.post(event));
 
@@ -48,7 +48,8 @@ public class Migrator {
         return newEvent;
     }
 
-    private boolean checkIfRecordIsEligibleForMigration(Event event) {
+    private boolean checkIfRecordIsOfTypeEmployee(Event event) {
+        //Added a safety check on currentResidence field to make sure that record is employee type.
         return event.getPayload().contains("\"title\" :") && event.getPayload().contains("\"currentResidence\" :");
     }
 

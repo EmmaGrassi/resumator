@@ -33,21 +33,21 @@ public class OrganizationTest {
     @Test(expected = IllegalArgumentException.class)
     public void yearOfBirthMustBeAnInteger(){
         final EmployeeCommandPayload employeeCommandPayload = new EmployeeCommandPayload(null, "title", "name", "surname",
-                "email", "phonenumber", "github", "linkedin", "1984-04-22", "ITALY", "", "", null, null, null, null, false);
+                "email", "phonenumber", "github", "linkedin", "1984-04-22", "ITALY","Netherlands","Amsterdam", "", "", null, null, null, null, false);
         createCommand(employeeCommandPayload);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void nationalityCanOnlyHaveSpecificValues() {
         final EmployeeCommandPayload employeeCommandPayload = new EmployeeCommandPayload(null, "title", "name", "surname",
-                "email", "phonenumber", "github", "linkedin", "1984-04-22", "foo", "", "", null, null, null, null, false);
+                "email", "phonenumber", "github", "linkedin", "1984-04-22", "foo","Netherlands","Amsterdam", "", "", null, null, null, null, false);
         createCommand(employeeCommandPayload);
     }
 
     @Test
     public void happyFlow() {
         final EmployeeCommandPayload employeeCommandPayload = new EmployeeCommandPayload(null, "title", "Name", "Surname", "Email",
-                "+31000999000", "Github", "Linkedin", "1984-04-22", "ITALIAN", "", "", null, null, null, null, false);
+                "+31000999000", "Github", "Linkedin", "1984-04-22", "ITALIAN","Netherlands","Amsterdam", "", "", null, null, null, null, false);
         final Employee employee = createCommand(employeeCommandPayload);
         assertEquals("Wrong organization ID in Employee", Nationality.ITALIAN, employee.getNationality());
     }
@@ -72,7 +72,7 @@ public class OrganizationTest {
     @Test
     public void addEmployee_withOrganizationEmailAndTypeNotSet_typeShouldBeSetToEmployee() {
         final EmployeeCommandPayload payload = new EmployeeCommandPayload(null, null, null, null,
-                "email@" + ORGANIZATION_DOMAIN, null, null, null, "1984-04-22", "ITALIAN", null, null,
+                "email@" + ORGANIZATION_DOMAIN, null, null, null, "1984-04-22", "ITALIAN","Netherlands","Amsterdam", null, null,
                 null, null, null, null, false);
 
         Employee actual = createCommand(payload);
@@ -82,7 +82,7 @@ public class OrganizationTest {
     @Test
     public void addEmployee_withNonOrganizationEmailAndTypeNotSet_typeShouldBeSetToProspect() {
         final EmployeeCommandPayload payload = new EmployeeCommandPayload(null, null, null, null,
-                "email@dummy.com", null, null, null, "1984-04-22", "ITALIAN", null, null,
+                "email@dummy.com", null, null, null, "1984-04-22", "ITALIAN","Netherlands","Amsterdam", null, null,
                 null, null, null, null, false);
 
         Employee actual = createCommand(payload);
@@ -92,7 +92,7 @@ public class OrganizationTest {
     @Test
     public void addEmployee_withTypeSet_typeShouldRemainAsSet() {
         final EmployeeCommandPayload payload = new EmployeeCommandPayload(EmployeeType.FREELANCER, null, null, null,
-                "email@dummy.com", null, null, null, "1984-04-22", "ITALIAN", null, null,
+                "email@dummy.com", null, null, null, "1984-04-22", "ITALIAN","Netherlands","Amsterdam", null, null,
                 null, null, null, null, false);
 
         Employee actual = createCommand(payload);

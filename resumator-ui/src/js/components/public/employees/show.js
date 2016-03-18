@@ -208,7 +208,7 @@ class Show extends React.Component {
     const {
       aboutMe,
       cityOfResidence,
-      countryOfResidance,
+      countryOfResidence,
       email,
       github,
       id,
@@ -319,7 +319,7 @@ class Show extends React.Component {
                       <strong>Current residence:</strong>
                     </td>
                     <td>
-                      {cityOfResidence} {countryOfResidance}
+                      {cityOfResidence} {countryOfResidence}
                     </td>
                   </tr>
 

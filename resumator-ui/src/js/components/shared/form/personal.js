@@ -61,7 +61,7 @@ class PersonalForm extends FormComponent {
           {this.getInput('cityOfResidence', null, true)}
         </Col>
         <Col xs={6}>
-          {this.getDropDown('countryOfResidance', countries, true)}
+          {this.getDropDown('countryOfResidence', countries, true)}
         </Col>
       </Row>
     );

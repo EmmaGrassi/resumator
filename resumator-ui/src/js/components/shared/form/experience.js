@@ -10,6 +10,23 @@ import FormComponent from './form';
 import countries from '../../../data/countries';
 import labelize from '../../../helpers/labelize';
 
+function needToCheckTheBox(item) {
+  let { currentlyWorkHere } = item;
+  const { endDate } = item;
+  const endDateInMili = new Date(endDate).getTime();
+  const now = Date.now();
+
+  if (!isNaN(endDateInMili) && endDateInMili > now || !!!endDate) {
+    currentlyWorkHere = true;
+  } else if (!!!currentlyWorkHere) {
+    currentlyWorkHere = !!currentlyWorkHere;
+  } else {
+    currentlyWorkHere = false;
+  }
+
+  return currentlyWorkHere;
+}
+
 class ExperienceForm extends FormComponent {
 
   constructor(props) {
@@ -48,16 +65,15 @@ class ExperienceForm extends FormComponent {
   }
 
   renderIWorkHere() {
-    const endDate = this.props.values.endDate;
-    const checkTheBox = !!endDate && new Date(endDate).getTime() > Date.now();
-    return this.getInput(
-      'currentlyWorkHere',
-      'checkbox',
-      false,
-      null,
-      false,
-      { checked: checkTheBox }
-    );
+    return needToCheckTheBox(this.props.values) ?
+      this.getInput(
+        'currentlyWorkHere',
+        'checkbox',
+        false,
+        null,
+        false,
+        { checked: true }) :
+        this.getInput('currentlyWorkHere', 'checkbox', false, null, false, null);
   }
 
   renderShortDescription() {

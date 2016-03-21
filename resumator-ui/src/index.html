@@ -22,5 +22,22 @@
       }
     //]]>
     </script>
+
+    <script>
+      function linkedInLoaded(){
+        var readyEvent = new Event('linkedInReady');
+        // Listen for this event to know when Linkedin SDK is ready
+        // document.addEventListener('linkedInReady', this.onLinkedinLoaded.bind(this));
+        document.dispatchEvent(readyEvent);
+      }
+    </script>
+
+
+    <script type="text/javascript" src="http://platform.linkedin.com/in.js">
+        api_key:   XXXXXXXXXXXXXX
+        onLoad: linkedInLoaded
+        authorize: true
+        lang:      en_US
+    </script>
   </body>
 </html>

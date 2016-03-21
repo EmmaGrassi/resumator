@@ -1,4 +1,32 @@
 module.exports = (plop) => {
+  // Unit test
+  plop.setGenerator('unit', {
+    description: 'Generates a new unit test',
+    prompts: [{
+      type: 'input',
+      name: 'unit',
+      message: 'Which unit do you want to test?',
+      validate: (value) => {
+        if ((/.+/).test(value)) { return true; }
+        return 'unit name is required';
+      },
+    },
+    {
+      type: 'input',
+      name: 'path',
+      message: 'What is the path to this unit?',
+      validate: (value) => {
+        if ((/.+/).test(value)) { return true; }
+        return 'unit path is required';
+      },
+    }],
+    actions: [{
+      type: 'add',
+      path: 'test/unit/{{pascalCase unit}}.js',
+      templateFile: '.ploptemplates/unit-test.template',
+    }],
+  });
+
   // Component test
   plop.setGenerator('component-test', {
     description: 'Generates a new component test',
@@ -22,7 +50,7 @@ module.exports = (plop) => {
     }],
     actions: [{
       type: 'add',
-      path: 'test/{{pascalCase component}}.js',
+      path: 'test/components/{{pascalCase component}}.js',
       templateFile: '.ploptemplates/component-test.template',
     }],
   });

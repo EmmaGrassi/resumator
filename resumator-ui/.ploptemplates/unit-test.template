@@ -1,8 +1,8 @@
 import { expect } from 'chai';
 
-import {{ properCase unit }} from '{{ properCase path }}';
+import {{ camelCase unit }} from '../../{{ path }}';
 
-describe('{{ properCase unit }}', () => {
+describe('{{ camelCase unit }}', () => {
   it('should pass cause it is a dummy test', () => {
     expect(true).to.eql(true);
   });

@@ -22,7 +22,7 @@ module.exports = (plop) => {
     }],
     actions: [{
       type: 'add',
-      path: 'test/unit/{{pascalCase unit}}.js',
+      path: 'test/unit/{{camelCase unit}}.js',
       templateFile: '.ploptemplates/unit-test.template',
     }],
   });

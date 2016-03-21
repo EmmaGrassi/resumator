@@ -139,7 +139,7 @@ gulp.task(
     .pipe(plugins.changed('build'))
     .pipe(gulp.dest('build'))
     .pipe(browserSync.reload({
-      stream:true
+      stream: true,
     }))
 );
 
@@ -162,7 +162,7 @@ gulp.task(
       removeAttributeQuotes: true,
       removeRedundantAttributes: true,
       useShortDoctype: true,
-      collapseWhitespace: true
+      collapseWhitespace: true,
     }))
     .pipe(gulp.dest('build'))
 );
@@ -171,14 +171,14 @@ gulp.task(
   'modifyIndexHTML',
   'Modifies the index.html so some things are not loaded in production.',
   (cb) => {
-    fs.readFile('build/index.html', function(error, content) {
+    fs.readFile('build/index.html', (error, content) => {
       if (error) {
         return cb(error);
       }
 
       const newContent = content.toString().replace('var NODE_ENV = \'development\';', 'var NODE_ENV = \'production\';');
 
-      fs.writeFile('build/index.html', newContent, function(error) {
+      fs.writeFile('build/index.html', newContent, (error) => {
         if (error) {
           return cb(error);
         }
@@ -205,6 +205,7 @@ gulp.task(
     .pipe(plugins.mocha({
       recursive: true,
       reporter: 'spec',
+      require: 'test/setup.js',
       compiler: {
         js: 'babel',
       },
@@ -241,7 +242,7 @@ gulp.task(
   'watchCompilers',
   'Watches the source directory and runs compile tasks when changes happen.',
   (cb) => {
-    plugins.saneWatch('src/**/*', { debounce: 300 }, function(filename, path, stat) {
+    plugins.saneWatch('src/**/*', { debounce: 300 }, (filename, path, stat) => {
       if (filename.match(/^.*\.js$/)) {
         gulp.start('compileBabel');
       }
@@ -293,7 +294,7 @@ gulp.task(
         'compileBabel',
         'compileCopy',
         'compileImages',
-        'compileLess'
+        'compileLess',
       ],
 
       'runTests',
@@ -302,7 +303,7 @@ gulp.task(
         'runBrowsersyncServer',
         'watchBrowserify',
         'watchTests',
-        'watchCompilers'
+        'watchCompilers',
       ],
 
       cb
@@ -322,7 +323,7 @@ gulp.task(
         'compileBabel',
         'compileCopy',
         'compileImages',
-        'compileLess'
+        'compileLess',
       ],
 
       'compileBrowserify',

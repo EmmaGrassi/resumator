@@ -1,16 +1,18 @@
-const React = require('react');
-const chai = require('chai');
-const chaiEnzyme = require('chai-enzyme');
-const enzyme = require('enzyme');
-const mount = enzyme.mount;
-const shallow = enzyme.shallow;
+import React from 'react';
+import { mount, shallow } from 'enzyme';
+import chai from 'chai';
+import chaiEnzyme from 'chai-enzyme';
 
-const Home = require('../src/js/components/public/home');
+chai.use(chaiEnzyme());
 const expect = chai.expect;
 
+import Home from '../src/js/components/public/Home';
+
 describe('<Home />', () => {
-  it('calls componentDidMount', () => {
-    const wrapper = mount(<Home />);
-    expect(Home.prototype.componentDidMount.calledOnce).to.equal(false);
+  it('renders renders the Sytac logo', () => {
+    const wrapper = shallow(<Home />);
+    expect(
+      wrapper.contains(<img src="http://sytac.io/images/sytac-hexagon-long.svg" />))
+        .to.equal(true);
   });
 });

@@ -9,7 +9,7 @@ import NavbarHeader from 'react-bootstrap/lib/NavbarHeader';
 import NavbarToggle from 'react-bootstrap/lib/NavbarToggle';
 import NavItem from 'react-bootstrap/lib/NavItem';
 
-import RightNav from './right-nav';
+import RightNav from './RightNav';
 
 function mapStateToProps(state) {
   return {

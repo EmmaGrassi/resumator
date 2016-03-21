@@ -47,7 +47,7 @@ public class UpdateEmployeeTest extends CommonEmployeeTest {
     @Before
     public void before() throws URISyntaxException {
         super.before();
-        when(descriptorsMock.updateEmployeeCommand(eq(UUID), any(EmployeeCommandPayload.class), eq(DOMAIN))).thenReturn(updateEmployeeCommandMock);
+        when(descriptorsMock.updateEmployeeCommand(eq(UUID), any(EmployeeCommandPayload.class), eq(DOMAIN),eq(EMAIL))).thenReturn(updateEmployeeCommandMock);
         when(organizationMock.updateEmployee(eq(updateEmployeeCommandMock))).thenReturn(employeeMock);
     }
 

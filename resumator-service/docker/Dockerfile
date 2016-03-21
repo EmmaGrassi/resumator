@@ -15,7 +15,7 @@ RUN mkdir -p /usr/local/resumator
 WORKDIR /usr/local/resumator
 
 # Install the app
-COPY resumator-0.1-SNAPSHOT.jar /usr/local/resumator/resumator.jar
+COPY ${project.build.finalName}.jar /usr/local/resumator/resumator.jar
 
 # Install the startup script
 COPY resumator.sh /usr/local/resumator/resumator.sh

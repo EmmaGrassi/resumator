@@ -1,0 +1,26 @@
+import React from 'react';
+import { connect } from 'react-redux';
+
+function mapStateToProps(state) {
+  return {
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+  };
+}
+
+class {{ properCase component }} extends React.Component {
+  componentDidMount() {
+  }
+
+  render() {
+    return (
+      <div className="{{ properCase component }}">
+      </div>
+    );
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)({{ properCase component }});

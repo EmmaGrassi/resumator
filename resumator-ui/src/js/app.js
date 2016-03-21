@@ -16,21 +16,21 @@ import store from './store';
 // Components
 import NotAuthorized from './components/NotAuthorized';
 import NotFound from './components/NotFound';
-import PublicContainer from './components/public/container';
-import PublicEmployeesCreate from './components/public/employees/create';
-import PublicEmployeesEdit from './components/public/employees/edit';
-import PublicEmployeesList from './components/public/employees/list';
-import PublicEmployeesRegister from './components/public/employees/register';
-import PublicEmployeesShow from './components/public/employees/show';
-import PublicFreelancersCreate from './components/public/freelancers/create';
-import PublicFreelancersEdit from './components/public/freelancers/edit';
-import PublicFreelancersList from './components/public/freelancers/list';
-import PublicFreelancersShow from './components/public/freelancers/show';
-import PublicHome from './components/public/home';
-import PublicProspectsCreate from './components/public/prospects/create';
-import PublicProspectsEdit from './components/public/prospects/edit';
-import PublicProspectsList from './components/public/prospects/list';
-import PublicProspectsShow from './components/public/prospects/show';
+import PublicContainer from './components/public/Container';
+import PublicEmployeesCreate from './components/public/employees/Create';
+import PublicEmployeesEdit from './components/public/employees/Edit';
+import PublicEmployeesList from './components/public/employees/List';
+import PublicEmployeesRegister from './components/public/employees/Register';
+import PublicEmployeesShow from './components/public/employees/Show';
+import PublicFreelancersCreate from './components/public/freelancers/Create';
+import PublicFreelancersEdit from './components/public/freelancers/Edit';
+import PublicFreelancersList from './components/public/freelancers/List';
+import PublicFreelancersShow from './components/public/freelancers/Show';
+import PublicHome from './components/public/Home';
+import PublicProspectsCreate from './components/public/prospects/Create';
+import PublicProspectsEdit from './components/public/prospects/Edit';
+import PublicProspectsList from './components/public/prospects/List';
+import PublicProspectsShow from './components/public/prospects/Show';
 
 const rootElement = document.getElementById('root');
 

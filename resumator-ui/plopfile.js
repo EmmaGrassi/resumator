@@ -111,5 +111,4 @@ module.exports = (plop) => {
       templateFile: '.ploptemplates/stateless-component.template',
     }],
   });
-
 };

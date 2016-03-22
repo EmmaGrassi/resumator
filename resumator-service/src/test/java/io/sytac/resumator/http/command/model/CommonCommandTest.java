@@ -51,6 +51,8 @@ public class CommonCommandTest {
     public static final String COURSE_NAME = "Scala for dummies";
     public static final String COURSE_DESCRIPTION = "Scala for dummies description";
     public static final int COURSE_YEAR = 1994;
+    public static final String COUNTRY_OF_RESIDENCE = "ITALY";
+    public static final String CITY_OF_RESIDENCE = "Roma";
 
     @Getter
     private ObjectMapper objectMapper;
@@ -86,7 +88,7 @@ public class CommonCommandTest {
     }
 
     protected Education createEducation() {
-        return new Education(Education.Degree.MASTER_DEGREE, FIELD_OF_STUDY, SCHOOL, CITY, COUNTRY, 2000, 2005);
+        return new Education(Education.Degree.MASTER_DEGREE, FIELD_OF_STUDY, SCHOOL, CITY, COUNTRY, 2000, 2005,"");
     }
 
     protected Course createCourse() {
@@ -107,7 +109,8 @@ public class CommonCommandTest {
                                                                   List<Language> languages) {
 
         return new EmployeeCommandPayload(TYPE, TITLE, NAME, SURNAME, EMAIL, PHONENUMBER, GITHUB, LINKEDIN, DATE_OF_BIRTH,
-                NATIONALITY, CURRENT_RESIDENCE, ABOUT_ME, educations, courses, experiences, languages, false);
+                NATIONALITY, CURRENT_RESIDENCE,COUNTRY_OF_RESIDENCE,CITY_OF_RESIDENCE,
+                ABOUT_ME, educations, courses, experiences, languages, false);
     }
 
     public void canSerializeAsJSON(Class clazz) {

@@ -1,4 +1,5 @@
 import editService from '../../services/employee/edit';
+import handleRequestError from '../../helpers/handleRequestError';
 
 export default function edit(email) {
   return (dispatch) => {
@@ -6,6 +7,7 @@ export default function edit(email) {
 
     editService(email, (error, results) => {
       if (error) {
+        handleRequestError(error)();
         dispatch({ type: 'employees:edit:failure', errors: results });
         return;
       }

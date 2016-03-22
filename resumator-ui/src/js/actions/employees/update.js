@@ -9,6 +9,7 @@ import updateService from '../../services/employee/update';
 
 import showAlert from '../alerts/show';
 import hideAlert from '../alerts/hide';
+import handleRequestError from '../../helpers/handleRequestError';
 
 
 function asList(str, separator) {
@@ -40,6 +41,7 @@ export default function update(email) {
 
     updateService(email, data, (error, results) => {
       if (error) {
+        handleRequestError(error)();
         dispatch({ type: 'employees:update:failure', errors: results });
 
         dispatch(showAlert({

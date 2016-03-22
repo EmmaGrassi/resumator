@@ -16,21 +16,13 @@ import store from './store';
 // Components
 import NotAuthorized from './components/NotAuthorized';
 import NotFound from './components/NotFound';
-import PublicContainer from './components/public/container';
-import PublicEmployeesCreate from './components/public/employees/create';
-import PublicEmployeesEdit from './components/public/employees/edit';
-import PublicEmployeesList from './components/public/employees/list';
-import PublicEmployeesRegister from './components/public/employees/register';
-import PublicEmployeesShow from './components/public/employees/show';
-import PublicFreelancersCreate from './components/public/freelancers/create';
-import PublicFreelancersEdit from './components/public/freelancers/edit';
-import PublicFreelancersList from './components/public/freelancers/list';
-import PublicFreelancersShow from './components/public/freelancers/show';
-import PublicHome from './components/public/home';
-import PublicProspectsCreate from './components/public/prospects/create';
-import PublicProspectsEdit from './components/public/prospects/edit';
-import PublicProspectsList from './components/public/prospects/list';
-import PublicProspectsShow from './components/public/prospects/show';
+import PublicContainer from './components/public/Container';
+import PublicEmployeesCreate from './components/public/common/Create';
+import PublicEmployeesEdit from './components/public/common/Edit';
+import PublicEmployeesList from './components/public/common/List';
+import PublicEmployeesRegister from './components/public/common/Register';
+import PublicEmployeesShow from './components/public/common/Show';
+import PublicHome from './components/public/Home';
 
 const rootElement = document.getElementById('root');
 
@@ -99,7 +91,7 @@ const router = (
 
         <Route path="new" component={ PublicEmployeesCreate } onEnter={handleEnter} />
 
-        <Route path="employees" requireSession>
+        <Route path=":type" requireSession>
           <IndexRoute component={ PublicEmployeesList } onEnter={handleEnter} />
 
           <Route path="new" component={ PublicEmployeesCreate } onEnter={handleEnter} />
@@ -112,42 +104,6 @@ const router = (
             <Route path="edit" component={ PublicEmployeesEdit }>
               <Route path=":section" onEnter={handleEnter} />
             </Route>
-          </Route>
-        </Route>
-
-        <Route path="freelancers" requireSession>
-          <IndexRoute component={ PublicFreelancersList } onEnter={handleEnter} />
-
-          <Route path="new" component={ PublicFreelancersCreate } onEnter={handleEnter} />
-
-          <Route path=":userId">
-            <IndexRoute component={ PublicFreelancersShow } onEnter={handleEnter} />
-
-            <Route path="edit" component={ PublicFreelancersEdit }>
-              <Route path=":section" onEnter={handleEnter} />
-            </Route>
-          </Route>
-        </Route>
-
-        <Route path="prospects" requireSession>
-          <IndexRoute component={ PublicProspectsList } onEnter={handleEnter} />
-
-          <Route path="new" component={ PublicProspectsCreate } onEnter={handleEnter} />
-
-          <Route path=":userId">
-            <IndexRoute component={ PublicProspectsShow } onEnter={handleEnter} />
-
-            <Route path="edit" component={ PublicProspectsEdit }>
-              <Route path=":section" onEnter={handleEnter} />
-            </Route>
-          </Route>
-        </Route>
-
-        <Route path=":userId">
-          <IndexRoute component={ PublicEmployeesShow } onEnter={handleEnter} />
-
-          <Route path="edit" onEnter={handleEnter}>
-            <Route path=":pageNumber" component={ PublicEmployeesEdit } onEnter={handleEnter} />
           </Route>
         </Route>
 

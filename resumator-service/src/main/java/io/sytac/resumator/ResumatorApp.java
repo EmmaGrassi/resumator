@@ -11,6 +11,7 @@ import io.sytac.resumator.organization.OrganizationRepository;
 import io.sytac.resumator.security.*;
 import io.sytac.resumator.store.bootstrap.Bootstrap;
 import io.sytac.resumator.store.bootstrap.BootstrapRunner;
+import io.sytac.resumator.store.bootstrap.Migrator;
 import io.sytac.resumator.store.EventStore;
 import io.sytac.resumator.store.sql.SchemaManager;
 import io.sytac.resumator.store.sql.SqlStore;
@@ -105,6 +106,7 @@ public class ResumatorApp {
         return rc.register(new AbstractBinder() {
             @Override
             protected void configure() {
+                bind(Migrator.class).to(Migrator.class).in(Singleton.class);
                 bind(Bootstrap.class).to(Bootstrap.class).in(Singleton.class);
                 bind(BootstrapRunner.class).in(Immediate.class);
             }

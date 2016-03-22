@@ -123,7 +123,16 @@ public class EmployeesQuery extends BaseResource {
     	
     	List<Experience> experiences=Optional.ofNullable(employee.getExperiences()).orElse(new ArrayList<Experience>());
     	
-    	String currentClient=experiences.stream().filter(exp->!exp.getEndDate().isPresent()).sorted(Comparator.comparing(Experience::getStartDate)).findFirst().map(Experience::getCompanyName).orElse("");
+    	Comparator<Experience> experienceComparator=(exp,otherExp)->{
+    	    if(exp.getEndDate().isPresent() && otherExp.getEndDate().isPresent())
+    	       return otherExp.getEndDate().get().compareTo(exp.getEndDate().get());
+    	    else if(!exp.getEndDate().isPresent() && !exp.getEndDate().isPresent())
+    	        return 0;
+    	    else
+    	        return exp.getEndDate().isPresent()? 1:-1;
+    	};
+    	
+    	String currentClient=experiences.stream().filter(exp->!exp.getEndDate().isPresent() || exp.getEndDate().get().after(new Date())).max(experienceComparator).map(Experience::getCompanyName).orElse("");
     	
     	return currentClient;
     	

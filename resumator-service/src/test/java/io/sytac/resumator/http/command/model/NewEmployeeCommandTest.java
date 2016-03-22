@@ -97,6 +97,8 @@ public class NewEmployeeCommandTest extends CommonCommandTest {
                 "\"dateOfBirth\":\"" + DATE_OF_BIRTH + "\"," +
                 "\"nationality\":\"" + NATIONALITY + "\"," +
                 "\"currentResidence\":\"" + CURRENT_RESIDENCE + "\"," +
+                "\"countryOfResidence\":\"" + COUNTRY_OF_RESIDENCE + "\"," +
+                "\"cityOfResidence\":\"" + CITY_OF_RESIDENCE + "\"," +
                 "\"aboutMe\":\"" + ABOUT_ME + "\"," +
                 "\"education\":[{" +
                     "\"degree\":\"" + Education.Degree.MASTER_DEGREE + "\","+

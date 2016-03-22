@@ -46,4 +46,12 @@ public interface EventStore {
     void setReadOnly(boolean mode);
 
     DataSource getDataSource();
+    
+    /**
+     * Updates an existing   event in the store
+     *
+     * @param event The event to store
+     * @since 0.1
+     */
+    void post(Event event);
 }

@@ -1,6 +1,6 @@
 import Loader from 'react-loader';
 import React from 'react';
-import ReactTable from '../../shared/table';
+import ReactTable from '../../shared/ReactTable';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import { pushPath } from 'redux-simple-router';
@@ -13,7 +13,6 @@ import {
   Glyphicon,
   Grid,
   Row,
-  Table,
 } from 'react-bootstrap';
 
 import listAction from '../../../actions/employees/list';
@@ -27,18 +26,41 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchListData: () => dispatch(listAction('PROSPECT')),
+    fetchListData: (type) => dispatch(listAction(type)),
     removeListEntry: (type, email) => dispatch(removeAction(type, email)),
-    navigateToEdit: (email) => dispatch(pushPath(`/prospects/${email}/edit`, {})),
-    navigateToNew: () => dispatch(pushPath('/prospects/new', {})),
-    navigateToShow: (email) => dispatch(pushPath(`/prospects/${email}`, {})),
+    navigateToEdit: (email) => dispatch(pushPath(`/employees/${email}/edit`, {})),
+    navigateToNew: () => dispatch(pushPath('/employees/new', {})),
+    navigateToShow: (email) => dispatch(pushPath(`/employees/${email}`, {})),
   };
 }
 
 class List extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.type = props.params.type;
+  }
+
+  getType(props) {
+    let type = (props || this.props).params.type.toUpperCase();
+
+    type = type.substr(0, type.length - 1);
+
+    return type;
+  }
 
   componentWillMount() {
-    this.props.fetchListData();
+    this.props.fetchListData(this.getType());
+  }
+
+  componentWillReceiveProps(props) {
+    // Only make a request when the type has actually changed, to prevent an
+    // infinite loop.
+    if (props.params.type !== this.type) {
+      this.type = props.params.type;
+
+      this.props.fetchListData(this.getType(props));
+    }
   }
 
   handleRowButtonClick(email, event) {
@@ -70,7 +92,7 @@ class List extends React.Component {
       return;
     }
 
-    this.props.removeListEntry('PROSPECT', email);
+    this.props.removeListEntry(this.getType(), email);
   }
 
   renderTable() {
@@ -79,7 +101,7 @@ class List extends React.Component {
       handleOpen={this.handleRowButtonClick.bind(this)}
       handleEdit={this.handleEditButtonClick.bind(this)}
       handleRemove={this.handleRemoveButtonClick.bind(this)}
-      visibleKeys={['fullName', 'currentClient', 'role', 'phone']}
+      visibleKeys={['fullName', 'client', 'role', 'phone']}
     />);
   }
 

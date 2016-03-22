@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import TopBar from './navigation/top-bar';
+import TopBar from './navigation/TopBar';
 import { Alert } from 'react-bootstrap';
 
 const styles = {

@@ -2,6 +2,7 @@ import Loader from 'react-loader';
 import React from 'react';
 import moment from 'moment';
 import { connect } from 'react-redux';
+import { pushPath } from 'redux-simple-router';
 
 import EditForm from '../../shared/form/employee';
 
@@ -19,7 +20,6 @@ function mapStateToProps(state) {
   return {
     isFetching: edit.isFetching,
     item: edit.item,
-
     hasFailed: edit.hasFailed,
     errors: edit.errors,
   };
@@ -36,14 +36,12 @@ function mapDispatchToProps(dispatch) {
     addEntry: (name) => {
       dispatch(addEntry(name));
     },
-
     removeEntry: (key, type) => {
-      const really = confirm(`Are you sure you want to remove this ${type}? This is irriversible.`);
+      const really = confirm(`Are you sure you want to remove this ${type}? This is unreversable.`);
       if (really) {
         dispatch(removeEntry(key, type));
       }
     },
-
     handleCancel: () => {
       const really = confirm('Are you sure you want to cancel? This will discard all changes');
       if (really) {
@@ -66,7 +64,7 @@ class Edit extends React.Component {
       item,
       errors,
       params,
-      } = this.props;
+    } = this.props;
 
     if (item) {
       item.dateOfBirth = moment(item.dateOfBirth).format('YYYY-MM-DD');
@@ -82,13 +80,12 @@ class Edit extends React.Component {
         return v;
       });
     }
-
     return (
       <Loader
         loaded={!isFetching}
       >
         <EditForm
-          type="PROSPECT"
+          type={this.props.params.type.toUpperCase()}
           values={item}
           addEntry={this.props.addEntry}
           removeEntry={this.props.removeEntry}

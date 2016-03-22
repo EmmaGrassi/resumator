@@ -5,7 +5,6 @@ import NewForm from '../../shared/form/employee';
 
 import create from '../../../actions/employees/create';
 import createChange from '../../../actions/employees/createChange';
-import editCancel from '../../../actions/employees/editCancel';
 
 function mapStateToProps(state) {
   const create = state.employees.create.toJS();
@@ -21,26 +20,34 @@ function mapDispatchToProps(dispatch) {
   return {
     createEmployee: () => dispatch(create()),
     changeEmployee: (k, v) => dispatch(createChange(k, v)),
-    handleCancel: () => {
-      const really = confirm('Are you sure you want to cancel? This will discard all changes');
-      if (really) {
-        dispatch(editCancel());
-      }
-    },
   };
 }
 
-class Create extends React.Component {
+class Register extends React.Component {
+  componentWillReceiveProps(props) {
+    if (!props.session.name) {
+      return;
+    }
+
+    this.props.changeEmployee('name', props.session.name);
+    this.props.changeEmployee('surname', props.session.surname);
+    this.props.changeEmployee('email', props.session.email);
+  }
+
   render() {
+    let register;
+    if (this.props.session.name) {
+      register = true;
+    }
+
     return (
       <div>
         <NewForm
           ref="employeeForm"
-          type="EMPLOYEE"
-          values={{}}
-          sessionValues={this.props.session}
+          type={this.props.params.type.toUpperCase()}
+          register={register}
+          values={this.props.create.item}
           handleSubmit={this.props.createEmployee}
-          handleCancel={this.props.handleCancel}
           handleChange={this.props.changeEmployee.bind(this)}
           hasFailed={this.props.create.hasFailed}
           errors={this.props.create.errors}
@@ -50,4 +57,4 @@ class Create extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Create);
+export default connect(mapStateToProps, mapDispatchToProps)(Register);

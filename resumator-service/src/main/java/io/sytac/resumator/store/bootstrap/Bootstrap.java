@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import javax.inject.Inject;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Replays events to build up the in-memory query state
@@ -33,9 +34,11 @@ public class Bootstrap {
     }
 
     public void replay() {
+        List<Event> events = store.getAll();
         log.info("Replaying events, setting store to read-only");
         store.setReadOnly(true);
-        store.getAll().forEach(this::replayEvent);
+
+        events.forEach(this::replayEvent);
 
         log.info("Replayed events successfully, setting store to read-write");
         store.setReadOnly(false);
@@ -46,7 +49,8 @@ public class Bootstrap {
             final ReplayEventConfig replayEventConfig = new ReplayEventConfig(orgs, objectMapper);
             EventExecutorFactory.getInstance(event.getType(), replayEventConfig).execute(event);
         } catch (IOException e) {
-            throw new ResumatorInternalException("The following exception occurred while replaying events: ", e.getCause());
+            throw new ResumatorInternalException("The following exception occurred while replaying events: ", e);
         }
     }
+
 }

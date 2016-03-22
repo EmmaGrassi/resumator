@@ -31,4 +31,8 @@ public interface EventMapper {
 
     @Select("SELECT MAX(insert_order) FROM resumator_events")
     Long getLastInsertOrder();
+    
+    @Update("UPDATE resumator_events set payload=#{payload} where event_id=#{id}")
+    void post(Event event);
+
 }

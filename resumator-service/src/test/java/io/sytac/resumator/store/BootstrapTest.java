@@ -38,7 +38,7 @@ public class BootstrapTest {
                  "\"city\":\"ewqeqw\",\"startDate\":\"1998-01-01\",\"country\":\"ewqewq\",\"title\" :\"ewqewq\"}],\"name\":\"selman tayyar\","+
                  "\"currentResidence\" :\"dsad\",\"admin\":true,\"phonenumber\":\"+31654365653\",\"title\":\"selman dev\",\"courses\":[],"+
                  "\"dateOfBirth\":\"1981-01-01\",\"type\":\"EMPLOYEE\",\"languages\":[],\"surname\":\"ewqewq\",\"nationality\":\"DUTCH\",\"email\":\"selman.tayyar@sytac.io\"}";
-    
+
     private Migrator migrator;
     private Bootstrap bootstrap;
     private EventStore store;
@@ -88,7 +88,7 @@ public class BootstrapTest {
 
     private Event newEmployeeEvent() {
         final EmployeeCommandPayload employeeCommandPayload = new EmployeeCommandPayload(null, "title", "name", "surname", "email",
-                "phonenumber", "github", "linkedin", "1984-04-22", "ITALIAN", "Amsterdam", "", null, null, null, null, false);
+                "phonenumber", "github", "linkedin", "1984-04-22", "ITALIAN","Netherlands","Amsterdam", "", "", null, null, null, null, false);
         final CommandHeader commandHeader = new CommandHeader.Builder()
                 .setId(UUID.randomUUID().toString())
                 .setDomain("acme.biz")
@@ -96,7 +96,7 @@ public class BootstrapTest {
         final NewEmployeeCommand command = new NewEmployeeCommand(commandHeader, employeeCommandPayload);
         return command.asEvent(json);
     }
-    
+
     @Test
     public void canSkipMigrateEvent() {
         List<Event> events = Collections.singletonList(newEmployeeEvent());

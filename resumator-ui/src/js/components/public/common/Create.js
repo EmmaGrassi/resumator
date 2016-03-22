@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import NewForm from '../../shared/form/Employee';
+import NewForm from '../../shared/form/employee';
 
 import create from '../../../actions/employees/create';
 import createChange from '../../../actions/employees/createChange';
@@ -9,10 +9,11 @@ import editCancel from '../../../actions/employees/editCancel';
 
 function mapStateToProps(state) {
   const create = state.employees.create.toJS();
+  const session = state.user.session.toJS();
 
   return {
-    hasFailed: create.hasFailed,
-    errors: create.errors,
+    create,
+    session,
   };
 }
 
@@ -35,13 +36,14 @@ class Create extends React.Component {
       <div>
         <NewForm
           ref="employeeForm"
-          type="FREELANCER"
+          type={this.props.params.type.toUpperCase()}
           values={{}}
+          sessionValues={this.props.session}
           handleSubmit={this.props.createEmployee}
           handleCancel={this.props.handleCancel}
           handleChange={this.props.changeEmployee.bind(this)}
-          hasFailed={this.props.hasFailed}
-          errors={this.props.errors}
+          hasFailed={this.props.create.hasFailed}
+          errors={this.props.create.errors}
         />
       </div>
     );

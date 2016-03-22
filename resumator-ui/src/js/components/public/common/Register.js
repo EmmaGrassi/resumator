@@ -44,7 +44,7 @@ class Register extends React.Component {
       <div>
         <NewForm
           ref="employeeForm"
-          type="EMPLOYEE"
+          type={this.props.params.type.toUpperCase()}
           register={register}
           values={this.props.create.item}
           handleSubmit={this.props.createEmployee}

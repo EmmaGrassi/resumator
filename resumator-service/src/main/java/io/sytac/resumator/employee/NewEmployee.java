@@ -74,7 +74,7 @@ public class NewEmployee extends BaseResource {
 
         final String domain = organization.getDomain();
 
-        final NewEmployeeCommand command = descriptors.newEmployeeCommand(payload, domain);
+        final NewEmployeeCommand command = descriptors.newEmployeeCommand(payload, domain,identity.getName());
         final Employee newEmployee = organization.addEmployee(command);
 
         events.publish(command);

@@ -36,7 +36,7 @@ public class RemoveEmployeeTest extends CommonEmployeeTest {
     @Before
     public void before() throws URISyntaxException {
         super.before();
-        when(descriptorsMock.removeEmployeeCommand(eq(UUID), eq(DOMAIN))).thenReturn(removeEmployeeCommandMock);
+        when(descriptorsMock.removeEmployeeCommand(eq(UUID), eq(DOMAIN),eq(EMAIL))).thenReturn(removeEmployeeCommandMock);
         doNothing().when(organizationMock).removeEmployee(eq(removeEmployeeCommandMock));
     }
 

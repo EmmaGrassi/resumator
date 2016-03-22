@@ -24,7 +24,8 @@ function noop() {}
 
 // Error handling
 function handleError(taskName, error) {
-  return gutil.log(error);
+  gutil.log('ERROR', error);
+  process.exit(0);
 }
 
 // Browserify
@@ -41,8 +42,7 @@ function runBundle() {
   return (bundle, cb) => {
     bundle.bundle()
       .on('error', (error) => {
-        handleError(error);
-        this.emit('end');
+        handleError('runBundle', error);
       })
       .pipe(source('app.bundle.js'))
       .pipe(gulp.dest('build/js'))
@@ -63,8 +63,7 @@ gulp.task(
   (cb) => gulp.src('src/**/*.js')
     .pipe(plugins.plumber({
       errorHandler: (error) => {
-        handleError(error);
-        this.emit('end');
+        handleError('compileBabel', error);
       },
     }))
     .pipe(plugins.changed('build'))

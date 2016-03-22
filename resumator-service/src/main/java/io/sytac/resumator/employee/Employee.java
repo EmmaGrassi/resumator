@@ -45,10 +45,12 @@ public class Employee {
     private final List<Experience> experiences;
     private final List<Language> languages;
     private final boolean admin;
+    private final String cityOfResidence;
+    private final String countryOfResidence;
 
     @Builder
     Employee(String id, EmployeeType type, String role, String name, String surname, String email, String phoneNumber,
-             String gitHub, String linkedIn, Date dateOfBirth, Nationality nationality, String currentResidence,
+             String gitHub, String linkedIn, Date dateOfBirth, Nationality nationality,String currentResidence, String cityOfResidence,String countryOfResidence,
              String aboutMe, List<Education> educations, List<Course> courses,
              List<Experience> experiences, List<Language> languages, boolean admin) {
         this.id = id == null ? UUID.randomUUID().toString() : id;
@@ -62,7 +64,9 @@ public class Employee {
         this.linkedIn = linkedIn;
         this.dateOfBirth = dateOfBirth;
         this.nationality = nationality;
-        this.currentResidence = currentResidence;
+        this.currentResidence=currentResidence;
+        this.countryOfResidence = countryOfResidence;
+        this.cityOfResidence = cityOfResidence;
         this.aboutMe = aboutMe;
         this.educations = educations;
         this.courses = courses;

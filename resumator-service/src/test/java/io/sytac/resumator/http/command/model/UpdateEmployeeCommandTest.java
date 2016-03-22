@@ -20,7 +20,6 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 
 public class UpdateEmployeeCommandTest extends CommonCommandTest {
@@ -102,6 +101,8 @@ public class UpdateEmployeeCommandTest extends CommonCommandTest {
                 "\"dateOfBirth\":\"" + DATE_OF_BIRTH + "\"," +
                 "\"nationality\":\"" + NATIONALITY + "\"," +
                 "\"currentResidence\":\"" + CURRENT_RESIDENCE + "\"," +
+                "\"countryOfResidence\":\"" + COUNTRY_OF_RESIDENCE + "\"," +
+                "\"cityOfResidence\":\"" + CITY_OF_RESIDENCE + "\"," +
                 "\"aboutMe\":\"" + ABOUT_ME + "\"," +
                 "\"education\":[{" +
                     "\"degree\":\"" + Education.Degree.MASTER_DEGREE + "\","+

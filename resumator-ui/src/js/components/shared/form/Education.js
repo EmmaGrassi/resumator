@@ -24,7 +24,21 @@ class EducationForm extends FormComponent {
   }
 
   renderDegree() {
-    return this.getDropDown('degree', degrees, true, true);
+    const isOther = this.props.values.degree === 'OTHER';
+    return isOther ?
+      (<Row>
+        <Col xs={6}>
+          {this.getDropDown('degree', degrees, true, true)}
+        </Col>
+        <Col xs={6}>
+          {this.getInput('otherDegree', null, true)}
+        </Col>
+      </Row>) :
+      (<Row>
+        <Col xs={12}>
+          {this.getDropDown('degree', degrees, true, true)}
+        </Col>
+      </Row>);
   }
 
   renderFieldOfStudy() {
@@ -63,11 +77,8 @@ class EducationForm extends FormComponent {
   render() {
     return (
       <div className="multi-form">
-        <Row>
-          <Col xs={12}>
-            {this.renderDegree()}
-          </Col>
-        </Row>
+
+        {this.renderDegree()}
 
         <Row>
           <Col xs={6}>

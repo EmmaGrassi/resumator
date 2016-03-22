@@ -16,13 +16,13 @@ import store from './store';
 // Components
 import NotAuthorized from './components/NotAuthorized';
 import NotFound from './components/NotFound';
-import PublicContainer from './components/public/container';
-import PublicEmployeesCreate from './components/public/common/create';
-import PublicEmployeesEdit from './components/public/common/edit';
-import PublicEmployeesList from './components/public/common/list';
-import PublicEmployeesRegister from './components/public/common/register';
-import PublicEmployeesShow from './components/public/common/show';
-import PublicHome from './components/public/home';
+import PublicContainer from './components/public/Container';
+import PublicEmployeesCreate from './components/public/common/Create';
+import PublicEmployeesEdit from './components/public/common/Edit';
+import PublicEmployeesList from './components/public/common/List';
+import PublicEmployeesRegister from './components/public/common/Register';
+import PublicEmployeesShow from './components/public/common/Show';
+import PublicHome from './components/public/Home';
 
 const rootElement = document.getElementById('root');
 

@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Col, Input, Row, Alert } from 'react-bootstrap';
 
 import nationalities from '../../../data/nationalities';
+import countries from '../../../data/countries';
 import types from '../../../data/types';
 import labelize from '../../../helpers/labelize';
 import FormComponent from './form';
@@ -55,7 +56,15 @@ class PersonalForm extends FormComponent {
   }
 
   renderCurrentResidence() {
-    return this.getInput('currentResidence', null, true);
+    return (<Row>
+        <Col xs={6}>
+          {this.getInput('cityOfResidence', null, true)}
+        </Col>
+        <Col xs={6}>
+          {this.getDropDown('countryOfResidence', countries, true)}
+        </Col>
+      </Row>
+    );
   }
 
   renderGithub() {
@@ -128,11 +137,7 @@ class PersonalForm extends FormComponent {
           </Col>
         </Row>
 
-        <Row>
-          <Col xs={12}>
-            {this.renderCurrentResidence()}
-          </Col>
-        </Row>
+        {this.renderCurrentResidence()}
 
         <Row>
           <Col xs={6}>

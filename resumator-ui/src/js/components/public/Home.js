@@ -10,6 +10,9 @@ const headerStyles = {
 
 class Home extends React.Component {
 
+  componentDidMount() {
+  }
+
   render() {
     return (
       <Grid>

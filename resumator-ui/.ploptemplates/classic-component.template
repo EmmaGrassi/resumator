@@ -1,0 +1,21 @@
+import React from 'react';
+
+class {{ properCase component }} extends React.Component {
+
+  constructor(props) {
+    this.props = props;
+    this.state = {};
+  }
+
+  componentDidMount() {
+  }
+
+  render() {
+    return (
+      <div className="{{ properCase component }}">
+      </div>
+    );
+  }
+}
+
+export default {{ properCase component }};

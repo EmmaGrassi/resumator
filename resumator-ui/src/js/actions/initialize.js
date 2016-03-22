@@ -37,7 +37,7 @@ function initialize() {
         dispatch({ type: 'user:initialize:success', payload: cookieData });
       });
     } else {
-      dispatch({ type: 'user:initialize:success', payload: cookieData })
+      dispatch({ type: 'user:initialize:success', payload: cookieData });
     }
   };
 }

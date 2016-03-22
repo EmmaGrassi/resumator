@@ -9,5 +9,5 @@ export default combineReducers({
   create,
   edit,
   list,
-  show
+  show,
 });

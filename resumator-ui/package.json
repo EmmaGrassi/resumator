@@ -5,6 +5,25 @@
     "start": "gulp develop",
     "test": "gulp runTests"
   },
+  "eslintConfig": {
+    "extends": "airbnb",
+    "rules": {
+      "max-len": 0,
+      "consistent-return": 0,
+      "new-cap": 0,
+      "no-param-reassign": 0,
+      "no-shadow": 0,
+      "no-unused-vars": 0,
+      "react/jsx-no-bind": 0,
+      "react/prop-types": 0,
+      "no-alert": 0,
+      "no-console": 0,
+      "react/prefer-stateless-function": 0
+    },
+    "env": {
+      "mocha": true
+    }
+  },
   "dependencies": {
     "babel-polyfill": "^6.3.14",
     "body-parser": "^1.14.2",
@@ -56,6 +75,7 @@
     "enzyme": "^2.1.0",
     "eslint": "^2.2.0",
     "eslint-config-airbnb": "^6.0.2",
+    "eslint-plugin-babel": "^3.1.0",
     "eslint-plugin-react": "^4.1.0",
     "gulp": "^3.9.0",
     "gulp-babel": "^6.1.1",
@@ -64,7 +84,7 @@
     "gulp-commonjs-tasks": "^1.2.0",
     "gulp-cssnano": "^2.0.0",
     "gulp-develop-server": "^0.5.0",
-    "gulp-eslint": "^2.0.0",
+    "gulp-eslint": "*",
     "gulp-help": "^1.6.1",
     "gulp-htmlmin": "^1.3.0",
     "gulp-imagemin": "^2.4.0",

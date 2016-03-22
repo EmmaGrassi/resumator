@@ -4,7 +4,7 @@ const defaults = immutable.Map({
   idToken: null,
   name: null,
   surname: null,
-  email: null
+  email: null,
 });
 
 function session(state = defaults, { type, payload } = {}) {

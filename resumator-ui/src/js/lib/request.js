@@ -52,5 +52,5 @@ export default {
   get,
   post,
   put,
-  delete: _delete
+  delete: _delete,
 };

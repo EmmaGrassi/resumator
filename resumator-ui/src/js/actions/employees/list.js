@@ -1,6 +1,7 @@
 import request from 'superagent';
 
 import employeeList from '../../services/employee/list';
+import handleRequestError from '../../helpers/handleRequestError';
 
 function list(type) {
   return (dispatch) => {
@@ -8,6 +9,7 @@ function list(type) {
 
     employeeList(type, (error, result) => {
       if (error) {
+        handleRequestError(error)();
         dispatch({ type: 'employees:list:failure', payload: error, error: true });
         return;
       }

@@ -51,6 +51,7 @@ public class CommonCommandTest {
     public static final String COURSE_NAME = "Scala for dummies";
     public static final String COURSE_DESCRIPTION = "Scala for dummies description";
     public static final int COURSE_YEAR = 1994;
+    public static final String USER_NAME = "user@sytac.io";
 
     @Getter
     private ObjectMapper objectMapper;
@@ -97,8 +98,8 @@ public class CommonCommandTest {
         return new Language(language, Language.Proficiency.FULL_PROFESSIONAL);
     }
 
-    protected CommandHeader createCommandHeader(final String uuid, final String domain, final Long timestamp) {
-        return new CommandHeader.Builder().setId(uuid).setDomain(domain).setTimestamp(timestamp).build();
+    protected CommandHeader createCommandHeader(final String uuid, final String domain, final Long timestamp,String userName) {
+        return new CommandHeader.Builder().setId(uuid).setDomain(domain).setTimestamp(timestamp).setUserName(userName).build();
     }
 
     protected EmployeeCommandPayload createEmployeeCommandPayload(List<Experience> experiences,

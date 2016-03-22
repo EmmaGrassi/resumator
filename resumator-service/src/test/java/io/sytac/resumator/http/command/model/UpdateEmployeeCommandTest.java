@@ -7,6 +7,8 @@ import io.sytac.resumator.employee.EmployeeCommandPayload;
 import io.sytac.resumator.employee.UpdateEmployeeCommand;
 import io.sytac.resumator.model.*;
 import io.sytac.resumator.utils.DateUtils;
+
+import org.eclipse.jetty.server.Authentication.User;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -40,7 +42,7 @@ public class UpdateEmployeeCommandTest extends CommonCommandTest {
         final UpdateEmployeeCommand updateEmployeeCommand = getUpdateEmployeeCommand();
         final String json = getJson(String.valueOf(updateEmployeeCommand.getHeader().getTimestamp()),
                 DateUtils.convert(getExperienceStartDate()),
-                DateUtils.convert(getExperienceEndDate()));
+                DateUtils.convert(getExperienceEndDate()),USER_NAME);
 
         assertEquals("Json is different than expected", json, getObjectMapper().writeValueAsString(updateEmployeeCommand));
     }
@@ -49,7 +51,7 @@ public class UpdateEmployeeCommandTest extends CommonCommandTest {
     public void canRestoreFromString() throws IOException {
         final String json = getJson(String.valueOf(new Date().getTime()),
                 DateUtils.convert(getExperienceStartDate()),
-                DateUtils.convert(getExperienceEndDate()));
+                DateUtils.convert(getExperienceEndDate()),USER_NAME);
 
         final byte[] expectedBytes = json.getBytes("UTF-8");
         final UpdateEmployeeCommand command = getObjectMapper().readValue(expectedBytes, UpdateEmployeeCommand.class);
@@ -63,7 +65,7 @@ public class UpdateEmployeeCommandTest extends CommonCommandTest {
         final Event event = updateEmployeeCommand.asEvent(getObjectMapper());
         final String json = getJson(String.valueOf(updateEmployeeCommand.getHeader().getTimestamp()),
                 DateUtils.convert(getExperienceStartDate()),
-                DateUtils.convert(getExperienceEndDate()));
+                DateUtils.convert(getExperienceEndDate()),USER_NAME);
 
         assertNotNull(event);
         assertEquals(UPDATE_EMPLOYEE_TYPE, event.getType());
@@ -76,16 +78,17 @@ public class UpdateEmployeeCommandTest extends CommonCommandTest {
         final List<Course> courses = Collections.singletonList(createCourse());
         final List<Language> languages = Arrays.asList(createLanguage(DUTCH_LANGUAGE), createLanguage(ENGLISH_LANGUAGE));
         final EmployeeCommandPayload payload = createEmployeeCommandPayload(experiences, educations, courses, languages);
-        final CommandHeader commandHeader = createCommandHeader(UUID, DOMAIN, new Date().getTime());
+        final CommandHeader commandHeader = createCommandHeader(UUID, DOMAIN, new Date().getTime(),USER_NAME);
         return new UpdateEmployeeCommand(commandHeader, payload);
     }
 
-    private String getJson(final String headerTimestamp, final String experienceStartDate, final String experienceEndDate) {
+    private String getJson(final String headerTimestamp, final String experienceStartDate, final String experienceEndDate,final String userName) {
         return "{" +
             "\"header\":{" +
                 "\"id\":\"" + UUID + "\"," +
                 "\"domain\":\"" + DOMAIN + "\"," +
-                "\"timestamp\":" + headerTimestamp +
+                "\"timestamp\":" + headerTimestamp + "," +
+                "\"userName\":\"" + userName +"\""+
             "}," +
             "\"payload\":{" +
                 "\"type\":\"" + TYPE + "\"," +

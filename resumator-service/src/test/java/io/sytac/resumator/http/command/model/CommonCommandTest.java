@@ -8,7 +8,6 @@ import io.sytac.resumator.command.CommandHeader;
 import io.sytac.resumator.employee.DateToStringSerializer;
 import io.sytac.resumator.employee.EmployeeCommandPayload;
 import io.sytac.resumator.employee.EmployeeType;
-import io.sytac.resumator.employee.RemoveEmployeeCommand;
 import io.sytac.resumator.model.Course;
 import io.sytac.resumator.model.Education;
 import io.sytac.resumator.model.Experience;
@@ -17,7 +16,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.junit.Before;
 import org.junit.Ignore;
-import org.junit.Test;
 
 import java.util.*;
 
@@ -51,6 +49,7 @@ public class CommonCommandTest {
     public static final String COURSE_NAME = "Scala for dummies";
     public static final String COURSE_DESCRIPTION = "Scala for dummies description";
     public static final int COURSE_YEAR = 1994;
+    public static final String USER_NAME = "user@sytac.io";
     public static final String COUNTRY_OF_RESIDENCE = "ITALY";
     public static final String CITY_OF_RESIDENCE = "Roma";
     public static final String USER_NAME = "user@sytac.io";

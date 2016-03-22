@@ -35,6 +35,6 @@ public class ResumatorInternalException extends ResumatorException{
 
 	@Override
 	public String getMessage() {
-		return "Internal Exception exception "+super.getMessage();
+		return "Internal Exception "+super.getMessage();
 	}
 }

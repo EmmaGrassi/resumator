@@ -35,7 +35,7 @@ public class ResumatorException extends RuntimeException {
 
 	@Override
 	public String getMessage() {
-		return super.getMessage() + " in Resumator";
+		return "Resumator "+super.getMessage() ;
 	}
 
 }

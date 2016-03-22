@@ -38,6 +38,7 @@ public class Education {
     @NotNull
     @Range(min = 1960, max = 2030,message= "Education  endYear should consist of 4 digits")
     private final int endYear;
+    private final String otherDegree;
 
     @JsonCreator
     public Education(@JsonProperty("degree") Degree degree,
@@ -46,7 +47,8 @@ public class Education {
                      @JsonProperty("city") String city,
                      @JsonProperty("country") String country,
                      @JsonProperty("startYear") int startYear,
-                     @JsonProperty("endYear") int endYear) {
+                     @JsonProperty("endYear") int endYear,
+                     @JsonProperty("otherDegree") String otherDegree) {
         this.degree = degree;
         this.fieldOfStudy = fieldOfStudy;
         this.school = school;
@@ -54,6 +56,7 @@ public class Education {
         this.country = country;
         this.startYear = startYear;
         this.endYear = endYear;
+        this.otherDegree=otherDegree;
     }
 
     public enum Degree {

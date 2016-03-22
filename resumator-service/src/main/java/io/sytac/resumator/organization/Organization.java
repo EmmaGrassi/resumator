@@ -97,6 +97,8 @@ public class Organization {
                 .dateOfBirth(DateUtils.convert(payload.getDateOfBirth()))
                 .nationality(Nationality.valueOf(payload.getNationality()))
                 .currentResidence(payload.getCurrentResidence())
+                .cityOfResidence(payload.getCityOfResidence())
+                .countryOfResidence(payload.getCountryOfResidence())
                 .aboutMe(payload.getAboutMe())
                 .educations(payload.getEducation())
                 .courses(payload.getCourses())

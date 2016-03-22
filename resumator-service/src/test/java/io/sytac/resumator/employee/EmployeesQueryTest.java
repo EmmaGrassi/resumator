@@ -147,6 +147,6 @@ public class EmployeesQueryTest {
 
     private Employee getDummyEmployee(final String id, EmployeeType employeeType) {
         return new Employee(id, employeeType, "title", "name", "surname", "email", "phoneNumber", null, null,
-                null, null, null, null, null, null, null, null, false);
+                null, null,"Netherlands","Amsterdam", null, null, null, null, null, null, false);
     }
 }

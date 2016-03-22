@@ -4,6 +4,8 @@ import moment from 'moment';
 import { bindAll, map } from 'lodash';
 import { connect } from 'react-redux';
 import { pushPath } from 'redux-simple-router';
+import convertCountry from '../../../helpers/convertCountry';
+import convertProficiency from '../../../helpers/convertProficiency';
 
 import {
   Button,
@@ -33,7 +35,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     fetchEmployee: (email) => dispatch(actions.employees.show(email)),
-    navigateToEdit: (email) => dispatch(pushPath(`/freelancers/${email}/edit`)),
+    navigateToEdit: (email) => dispatch(pushPath(`/employees/${email}/edit`)),
   };
 }
 
@@ -44,159 +46,149 @@ class Show extends React.Component {
 
   getCourses() {
     return (
-      <Row>
-        <Col xs={12}>
-          <h2>Courses</h2>
-          <ListGroup>
-            {this.props.show.item.courses.map((v, i) => {
-              const {
-                name,
-                year,
-                description,
-              } = v;
+      <Col xs={6}>
+        <h2>Courses</h2>
+        <ListGroup>
+          {this.props.show.item.courses.map((v, i) => {
+            const {
+              name,
+              year,
+              description,
+            } = v;
 
-              return (
-                <ListGroupItem key={i}>
-                  <strong>{name} ({year})</strong><br />
-                  {description}
-                </ListGroupItem>
-              );
-            })}
-          </ListGroup>
-        </Col>
-      </Row>
+            return (
+              <ListGroupItem key={i}>
+                <strong>{name} ({year})</strong><br />
+                {description}
+              </ListGroupItem>
+            );
+          })}
+        </ListGroup>
+      </Col>
     );
   }
 
   getEducation() {
     return (
-      <Row>
-        <Col xs={12}>
-          <h2>Education</h2>
-          <ListGroup>
-            {this.props.show.item.education.map((v, i) => {
-              const {
-                city,
-                country,
-                endYear,
-                fieldOfStudy,
-                school,
-                startYear,
-              } = v;
+      <Col xs={6}>
+        <h2>Education</h2>
+        <ListGroup>
+          {this.props.show.item.education.map((v, i) => {
+            const {
+              city,
+              country,
+              endYear,
+              fieldOfStudy,
+              school,
+              startYear,
+            } = v;
 
-              let { degree } = v;
-              degree = normalizeString(degree);
+            let { degree } = v;
+            degree = normalizeString(degree);
 
-              return (
-                <ListGroupItem key={i}>
-                  <strong>{degree} in {fieldOfStudy}</strong><br />
-                  {school} in {city}, {country}<br />
-                  {startYear} - {endYear}
-                </ListGroupItem>
-              );
-            })}
-          </ListGroup>
-        </Col>
-      </Row>
+            return (
+              <ListGroupItem key={i}>
+                <strong>{degree} in {fieldOfStudy}</strong><br />
+                {school} in {city}, {convertCountry(country)}<br />
+                {startYear} - {endYear}
+              </ListGroupItem>
+            );
+          })}
+        </ListGroup>
+      </Col>
     );
   }
 
   getExperience() {
     return (
-      <Row>
-        <Col xs={12}>
-          <h2>Experience</h2>
-          <div>
-            {this.props.show.item.experience.map((v, i) => {
-              const {
-                city,
-                companyName,
-                country,
-                shortDescription,
-                role,
-              } = v;
+      <Col xs={6}>
+        <h2>Experience</h2>
+        <div>
+          {this.props.show.item.experience.map((v, i) => {
+            const {
+              city,
+              companyName,
+              country,
+              shortDescription,
+              role,
+            } = v;
 
-              let {
-                startDate,
-                endDate,
-                technologies,
-                methodologies,
-              } = v;
+            let {
+              startDate,
+              endDate,
+              technologies,
+              methodologies,
+            } = v;
 
-              startDate = moment(startDate);
-              endDate = moment(endDate);
+            startDate = moment(startDate);
+            endDate = moment(endDate);
 
-              let difference = endDate.diff(startDate, 'years');
+            let difference = endDate.diff(startDate, 'years');
 
-              if (difference < 1) {
-                difference = `${endDate.diff(startDate, 'months')} months`;
-              } else {
-                difference = `${difference} years`;
-              }
+            if (difference < 1) {
+              difference = `${endDate.diff(startDate, 'months')} months`;
+            } else {
+              difference = `${difference} years`;
+            }
 
-              const startYear = startDate.format('YYYY');
-              const endYear = endDate.format('YYYY');
+            const startYear = startDate.format('YYYY');
+            const endYear = endDate.format('YYYY');
 
-              technologies = technologies.join(', ');
-              methodologies = methodologies.join(', ');
+            technologies = technologies.join(', ');
+            methodologies = methodologies.join(', ');
 
-              let hr;
-              if (i !== this.props.show.item.experience.length - 1) {
-                hr = <hr />;
-              }
+            let hr;
+            if (i !== this.props.show.item.experience.length - 1) {
+              hr = <hr />;
+            }
 
-              return (
-                <div key={i}>
-                  <h3
-                    style={{
-                      marginTop: '10px',
-                    }}
-                  >
-                    {role}
-                  </h3>
-                  <h4>{companyName} ({city}, {country})</h4>
-                  {startYear} - {endYear} ({difference})<br />
-                  <br />
-                  <p>{shortDescription}</p>
-                  <strong>Technologies:</strong> {technologies}<br />
-                  <strong>Methodologies:</strong> {methodologies}<br />
-                  {hr}
-                </div>
-              );
-            })}
-          </div>
-        </Col>
-      </Row>
+            return (
+              <div key={i}>
+                <h3
+                  style={{
+                    marginTop: '10px',
+                  }}
+                >
+                  {role}
+                </h3>
+                <h4>{companyName} ({city}, {convertCountry(country)})</h4>
+                {startYear} - {endYear} ({difference})<br />
+                <br />
+                <p>{shortDescription}</p>
+                <strong>Technologies:</strong> {technologies}<br />
+                <strong>Methodologies:</strong> {methodologies}<br />
+                {hr}
+              </div>
+            );
+          })}
+        </div>
+      </Col>
     );
   }
 
   getLanguages() {
     return (
-      <Row>
-        <Col xs={12}>
-          <h2>Languages</h2>
-          <div>
-            {this.props.show.item.languages.map((v, i) => {
-              let { proficiency } = v;
-              const { name } = v;
+      <Col xs={6}>
+        <h2>Languages</h2>
+        <div>
+          {this.props.show.item.languages.map((v, i) => {
+            const { proficiency } = v;
+            const { name } = v;
 
-              let hr;
-              if (i !== this.props.show.item.experience.length - 1) {
-                hr = <hr />;
-              }
+            let hr;
+            if (i !== this.props.show.item.experience.length - 1) {
+              hr = <hr />;
+            }
 
-              proficiency = normalizeString(proficiency);
-
-              return (
-                <div key={i}>
-                  <strong>{name} ({proficiency})</strong><br />
-                  {hr}
-                </div>
-              );
-            })}
-          </div>
-        </Col>
-      </Row>
+            return (
+              <div key={i}>
+                <strong>{name} ({convertProficiency(proficiency)})</strong><br />
+                {hr}
+              </div>
+            );
+          })}
+        </div>
+      </Col>
     );
   }
 
@@ -215,7 +207,8 @@ class Show extends React.Component {
 
     const {
       aboutMe,
-      currentResidence,
+      cityOfResidence,
+      countryOfResidence,
       email,
       github,
       id,
@@ -227,7 +220,7 @@ class Show extends React.Component {
     } = item;
     let { nationality, dateOfBirth } = item;
 
-    const docxURL = `/api/freelancers/${email}/docx`;
+    const docxURL = `/api/employees/${email}/docx`;
 
     nationality = nationality && normalizeString(nationality);
     dateOfBirth = moment(dateOfBirth).format('YYYY-MM-DD');
@@ -326,7 +319,7 @@ class Show extends React.Component {
                       <strong>Current residence:</strong>
                     </td>
                     <td>
-                      {currentResidence}
+                      {cityOfResidence} {countryOfResidence}
                     </td>
                   </tr>
 
@@ -361,12 +354,17 @@ class Show extends React.Component {
               <p>{aboutMe}</p>
             </Col>
           </Row>
+          <Row>
+            {education}
+            {courses}
 
-          {experience}
-          {education}
-          {languages}
-          {courses}
+          </Row>
+          <Row>
+            {experience}
+            {languages}
+          </Row>
         </Grid>
+        <br />
       </Loader>
     );
   }

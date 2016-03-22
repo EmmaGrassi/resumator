@@ -14,13 +14,13 @@ import { pushPath } from 'redux-simple-router';
 import create from '../../../actions/employees/create';
 import createChange from '../../../actions/employees/createChange';
 
-import PersonalForm from './personal';
-import ExperienceForm from './experience';
-import EducationForm from './education';
-import CoursesForm from './courses';
-import LanguagesForm from './languages';
+import PersonalForm from './Personal';
+import ExperienceForm from './Experience';
+import EducationForm from './Education';
+import CoursesForm from './Courses';
+import LanguagesForm from './Languages';
 
-import ListContainer from './list-container';
+import ListContainer from './ListContainer';
 
 const navItems = [
   'Personal',

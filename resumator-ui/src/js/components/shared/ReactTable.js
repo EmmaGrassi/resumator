@@ -21,6 +21,19 @@ function reverseSortDirection(sortDir) {
   return sortDir === SortTypes.DESC ? SortTypes.ASC : SortTypes.DESC;
 }
 
+function getTableWidth(){
+  let tableWidth = 756;
+  const matchSmall  = window.matchMedia('(min-width: 768px)');
+  const matchMiddle = window.matchMedia('(min-width: 992px)');
+  const matchLarge  = window.matchMedia('(min-width: 1200px)');
+
+  if (matchSmall.matches) tableWidth = 750;
+  if (matchMiddle.matches) tableWidth = 970;
+  if (matchLarge.matches) tableWidth = 1170;
+
+  return tableWidth - 30; // Subtract the the padding and margin
+}
+
 class SortHeaderCell extends React.Component {
   constructor(props) {
     super(props);
@@ -61,11 +74,24 @@ class ReactTable extends React.Component {
       dataList: this.props.data,
       colSortDirection: {},
       activeSearchKey: this.props.visibleKeys[0],
+      tableWidth: getTableWidth(),
     };
+  }
+
+  componentDidMount() {
+    this.resizeListener = window.addEventListener('resize', this.handleWindowResize.bind(this))
   }
 
   componentWillReceiveProps(nextProps){
     this.setState({dataList: nextProps.data});
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener(this.resizeListener);
+  }
+
+  handleWindowResize(e){
+    this.setState({tableWidth: getTableWidth()});
   }
 
   _onSortChange(columnKey, sortDir) {
@@ -123,7 +149,7 @@ class ReactTable extends React.Component {
   render() {
     const {dataList, colSortDirection} = this.state;
 
-    const tableWidth = 940;
+    const tableWidth = getTableWidth();
     const celWidth = tableWidth / (this.props.visibleKeys.length + 1);
 
     const colums = this.props.visibleKeys.map((key, i)=> {
@@ -163,7 +189,7 @@ class ReactTable extends React.Component {
           rowsCount={this.state.dataList.length}
           rowHeight={50}
           headerHeight={50}
-          width={tableWidth}
+          width={this.state.tableWidth}
           height={500}
         >
           {colums}

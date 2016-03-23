@@ -90,7 +90,7 @@ class ReactTable extends React.Component {
   }
 
   componentWillUnmount() {
-    window.removeEventListener(this.resizeListener);
+    window.removeEventListener('resize', this.resizeListener);
   }
 
   handleWindowResize(e){

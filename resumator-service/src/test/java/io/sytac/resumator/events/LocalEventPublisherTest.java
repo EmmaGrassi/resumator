@@ -50,7 +50,7 @@ public class LocalEventPublisherTest {
         assertEquals("Received undesirable events types!", 2, invoked.get());
     }
     private NewEmployeeCommand getEmployeeCommand() {
-        final List<Education> education = Collections.singletonList(new Education(Education.Degree.MASTER_DEGREE, "Field", "SChool", "City", "Country", 2000, 2005));
+        final List<Education> education = Collections.singletonList(new Education(Education.Degree.MASTER_DEGREE, "Field", "SChool", "City", "Country", 2000, 2005,""));
         final List<Course> courses = Collections.singletonList(new Course("Course1", "Course 1", 1994));
         final List<String> technologies = Arrays.asList("Java", "Turbo Pascal");
         final List<String> methodologies = Arrays.asList("Scrum", "Exreme programming");
@@ -62,7 +62,7 @@ public class LocalEventPublisherTest {
 
         final List<Language> languages = Collections.singletonList(new Language("English", Language.Proficiency.FULL_PROFESSIONAL));
         final EmployeeCommandPayload payload = new EmployeeCommandPayload(null, "Title", "Foo", "Bar", "Email", "+31000999000",
-                "Github", "Linkedin", "1984-04-22", "ITALY", "N", "About ME", education, courses, experience, languages, false);
+                "Github", "Linkedin", "1984-04-22", "ITALY","Netherlands","Amsterdam", "N", "About ME", education, courses, experience, languages, false);
 
         final CommandHeader commandHeader = new CommandHeader.Builder()
                 .setId(UUID.randomUUID().toString())

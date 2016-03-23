@@ -90,13 +90,13 @@ public class CommonEmployeeTest {
     
 
     protected EmployeeCommandPayload getEmployeeCommandPayload(boolean isAdmin, EmployeeType type) {
-        return new EmployeeCommandPayload(type,"title", "name", "surname", EMAIL, "0212238989", null,null,"1966-01-01","ANDORRAN", "Netherlands", "about", new ArrayList<>(),new ArrayList<>(),
+        return new EmployeeCommandPayload(type,"title", "name", "surname", EMAIL, "0212238989", null,null,"1966-01-01","ANDORRAN", "Netherlands","Netherlands","Amsterdam", "about", new ArrayList<>(),new ArrayList<>(),
          		new ArrayList<>(), new ArrayList<>(), isAdmin);
     }
     
     protected EmployeeCommandPayload getEmployeeDetailedValidatableCommandPayload() {
 
-    	Education education=new  Education(Degree.ASSOCIATE_DEGREE, "economics", "Baroek", "New York", "USA", 2012, 2005);
+    	Education education=new  Education(Degree.ASSOCIATE_DEGREE, "economics", "Baroek", "New York", "USA", 2012, 2005,"");
     	List<Education> educations=new ArrayList<>();
     	educations.add(education);
     	
@@ -104,14 +104,14 @@ public class CommonEmployeeTest {
     	List<Course> courses=new ArrayList<>();
     	courses.add(course);
     	
-      	return new EmployeeCommandPayload(null,"title", "name", "surname", EMAIL, "02122381132", null,null,"2020-01-01","HAYMATLOS", "Netherlands", "about", educations,courses,
+      	return new EmployeeCommandPayload(null,"title", "name", "surname", EMAIL, "02122381132", null,null,"2020-01-01","HAYMATLOS", "Netherlands","Netherlands","Amsterdam", "about", educations,courses,
         		new ArrayList<>(), new ArrayList<>(),true);
 
 	}
     
     protected EmployeeCommandPayload getEmployeeValidatableCommandPayload() {
  		
-     	return new EmployeeCommandPayload(null,"title", "name", null, "email", "0212238sa32", null,null,"2020-01-01","ANDORRAN", "Netherlands", "about", new ArrayList<>(),new ArrayList<>(),
+     	return new EmployeeCommandPayload(null,"title", "name", null, "email", "0212238sa32", null,null,"2020-01-01","ANDORRAN", "Netherlands", "Netherlands","Amsterdam","about", new ArrayList<>(),new ArrayList<>(),
          		new ArrayList<>(), new ArrayList<>(),true);
  	}
 }

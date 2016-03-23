@@ -78,7 +78,7 @@ public class UpdateEmployee extends BaseResource {
         }
         
 
-        final UpdateEmployeeCommand command = descriptors.updateEmployeeCommand(employee.getId(), payload, organization.getDomain());
+        final UpdateEmployeeCommand command = descriptors.updateEmployeeCommand(employee.getId(), payload, organization.getDomain(),identity.getName());
         final Employee updatedEmployee = organization.updateEmployee(command);
 
 

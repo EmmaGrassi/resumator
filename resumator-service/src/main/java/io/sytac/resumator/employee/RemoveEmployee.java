@@ -56,7 +56,7 @@ public class RemoveEmployee extends BaseResource {
             return buildRepresentation(HttpStatus.NOT_FOUND_404);
         }
 
-        final RemoveEmployeeCommand command = descriptors.removeEmployeeCommand(employee.getId(), organization.getDomain());
+        final RemoveEmployeeCommand command = descriptors.removeEmployeeCommand(employee.getId(), organization.getDomain(),identity.getName());
         organization.removeEmployee(command);
 
         events.publish(command);

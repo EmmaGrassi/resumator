@@ -18,17 +18,20 @@ public class CommandHeader {
     private final String domain;
     private final Long timestamp;
     private final Long insertOrder;
+    private final String userName;
 
 
     @JsonCreator
     public CommandHeader(@JsonProperty("id") final String id,
                          @JsonProperty("domain") final String domain,
                          @JsonProperty("timestamp") final Long timestamp,
-                         @JsonProperty("insertOrder") final Long insertOrder) {
+                         @JsonProperty("insertOrder") final Long insertOrder,
+                         @JsonProperty("userName") final String userName) {
         this.id = id;
         this.domain = domain;
         this.timestamp = timestamp;
         this.insertOrder = insertOrder;
+        this.userName=userName;
     }
 
     public Optional<String> getId() {
@@ -47,11 +50,16 @@ public class CommandHeader {
         return Optional.ofNullable(insertOrder);
     }
 
+    public Optional<String> getUserName() {
+        return Optional.ofNullable(userName);
+    }
+
     public static class Builder {
         private String id = UUID.randomUUID().toString();
         private String domain = null;
         private Long timestamp = new Date().getTime();
         private Long insertOrder = null;
+        private  String userName;
 
         public Builder setTimestamp(Long timestamp) {
             this.timestamp = timestamp;
@@ -72,9 +80,14 @@ public class CommandHeader {
             this.insertOrder = insertOrder;
             return this;
         }
+        
+        public Builder setUserName(String userName) {
+            this.userName = userName;
+            return this;
+        }
 
         public CommandHeader build() {
-            return new CommandHeader(id, domain, timestamp, insertOrder);
+            return new CommandHeader(id, domain, timestamp, insertOrder,userName);
         }
     }
 }

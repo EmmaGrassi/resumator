@@ -50,10 +50,13 @@ public class EmployeeCommandPayload implements CommandPayload {
     private final String dateOfBirth;
     @NotBlank(message = "nationality is mandatory")
     private final String nationality;
-    @NotBlank(message = "currentResidence is mandatory")
     private final String currentResidence;
     @NotBlank(message = "aboutMe is mandatory")
     private final String aboutMe;
+    @NotBlank(message = "City of residence is mandatory")
+    private final String cityOfResidence;
+    @NotBlank(message = "Country of residence  is mandatory")
+    private final String countryOfResidence;
     @Valid
     private final List<Education> education;
     @Valid
@@ -84,6 +87,8 @@ public class EmployeeCommandPayload implements CommandPayload {
                                   @JsonProperty("dateOfBirth") final String dateOfBirth,
                                   @JsonProperty("nationality") final String nationality,
                                   @JsonProperty("currentResidence") final String currentResidence,
+                                  @JsonProperty("countryOfResidence") final String countryOfResidence,
+                                  @JsonProperty("cityOfResidence") final String cityOfResidence,                                  
                                   @JsonProperty("aboutMe") final String aboutMe,
                                   @JsonProperty("education") final List<Education> education,
                                   @JsonProperty("courses") final List<Course> courses,
@@ -100,7 +105,9 @@ public class EmployeeCommandPayload implements CommandPayload {
         this.linkedin = linkedin;
         this.dateOfBirth = dateOfBirth;
         this.nationality = nationality;
-        this.currentResidence = currentResidence;
+        this.currentResidence=currentResidence;
+        this.countryOfResidence = countryOfResidence;
+        this.cityOfResidence = cityOfResidence;
         this.aboutMe = aboutMe;
         this.education = education;
         this.courses = courses;

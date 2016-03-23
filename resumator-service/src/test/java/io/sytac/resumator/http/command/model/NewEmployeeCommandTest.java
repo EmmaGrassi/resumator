@@ -39,7 +39,7 @@ public class NewEmployeeCommandTest extends CommonCommandTest {
         final NewEmployeeCommand newEmployeeCommand = getNewEmployeeCommand();
         final String json = getJson(String.valueOf(newEmployeeCommand.getHeader().getTimestamp()),
                 DateUtils.convert(getExperienceStartDate()),
-                DateUtils.convert(getExperienceEndDate()));
+                DateUtils.convert(getExperienceEndDate()),USER_NAME);
 
         assertEquals("Json is different than expected", json, getObjectMapper().writeValueAsString(newEmployeeCommand));
     }
@@ -48,7 +48,7 @@ public class NewEmployeeCommandTest extends CommonCommandTest {
     public void canRestoreFromString() throws IOException {
         final String json = getJson(String.valueOf(new Date().getTime()),
                 DateUtils.convert(getExperienceStartDate()),
-                DateUtils.convert(getExperienceEndDate()));
+                DateUtils.convert(getExperienceEndDate()),USER_NAME);
 
         final byte[] expectedBytes = json.getBytes("UTF-8");
         final NewEmployeeCommand command = getObjectMapper().readValue(expectedBytes, NewEmployeeCommand.class);
@@ -60,7 +60,7 @@ public class NewEmployeeCommandTest extends CommonCommandTest {
         final NewEmployeeCommand newEmployeeCommand = getNewEmployeeCommand();
         final String json = getJson(String.valueOf(newEmployeeCommand.getHeader().getTimestamp()),
                 DateUtils.convert(getExperienceStartDate()),
-                DateUtils.convert(getExperienceEndDate()));
+                DateUtils.convert(getExperienceEndDate()),USER_NAME);
         final Event event = newEmployeeCommand.asEvent(getObjectMapper());
 
         assertNotNull(event);
@@ -74,16 +74,17 @@ public class NewEmployeeCommandTest extends CommonCommandTest {
         final List<Course> courses = Collections.singletonList(createCourse());
         final List<Language> languages = Collections.singletonList(createLanguage(ENGLISH_LANGUAGE));
         final EmployeeCommandPayload payload = createEmployeeCommandPayload(experiences, educations, courses, languages);
-        final CommandHeader commandHeader = createCommandHeader(UUID, DOMAIN, new Date().getTime());
+        final CommandHeader commandHeader = createCommandHeader(UUID, DOMAIN, new Date().getTime(),USER_NAME);
         return new NewEmployeeCommand(commandHeader, payload);
     }
 
-    private String getJson(final String headerTimestamp, final String experienceStartDate, final String experienceEndDate) {
+    private String getJson(final String headerTimestamp, final String experienceStartDate, final String experienceEndDate,final String userName) {
         return "{" +
             "\"header\":{" +
                 "\"id\":\"" + UUID + "\"," +
                 "\"domain\":\"" + DOMAIN + "\"," +
-                "\"timestamp\":" + headerTimestamp +
+                "\"timestamp\":" + headerTimestamp + "," +
+                "\"userName\":\"" + userName +"\""+
             "}," +
             "\"payload\":{" +
                 "\"type\":\"" + TYPE + "\"," +
@@ -97,6 +98,8 @@ public class NewEmployeeCommandTest extends CommonCommandTest {
                 "\"dateOfBirth\":\"" + DATE_OF_BIRTH + "\"," +
                 "\"nationality\":\"" + NATIONALITY + "\"," +
                 "\"currentResidence\":\"" + CURRENT_RESIDENCE + "\"," +
+                "\"countryOfResidence\":\"" + COUNTRY_OF_RESIDENCE + "\"," +
+                "\"cityOfResidence\":\"" + CITY_OF_RESIDENCE + "\"," +
                 "\"aboutMe\":\"" + ABOUT_ME + "\"," +
                 "\"education\":[{" +
                     "\"degree\":\"" + Education.Degree.MASTER_DEGREE + "\","+

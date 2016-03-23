@@ -55,14 +55,14 @@ export default function login(data) {
             showLoginSuccess(dispatch, googleProfile.email);
 
             return;
-          } else {
-            cookieClear();
-
-            dispatch({ type: 'user:login:failure' });
-            showLoginFailed(dispatch);
-
-            return;
           }
+
+          cookieClear();
+
+          dispatch({ type: 'user:login:failure' });
+          showLoginFailed(dispatch);
+
+          return;
         }
 
         dispatch({ type: 'user:getProfile:success', payload: profile });

@@ -41,14 +41,6 @@ class List extends React.Component {
     this.type = props.params.type;
   }
 
-  getType(props) {
-    let type = (props || this.props).params.type.toUpperCase();
-
-    type = type.substr(0, type.length - 1);
-
-    return type;
-  }
-
   componentWillMount() {
     this.props.fetchListData(this.getType());
   }
@@ -61,6 +53,14 @@ class List extends React.Component {
 
       this.props.fetchListData(this.getType(props));
     }
+  }
+
+  getType(props) {
+    let type = (props || this.props).params.type.toUpperCase();
+
+    type = type.substr(0, type.length - 1);
+
+    return type;
   }
 
   handleRowButtonClick(email, event) {

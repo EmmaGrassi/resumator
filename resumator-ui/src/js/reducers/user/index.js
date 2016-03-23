@@ -5,5 +5,5 @@ import session from './session';
 
 export default combineReducers({
   profile,
-  session
+  session,
 });

@@ -42,8 +42,8 @@ class RightNav extends React.Component {
   }
 
   // TODO: Implement
-  handleLogInError() {
-    console.error(arguments);
+  handleLogInError(...args) {
+    console.error(...args);
   }
 
   handleLogOutButtonClick(event) {

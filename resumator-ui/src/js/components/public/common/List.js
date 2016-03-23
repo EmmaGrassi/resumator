@@ -112,7 +112,12 @@ class List extends React.Component {
         <Loader
           loaded={!isFetching}
         >
-        {this.renderTable()}
+        <div className="table-container">
+          {this.renderTable()}
+          <Button bsStyle="success" onClick={this.handleNewButtonClick.bind(this)}>
+            <Glyphicon glyph="plus" /> New
+          </Button>
+        </div>
         </Loader>
       </div>
     );

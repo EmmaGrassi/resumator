@@ -1,7 +1,6 @@
 import { expect } from 'chai';
 
 import getXSRFToken from '../../src/js/services/employee/helpers/getXSRFToken.js';
-import create from '../../src/js/services/employee/create.js';
 
 beforeEach(() => {
   const tokenTag = document.createElement('script');

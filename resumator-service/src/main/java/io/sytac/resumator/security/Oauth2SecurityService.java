@@ -17,12 +17,15 @@ import io.sytac.resumator.organization.OrganizationRepository;
 import lombok.extern.slf4j.Slf4j;
 
 import org.apache.commons.lang3.SerializationUtils;
+import org.joda.time.Days;
+import org.joda.time.LocalDate;
 
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import javax.inject.Inject;
+import javax.ws.rs.core.Cookie;
 import javax.xml.bind.DatatypeConverter;
 
 import java.io.IOException;
@@ -31,6 +34,7 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -173,5 +177,29 @@ public class Oauth2SecurityService {
             log.error("Can't calculate signature", e);
         }
         return null;
+    }
+    
+    /*
+     * Method checking if the cookie is valid and setting the identity accordingly.If emails from the cookie and actual user email areidentical and it has not been
+     * more than 2 days after cookie is created,it is considered as valid.
+     */
+    public Optional<Identity> checkIfCookieValid(Optional<Cookie> emailCookie, Optional<Cookie> domainCookie,
+            Optional<Identity> user, String cookieDecrypted) {
+        
+        String cookieItems[]=cookieDecrypted.split(",,");
+        String emailFromCookie=cookieItems[0];
+        String time=cookieItems[1];
+        
+        //emails should be identical and time passed after the cookie creation shouldn't be more than two days.
+        if (emailCookie.isPresent()&& emailCookie.get().getValue().equals(emailFromCookie)){
+            
+            Date dateCreation=new Date(Long.parseLong(time));
+            Date now=new Date();
+            Integer elapsedTime=Days.daysBetween(new LocalDate(dateCreation), new LocalDate(now)).getDays();
+            
+            if(elapsedTime<=2)
+                user = toUser(emailFromCookie, domainCookie.get().getValue());
+        }
+        return user;
     }
 }

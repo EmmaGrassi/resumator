@@ -54,7 +54,7 @@ public class Oauth2AuthenticationFilter implements ContainerRequestFilter {
                 if(authCookie.isPresent()){
                     String cookieDecrypted=security.decryptCookie(authCookie.get().getValue());
 
-                    user = checkIfCookieValid(emailCookie, domainCookie, user,cookieDecrypted);
+                    user = security.checkIfCookieValid(emailCookie, domainCookie, user,cookieDecrypted);
                       
                 }
             } catch (Exception e) {
@@ -69,28 +69,6 @@ public class Oauth2AuthenticationFilter implements ContainerRequestFilter {
     	}
     }
 
-    /*
-     * Method checking if the cookie is valid and setting the identity accordingly.If emails from the cookie and actual user email areidentical and it has not been
-     * more than 2 days after cookie is created,it is considered as valid.
-     */
-    private Optional<Identity> checkIfCookieValid(Optional<Cookie> emailCookie, Optional<Cookie> domainCookie,
-            Optional<Identity> user, String cookieDecrypted) {
-        
-        String cookieItems[]=cookieDecrypted.split(",,");
-        String emailFromCookie=cookieItems[0];
-        String time=cookieItems[1];
-        
-        //emails should be identical and time passed after the cookie creation shouldn't be more than two days.
-        if (emailCookie.isPresent()&& emailCookie.get().getValue().equals(emailFromCookie)){
-            
-            Date dateCreation=new Date(Long.parseLong(time));
-            Date now=new Date();
-            Integer elapsedTime=Days.daysBetween(new LocalDate(dateCreation), new LocalDate(now)).getDays();
-            
-            if(elapsedTime<=2)
-                user = security.toUser(emailFromCookie, domainCookie.get().getValue());
-        }
-        return user;
-    }
+
 
 }

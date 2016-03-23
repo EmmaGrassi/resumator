@@ -23,6 +23,8 @@ function reverseSortDirection(sortDir) {
 
 function getTableWidth(){
   let tableWidth = 756;
+  const bootstrapPadding = 30;
+
   const matchSmall  = window.matchMedia('(min-width: 768px)');
   const matchMiddle = window.matchMedia('(min-width: 992px)');
   const matchLarge  = window.matchMedia('(min-width: 1200px)');
@@ -31,7 +33,8 @@ function getTableWidth(){
   if (matchMiddle.matches) tableWidth = 970;
   if (matchLarge.matches) tableWidth = 1170;
 
-  return tableWidth - 30; // Subtract the the padding and margin
+
+  return tableWidth - bootstrapPadding;
 }
 
 class SortHeaderCell extends React.Component {

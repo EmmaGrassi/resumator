@@ -153,7 +153,10 @@ class ReactTable extends React.Component {
     const {dataList, colSortDirection} = this.state;
 
     const tableWidth = getTableWidth();
+    const rowHeight = 50;
+    const tableMargin = rowHeight + 5;
     const celWidth = tableWidth / (this.props.visibleKeys.length + 1);
+    const tableHeight = (rowHeight * this.state.dataList.length) + tableMargin;
 
     const colums = this.props.visibleKeys.map((key, i)=> {
       return (<Column
@@ -190,10 +193,10 @@ class ReactTable extends React.Component {
 
         <Table
           rowsCount={this.state.dataList.length}
-          rowHeight={50}
-          headerHeight={50}
+          rowHeight={rowHeight}
+          headerHeight={rowHeight}
           width={this.state.tableWidth}
-          height={500}
+          height={tableHeight}
         >
           {colums}
           <Column

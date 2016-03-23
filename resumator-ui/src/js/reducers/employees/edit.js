@@ -13,14 +13,6 @@ const defaults = immutable.Map({
 });
 
 function edit(state = defaults, action = {}) {
-  const type = action.payload;
-  const result = state
-    .getIn(['item', type]);
-
-  const tmpState = state.toJS();
-  tmpState.item[action.payload.type].splice(action.payload.key, 1);
-  const newState = immutable.fromJS(tmpState);
-
   switch (action.type) {
     case 'employees:edit:start':
       return state
@@ -60,10 +52,16 @@ function edit(state = defaults, action = {}) {
         .set('errors', action.errors);
 
     case 'employees:addEntry':
+      const type = action.payload;
+      const result = state
+        .getIn(['item', type]);
       return state
         .setIn(['item', type], result.push({}));
 
     case 'employees:removeEntry':
+      const tmpState = state.toJS();
+      tmpState.item[action.payload.type].splice(action.payload.key, 1);
+      const newState = immutable.fromJS(tmpState);
       return newState;
 
     default:

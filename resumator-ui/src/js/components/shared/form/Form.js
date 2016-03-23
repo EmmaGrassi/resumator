@@ -6,10 +6,18 @@ import {
   Input,
 } from 'react-bootstrap';
 
+import ReactQuill from 'react-quill';
+
 import moment from 'moment';
 import labelize from '../../../helpers/labelize';
+import quillFormat from '../../../data/quill-formats';
 
 class FormComponent extends React.Component {
+
+  handleQuillChange(name, value) {
+    this.props.handleChange(name, value);
+  }
+
   getInput(name, type, required, placeholder, autoFocus, attrs) {
     const { isSaving, hasFailed, errors, values } = this.props;
     const inputName = name;
@@ -37,6 +45,31 @@ class FormComponent extends React.Component {
     }
 
     return (<Input {...props} />);
+  }
+
+  getQuillEditor(name, required){
+    return (
+      <div className="quill-editor__container">
+        <label className="control-label">
+          {required ? labelize(name, '*') : labelize(name)}
+        </label>
+        <ReactQuill
+          theme="snow"
+          className="quill-editor"
+          value={this.props.values[name]}
+          onChange={this.handleQuillChange.bind(this, name)}
+        >
+          <ReactQuill.Toolbar key="toolbar"
+                              ref="toolbar"
+                              items={quillFormat} />
+          <div key={`editor_${name}`}
+               ref="editor"
+               className="quill-contents"
+               dangerouslySetInnerHTML={{__html: this.props.values[name]}}
+          />
+        </ReactQuill>
+      </div>
+    );
   }
 
   getDropDown(name, options, required, autoFocus) {

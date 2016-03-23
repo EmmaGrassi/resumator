@@ -84,7 +84,7 @@ class PersonalForm extends FormComponent {
   }
 
   renderAboutMe() {
-    return this.getInput('aboutMe', 'textarea', true);
+    return this.getQuillEditor('aboutMe', true);
   }
 
   renderCancelButton() {

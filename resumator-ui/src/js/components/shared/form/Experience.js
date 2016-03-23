@@ -36,7 +36,11 @@ class ExperienceForm extends FormComponent {
 
   handleChange(name) {
     this.props.values[name] = this.refs[name].getValue();
+    this.props.handleChange('experience', this.props.currentValues);
+  }
 
+  handleQuillChange(name, value) {
+    this.props.values[name] = value;
     this.props.handleChange('experience', this.props.currentValues);
   }
 
@@ -77,7 +81,7 @@ class ExperienceForm extends FormComponent {
   }
 
   renderShortDescription() {
-    return this.getInput('shortDescription', 'textarea', true);
+    return this.getQuillEditor('shortDescription', true);
   }
 
   renderTechnologies() {

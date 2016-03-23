@@ -52,7 +52,6 @@ public class CommonCommandTest {
     public static final String USER_NAME = "user@sytac.io";
     public static final String COUNTRY_OF_RESIDENCE = "ITALY";
     public static final String CITY_OF_RESIDENCE = "Roma";
-    public static final String USER_NAME = "user@sytac.io";
 
     @Getter
     private ObjectMapper objectMapper;

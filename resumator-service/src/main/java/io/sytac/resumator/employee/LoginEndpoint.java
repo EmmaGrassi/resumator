@@ -29,6 +29,7 @@ import io.sytac.resumator.security.AuthenticationService;
 import io.sytac.resumator.security.GoogleResponse;
 import io.sytac.resumator.security.Oauth2AuthenticationFilter;
 import io.sytac.resumator.security.Oauth2SecurityService;
+import io.sytac.resumator.utils.ResumatorConstants;
 
 /**
  * Login Endpoint to handle google token exchange
@@ -70,9 +71,12 @@ public class LoginEndpoint extends BaseResource {
     
 
     private Response buildLoginRepresentation(GoogleResponse googleResponse,String domain) {
+ 
+        String xsrfToken=authService.produceXsrfToken(googleResponse.getEmail());
         
-          final Representation halResource = rest.newRepresentation()
-                  .withProperty("email", googleResponse.getEmail());
+        final Representation halResource = rest.newRepresentation()
+                .withProperty("email", googleResponse.getEmail())
+                .withRepresentation(ResumatorConstants.XSRF_EMBEDDED_NAME, rest.newRepresentation().withProperty(ResumatorConstants.XSRF_PROPERTY_NAME, xsrfToken));  
                   
         Calendar calendar=new GregorianCalendar();
         calendar.add(Calendar.DAY_OF_MONTH, 2);

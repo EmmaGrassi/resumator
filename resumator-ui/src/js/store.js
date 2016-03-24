@@ -15,7 +15,8 @@ const store = compose(
     loggerMiddleware({
       collapsed: true,
     })
-  )
+  ),
+  window.devToolsExtension ? window.devToolsExtension() : f => f
 )(createStore)(reducer);
 
 export default store;

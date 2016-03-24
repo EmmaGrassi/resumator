@@ -6,9 +6,11 @@ import io.sytac.resumator.http.BaseResource;
 import io.sytac.resumator.model.Experience;
 import io.sytac.resumator.organization.Organization;
 import io.sytac.resumator.organization.OrganizationRepository;
+import io.sytac.resumator.security.AuthenticationService;
 import io.sytac.resumator.security.Identity;
 import io.sytac.resumator.security.Roles;
 import io.sytac.resumator.security.UserPrincipal;
+import io.sytac.resumator.utils.ResumatorConstants;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
@@ -49,10 +51,13 @@ public class EmployeesQuery extends BaseResource {
     static final int DEFAULT_PAGE_SIZE = 25;
 
     private OrganizationRepository organizations;
+    
+    private final AuthenticationService authService;
 
     @Inject
-    public EmployeesQuery(final OrganizationRepository organizations) {
+    public EmployeesQuery(final OrganizationRepository organizations,final AuthenticationService authService) {
         this.organizations = organizations;
+        this.authService=authService;
     }
 
     @GET
@@ -81,6 +86,11 @@ public class EmployeesQuery extends BaseResource {
         if (hasNextPage(filteredEmployees.size(), pageNumber)) {
             representation.withLink(REL_NEXT, createURIForPage(uriInfo, pageNumber + 1));
         }
+        
+        //Add xsrf token
+        String xsrfToken=authService.produceXsrfToken(identity.getName());
+        representation.withRepresentation(ResumatorConstants.XSRF_EMBEDDED_NAME, rest.newRepresentation().withProperty(ResumatorConstants.XSRF_PROPERTY_NAME, xsrfToken));
+        
 
         return representation;
     }	

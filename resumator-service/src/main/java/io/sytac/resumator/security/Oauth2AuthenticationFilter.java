@@ -1,5 +1,6 @@
 package io.sytac.resumator.security;
 
+import io.sytac.resumator.ConfigurationEntries;
 import lombok.extern.slf4j.Slf4j;
 
 import org.joda.time.Days;
@@ -34,10 +35,13 @@ public class Oauth2AuthenticationFilter implements ContainerRequestFilter {
     public static final String DOMAIN_COOKIE = "domain";
 
     final Oauth2SecurityService security;
+    private final AuthenticationService authService;
+    
 
     @Inject
-    public Oauth2AuthenticationFilter(Oauth2SecurityService security) {
+    public Oauth2AuthenticationFilter(Oauth2SecurityService security,final AuthenticationService authService) {
         this.security = security;
+        this.authService=authService;
     }
 
     @Override
@@ -52,7 +56,8 @@ public class Oauth2AuthenticationFilter implements ContainerRequestFilter {
             
             try {
                 if(authCookie.isPresent()){
-                    String cookieDecrypted=security.decryptCookie(authCookie.get().getValue());
+                    String key=security.getConfig().getProperty(ConfigurationEntries.COOKIE_KEY).get();
+                    String cookieDecrypted=authService.decryptEntity(authCookie.get().getValue(),key);
 
                     user = security.checkIfCookieValid(emailCookie, domainCookie, user,cookieDecrypted);
                       

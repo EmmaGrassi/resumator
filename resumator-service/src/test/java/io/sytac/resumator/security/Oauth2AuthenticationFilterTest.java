@@ -1,11 +1,14 @@
 package io.sytac.resumator.security;
 
+import io.sytac.resumator.Configuration;
+import io.sytac.resumator.ConfigurationEntries;
 import io.sytac.resumator.events.EventPublisher;
 import io.sytac.resumator.model.Event;
 import io.sytac.resumator.organization.NewOrganizationCommand;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import javax.ws.rs.container.ContainerRequestContext;
@@ -25,7 +28,14 @@ import static org.mockito.MockitoAnnotations.initMocks;
 public class Oauth2AuthenticationFilterTest {
 
     private Oauth2AuthenticationFilter filter;
+    
+    @Mock
+    private  Configuration config;
+    
     private Oauth2SecurityService service;
+    
+    @Mock
+    private AuthenticationService authService;
 
     @Mock
     private EventPublisher eventPublisherMock;
@@ -35,7 +45,8 @@ public class Oauth2AuthenticationFilterTest {
         initMocks(this);
         when(eventPublisherMock.publish(any(NewOrganizationCommand.class))).thenReturn(mock(Event.class));
         service = mock(Oauth2SecurityService.class);
-        filter = new Oauth2AuthenticationFilter(service);
+        when(service.getConfig()).thenReturn(config);
+        filter = new Oauth2AuthenticationFilter(service,authService);
     }
 
     @Test
@@ -69,7 +80,7 @@ public class Oauth2AuthenticationFilterTest {
         
         when(ctx.getCookies()).thenReturn(wrongCookies);
         when(service.checkIfCookieValid(eq(Optional.of(authCookie)), eq(Optional.of(emailCookie)),eq(user), anyString())).thenReturn(Optional.empty());
-        when(service.decryptCookie(anyString())).thenCallRealMethod();//test if decrpyt is working.
+        when(authService.decryptEntity(anyString(),anyString())).thenCallRealMethod();//test if decrpyt is working.
         
         filter.filter(ctx);
         verify(ctx, times(1)).setSecurityContext(argThat(arg -> {
@@ -87,13 +98,13 @@ public class Oauth2AuthenticationFilterTest {
         String authCookieUnencrypted="user@sytac.io,,"+time+",,tokenaccess21321321";
         String cookieEncrytped="7WHZ/324jklsjfds43rklewkrlwejrlkwerew";
         
-        when(service.encryptCookie(authCookieUnencrypted)).thenReturn(cookieEncrytped);
-        when(service.decryptCookie(cookieEncrytped)).thenReturn(authCookieUnencrypted);
+        when(authService.encryptEntity(eq(authCookieUnencrypted),anyString())).thenReturn(cookieEncrytped);
+        when(authService.decryptEntity(eq(cookieEncrytped),anyString())).thenReturn(authCookieUnencrypted);
 
         
         final Map<String, Cookie> correctCookies = new HashMap<>();
         
-        final Cookie authCookie = new Cookie(Oauth2AuthenticationFilter.AUTHENTICATION_COOKIE, service.encryptCookie(authCookieUnencrypted));
+        final Cookie authCookie = new Cookie(Oauth2AuthenticationFilter.AUTHENTICATION_COOKIE, authService.encryptEntity(authCookieUnencrypted,"4324324324343"));
         final Cookie emailCookie = new Cookie(Oauth2AuthenticationFilter.EMAIL_COOKIE, "user@sytac.io");
         final Cookie domainCookie = new Cookie(Oauth2AuthenticationFilter.DOMAIN_COOKIE, "sytac.io");
         
@@ -112,6 +123,7 @@ public class Oauth2AuthenticationFilterTest {
         when(ctx.getCookies()).thenReturn(correctCookies);
         when(service.checkIfCookieValid(eq(Optional.of(emailCookie)), eq(Optional.of(domainCookie)),eq(user), eq(authCookieUnencrypted))).thenCallRealMethod();
         when(service.toUser(eq(emailCookie.getValue()),eq(domainCookie.getValue()))).thenReturn(Optional.of(new Identity("1", emailCookie.getValue(), userRoles)));
+        when(service.getConfig().getProperty(ConfigurationEntries.COOKIE_KEY)).thenReturn(Optional.of("key"));
         
         filter.filter(ctx);
         verify(ctx, times(1)).setSecurityContext(argThat(arg -> {

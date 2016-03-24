@@ -44,29 +44,29 @@ public class AuthenticationService {
     }
 
     /*
-     * Method encrypting the cookie on AES standart.Key is retrieved from
+     * Method encrypting the entity on AES standart.Key is retrieved from
      * config.properties file placed on ~home directory.
      */
     public String encryptEntity(String entity, String key) {
         try {
             Cipher aes = createChiper(Cipher.ENCRYPT_MODE, key);
             byte[] bytes = SerializationUtils.serialize(entity);
-            String encryptedCookie = DatatypeConverter.printHexBinary(aes.doFinal(bytes));
+            String encryptedEntity = DatatypeConverter.printHexBinary(aes.doFinal(bytes));
             String signature = calculateSignature(bytes).toUpperCase();
-            return encryptedCookie + signature;
+            return encryptedEntity + signature;
         } catch (Exception e) {
-            log.error("Can't encrypt the cookie", e);
-            throw new ResumatorInternalException("Can't encrypt the cookie", e);
+            log.error("Can't encrypt the entity", e);
+            throw new ResumatorInternalException("Can't encrypt the entity", e);
         }
     }
 
     public String decryptEntity(String entity, String key) {
         try {
             String signature = entity.substring(entity.length() - 40);
-            String encryptedCookie = entity.substring(0, entity.length() - 40);
+            String encryptedEntity = entity.substring(0, entity.length() - 40);
 
             Cipher aes = createChiper(Cipher.DECRYPT_MODE, key);
-            byte[] bytes = aes.doFinal(DatatypeConverter.parseHexBinary(encryptedCookie));
+            byte[] bytes = aes.doFinal(DatatypeConverter.parseHexBinary(encryptedEntity));
 
             if (!signature.equals(calculateSignature(bytes).toUpperCase())) {
                 log.error("Session has been tampered with");
@@ -75,9 +75,9 @@ public class AuthenticationService {
 
             return SerializationUtils.deserialize(bytes);
         } catch (Exception e) {
-            log.error("Can't decrypt cookie", e);
+            log.error("Can't decrypt entity", e);
 
-            throw new ResumatorInternalException("Error decrypting the cookie", e);
+            throw new ResumatorInternalException("Error decrypting the entity", e);
         }
     }
 

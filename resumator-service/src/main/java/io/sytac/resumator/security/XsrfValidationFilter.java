@@ -73,7 +73,7 @@ public class XsrfValidationFilter implements ContainerRequestFilter {
 
                         }
                     } catch (Exception e) {
-                        log.error("An error occured decrypting the CSRF token. Request being aborted.");
+                        log.error("An error occured decrypting the CSRF token. Request being aborted."+e.getMessage()+" "+e.getCause());
                     } 
 
                 }
@@ -81,7 +81,7 @@ public class XsrfValidationFilter implements ContainerRequestFilter {
                 if(!isRequestValid)
                     requestContext.abortWith(Response
                             .status(Response.Status.UNAUTHORIZED)
-                            .entity("{status:failed, error:XSRF token validation failed.}")
+                            .entity("{\"status\":\"failed\", \"error\":\"XSRF token validation failed.\"}")
                             .build());
                     
             }

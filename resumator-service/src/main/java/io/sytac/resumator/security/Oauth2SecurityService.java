@@ -121,7 +121,7 @@ public class Oauth2SecurityService {
     }
 
     /*
-     * Method checking if the cookie is valid and setting the identity accordingly.If emails from the cookie and actual user email areidentical and it has not been
+     * Method checking if the cookie is valid and setting the identity accordingly.If emails from the cookie and actual user email are identical and it has not been
      * more than 2 days after cookie is created,it is considered as valid.
      */
     public Optional<Identity> checkIfCookieValid(Optional<Cookie> emailCookie, Optional<Cookie> domainCookie,

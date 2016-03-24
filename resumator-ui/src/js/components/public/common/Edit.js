@@ -4,7 +4,7 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import { pushPath } from 'redux-simple-router';
 
-import EditForm from '../../shared/form/employee';
+import EditForm from '../../shared/form/Employee';
 
 import edit from '../../../actions/employees/edit';
 import update from '../../../actions/employees/update';

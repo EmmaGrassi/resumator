@@ -81,7 +81,7 @@ public class XsrfValidationFilter implements ContainerRequestFilter {
                 if(!isRequestValid)
                     requestContext.abortWith(Response
                             .status(Response.Status.UNAUTHORIZED)
-                            .entity("{status:failed, error:XSRF token validation failed.")
+                            .entity("{status:failed, error:XSRF token validation failed.}")
                             .build());
                     
             }

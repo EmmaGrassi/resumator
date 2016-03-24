@@ -29,7 +29,6 @@ class FormComponent extends React.Component {
       placeholder: placeholder || inputLabel,
       label: inputLabel,
       disabled: isSaving,
-      // TODO: Implement this.
       value: values[inputName],
 
       onChange: this.handleChange.bind(this, inputName),
@@ -48,17 +47,20 @@ class FormComponent extends React.Component {
   }
 
   getQuillEditor(name, required){
+    const quillProps = {
+      theme: 'snow',
+      className: 'quill-editor',
+      onChange: this.handleQuillChange.bind(this, name),
+    };
+
+    if (this.props.values[name]) quillProps.value = this.props.values[name];
+
     return (
       <div className="quill-editor__container">
         <label className="control-label">
           {required ? labelize(name, '*') : labelize(name)}
         </label>
-        <ReactQuill
-          theme="snow"
-          className="quill-editor"
-          value={this.props.values[name]}
-          onChange={this.handleQuillChange.bind(this, name)}
-        >
+        <ReactQuill {...quillProps }>
           <ReactQuill.Toolbar key="toolbar"
                               ref="toolbar"
                               items={quillFormat} />

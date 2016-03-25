@@ -1,4 +1,5 @@
 import request from 'superagent';
+import handleRequestError from '../../helpers/handleRequestError';
 
 function show(email) {
   return (dispatch) => {
@@ -9,6 +10,7 @@ function show(email) {
       .set('Content-Type', 'application/json')
       .end((error, _response) => {
         if (error) {
+          handleRequestError(error)();
           dispatch({ type: 'employees:show:failure', error });
           return;
         }

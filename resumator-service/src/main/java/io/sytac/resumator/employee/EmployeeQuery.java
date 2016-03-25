@@ -7,10 +7,9 @@ import io.sytac.resumator.http.BaseResource;
 import io.sytac.resumator.model.*;
 import io.sytac.resumator.model.Error;
 import io.sytac.resumator.organization.OrganizationRepository;
-import io.sytac.resumator.security.Identity;
-import io.sytac.resumator.security.Roles;
-import io.sytac.resumator.security.UserPrincipal;
+import io.sytac.resumator.security.*;
 import io.sytac.resumator.utils.DateUtils;
+import io.sytac.resumator.utils.ResumatorConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jetty.http.HttpStatus;
@@ -45,12 +44,15 @@ public class EmployeeQuery extends BaseResource {
     private final OrganizationRepository organizations;
 
     private final DocxGenerator docxGenerator;
+    
+    private final AuthenticationService authService;
 
 
     @Inject
-    public EmployeeQuery(final OrganizationRepository organizations, final DocxGenerator docxGenerator) {
+    public EmployeeQuery(final OrganizationRepository organizations, final DocxGenerator docxGenerator,final AuthenticationService authService) {
         this.organizations = organizations;
         this.docxGenerator = docxGenerator;
+        this.authService   = authService;
     }
 
     @GET
@@ -104,6 +106,8 @@ public class EmployeeQuery extends BaseResource {
             final List<Experience> experiences = Optional.ofNullable(emp.getExperiences()).orElse(Collections.emptyList());
             final List<Language> languages = Optional.ofNullable(emp.getLanguages()).orElse(Collections.emptyList());
 
+            String xsrfToken=authService.produceXsrfToken(email);
+            
             final String representation = rest.newRepresentation()
                     .withProperty("type", emp.getType())
                     .withProperty("role", emp.getRole())
@@ -124,8 +128,10 @@ public class EmployeeQuery extends BaseResource {
                     .withProperty("languages", languages)
                     .withProperty("admin", (identity.hasRole(Roles.ADMIN) || emp.isAdmin()))
                     .withLink("self", uriInfo.getRequestUri().toString())
+                    .withRepresentation(ResumatorConstants.XSRF_EMBEDDED_NAME, rest.newRepresentation().withProperty(ResumatorConstants.XSRF_PROPERTY_NAME, xsrfToken))
                     .toString(RepresentationFactory.HAL_JSON);
 
+           
             return Response.ok(representation).build();
         } else {
             return Response.ok().status(HttpStatus.NOT_FOUND_404).build();
@@ -261,4 +267,6 @@ public class EmployeeQuery extends BaseResource {
 
         return calendar.get(Calendar.YEAR);
     }
+    
+  
 }

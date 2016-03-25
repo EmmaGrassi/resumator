@@ -35,12 +35,15 @@ export default function login(data) {
   return (dispatch) => {
     dispatch({ type: 'user:login:start' });
 
-    serverLogin(data, (error, googleProfile) => {
+    serverLogin(data, (error, googleProfile, token) => {
       if (error) {
         dispatch({ type: 'user:login:failure', error });
         showLoginFailed(dispatch);
         return;
       }
+
+      console.log('from login', token);
+      dispatch({ type: 'user:xsrf-token:received', payload: token });
 
       const cookieData = cookieGet();
 

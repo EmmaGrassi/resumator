@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import NewForm from '../../shared/form/employee';
+import NewForm from '../../shared/form/Employee';
 
 import create from '../../../actions/employees/create';
 import createChange from '../../../actions/employees/createChange';

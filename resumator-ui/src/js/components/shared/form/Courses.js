@@ -6,7 +6,7 @@ import {
   Input,
 } from 'react-bootstrap';
 
-import FormComponent from './form';
+import FormComponent from './Form';
 
 class CoursesForm extends FormComponent {
   constructor(props) {

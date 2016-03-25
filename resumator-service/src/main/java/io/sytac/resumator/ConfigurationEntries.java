@@ -17,6 +17,8 @@ public interface ConfigurationEntries {
     String GOOGLE_SECRET           = "resumator.sec.google.secret";
     String GOOGLE_APPS_DOMAIN_NAME = "resumator.sec.google.domain";
     String ADMIN_ACCOUNT_LIST      = "resumator.sec.admins";
+    String COOKIE_KEY              = "resumator.sec.cookie.key";
+    String XSRF_KEY                = "resumator.sec.xsrf.key";
 
     // Advertised service details
     String SERVICE_NAME    = "resumator.service.name";

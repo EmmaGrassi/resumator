@@ -13,7 +13,9 @@ export default function post(token, cb) {
   request.post(url, null, options)
     .then(result => {
       const response = JSON.parse(result.response);
-      cb(null, response);
+      const xsrfToken = response._embedded.xsrf[0].token;
+      delete response._embedded;
+      cb(null, response, xsrfToken);
     })
     .catch(error => {
       cb(error);

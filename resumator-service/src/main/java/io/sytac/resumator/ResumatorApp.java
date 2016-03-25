@@ -126,12 +126,16 @@ public class ResumatorApp {
 
     private ResourceConfig registerSecurity(final ResourceConfig rc) {
         return rc.register(Oauth2AuthenticationFilter.class)
+                 .register(XsrfValidationFilter.class)
                  .register(RolesAllowedDynamicFeature.class)
                  .register(new AbstractBinder() {
                      @Override
                      protected void configure() {
+                         bindFactory(AuthenticationServiceFactory.class)
+                                 .to(AuthenticationService.class);
+                         
                          bindFactory(Oauth2SecurityServiceFactory.class)
-                                 .to(Oauth2SecurityService.class);
+                         .to(Oauth2SecurityService.class);
 
                          bind(UserPrincipalFactoryProvider.class)
                                  .to(ValueFactoryProvider.class)

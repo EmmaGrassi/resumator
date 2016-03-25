@@ -56,6 +56,12 @@ public class Oauth2SecurityService {
 
     private final Configuration config;
     private final OrganizationRepository organizations;
+    
+    private final String STR_SHA="SHA-1";   
+    private final String STR_AES="AES";
+    private final String STR_SIGNATURE_FORMAT="%1$40s";
+    
+    
 
     @Inject
     public Oauth2SecurityService(final Configuration config, final OrganizationRepository organizations) {
@@ -160,7 +166,7 @@ public class Oauth2SecurityService {
        
         if(key.isPresent())
             {
-                aes.init(mode, new SecretKeySpec(key.get().getBytes(), "AES"), new IvParameterSpec(new byte[16]));
+                aes.init(mode, new SecretKeySpec(key.get().getBytes(), STR_AES), new IvParameterSpec(new byte[16]));
                 return aes;
             }
         else
@@ -169,10 +175,10 @@ public class Oauth2SecurityService {
 
     private String calculateSignature(byte[] serialisedSession) {
         try {
-            MessageDigest cript = MessageDigest.getInstance("SHA-1");
+            MessageDigest cript = MessageDigest.getInstance(STR_SHA);
             cript.reset();
             cript.update(serialisedSession);
-            return String.format("%1$40s", new BigInteger(1, cript.digest()).toString(16));
+            return String.format(STR_SIGNATURE_FORMAT, new BigInteger(1, cript.digest()).toString(16));
         } catch (Exception e) {
             log.error("Can't calculate signature", e);
         }

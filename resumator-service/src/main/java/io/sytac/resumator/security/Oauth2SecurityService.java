@@ -9,32 +9,19 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.common.collect.Sets;
 
 import io.sytac.resumator.Configuration;
-import io.sytac.resumator.ConfigurationEntries;
 import io.sytac.resumator.employee.Employee;
-import io.sytac.resumator.exception.ResumatorInternalException;
 import io.sytac.resumator.organization.Organization;
 import io.sytac.resumator.organization.OrganizationRepository;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
-import org.apache.commons.lang3.SerializationUtils;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
 
-import javax.crypto.Cipher;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
 import javax.inject.Inject;
 import javax.ws.rs.core.Cookie;
-import javax.xml.bind.DatatypeConverter;
 
 import java.io.IOException;
-import java.math.BigInteger;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Optional;
@@ -57,12 +44,7 @@ import static io.sytac.resumator.security.Roles.USER;
 public class Oauth2SecurityService {
 
     private final Configuration config;
-    private final OrganizationRepository organizations;
-    
-    private final String STR_SHA="SHA-1";   
-    private final String STR_AES="AES";
-    private final String STR_SIGNATURE_FORMAT="%1$40s";
-    
+    private final OrganizationRepository organizations;   
     
 
     @Inject
@@ -123,76 +105,14 @@ public class Oauth2SecurityService {
         return Optional.empty();
 
     }
-
-    /*
-     * Method encrypting the cookie on AES standart.Key is retrieved from config.properties file placed on ~home directory.
-     */
-    public String encryptCookie(String cookie) {
-        try {
-            Cipher aes = createChiper(Cipher.ENCRYPT_MODE);
-            byte[] bytes = SerializationUtils.serialize(cookie);
-            String encryptedCookie = DatatypeConverter.printHexBinary(aes.doFinal(bytes));
-            String signature = calculateSignature(bytes).toUpperCase();
-            return encryptedCookie + signature;
-        } catch (Exception e) {
-            log.error("Can't encrypt the cookie", e);
-            throw new ResumatorInternalException("Can't encrypt the cookie", e);
-        }
-    }
-
-    public String decryptCookie(String cookie) {
-        try {
-            String signature = cookie.substring(cookie.length() - 40);
-            String encryptedCookie = cookie.substring(0, cookie.length() - 40);
-
-            Cipher aes = createChiper(Cipher.DECRYPT_MODE);
-            byte[] bytes = aes.doFinal(DatatypeConverter.parseHexBinary(encryptedCookie));
-
-            if (!signature.equals(calculateSignature(bytes).toUpperCase())) {
-                log.error("Session has been tampered with");
-                return null;
-            }
-
-            return SerializationUtils.deserialize(bytes);
-        } catch (Exception e) {
-            log.error("Can't decrypt cookie", e);
-
-            throw new ResumatorInternalException("Error decrypting the cookie", e);
-        }
-    }
-
-    private Cipher createChiper(int mode) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
-            InvalidAlgorithmParameterException {
-        Cipher aes = Cipher.getInstance("AES/CBC/PKCS5Padding");
-        Optional<String> key = config.getProperty(ConfigurationEntries.COOKIE_KEY);
-       
-        if(key.isPresent())
-            {
-                aes.init(mode, new SecretKeySpec(key.get().getBytes(), STR_AES), new IvParameterSpec(new byte[16]));
-                return aes;
-            }
-        else
-            throw new InvalidKeyException("Encryption key should be defined!");
-    }
-
-    private String calculateSignature(byte[] serialisedSession) {
-        try {
-            MessageDigest cript = MessageDigest.getInstance(STR_SHA);
-            cript.reset();
-            cript.update(serialisedSession);
-            return String.format(STR_SIGNATURE_FORMAT, new BigInteger(1, cript.digest()).toString(16));
-        } catch (Exception e) {
-            log.error("Can't calculate signature", e);
-        }
-        return null;
-    }
     
     /*
      * Method checking if the cookie is valid and setting the identity accordingly.If emails from the cookie and actual user email areidentical and it has not been
      * more than 2 days after cookie is created,it is considered as valid.
      */
-    public Optional<Identity> checkIfCookieValid(Optional<Cookie> emailCookie, Optional<Cookie> domainCookie,
-            Optional<Identity> user, String cookieDecrypted) {
+    public Optional<Identity> checkIfCookieValid(Optional<Cookie> emailCookie, Optional<Cookie> domainCookie, String cookieDecrypted) {
+        
+        Optional<Identity> user = Optional.empty();
         
         String cookieItems[]=cookieDecrypted.split(",,");
         String emailFromCookie=cookieItems[0];

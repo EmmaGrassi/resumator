@@ -30,10 +30,16 @@ import java.util.Random;
 @Slf4j
 @Getter
 public class AuthenticationService {
-
+    
     private final Configuration config;
     private final Oauth2SecurityService securityService;
     private final ObjectMapper objectMapper;
+    
+    private static final String STR_SHA = "SHA-1";   
+    private static final String STR_AES = "AES";
+    private static final String STR_SIGNATURE_FORMAT = "%1$40s";
+    private static final String STR_SALT_TEMPLATE = "abcdefghijklmnopqrstuvwxyz";
+    private static final String STR_CIPHER_INSTANCE = "AES/CBC/PKCS5Padding";
 
     @Inject
     public AuthenticationService(final Configuration config, final ObjectMapper objectMapper,
@@ -83,10 +89,10 @@ public class AuthenticationService {
 
     private Cipher createChiper(int mode, String key) throws NoSuchAlgorithmException, NoSuchPaddingException,
             InvalidKeyException, InvalidAlgorithmParameterException {
-        Cipher aes = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        Cipher aes = Cipher.getInstance(STR_CIPHER_INSTANCE);
 
         if (!StringUtils.isEmpty(key)) {
-            aes.init(mode, new SecretKeySpec(key.getBytes(), "AES"), new IvParameterSpec(new byte[16]));
+            aes.init(mode, new SecretKeySpec(key.getBytes(), STR_AES), new IvParameterSpec(new byte[16]));
             return aes;
         } else
             throw new InvalidKeyException("Encryption key should be defined!");
@@ -94,10 +100,10 @@ public class AuthenticationService {
 
     private String calculateSignature(byte[] serialisedSession) {
         try {
-            MessageDigest cript = MessageDigest.getInstance("SHA-1");
+            MessageDigest cript = MessageDigest.getInstance(STR_SHA);
             cript.reset();
             cript.update(serialisedSession);
-            return String.format("%1$40s", new BigInteger(1, cript.digest()).toString(16));
+            return String.format(STR_SIGNATURE_FORMAT, new BigInteger(1, cript.digest()).toString(16));
         } catch (Exception e) {
             log.error("Can't calculate signature", e);
         }
@@ -129,7 +135,7 @@ public class AuthenticationService {
 
     private String generateSalt() {
 
-        char[] chars = "abcdefghijklmnopqrstuvwxyz".toCharArray();
+        char[] chars = STR_SALT_TEMPLATE.toCharArray();
         StringBuilder sb = new StringBuilder();
         Random random = new Random();
         for (int i = 0; i < 20; i++) {

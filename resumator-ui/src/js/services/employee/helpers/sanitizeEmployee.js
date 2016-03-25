@@ -28,6 +28,7 @@ export default function sanitizeEmployee(data) {
   });
 
   data.dateOfBirth = data.dateOfBirth && moment(data.dateOfBirth).format('YYYY-MM-DD');
+  delete data._embedded;
 
   return data;
 }

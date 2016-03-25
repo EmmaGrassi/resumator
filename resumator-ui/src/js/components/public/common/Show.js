@@ -16,6 +16,7 @@ import {
   ListGroup,
   ListGroupItem,
   Row,
+  Badge,
 } from 'react-bootstrap';
 
 import actions from '../../../actions';
@@ -45,6 +46,7 @@ class Show extends React.Component {
   }
 
   getCourses() {
+    if (this.props.show.item.courses.length === 0) return;
     return (
       <Col xs={6}>
         <h2>Courses</h2>
@@ -69,6 +71,7 @@ class Show extends React.Component {
   }
 
   getEducation() {
+    if (this.props.show.item.education.length === 0) return;
     return (
       <Col xs={6}>
         <h2>Education</h2>
@@ -88,7 +91,12 @@ class Show extends React.Component {
 
             return (
               <ListGroupItem key={i}>
-                <strong>{degree} in {fieldOfStudy}</strong><br />
+                {
+                  v.degree === 'OTHER' ?
+                  <strong>{v.otherDegree} in {fieldOfStudy}</strong> :
+                  <strong>{degree} in {fieldOfStudy}</strong>
+                }<br />
+
                 {school} in {city}, {convertCountry(country)}<br />
                 {startYear} - {endYear}
               </ListGroupItem>
@@ -100,6 +108,7 @@ class Show extends React.Component {
   }
 
   getExperience() {
+    if (this.props.show.item.experience.length === 0) return;
     return (
       <Col xs={6}>
         <h2>Experience</h2>
@@ -134,8 +143,8 @@ class Show extends React.Component {
             const startYear = startDate.format('YYYY');
             const endYear = endDate.format('YYYY');
 
-            technologies = technologies.join(', ');
-            methodologies = methodologies.join(', ');
+            technologies = technologies.map(x => <Badge key={x}>{x}</Badge>);
+            methodologies = methodologies.map(x => <Badge key={x}>{x}</Badge>);
 
             let hr;
             if (i !== this.props.show.item.experience.length - 1) {
@@ -154,7 +163,7 @@ class Show extends React.Component {
                 <h4>{companyName} ({city}, {convertCountry(country)})</h4>
                 {startYear} - {endYear} ({difference})<br />
                 <br />
-                <p>{shortDescription}</p>
+                <div dangerouslySetInnerHTML={{ __html: shortDescription }} />
                 <strong>Technologies:</strong> {technologies}<br />
                 <strong>Methodologies:</strong> {methodologies}<br />
                 {hr}
@@ -351,13 +360,12 @@ class Show extends React.Component {
                 </tbody>
               </table>
               <br />
-              <p>{aboutMe}</p>
+              <div dangerouslySetInnerHTML={{ __html: aboutMe }} />
             </Col>
           </Row>
           <Row>
             {education}
             {courses}
-
           </Row>
           <Row>
             {experience}

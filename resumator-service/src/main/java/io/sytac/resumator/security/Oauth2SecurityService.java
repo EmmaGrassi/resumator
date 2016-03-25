@@ -14,6 +14,7 @@ import io.sytac.resumator.employee.Employee;
 import io.sytac.resumator.exception.ResumatorInternalException;
 import io.sytac.resumator.organization.Organization;
 import io.sytac.resumator.organization.OrganizationRepository;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import org.apache.commons.lang3.SerializationUtils;
@@ -52,6 +53,7 @@ import static io.sytac.resumator.security.Roles.USER;
  * @since 0.1
  */
 @Slf4j
+@Getter
 public class Oauth2SecurityService {
 
     private final Configuration config;

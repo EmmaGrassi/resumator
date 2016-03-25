@@ -23,10 +23,13 @@ import org.eclipse.jetty.http.HttpStatus;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 
+import io.sytac.resumator.ConfigurationEntries;
 import io.sytac.resumator.http.BaseResource;
+import io.sytac.resumator.security.AuthenticationService;
 import io.sytac.resumator.security.GoogleResponse;
 import io.sytac.resumator.security.Oauth2AuthenticationFilter;
 import io.sytac.resumator.security.Oauth2SecurityService;
+import io.sytac.resumator.utils.ResumatorConstants;
 
 /**
  * Login Endpoint to handle google token exchange
@@ -41,11 +44,14 @@ public class LoginEndpoint extends BaseResource {
         private static final String HEADER_PARAM_TOKEN = "user-token";
         Oauth2SecurityService securityService;
         
+        final AuthenticationService authService;
+        
         private static final String COOKIE_PATH="/";
         
     @Inject
-    public LoginEndpoint(final Oauth2SecurityService securityService) {
+    public LoginEndpoint(final Oauth2SecurityService securityService,final AuthenticationService authService) {
         this.securityService = securityService;
+        this.authService=authService;
     }
 
     @POST
@@ -65,9 +71,12 @@ public class LoginEndpoint extends BaseResource {
     
 
     private Response buildLoginRepresentation(GoogleResponse googleResponse,String domain) {
+ 
+        String xsrfToken=authService.produceXsrfToken(googleResponse.getEmail());
         
-          final Representation halResource = rest.newRepresentation()
-                  .withProperty("email", googleResponse.getEmail());
+        final Representation halResource = rest.newRepresentation()
+                .withProperty("email", googleResponse.getEmail())
+                .withRepresentation(ResumatorConstants.XSRF_EMBEDDED_NAME, rest.newRepresentation().withProperty(ResumatorConstants.XSRF_PROPERTY_NAME, xsrfToken));  
                   
         Calendar calendar=new GregorianCalendar();
         calendar.add(Calendar.DAY_OF_MONTH, 2);
@@ -76,7 +85,8 @@ public class LoginEndpoint extends BaseResource {
         StringBuffer cookieStr=new StringBuffer();
         cookieStr.append(googleResponse.getEmail()).append(",,").append(new Date().getTime()).append(",,").append(googleResponse.getAccessToken());
         
-        String cookieEncrypted=securityService.encryptCookie(cookieStr.toString());
+        String key=securityService.getConfig().getProperty(ConfigurationEntries.COOKIE_KEY).get();
+        String cookieEncrypted=authService.encryptEntity(cookieStr.toString(),key);
 
         Cookie cookieToken=new Cookie(Oauth2AuthenticationFilter.AUTHENTICATION_COOKIE, cookieEncrypted,COOKIE_PATH,domain);
         Cookie cookieName=new Cookie(Oauth2AuthenticationFilter.NAME_COOKIE, googleResponse.getName(),COOKIE_PATH,domain);

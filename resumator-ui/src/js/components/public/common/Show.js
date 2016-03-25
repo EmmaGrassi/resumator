@@ -46,6 +46,7 @@ class Show extends React.Component {
   }
 
   getCourses() {
+    if (this.props.show.item.courses.length === 0) return;
     return (
       <Col xs={6}>
         <h2>Courses</h2>
@@ -70,6 +71,7 @@ class Show extends React.Component {
   }
 
   getEducation() {
+    if (this.props.show.item.education.length === 0) return;
     return (
       <Col xs={6}>
         <h2>Education</h2>
@@ -89,7 +91,12 @@ class Show extends React.Component {
 
             return (
               <ListGroupItem key={i}>
-                <strong>{degree} in {fieldOfStudy}</strong><br />
+                {
+                  v.degree === 'OTHER' ?
+                  <strong>{v.otherDegree} in {fieldOfStudy}</strong> :
+                  <strong>{degree} in {fieldOfStudy}</strong>
+                }<br />
+
                 {school} in {city}, {convertCountry(country)}<br />
                 {startYear} - {endYear}
               </ListGroupItem>
@@ -101,6 +108,7 @@ class Show extends React.Component {
   }
 
   getExperience() {
+    if (this.props.show.item.experience.length === 0) return;
     return (
       <Col xs={6}>
         <h2>Experience</h2>
@@ -358,7 +366,6 @@ class Show extends React.Component {
           <Row>
             {education}
             {courses}
-
           </Row>
           <Row>
             {experience}

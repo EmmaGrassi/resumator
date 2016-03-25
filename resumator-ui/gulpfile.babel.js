@@ -25,7 +25,7 @@ function noop() {}
 // Error handling
 function handleError(taskName, error) {
   gutil.log('ERROR', error);
-  process.exit(0);
+  process.exit(1);
 }
 
 // Browserify

@@ -114,7 +114,7 @@ class List extends React.Component {
         >
         <div className="table-container">
           {this.renderTable()}
-          <Button bsStyle="success" onClick={this.handleNewButtonClick.bind(this)}>
+          <Button className="add-button" bsStyle="success" onClick={this.handleNewButtonClick.bind(this)}>
             <Glyphicon glyph="plus" /> New
           </Button>
         </div>

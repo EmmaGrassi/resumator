@@ -49,7 +49,8 @@ class SortHeaderCell extends React.Component {
     const { sortDir, children, ...props } = this.props;
     return (
       <Cell {...props} onClick={this._onSortChange} className="sortHeader">
-        {children} {sortDir ? (sortDir === SortTypes.DESC ? '↓' : '↑') : ''}
+        {children}
+        {sortDir ? (sortDir === SortTypes.DESC ? <Glyphicon glyph="chevron-down" /> : <Glyphicon glyph="chevron-up" />) : ''}
       </Cell>
     );
   }
@@ -162,6 +163,7 @@ class ReactTable extends React.Component {
       return (<Column
         key={`${key}${i}`}
         columnKey={key}
+        className="column"
         header={
           <SortHeaderCell
             onSortChange={this._onSortChange.bind(this)}
@@ -170,7 +172,7 @@ class ReactTable extends React.Component {
           </SortHeaderCell>
         }
         cell={props => (
-          <Cell {...props}>
+          <Cell {...props} onClick={this.props.handleOpen.bind(this, this.state.dataList[props.rowIndex].email)}>
             {this.state.dataList[props.rowIndex][key]}
           </Cell>
         )}
@@ -184,7 +186,7 @@ class ReactTable extends React.Component {
           <Col xs={12}>
             <Input
               type="search"
-              placeholder="Search"
+              placeholder="Start typing to search"
               ref="searchBar"
               onChange={this.handleSearch.bind(this)}
             />
@@ -203,11 +205,6 @@ class ReactTable extends React.Component {
             header={<Cell>Actions</Cell>}
             cell={props => (
               <Cell {...props}>
-                <Button onClick={this.props.handleOpen.bind(this, this.state.dataList[props.rowIndex].email)}
-                >
-                  <Glyphicon glyph="eye-open" />
-                </Button>
-                &nbsp;
                 <Button onClick={this.props.handleEdit.bind(this, this.state.dataList[props.rowIndex].email)}
                 >
                   <Glyphicon glyph="pencil" />

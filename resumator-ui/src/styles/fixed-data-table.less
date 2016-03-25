@@ -295,6 +295,13 @@
   position: absolute;
   top: 0;
   white-space: nowrap;
+  cursor: pointer;
+  transition: all .2s ease-out;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transition: all .2s ease-out;
+  }
 }
 
 .fixedDataTableCellGroupLayout_cellGroup > .public_fixedDataTableCell_main {
@@ -504,4 +511,8 @@ body[dir="rtl"] .fixedDataTableColumnResizerLineLayout_main {
 .fixedDataTableRowLayout_rowWrapper {
   position: absolute;
   top: 0;
+
+  &:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
 }

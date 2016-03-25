@@ -13,21 +13,21 @@ import java.util.Map;
  */
 public class CommandFactory {
 
-    public NewEmployeeCommand newEmployeeCommand(final EmployeeCommandPayload payload, final String domain) {
-        final CommandHeader header = new CommandHeader.Builder().setDomain(domain).build();
+    public NewEmployeeCommand newEmployeeCommand(final EmployeeCommandPayload payload, final String domain,final String userName) {
+        final CommandHeader header = new CommandHeader.Builder().setDomain(domain).setUserName(userName).build();
         return new NewEmployeeCommand(header, payload);
     }
 
     public UpdateEmployeeCommand updateEmployeeCommand(final String employeeId,
                                                        final EmployeeCommandPayload payload,
-                                                       final String domain) {
+                                                       final String domain,final String userName) {
 
-        final CommandHeader header = new CommandHeader.Builder().setId(employeeId).setDomain(domain).build();
+        final CommandHeader header = new CommandHeader.Builder().setId(employeeId).setUserName(userName).setDomain(domain).build();
         return new UpdateEmployeeCommand(header, payload);
     }
 
-    public RemoveEmployeeCommand removeEmployeeCommand(final String employeeId, final String domain) {
-        final CommandHeader header = new CommandHeader.Builder().setId(employeeId).setDomain(domain).build();
+    public RemoveEmployeeCommand removeEmployeeCommand(final String employeeId, final String domain,final String userName) {
+        final CommandHeader header = new CommandHeader.Builder().setId(employeeId).setDomain(domain).setUserName(userName).build();
         return new RemoveEmployeeCommand(header, new RemoveEmployeeCommandPayload(employeeId));
     }
 

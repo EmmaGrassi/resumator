@@ -3,6 +3,7 @@ package io.sytac.resumator.employee;
 import com.theoryinpractise.halbuilder.api.Representation;
 import io.sytac.resumator.organization.Organization;
 import io.sytac.resumator.organization.OrganizationRepository;
+import io.sytac.resumator.security.AuthenticationService;
 import io.sytac.resumator.security.Identity;
 import io.sytac.resumator.security.Roles;
 import org.junit.Before;
@@ -51,6 +52,9 @@ public class EmployeesQueryTest {
 
     @Mock
     private UriInfo uriInfo;
+    
+    @Mock
+    private AuthenticationService authService;
 
     @InjectMocks
     private EmployeesQuery employeesQuery;
@@ -60,6 +64,9 @@ public class EmployeesQueryTest {
         when(organizations.get(anyString())).thenReturn(Optional.of(organization));
         when(identity.getOrganizationId()).thenReturn("dummy");
         when(identity.hasRole(eq(Roles.ADMIN))).thenReturn(true);
+        when(identity.getName()).thenReturn("name");
+        
+        when(authService.encryptEntity(anyString(), anyString())).thenReturn("token");
 
         when(uriInfo.getAbsolutePath()).thenReturn(new URI(URI_ABSOLUTE_PATH));
         when(uriInfo.getBaseUri()).thenReturn(new URI(URI_BASE));
@@ -147,6 +154,6 @@ public class EmployeesQueryTest {
 
     private Employee getDummyEmployee(final String id, EmployeeType employeeType) {
         return new Employee(id, employeeType, "title", "name", "surname", "email", "phoneNumber", null, null,
-                null, null, null, null, null, null, null, null, false);
+                null, null,"Netherlands","Amsterdam", null, null, null, null, null, null, false);
     }
 }

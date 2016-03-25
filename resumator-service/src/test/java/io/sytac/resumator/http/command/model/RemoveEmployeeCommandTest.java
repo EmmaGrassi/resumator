@@ -32,14 +32,14 @@ public class RemoveEmployeeCommandTest extends CommonCommandTest {
     @Test
     public void JSONisPredictable() throws JsonProcessingException {
         final RemoveEmployeeCommand removeEmployeeCommand = getRemoveEmployeeCommand();
-        final String json = getJson(String.valueOf(removeEmployeeCommand.getHeader().getTimestamp()));
+        final String json = getJson(String.valueOf(removeEmployeeCommand.getHeader().getTimestamp()),USER_NAME);
 
         assertEquals("Json is different than expected", json, getObjectMapper().writeValueAsString(removeEmployeeCommand));
     }
 
     @Test
     public void canRestoreFromString() throws IOException {
-        final byte[] expectedBytes = getJson(String.valueOf(new Date().getTime())).getBytes("UTF-8");
+        final byte[] expectedBytes = getJson(String.valueOf(new Date().getTime()),USER_NAME).getBytes("UTF-8");
         final RemoveEmployeeCommand command = getObjectMapper().readValue(expectedBytes, RemoveEmployeeCommand.class);
         assertEquals("Wrong deserialization", DOMAIN, command.getHeader().getDomain().get());
     }
@@ -47,7 +47,7 @@ public class RemoveEmployeeCommandTest extends CommonCommandTest {
     @Test
     public void canCreateEvent() {
         final RemoveEmployeeCommand removeEmployeeCommand = getRemoveEmployeeCommand();
-        final String json = getJson(String.valueOf(removeEmployeeCommand.getHeader().getTimestamp()));
+        final String json = getJson(String.valueOf(removeEmployeeCommand.getHeader().getTimestamp()),USER_NAME);
         final Event event = removeEmployeeCommand.asEvent(getObjectMapper());
 
         assertNotNull(event);
@@ -57,16 +57,17 @@ public class RemoveEmployeeCommandTest extends CommonCommandTest {
 
     private RemoveEmployeeCommand getRemoveEmployeeCommand() {
         final RemoveEmployeeCommandPayload payload = new RemoveEmployeeCommandPayload(UUID);
-        final CommandHeader commandHeader = createCommandHeader(UUID, DOMAIN, new Date().getTime());
+        final CommandHeader commandHeader = createCommandHeader(UUID, DOMAIN, new Date().getTime(),USER_NAME);
         return new RemoveEmployeeCommand(commandHeader, payload);
     }
 
-    private String getJson(final String headerTimestamp) {
+    private String getJson(final String headerTimestamp,String userName) {
         return "{" +
             "\"header\":{" +
                 "\"id\":\"" + UUID + "\"," +
                 "\"domain\":\"" + DOMAIN + "\"," +
-                "\"timestamp\":" + headerTimestamp +
+                "\"timestamp\":" + headerTimestamp + "," +
+                 "\"userName\":\"" + userName +"\""+
             "}," +
             "\"payload\":{" +
                 "\"employeeId\":\"" + UUID + "\"" +

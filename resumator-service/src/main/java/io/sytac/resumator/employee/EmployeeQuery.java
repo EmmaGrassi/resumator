@@ -7,10 +7,9 @@ import io.sytac.resumator.http.BaseResource;
 import io.sytac.resumator.model.*;
 import io.sytac.resumator.model.Error;
 import io.sytac.resumator.organization.OrganizationRepository;
-import io.sytac.resumator.security.Identity;
-import io.sytac.resumator.security.Roles;
-import io.sytac.resumator.security.UserPrincipal;
+import io.sytac.resumator.security.*;
 import io.sytac.resumator.utils.DateUtils;
+import io.sytac.resumator.utils.ResumatorConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jetty.http.HttpStatus;
@@ -45,12 +44,15 @@ public class EmployeeQuery extends BaseResource {
     private final OrganizationRepository organizations;
 
     private final DocxGenerator docxGenerator;
+    
+    private final AuthenticationService authService;
 
 
     @Inject
-    public EmployeeQuery(final OrganizationRepository organizations, final DocxGenerator docxGenerator) {
+    public EmployeeQuery(final OrganizationRepository organizations, final DocxGenerator docxGenerator,final AuthenticationService authService) {
         this.organizations = organizations;
         this.docxGenerator = docxGenerator;
+        this.authService   = authService;
     }
 
     @GET
@@ -104,9 +106,11 @@ public class EmployeeQuery extends BaseResource {
             final List<Experience> experiences = Optional.ofNullable(emp.getExperiences()).orElse(Collections.emptyList());
             final List<Language> languages = Optional.ofNullable(emp.getLanguages()).orElse(Collections.emptyList());
 
+            String xsrfToken=authService.produceXsrfToken(identity.getName());
+            
             final String representation = rest.newRepresentation()
                     .withProperty("type", emp.getType())
-                    .withProperty("title", emp.getTitle())
+                    .withProperty("role", emp.getRole())
                     .withProperty("name", emp.getName())
                     .withProperty("surname", emp.getSurname())
                     .withProperty("email", emp.getEmail())
@@ -116,15 +120,18 @@ public class EmployeeQuery extends BaseResource {
                     .withProperty("dateOfBirth", DateUtils.convert(emp.getDateOfBirth()))
                     .withProperty("nationality", emp.getNationality())
                     .withProperty("aboutMe", emp.getAboutMe())
-                    .withProperty("currentResidence", emp.getCurrentResidence())
+                    .withProperty("countryOfResidence", emp.getCountryOfResidence())
+                    .withProperty("cityOfResidence", emp.getCityOfResidence())
                     .withProperty("education", educations)
                     .withProperty("courses", courses)
                     .withProperty("experience", experiences)
                     .withProperty("languages", languages)
                     .withProperty("admin", (identity.hasRole(Roles.ADMIN) || emp.isAdmin()))
                     .withLink("self", uriInfo.getRequestUri().toString())
+                    .withRepresentation(ResumatorConstants.XSRF_EMBEDDED_NAME, rest.newRepresentation().withProperty(ResumatorConstants.XSRF_PROPERTY_NAME, xsrfToken))
                     .toString(RepresentationFactory.HAL_JSON);
 
+           
             return Response.ok(representation).build();
         } else {
             return Response.ok().status(HttpStatus.NOT_FOUND_404).build();
@@ -155,7 +162,7 @@ public class EmployeeQuery extends BaseResource {
 
     private Map<String, String> getPersonaliaMappings(Employee employee) {
         Map<String, String> result = new HashMap<>();
-        result.put("JobTitle", employee.getTitle());
+        result.put("JobTitle", employee.getRole());
         result.put("FirstName", employee.getName());
         result.put("LastName", employee.getSurname());
         result.put("YearOfBirth", String.valueOf(getYearOfDate(employee.getDateOfBirth())));
@@ -171,7 +178,7 @@ public class EmployeeQuery extends BaseResource {
         if(experiences != null) {
             for (int i = 1; i <= experiences.size(); i++) {
                 Experience experience = experiences.get(i - 1);
-                result.put("Experience.Position" + i, experience.getTitle());
+                result.put("Experience.Position" + i, experience.getRole());
                 result.put("Experience.Period" + i, getPeriod(experience.getStartDate(), experience.getEndDate()));
                 result.put("Experience.CompanyName" + i, experience.getCompanyName());
                 result.put("Experience.City" + i, experience.getCity());
@@ -260,4 +267,6 @@ public class EmployeeQuery extends BaseResource {
 
         return calendar.get(Calendar.YEAR);
     }
+    
+  
 }

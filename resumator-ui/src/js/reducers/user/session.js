@@ -4,7 +4,8 @@ const defaults = immutable.Map({
   idToken: null,
   name: null,
   surname: null,
-  email: null
+  email: null,
+  xsrf: null,
 });
 
 function session(state = defaults, { type, payload } = {}) {
@@ -34,6 +35,8 @@ function session(state = defaults, { type, payload } = {}) {
 
     case 'user:clearCookie:success':
       return defaults;
+    case 'user:xsrf-token:received':
+      return state.set('xsrf', payload);
 
     default:
       return state;

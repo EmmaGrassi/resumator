@@ -207,8 +207,33 @@
                     <include>*.docx</include>
                 </includes>
             </resource>
+            
+            
         </resources>
         <plugins>
+        <plugin>
+			<artifactId>maven-resources-plugin</artifactId>
+			<version>2.6</version>
+			<executions>
+				<execution>
+					<id>copy-resources</id>
+					<phase>validate</phase>
+					<goals>
+						<goal>copy-resources</goal>
+					</goals>
+					<configuration>
+						<outputDirectory>${project.build.outputDirectory}/docker</outputDirectory>
+						<resources>
+							<resource>
+								<directory>docker</directory>
+                				<filtering>true</filtering>
+							</resource>
+						</resources>
+					</configuration>
+				</execution>
+				
+			</executions>
+		  </plugin>
             <!-- Execute the application with maven exec:java -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -272,7 +297,7 @@
                 </executions>
                 <configuration>
                     <imageName>resumator-service</imageName>
-                    <dockerDirectory>${project.basedir}/docker</dockerDirectory>
+                    <dockerDirectory>${project.build.outputDirectory}/docker</dockerDirectory>
                     <resources>
                         <resource>
                             <targetPath>${docker.resource.targetPath}</targetPath>

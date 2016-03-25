@@ -3,5 +3,5 @@ import user from './user';
 
 export default {
   employees,
-  user
+  user,
 };

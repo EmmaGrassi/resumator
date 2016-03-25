@@ -32,8 +32,8 @@ import lombok.Getter;
 public class EmployeeCommandPayload implements CommandPayload {
 
     private final EmployeeType type;
-    @NotBlank(message = "Title is mandatory")
-    private final String title;
+    @NotBlank(message = "Role is mandatory")
+    private final String role;
     @NotBlank(message = "name is mandatory")
     private final String name;
     @NotBlank(message = "surname is mandatory")
@@ -50,10 +50,13 @@ public class EmployeeCommandPayload implements CommandPayload {
     private final String dateOfBirth;
     @NotBlank(message = "nationality is mandatory")
     private final String nationality;
-    @NotBlank(message = "currentResidence is mandatory")
     private final String currentResidence;
     @NotBlank(message = "aboutMe is mandatory")
     private final String aboutMe;
+    @NotBlank(message = "City of residence is mandatory")
+    private final String cityOfResidence;
+    @NotBlank(message = "Country of residence  is mandatory")
+    private final String countryOfResidence;
     @Valid
     private final List<Education> education;
     @Valid
@@ -74,7 +77,7 @@ public class EmployeeCommandPayload implements CommandPayload {
 
     @JsonCreator
     public EmployeeCommandPayload(@JsonProperty("type") final EmployeeType type,
-                                  @JsonProperty("title") final String title,
+                                  @JsonProperty("role") final String role,
                                   @JsonProperty("name") final String name,
                                   @JsonProperty("surname") final String surname,
                                   @JsonProperty("email") final String email,
@@ -84,6 +87,8 @@ public class EmployeeCommandPayload implements CommandPayload {
                                   @JsonProperty("dateOfBirth") final String dateOfBirth,
                                   @JsonProperty("nationality") final String nationality,
                                   @JsonProperty("currentResidence") final String currentResidence,
+                                  @JsonProperty("countryOfResidence") final String countryOfResidence,
+                                  @JsonProperty("cityOfResidence") final String cityOfResidence,                                  
                                   @JsonProperty("aboutMe") final String aboutMe,
                                   @JsonProperty("education") final List<Education> education,
                                   @JsonProperty("courses") final List<Course> courses,
@@ -91,7 +96,7 @@ public class EmployeeCommandPayload implements CommandPayload {
                                   @JsonProperty("languages") final List<Language> languages,
                                   @JsonProperty("admin") final boolean admin) {
         this.type = type;
-        this.title = title;
+        this.role = role;
         this.name = name;
         this.surname = surname;
         this.email = email;
@@ -100,7 +105,9 @@ public class EmployeeCommandPayload implements CommandPayload {
         this.linkedin = linkedin;
         this.dateOfBirth = dateOfBirth;
         this.nationality = nationality;
-        this.currentResidence = currentResidence;
+        this.currentResidence=currentResidence;
+        this.countryOfResidence = countryOfResidence;
+        this.cityOfResidence = cityOfResidence;
         this.aboutMe = aboutMe;
         this.education = education;
         this.courses = courses;

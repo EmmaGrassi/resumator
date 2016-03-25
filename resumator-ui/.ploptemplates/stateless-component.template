@@ -1,0 +1,5 @@
+
+
+export default function {{ properCase component }}(props) {
+  return (<div className="{{ properCase component }}"></div>);
+}

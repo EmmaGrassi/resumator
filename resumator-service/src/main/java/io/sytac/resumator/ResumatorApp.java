@@ -11,6 +11,7 @@ import io.sytac.resumator.organization.OrganizationRepository;
 import io.sytac.resumator.security.*;
 import io.sytac.resumator.store.bootstrap.Bootstrap;
 import io.sytac.resumator.store.bootstrap.BootstrapRunner;
+import io.sytac.resumator.store.bootstrap.Migrator;
 import io.sytac.resumator.store.EventStore;
 import io.sytac.resumator.store.sql.SchemaManager;
 import io.sytac.resumator.store.sql.SqlStore;
@@ -105,6 +106,7 @@ public class ResumatorApp {
         return rc.register(new AbstractBinder() {
             @Override
             protected void configure() {
+                bind(Migrator.class).to(Migrator.class).in(Singleton.class);
                 bind(Bootstrap.class).to(Bootstrap.class).in(Singleton.class);
                 bind(BootstrapRunner.class).in(Immediate.class);
             }
@@ -124,12 +126,16 @@ public class ResumatorApp {
 
     private ResourceConfig registerSecurity(final ResourceConfig rc) {
         return rc.register(Oauth2AuthenticationFilter.class)
+                 .register(XsrfValidationFilter.class)
                  .register(RolesAllowedDynamicFeature.class)
                  .register(new AbstractBinder() {
                      @Override
                      protected void configure() {
+                         bindFactory(AuthenticationServiceFactory.class)
+                                 .to(AuthenticationService.class);
+                         
                          bindFactory(Oauth2SecurityServiceFactory.class)
-                                 .to(Oauth2SecurityService.class);
+                         .to(Oauth2SecurityService.class);
 
                          bind(UserPrincipalFactoryProvider.class)
                                  .to(ValueFactoryProvider.class)

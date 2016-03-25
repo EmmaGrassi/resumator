@@ -4,6 +4,8 @@
    ╩ ┴ ┴└─┘  ╩╚═└─┘└─┘└─┘┴ ┴┴ ┴ ┴ └─┘┴└─
 ```
 
+[![Build Status](https://semaphoreci.com/api/v1/skuro/resumator/branches/feature-92/badge.svg)](https://semaphoreci.com/skuro/resumator)
+
 # resumator
 A resumes' management tool written in Java developed for the Sytac resumes creation, storing, searching and exporting.
 

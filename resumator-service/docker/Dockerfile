@@ -15,7 +15,7 @@ RUN mkdir -p /usr/local/resumator
 WORKDIR /usr/local/resumator
 
 # Install the app
-COPY resumator-1.0.jar /usr/local/resumator/resumator.jar
+COPY ${project.build.finalName}.jar /usr/local/resumator/resumator.jar
 
 # Install the startup script
 COPY resumator.sh /usr/local/resumator/resumator.sh
@@ -25,4 +25,3 @@ EXPOSE 8080
 
 # Run the app
 ENTRYPOINT ["/usr/local/resumator/resumator.sh"]
-

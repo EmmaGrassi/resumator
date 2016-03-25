@@ -1,3 +1,13 @@
+@import "./fixed-data-table";
+@import "./quill-snow";
+
+
+a {
+  cursor: pointer;
+}
+
+#root { margin-bottom: 2em; }
+
 // Center the loader
 .less {
   position: fixed;
@@ -54,9 +64,69 @@
   width: 80px;
 }
 
+// Table styles
+.public_fixedDataTableCell_main,
+.public_fixedDataTableRow_highlighted,
+.public_fixedDataTableRow_highlighted .public_fixedDataTableCell_main,
+.public_fixedDataTableRow_main,
+.public_fixedDataTable_header,
+.public_fixedDataTable_header .public_fixedDataTableCell_main {
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid #647586;
+}
+
+.public_fixedDataTable_header {
+  background-color: #586877;
+
+  .glyphicon {
+    padding-left: 1em;
+  }
+}
+
+.sortHeader {
+  user-select: none;
+  cursor: pointer;
+}
+
 li.active {
   background: lighten(#00A093, 3%);
   transition: all .2s ease-out;
+}
+
+.multi-form {
+  margin-top: 1em;
+  padding-top: 1em;
+  border-top: 1px solid #647586;
+
+  &:first-child {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  &:last-child {
+    margin-bottom: 1em;
+  }
+}
+
+textarea { max-width: 100%; }
+
+.add-button {
+  position: fixed;
+  bottom: 2em;
+  left: 2em;
+}
+
+.quill-editor {
+  background-color: #fff;
+  color: #000;
+  margin-bottom: 1em;
+  min-height: 10em;
+
+  .quill-toolbar {
+    border-bottom: 1px dashed #ddd;
+  }
 }
 
 @media print {

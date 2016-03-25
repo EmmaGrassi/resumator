@@ -1,7 +1,7 @@
 import immutable from 'immutable';
 
 const item = immutable.Map({
-  title: null,
+  role: null,
 
   name: null,
   surname: null,

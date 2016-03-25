@@ -15,8 +15,9 @@ export default function create() {
     dispatch({ type: 'employees:create:start' });
 
     const data = store.getState().employees.create.toJS().item;
+    const xsrfToken = store.getState().user.session.toJS().xsrf;
 
-    createService(data, (error, results) => {
+    createService(data, xsrfToken, (error, results) => {
       if (error) {
         dispatch({ type: 'employees:create:failure', errors: results });
         return;

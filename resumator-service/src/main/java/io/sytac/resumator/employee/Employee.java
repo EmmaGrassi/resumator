@@ -29,7 +29,7 @@ public class Employee {
 
     private final String id;
     private final EmployeeType type;
-    private final String title;
+    private final String role;
     private final String name;
     private final String surname;
     private final String email;
@@ -45,15 +45,17 @@ public class Employee {
     private final List<Experience> experiences;
     private final List<Language> languages;
     private final boolean admin;
+    private final String cityOfResidence;
+    private final String countryOfResidence;
 
     @Builder
-    Employee(String id, EmployeeType type, String title, String name, String surname, String email, String phoneNumber,
-             String gitHub, String linkedIn, Date dateOfBirth, Nationality nationality, String currentResidence,
+    Employee(String id, EmployeeType type, String role, String name, String surname, String email, String phoneNumber,
+             String gitHub, String linkedIn, Date dateOfBirth, Nationality nationality,String currentResidence, String cityOfResidence,String countryOfResidence,
              String aboutMe, List<Education> educations, List<Course> courses,
              List<Experience> experiences, List<Language> languages, boolean admin) {
         this.id = id == null ? UUID.randomUUID().toString() : id;
         this.type = type;
-        this.title = title;
+        this.role = role;
         this.name = name;
         this.surname = surname;
         this.email = email;
@@ -62,7 +64,9 @@ public class Employee {
         this.linkedIn = linkedIn;
         this.dateOfBirth = dateOfBirth;
         this.nationality = nationality;
-        this.currentResidence = currentResidence;
+        this.currentResidence=currentResidence;
+        this.countryOfResidence = countryOfResidence;
+        this.cityOfResidence = cityOfResidence;
         this.aboutMe = aboutMe;
         this.educations = educations;
         this.courses = courses;

@@ -130,4 +130,16 @@ public class SqlStore implements EventStore {
     public void setReadOnly(boolean b) {
         this.readOnly.set(b);
     }
+
+    @Override
+    public void post(Event event) {
+        assertWriteAllowed();
+        if (session.get() == null) {
+            session.set(sessionFactory.openSession());
+        }
+        EventMapper mapper = session.get().getMapper(EventMapper.class);
+        mapper.post(event);
+        session.get().commit();
+
+    }
 }

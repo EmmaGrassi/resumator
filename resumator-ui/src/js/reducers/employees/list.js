@@ -3,8 +3,7 @@ import { map } from 'lodash';
 
 const defaults = immutable.Map({
   isFetching: false,
-
-  items: []
+  items: [],
 });
 
 function list(state = defaults, action = {}) {

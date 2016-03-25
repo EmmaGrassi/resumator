@@ -54,6 +54,7 @@ public class XsrfValidationFilter implements ContainerRequestFilter {
                 List<String> xsrfHeaders = Optional.ofNullable(requestContext.getHeaders().get(ResumatorConstants.XSRF_HEADER_NAME))
                         .orElse(new ArrayList<>());
                 boolean isRequestValid = false;
+                log.info("Filtering request for XSRF token check");
 
                 if (!xsrfHeaders.isEmpty()) {
 

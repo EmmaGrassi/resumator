@@ -12,6 +12,10 @@ class PersonalForm extends FormComponent {
     this.props.handleChange(name, this.refs[name].getValue());
   }
 
+  handleQuillChange(name, value) {
+    this.props.handleChange(name, value);
+  }
+
   renderFirstRow() {
     if (this.props.profile.item.admin) {
       return (<Row>
@@ -84,7 +88,7 @@ class PersonalForm extends FormComponent {
   }
 
   renderAboutMe() {
-    return this.getInput('aboutMe', 'textarea', true);
+    return this.getQuillEditor('aboutMe', true);
   }
 
   renderCancelButton() {

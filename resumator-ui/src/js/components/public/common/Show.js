@@ -16,6 +16,7 @@ import {
   ListGroup,
   ListGroupItem,
   Row,
+  Badge,
 } from 'react-bootstrap';
 
 import actions from '../../../actions';
@@ -134,8 +135,8 @@ class Show extends React.Component {
             const startYear = startDate.format('YYYY');
             const endYear = endDate.format('YYYY');
 
-            technologies = technologies.join(', ');
-            methodologies = methodologies.join(', ');
+            technologies = technologies.map(x => <Badge key={x}>{x}</Badge>);
+            methodologies = methodologies.map(x => <Badge key={x}>{x}</Badge>);
 
             let hr;
             if (i !== this.props.show.item.experience.length - 1) {
@@ -154,7 +155,7 @@ class Show extends React.Component {
                 <h4>{companyName} ({city}, {convertCountry(country)})</h4>
                 {startYear} - {endYear} ({difference})<br />
                 <br />
-                <p>{shortDescription}</p>
+                <div dangerouslySetInnerHTML={{ __html: shortDescription }} />
                 <strong>Technologies:</strong> {technologies}<br />
                 <strong>Methodologies:</strong> {methodologies}<br />
                 {hr}
@@ -351,7 +352,7 @@ class Show extends React.Component {
                 </tbody>
               </table>
               <br />
-              <p>{aboutMe}</p>
+              <div dangerouslySetInnerHTML={{ __html: aboutMe }} />
             </Col>
           </Row>
           <Row>

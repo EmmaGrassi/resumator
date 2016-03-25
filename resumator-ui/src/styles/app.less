@@ -1,4 +1,5 @@
 @import "./fixed-data-table";
+@import "./quill-snow";
 
 
 a {
@@ -115,6 +116,17 @@ textarea { max-width: 100%; }
   position: fixed;
   bottom: 2em;
   left: 2em;
+}
+
+.quill-editor {
+  background-color: #fff;
+  color: #000;
+  margin-bottom: 1em;
+  min-height: 10em;
+
+  .quill-toolbar {
+    border-bottom: 1px dashed #ddd;
+  }
 }
 
 @media print {

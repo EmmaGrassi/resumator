@@ -106,7 +106,7 @@ public class EmployeeQuery extends BaseResource {
             final List<Experience> experiences = Optional.ofNullable(emp.getExperiences()).orElse(Collections.emptyList());
             final List<Language> languages = Optional.ofNullable(emp.getLanguages()).orElse(Collections.emptyList());
 
-            String xsrfToken=authService.produceXsrfToken(email);
+            String xsrfToken=authService.produceXsrfToken(identity.getName());
             
             final String representation = rest.newRepresentation()
                     .withProperty("type", emp.getType())

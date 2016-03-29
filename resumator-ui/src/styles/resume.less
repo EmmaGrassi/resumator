@@ -108,6 +108,27 @@
   right: 1.5em;
 }
 
-@media print{
-  .tools {display: none;}
+@media print {
+  .resume-container {
+    padding: 1em 5em;
+    font-size: 10pt;
+  }
+  .noprint { display:none; }
+
+  .date { font-size: 80%; }
+
+  header {
+    padding: 0 1em;
+
+    .role {
+      width: 80%
+    }
+    .image-container {
+      width: 20%;
+      img {
+        width: 100%;
+        margin-bottom: -15pt;
+      }
+    }
+  }
 }

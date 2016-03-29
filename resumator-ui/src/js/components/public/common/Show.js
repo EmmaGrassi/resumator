@@ -152,9 +152,9 @@ class Show extends React.Component {
 
         return (
           <div className="list-item" key={i}>
+            <div className="date">{startYear} - {endYear} ({difference})</div>
             <div className="role">{role}</div>
             <small>{companyName} ({city}, {convertCountry(country)})</small>
-            <div className="date">{startYear} - {endYear} ({difference})</div>
             <div
               className="description"
               dangerouslySetInnerHTML={{ __html: shortDescription }}
@@ -275,7 +275,7 @@ class Show extends React.Component {
           <hr className="divider" />
           {this.renderCourses()}
         </div>
-        <div className="tools">
+        <div className="tools noprint">
           <ButtonGroup>
             <Button bsStyle="primary" onClick={this.handleEditButtonClick.bind(this)}>
               Edit

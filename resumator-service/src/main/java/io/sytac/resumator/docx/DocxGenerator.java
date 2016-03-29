@@ -2,11 +2,17 @@ package io.sytac.resumator.docx;
 
 import org.apache.commons.lang3.text.StrSubstitutor;
 import org.apache.poi.xwpf.usermodel.*;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Element;
+import org.jsoup.safety.Whitelist;
+import org.jsoup.select.Elements;
 
 import javax.ws.rs.core.StreamingOutput;
+
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
@@ -61,14 +67,34 @@ public class DocxGenerator {
     }
 
     private void replacePlaceholdersInParagraph(XWPFParagraph paragraph, Map<String, String> replacementMap) {
+        
+        
         String text = paragraph.getText();
-
+        
         // Word splits up a single piece of text into multiple runs in tables, so let's just delete those and create a single run instead.
         while (!paragraph.getRuns().isEmpty()) {
             paragraph.removeRun(0);
         }
+        
+        if(text.contains("${Bio}")){
+            String html=StrSubstitutor.replace(text, replacementMap);
+            replaceHtmlParagraphs(paragraph,html);
+            return;
+        }
 
         paragraph.createRun().setText(StrSubstitutor.replace(text, replacementMap));
+    }
+    
+    private  void replaceHtmlParagraphs(XWPFParagraph paragraph,String html){
+        org.jsoup.nodes.Document doc = Jsoup.parseBodyFragment(html);
+        Element body = doc.body();
+        Elements divs = body.getElementsByTag("div");
+        divs.forEach(div->{
+            XWPFRun run=paragraph.createRun();
+            run.setText(Jsoup.clean(div.toString(),Whitelist.none()));
+            run.addBreak();
+        });
+        
     }
 
     private boolean hasPlaceholder(String text) {

@@ -33,6 +33,7 @@ const template = `
   <div class="profile section">
     <div><b>Name</b>: {{name}} {{surname}}</div>
     <div><b>Date of birth</b>: {{dateOfBirth}}</div>
+    <div><b>About</b>: {{{aboutMe}}}</div>
   </div>
 
   <div class="experience section">

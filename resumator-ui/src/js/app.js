@@ -22,6 +22,7 @@ import PublicEmployeesEdit from './components/public/common/Edit';
 import PublicEmployeesList from './components/public/common/List';
 import PublicEmployeesRegister from './components/public/common/Register';
 import PublicEmployeesShow from './components/public/common/Show';
+import Editor from './components/public/common/Editor';
 import PublicHome from './components/public/Home';
 
 const rootElement = document.getElementById('root');
@@ -90,6 +91,7 @@ const router = (
         <IndexRoute component={ PublicHome } onEnter={handleEnter} />
 
         <Route path="new" component={ PublicEmployeesCreate } onEnter={handleEnter} />
+        <Route path="templates" component={Editor} onEnter={handleEnter} />
 
         <Route path=":type" requireSession>
           <IndexRoute component={ PublicEmployeesList } onEnter={handleEnter} />
@@ -106,7 +108,6 @@ const router = (
             </Route>
           </Route>
         </Route>
-
         <Route path="not-authorized" component={NotAuthorized} />
         <Route path="not-found" component={NotFound} />
         <Route path="**" component={NotFound} />

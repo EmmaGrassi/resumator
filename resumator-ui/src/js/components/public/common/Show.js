@@ -84,7 +84,7 @@ class Show extends React.Component {
 
     const profileData = {
       name: `${name} ${surname}`,
-      dateOfBirth: moment(dateOfBirth).format('YYYY-MM-DD'),
+      dateOfBirth: moment(dateOfBirth).format('DD MMMM, YYYY'),
       nationality,
       email,
       phone: phonenumber,

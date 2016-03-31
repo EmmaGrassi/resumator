@@ -5,6 +5,7 @@ import nationalities from '../../../data/nationalities';
 import countries from '../../../data/countries';
 import types from '../../../data/types';
 import labelize from '../../../helpers/labelize';
+import stripStyles from '../../../helpers/stripStyles';
 import FormComponent from './Form';
 
 class PersonalForm extends FormComponent {
@@ -13,7 +14,7 @@ class PersonalForm extends FormComponent {
   }
 
   handleQuillChange(name, value) {
-    this.props.handleChange(name, value);
+    this.props.handleChange(name, stripStyles(value));
   }
 
   renderFirstRow() {

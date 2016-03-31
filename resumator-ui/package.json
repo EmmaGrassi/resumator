@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "scripts": {
     "start": "gulp develop",
-    "test": "gulp runTests"
+    "test": "gulp runTests",
+    "docker:start": "cd ..; docker-machine start default; eval $(docker-machine env default);",
+    "maven:start": "cd ..; mvn clean install; RESUMATOR_CONFIG=~/.resumator docker-compose -f ./docker/docker-compose-dev.yml up;"
   },
   "eslintConfig": {
     "extends": "airbnb",

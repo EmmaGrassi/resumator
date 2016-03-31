@@ -84,7 +84,8 @@ class Show extends React.Component {
 
     const profileData = {
       name: `${name} ${surname}`,
-      dateOfBirth: moment(dateOfBirth).format('YYYY-MM-DD'),
+      dateOfBirth: moment(dateOfBirth).format('DD MMMM, YYYY'),
+      yearOfBirth: moment(dateOfBirth).format('YYYY'),
       nationality,
       email,
       phone: phonenumber,
@@ -100,7 +101,7 @@ class Show extends React.Component {
           const value = (k === 'nationality') ?
             convertNationality(profileData[k]) : profileData[k];
 
-          return (<div className="content-row" key={k}>
+          return (<div className={`content-row ${k}`} key={k}>
                     <div className="key">{key}:</div>
                     <div className="value">{value}</div>
                   </div>);

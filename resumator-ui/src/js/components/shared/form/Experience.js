@@ -9,6 +9,7 @@ import {
 import FormComponent from './Form';
 import countries from '../../../data/countries';
 import labelize from '../../../helpers/labelize';
+import stripStyles from '../../../helpers/stripStyles';
 
 function needToCheckTheBox(item) {
   let { currentlyWorkHere } = item;
@@ -40,7 +41,7 @@ class ExperienceForm extends FormComponent {
   }
 
   handleQuillChange(name, value) {
-    this.props.values[name] = value;
+    this.props.values[name] = stripStyles(value);
     this.props.handleChange('experience', this.props.currentValues);
   }
 

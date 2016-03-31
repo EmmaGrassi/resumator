@@ -8,7 +8,6 @@ import io.sytac.resumator.organization.NewOrganizationCommand;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import javax.ws.rs.container.ContainerRequestContext;
@@ -71,15 +70,13 @@ public class Oauth2AuthenticationFilterTest {
         wrongCookies.put(Oauth2AuthenticationFilter.EMAIL_COOKIE, emailCookie);
         wrongCookies.put(Oauth2AuthenticationFilter.DOMAIN_COOKIE, domainCookie);
         
-        Optional<Identity> user = Optional.empty();
-
         final ContainerRequestContext ctx = mock(ContainerRequestContext.class);
        
         setURLMock(ctx);
         
         
         when(ctx.getCookies()).thenReturn(wrongCookies);
-        when(service.checkIfCookieValid(eq(Optional.of(authCookie)), eq(Optional.of(emailCookie)),eq(user), anyString())).thenReturn(Optional.empty());
+        when(service.checkIfCookieValid(eq(Optional.of(authCookie)), eq(Optional.of(emailCookie)), anyString())).thenReturn(Optional.empty());
         when(authService.decryptEntity(anyString(),anyString())).thenCallRealMethod();//test if decrpyt is working.
         
         filter.filter(ctx);
@@ -112,8 +109,6 @@ public class Oauth2AuthenticationFilterTest {
         correctCookies.put(Oauth2AuthenticationFilter.EMAIL_COOKIE, emailCookie);
         correctCookies.put(Oauth2AuthenticationFilter.DOMAIN_COOKIE, domainCookie);
         
-        Optional<Identity> user = Optional.empty();
-
         final ContainerRequestContext ctx = mock(ContainerRequestContext.class);
        
         setURLMock(ctx);
@@ -121,7 +116,7 @@ public class Oauth2AuthenticationFilterTest {
         HashSet<String> userRoles=new HashSet<>();
         userRoles.add("user");
         when(ctx.getCookies()).thenReturn(correctCookies);
-        when(service.checkIfCookieValid(eq(Optional.of(emailCookie)), eq(Optional.of(domainCookie)),eq(user), eq(authCookieUnencrypted))).thenCallRealMethod();
+        when(service.checkIfCookieValid(eq(Optional.of(emailCookie)), eq(Optional.of(domainCookie)), eq(authCookieUnencrypted))).thenCallRealMethod();
         when(service.toUser(eq(emailCookie.getValue()),eq(domainCookie.getValue()))).thenReturn(Optional.of(new Identity("1", emailCookie.getValue(), userRoles)));
         when(service.getConfig().getProperty(ConfigurationEntries.COOKIE_KEY)).thenReturn(Optional.of("key"));
         

@@ -40,13 +40,19 @@ class Register extends React.Component {
       register = true;
     }
 
+    const initialObj = {
+      name: this.props.session.name,
+      surname: this.props.session.surname,
+      email: this.props.session.email,
+    };
+
     return (
       <div>
         <NewForm
           ref="employeeForm"
           type={this.props.params.type.toUpperCase()}
           register={register}
-          values={this.props.create.item}
+          values={initialObj}
           handleSubmit={this.props.createEmployee}
           handleChange={this.props.changeEmployee.bind(this)}
           hasFailed={this.props.create.hasFailed}

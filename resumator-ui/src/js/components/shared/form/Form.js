@@ -10,12 +10,13 @@ import ReactQuill from 'react-quill';
 
 import moment from 'moment';
 import labelize from '../../../helpers/labelize';
+import stripStyles from '../../../helpers/stripStyles';
 import quillFormat from '../../../data/quill-formats';
 
 class FormComponent extends React.Component {
 
   handleQuillChange(name, value) {
-    this.props.handleChange(name, value);
+    this.props.handleChange(name, stripStyles(value));
   }
 
   getInput(name, type, required, placeholder, autoFocus, attrs) {

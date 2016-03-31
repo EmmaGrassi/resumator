@@ -36,8 +36,8 @@ class Editor extends React.Component {
   }
 
   componentWillMount() {
-    // this.props.fetchEmployee(this.props.params.userId);
-    window.addEventListener('resize', this.handleResize.bind(this));
+    // TODO: Fetch template from backend
+    console.log('Chosen template', this.props.params.templateId);
   }
 
   componentDidMount() {
@@ -46,6 +46,12 @@ class Editor extends React.Component {
     this.editor.setTheme('ace/theme/chaos');
     this.editor.setValue(this.state.aceTemplate);
     this.editor.getSession().on('change', this.onAceChange.bind(this));
+    this.resizeHandler = window.addEventListener('resize', this.handleResize.bind(this));
+    window.addEventListener('resize', this.handleResize.bind(this));
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleResize);
   }
 
   onAceChange() {
@@ -53,7 +59,8 @@ class Editor extends React.Component {
   }
 
   handleResize() {
-    this.setState({ windowWidth: window.innerWidth });
+    console.log(this.state.isMounted);
+    if (this.state.isMounted) this.setState({ windowWidth: window.innerWidth });
   }
 
   render() {

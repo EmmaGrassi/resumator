@@ -23,6 +23,7 @@ import PublicEmployeesList from './components/public/common/List';
 import PublicEmployeesRegister from './components/public/common/Register';
 import PublicEmployeesShow from './components/public/common/Show';
 import Editor from './components/public/common/Editor';
+import TemplateList from './components/public/common/TemplateList';
 import PublicHome from './components/public/Home';
 
 const rootElement = document.getElementById('root');
@@ -91,7 +92,9 @@ const router = (
         <IndexRoute component={ PublicHome } onEnter={handleEnter} />
 
         <Route path="new" component={ PublicEmployeesCreate } onEnter={handleEnter} />
-        <Route path="templates" component={Editor} onEnter={handleEnter} />
+        <Route path="templates" component={TemplateList} onEnter={handleEnter} />
+        <Route path="templates/edit/:templateId" component={Editor} onEnter={handleEnter} />
+        <Route path="templates/new" component={Editor} onEnter={handleEnter} />
 
         <Route path=":type" requireSession>
           <IndexRoute component={ PublicEmployeesList } onEnter={handleEnter} />

@@ -40,6 +40,7 @@
     "lodash": "^3.10.1",
     "loglevel": "^1.4.0",
     "moment": "^2.10.6",
+    "parameterize": "0.0.7",
     "phone": "^1.0.5",
     "qwest": "^2.2.6",
     "react": "^0.14.2",

@@ -1,0 +1,37 @@
+@contrastColor: #586877;
+
+.list-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.template-view {
+    padding: 1em;
+    margin: 0 1em 1em 0;
+    border: 1px solid @contrastColor;
+    max-width: 30%;
+    width: 100%;
+    flex-grow: 0.33;
+    min-height: 20em;
+    cursor: pointer;
+    text-align: center;
+    transition: all .2s ease-out;
+
+    @media screen and (max-width: 500px){
+      max-width: 100%;
+      margin: 0 0 1em 0;
+    }
+
+    &:hover {
+      background-color: @contrastColor;
+      transition: all .2s ease-out;
+    }
+
+    img {
+      width: 100%;
+      margin-bottom: 1em;
+    }
+}

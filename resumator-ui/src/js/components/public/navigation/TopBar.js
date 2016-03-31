@@ -9,7 +9,10 @@ import NavbarHeader from 'react-bootstrap/lib/NavbarHeader';
 import NavbarToggle from 'react-bootstrap/lib/NavbarToggle';
 import NavItem from 'react-bootstrap/lib/NavItem';
 
+import { NavDropdown, MenuItem } from 'react-bootstrap';
+
 import RightNav from './RightNav';
+
 
 function mapStateToProps(state) {
   return {
@@ -36,9 +39,12 @@ class TopBar extends React.Component {
     if (this.props.session.idToken && this.props.profile.item.admin) {
       nav = (
         <Nav>
-          <NavItem eventKey={1} href="#/employees">Employees</NavItem>
-          <NavItem eventKey={2} href="#/freelancers">Freelancers</NavItem>
-          <NavItem eventKey={3} href="#/prospects">Prospects</NavItem>
+          <NavDropdown eventKey={1} title="Employees" id="nav-dropdown">
+            <MenuItem eventKey="1.1" href="#/employees">Employees</MenuItem>
+            <MenuItem eventKey="1.2" href="#/freelancers">Freelancers</MenuItem>
+            <MenuItem eventKey="1.3" href="#/prospects">Prospects</MenuItem>
+          </NavDropdown>
+          <NavItem eventKey={3} href="#/templates">Templates</NavItem>
         </Nav>
       );
     }

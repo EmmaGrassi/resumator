@@ -43,12 +43,16 @@ export default function update(email) {
     console.log('from update', xsrfToken);
     updateService(email, data, xsrfToken, (error, results) => {
       if (error) {
-        handleRequestError(error)();
+        const whatHappened = Object.keys(results.fields)
+          .map(k => results.fields[k])
+          .join(' and ');
+
+        handleRequestError(error)(whatHappened);
         dispatch({ type: 'employees:update:failure', errors: results });
 
         dispatch(showAlert({
           level: 'danger',
-          message: `Failed to update user because of ${results}`,
+          message: `Failed to update user because of ${JSON.stringify(whatHappened)}`,
           id: 'user:update:failure',
         }));
 

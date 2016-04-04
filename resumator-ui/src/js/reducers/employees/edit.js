@@ -45,7 +45,8 @@ function edit(state = defaults, action = {}) {
     case 'employees:update:success':
       return state
         .set('isSaving', false)
-        .set('hasFailed', false);
+        .set('hasFailed', false)
+        .set('errors', null);
 
     case 'employees:update:failure':
       return state

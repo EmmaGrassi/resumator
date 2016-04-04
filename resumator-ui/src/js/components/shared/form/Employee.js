@@ -39,7 +39,8 @@ const forms = {
 };
 
 function findErrorTab(props) {
-  return Object.keys(props.errors);
+  const personalTabKeys = ['role', 'surname', 'name', 'email', 'phonenumber', 'dateOfBirth', 'cityOfResidence', 'countryOfResidence'];
+  return props.errors ? Object.keys(props.errors).map(key => personalTabKeys.includes(key) ? 'personal' : key.toLowerCase()) : [];
 }
 
 function mapStateToProps(state) {
@@ -111,10 +112,9 @@ class EmployeeForm extends React.Component {
 
 
   renderNavItems() {
+    const errors = findErrorTab(this.props);
     return navItems.map((v, i) => {
-      const faux = findErrorTab(this.props);
-      const hasErrors = faux.includes(v.toLowerCase());
-      console.log('-->>>', hasErrors, faux);
+      const hasErrors = errors.includes(v.toLowerCase());
       if (i === 0) {
         return (<NavItem
           key={i}

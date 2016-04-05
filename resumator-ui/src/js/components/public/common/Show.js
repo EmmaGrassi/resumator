@@ -11,6 +11,8 @@ import labelize from '../../../helpers/labelize';
 import isUpperCase from '../../../helpers/isUpperCase';
 import intersperse from '../../../helpers/intersperse';
 
+import CommentPane from '../../shared/comment/CommentPane';
+
 import {
   Button,
   ButtonGroup,
@@ -287,6 +289,7 @@ class Show extends React.Component {
             <Button bsStyle="default" href={docxURL} download>DOCX</Button>
           </ButtonGroup>
         </div>
+        <CommentPane show />
       </Loader>
     );
   }

@@ -224,7 +224,7 @@ class Show extends React.Component {
           {langs.map((v, i) => {
             const { name, proficiency } = v;
             return (<div className="content-row" key={`${i}_lang`}>
-                      <div className="key">{name}</div>
+                      <div className="key">{name}:</div>
                       <div className="value">{convertProficiency(proficiency)}</div>
                     </div>);
           })}

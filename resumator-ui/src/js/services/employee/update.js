@@ -12,10 +12,9 @@ export default function update(email, data, token, cb) {
       if (error) {
         let errMessage = '';
         try {
-          const err = JSON.parse(error);
-          errMessage = JSON.parse(error);
+          errMessage = JSON.parse(error.response.text);
         } catch (e) {
-          errMessage = error;
+          errMessage = error.response.text;
         }
         return cb(error, errMessage);
       }

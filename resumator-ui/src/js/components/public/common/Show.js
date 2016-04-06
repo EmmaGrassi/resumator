@@ -61,10 +61,10 @@ class Show extends React.Component {
   renderHeader() {
     const { role } = this.props.show.item;
     return (<header>
+      <div className="role">{role}</div>
       <div className="image-container">
         <img src="/images/sytac.png" />
       </div>
-      <div className="role">{role}</div>
     </header>);
   }
 
@@ -94,7 +94,6 @@ class Show extends React.Component {
     };
 
     return (<div className="section profile">
-      <div className="section-header">Profile</div>
       <div className="section-content">
         {Object.keys(profileData).map(k => {
           const key = labelize(k);
@@ -145,6 +144,7 @@ class Show extends React.Component {
           difference = getDateDiff(startDate, moment());
           endYear = 'present';
         }
+        // <div className="date">{startYear} - {endYear} ({difference})</div>
 
         technologies = intersperse(technologies
           .map((x, i) => <Badge key={i}>{x}</Badge>), ' ');
@@ -153,15 +153,23 @@ class Show extends React.Component {
 
         return (
           <div className="list-item" key={i}>
-            <div className="date">{startYear} - {endYear} ({difference})</div>
+            <div className="date">{startYear} - {endYear}</div>
             <div className="role">{role}</div>
             <small>{companyName} ({city}, {convertCountry(country)})</small>
             <div
               className="description"
               dangerouslySetInnerHTML={{ __html: shortDescription }}
             />
-            <strong>Technologies:</strong> {technologies}<br />
-            <strong>Methodologies:</strong> {methodologies}<br />
+            <div className="skill-list-container">
+              <div className="skill-list content-row">
+                <span className="list-title key">Technologies:</span>
+                <span className="value">{technologies}</span>
+              </div>
+              <div className="skill-list content-row">
+                <span className="list-title key">Methodologies:</span>
+                <span className="value">{methodologies}</span>
+              </div>
+            </div>
           </div>
         );
       })}
@@ -187,6 +195,9 @@ class Show extends React.Component {
 
             let { degree } = v;
             degree = normalizeString(degree);
+            let yearsSpend = Math.abs(startYear - endYear);
+            yearsSpend = `${yearsSpend} ${yearsSpend > 1 ? 'years' : 'year'}`;
+            // <div className="date">{startYear} - {endYear} ({yearsSpend})</div>
 
             return (<div className="list-item" key={`${i}_edu`}>
               <div className="date">{startYear} - {endYear}</div>
@@ -209,7 +220,7 @@ class Show extends React.Component {
     if (langs.length === 0) return this.renderNoData('Languages');
     return (<div className="section languages">
       <div className="section-header">Languages</div>
-      <div className="section-content">
+      <div className="section-content list-item">
           {langs.map((v, i) => {
             const { name, proficiency } = v;
             return (<div className="content-row" key={`${i}_lang`}>
@@ -235,15 +246,17 @@ class Show extends React.Component {
               description,
             } = v;
 
-            return (
-              <div key={i}>
-                <strong>{name} ({year})</strong><br />
-                {description}
-              </div>);
+            return (<div className="list-item" key={i}>
+              <div className="date">{year}</div>
+              <div className="role">{name}</div>
+              <div
+                className="description"
+                dangerouslySetInnerHTML={{ __html: description }}
+              />
+            </div>);
           })}
         </div>
-      </div>
-    );
+      </div>);
   }
 
   renderNoData(section) {
@@ -265,15 +278,10 @@ class Show extends React.Component {
       >
         <div className="resume-container">
           {this.renderHeader()}
-          <hr className="divider" />
           {this.renderProfile()}
-          <hr className="divider" />
           {this.renderExperience()}
-          <hr className="divider" />
           {this.renderEducation()}
-          <hr className="divider" />
           {this.renderLanguages()}
-          <hr className="divider" />
           {this.renderCourses()}
         </div>
         <div className="tools noprint">

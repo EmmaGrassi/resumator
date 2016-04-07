@@ -42,7 +42,6 @@ export default function login(data) {
         return;
       }
 
-      console.log('from login', token);
       dispatch({ type: 'user:xsrf-token:received', payload: token });
 
       const cookieData = cookieGet();

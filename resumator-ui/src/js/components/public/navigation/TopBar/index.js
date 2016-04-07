@@ -9,7 +9,7 @@ import NavbarHeader from 'react-bootstrap/lib/NavbarHeader';
 import NavbarToggle from 'react-bootstrap/lib/NavbarToggle';
 import NavItem from 'react-bootstrap/lib/NavItem';
 
-import RightNav from './RightNav';
+import RightNav from '../RightNav';
 
 function mapStateToProps(state) {
   return {
@@ -23,7 +23,7 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-class TopBar extends React.Component {
+export class TopBar extends React.Component {
 
   render() {
     let nav = '';

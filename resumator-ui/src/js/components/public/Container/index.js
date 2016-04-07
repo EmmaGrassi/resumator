@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import TopBar from './navigation/TopBar';
+import TopBar from '../navigation/TopBar';
 import { Alert } from 'react-bootstrap';
 
 const styles = {
@@ -26,13 +26,15 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-class Container extends React.Component {
+export class Container extends React.Component {
   componentDidMount() {
   }
 
   renderAlerts() {
-    return this.props.alerts
-      .map((alert, i) => <Alert bsStyle={alert.level} key={i}>{alert.message}</Alert>);
+    if (this.props.alerts) {
+      return this.props.alerts
+        .map((alert, i) => <Alert bsStyle={alert.level} key={i}>{alert.message}</Alert>);
+    }
   }
 
   render() {

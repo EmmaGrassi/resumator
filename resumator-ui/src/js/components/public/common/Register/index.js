@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import NewForm from '../../shared/form/Employee';
+import NewForm from '../../../shared/form/Employee';
 
-import create from '../../../actions/employees/create';
-import createChange from '../../../actions/employees/createChange';
+import create from '../../../../actions/employees/create';
+import createChange from '../../../../actions/employees/createChange';
 
 function mapStateToProps(state) {
   const create = state.employees.create.toJS();

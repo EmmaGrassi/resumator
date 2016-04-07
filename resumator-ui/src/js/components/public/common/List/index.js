@@ -1,6 +1,6 @@
 import Loader from 'react-loader';
 import React from 'react';
-import ReactTable from '../../shared/ReactTable';
+import ReactTable from '../../../shared/ReactTable';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import { pushPath } from 'redux-simple-router';
@@ -15,8 +15,8 @@ import {
   Row,
 } from 'react-bootstrap';
 
-import listAction from '../../../actions/employees/list';
-import removeAction from '../../../actions/employees/remove';
+import listAction from '../../../../actions/employees/list';
+import removeAction from '../../../../actions/employees/remove';
 
 function mapStateToProps(state) {
   return {

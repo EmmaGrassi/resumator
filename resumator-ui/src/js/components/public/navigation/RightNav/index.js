@@ -8,8 +8,8 @@ import Nav from 'react-bootstrap/lib/Nav';
 import NavDropdown from 'react-bootstrap/lib/NavDropdown';
 import NavItem from 'react-bootstrap/lib/NavItem';
 
-import logout from '../../../actions/user/logout';
-import login from '../../../actions/user/login';
+import logout from '../../../../actions/user/logout';
+import login from '../../../../actions/user/login';
 
 function mapStateToProps(state) {
   return {
@@ -24,7 +24,7 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-class RightNav extends React.Component {
+export class RightNav extends React.Component {
   handleLogInButtonClick(event) {
     event.preventDefault();
 

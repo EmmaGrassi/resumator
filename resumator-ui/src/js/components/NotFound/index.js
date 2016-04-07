@@ -14,7 +14,7 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-class NotFound extends React.Component {
+export class NotFound extends React.Component {
   handleHomeButtonClick(event) {
     event.preventDefault();
 

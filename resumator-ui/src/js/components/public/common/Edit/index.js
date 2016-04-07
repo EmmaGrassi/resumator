@@ -4,14 +4,14 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import { pushPath } from 'redux-simple-router';
 
-import EditForm from '../../shared/form/Employee';
+import EditForm from '../../../shared/form/Employee';
 
-import edit from '../../../actions/employees/edit';
-import update from '../../../actions/employees/update';
-import editChange from '../../../actions/employees/editChange';
-import addEntry from '../../../actions/employees/addEntry';
-import removeEntry from '../../../actions/employees/removeEntry';
-import editCancel from '../../../actions/employees/editCancel';
+import edit from '../../../../actions/employees/edit';
+import update from '../../../../actions/employees/update';
+import editChange from '../../../../actions/employees/editChange';
+import addEntry from '../../../../actions/employees/addEntry';
+import removeEntry from '../../../../actions/employees/removeEntry';
+import editCancel from '../../../../actions/employees/editCancel';
 
 function mapStateToProps(state) {
   const edit = state.employees.edit.toJS();

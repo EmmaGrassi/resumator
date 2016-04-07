@@ -4,14 +4,14 @@ import moment from 'moment';
 import { bindAll, map } from 'lodash';
 import { connect } from 'react-redux';
 import { pushPath } from 'redux-simple-router';
-import convertCountry from '../../../helpers/convertCountry';
-import convertProficiency from '../../../helpers/convertProficiency';
-import convertNationality from '../../../helpers/convertNationality';
-import labelize from '../../../helpers/labelize';
-import isUpperCase from '../../../helpers/isUpperCase';
-import intersperse from '../../../helpers/intersperse';
+import convertCountry from '../../../../helpers/convertCountry';
+import convertProficiency from '../../../../helpers/convertProficiency';
+import convertNationality from '../../../../helpers/convertNationality';
+import labelize from '../../../../helpers/labelize';
+import isUpperCase from '../../../../helpers/isUpperCase';
+import intersperse from '../../../../helpers/intersperse';
 
-import CommentPane from '../../shared/comment/CommentPane';
+import CommentPane from '../../../shared/comment/CommentPane';
 
 import {
   Button,
@@ -25,7 +25,7 @@ import {
   Badge,
 } from 'react-bootstrap';
 
-import actions from '../../../actions';
+import actions from '../../../../actions';
 
 function normalizeString(string) {
   const words = string.split('_');

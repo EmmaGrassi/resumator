@@ -14,7 +14,7 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-class NotAuthorized extends React.Component {
+export class NotAuthorized extends React.Component {
   handleHomeButtonClick(event) {
     event.preventDefault();
 

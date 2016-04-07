@@ -272,8 +272,6 @@ class Show extends React.Component {
 
   render() {
     const isFetching = this.props.show.isFetching;
-    const docxURL = `/api/employees/${this.props.show.item.email}/docx`;
-
     return (
       <Loader
         loaded={!isFetching}
@@ -294,7 +292,6 @@ class Show extends React.Component {
             <Button bsStyle="default" onClick={window.print}>
               PDF
             </Button>
-            <Button bsStyle="default" href={docxURL} download>DOCX</Button>
           </ButtonGroup>
         </div>
       </Loader>

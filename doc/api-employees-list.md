@@ -1,0 +1,20 @@
+Request:
+  Query String:
+    type: EMPLOYEE
+
+Response:
+  {
+  	"_links": {
+  		"self": {
+  			"href": "http://resumator-local.sytac.io:9000/api/employees?type=EMPLOYEE"
+  		},
+  		"employees": [{
+  			"href": "http://resumator-local.sytac.io:9000/api/employees"
+  		}]
+  	},
+  	"_embedded": {
+  		"xsrf": [{
+  			"token": "2A6D3086A04FBD84682CDC6CA2BA5BC9CB8BB0E8E110DD86FEC7E2992A630B914DDE561D7DEA0B9728FDB213AE7F6ECFA1AB4F62C9B6AD1EA1210B46321A0A3AEA26D87367E00B12CECD3819E6E5A6D68E3679C6513DF411F93A293C5BC651920340EAA3C536B9CBA72BC6E63A05452749AB457786548FBAF152A135496E6488B7A5B966D0FE97F62DCC3E41A4F712D7CD4B02BC"
+  		}]
+  	}
+  }

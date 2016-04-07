@@ -6,9 +6,9 @@ import {
   Input,
 } from 'react-bootstrap';
 
-import FormComponent from './Form';
-import countries from '../../../data/countries';
-import degrees from '../../../data/degrees';
+import FormComponent from '../Form';
+import countries from '../../../../data/countries';
+import degrees from '../../../../data/degrees';
 
 class EducationForm extends FormComponent {
 

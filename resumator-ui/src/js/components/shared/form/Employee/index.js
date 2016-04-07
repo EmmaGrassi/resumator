@@ -11,16 +11,15 @@ import {
 import { connect } from 'react-redux';
 import { pushPath } from 'redux-simple-router';
 
-import create from '../../../actions/employees/create';
-import createChange from '../../../actions/employees/createChange';
+import create from '../../../../actions/employees/create';
+import createChange from '../../../../actions/employees/createChange';
 
-import PersonalForm from './Personal';
-import ExperienceForm from './Experience';
-import EducationForm from './Education';
-import CoursesForm from './Courses';
-import LanguagesForm from './Languages';
-
-import ListContainer from './ListContainer';
+import PersonalForm from '../Personal';
+import ExperienceForm from '../Experience';
+import EducationForm from '../Education';
+import CoursesForm from '../Courses';
+import LanguagesForm from '../Languages';
+import ListContainer from '../ListContainer';
 
 const navItems = [
   'Personal',

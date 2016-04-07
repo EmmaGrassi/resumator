@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Table, Column, Cell } from 'fixed-data-table';
-import labelize from '../../helpers/labelize'
+import labelize from '../../../helpers/labelize'
 import _ from 'lodash';
 
 import {

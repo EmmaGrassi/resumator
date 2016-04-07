@@ -6,9 +6,9 @@ import {
   Input,
 } from 'react-bootstrap';
 
-import FormComponent from './Form';
+import FormComponent from '../Form';
 
-import proficiencies from '../../../data/proficiencies';
+import proficiencies from '../../../../data/proficiencies';
 
 class LanguagesForm extends FormComponent {
   constructor(props) {

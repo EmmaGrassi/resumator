@@ -1,7 +1,7 @@
 import React from 'react';
 import { storiesOf, action } from '@kadira/storybook';
-import CommentList from '../src/js/components/shared/comment/CommentList';
 import faker from 'faker';
+import CommentList from './';
 
 function getFauxComments(amount, isNested = false) {
   const values = [];
@@ -21,8 +21,9 @@ function getFauxComments(amount, isNested = false) {
 
 const fauxComments = getFauxComments(10);
 
+
 storiesOf('CommentList', module)
-  .add('with no comments', () => (
+  .add('without comments', () => (
     <CommentList comments={[]} />
   ))
   .add('with comments', () => (

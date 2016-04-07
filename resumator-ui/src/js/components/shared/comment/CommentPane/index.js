@@ -1,8 +1,8 @@
 import React from 'react';
 import faker from 'faker';
 import { connect } from 'react-redux';
-import CommentInput from './CommentInput';
-import CommentList from './CommentList';
+import CommentInput from '../CommentInput';
+import CommentList from '../CommentList';
 
 function getFauxComments(amount, isNested = false) {
   const values = [];

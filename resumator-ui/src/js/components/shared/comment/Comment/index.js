@@ -3,6 +3,7 @@ import moment from 'moment';
 
 export default function Comment(props) {
   const { comment } = props;
+  console.log('===>>', comment);
   return (<div className={`comment ${props.className || ''}`}>
     <div className="left-hand">
       <div

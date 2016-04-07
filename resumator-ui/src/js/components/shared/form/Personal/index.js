@@ -1,12 +1,12 @@
 import React from 'react';
 import { Button, Col, Input, Row, Alert } from 'react-bootstrap';
 
-import nationalities from '../../../data/nationalities';
-import countries from '../../../data/countries';
-import types from '../../../data/types';
-import labelize from '../../../helpers/labelize';
-import stripStyles from '../../../helpers/stripStyles';
-import FormComponent from './Form';
+import nationalities from '../../../../data/nationalities';
+import countries from '../../../../data/countries';
+import types from '../../../../data/types';
+import labelize from '../../../../helpers/labelize';
+import stripStyles from '../../../../helpers/stripStyles';
+import FormComponent from '../Form';
 
 class PersonalForm extends FormComponent {
   handleChange(name, event) {

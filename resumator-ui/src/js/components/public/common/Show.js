@@ -289,7 +289,6 @@ class Show extends React.Component {
             <Button bsStyle="default" href={docxURL} download>DOCX</Button>
           </ButtonGroup>
         </div>
-        <CommentPane show />
       </Loader>
     );
   }

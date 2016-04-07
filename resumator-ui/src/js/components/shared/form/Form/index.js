@@ -9,9 +9,9 @@ import {
 import ReactQuill from 'react-quill';
 
 import moment from 'moment';
-import labelize from '../../../helpers/labelize';
-import stripStyles from '../../../helpers/stripStyles';
-import quillFormat from '../../../data/quill-formats';
+import labelize from '../../../../helpers/labelize';
+import stripStyles from '../../../../helpers/stripStyles';
+import quillFormat from '../../../../data/quill-formats';
 
 class FormComponent extends React.Component {
 

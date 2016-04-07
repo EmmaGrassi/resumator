@@ -1,6 +1,6 @@
 import React from 'react';
 import { storiesOf, action } from '@kadira/storybook';
-import { CommentPane } from '../src/js/components/shared/comment/CommentPane';
+import { CommentPane } from './';
 import faker from 'faker';
 
 function getFauxComments(amount, isNested = false) {
@@ -23,18 +23,13 @@ const fauxComments = getFauxComments(10);
 
 storiesOf('CommentPane', module)
   .add('with no comments', () => (
-    <CommentPane comments={[]} />
-  ))
-  .add('with comments', () => (
-    <CommentPane comments={fauxComments} />
-  ))
-  .add('with change events', () => (
     <CommentPane
+      comments={[]}
       onInputChange={action('comment input change')}
-      comments={fauxComments}
+      onCommentCreate={action('comment created')}
     />
   ))
-  .add('with submit action', () => (
+  .add('with comments', () => (
     <CommentPane
       onInputChange={action('comment input change')}
       onCommentCreate={action('comment created')}

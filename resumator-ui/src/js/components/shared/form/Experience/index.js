@@ -6,10 +6,10 @@ import {
   Input,
 } from 'react-bootstrap';
 
-import FormComponent from './Form';
-import countries from '../../../data/countries';
-import labelize from '../../../helpers/labelize';
-import stripStyles from '../../../helpers/stripStyles';
+import FormComponent from '../Form';
+import countries from '../../../../data/countries';
+import labelize from '../../../../helpers/labelize';
+import stripStyles from '../../../../helpers/stripStyles';
 
 function needToCheckTheBox(item) {
   let { currentlyWorkHere } = item;

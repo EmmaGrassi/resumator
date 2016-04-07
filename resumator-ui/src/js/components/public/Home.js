@@ -6,6 +6,7 @@ const headerStyles = {
   flexDirection: 'column',
   justifyContent: 'space-around',
   alignItems: 'center',
+  border: 'none',
 };
 
 class Home extends React.Component {

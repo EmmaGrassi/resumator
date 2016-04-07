@@ -13,6 +13,22 @@ import labelize from '../../../../helpers/labelize';
 import stripStyles from '../../../../helpers/stripStyles';
 import quillFormat from '../../../../data/quill-formats';
 
+function showError(props, inputName){
+  const { hasFailed, errors } = props;
+  const currentSection = props.selectedTab.toLowerCase();
+  return hasFailed && errors[inputName] || hasFailed && errors[currentSection] &&
+  errors[currentSection][props.index] && errors[currentSection][props.index][inputName];
+}
+
+function getErrorMsg(props, inputName){
+  const { errors } = props;
+  const currentSection = props.selectedTab.toLowerCase();
+  return errors[currentSection] &&
+  errors[currentSection][props.index] &&
+  errors[currentSection][props.index][inputName] ?
+  errors[currentSection][props.index][inputName] : errors[inputName]
+}
+
 class FormComponent extends React.Component {
 
   handleQuillChange(name, value) {
@@ -38,11 +54,14 @@ class FormComponent extends React.Component {
       ...attrs,
     };
 
-    if (hasFailed && errors[inputName]) {
+
+    if (showError(this.props, inputName)) {
+      const helpMsg = getErrorMsg(this.props, inputName);
       props.bsStyle = 'error';
-      props.help = errors[inputName];
+      props.help = helpMsg;
       props.hasFeedback = true;
     }
+
 
     return (<Input {...props} />);
   }
@@ -94,9 +113,10 @@ class FormComponent extends React.Component {
       autoFocus,
     };
 
-    if (hasFailed && errors[inputName]) {
+    if (showError(this.props, inputName)) {
+      const help = getErrorMsg(this.props, inputName);
       props.bsStyle = 'error';
-      props.help = errors[inputName];
+      props.help = help;
       props.hasFeedback = true;
     }
 

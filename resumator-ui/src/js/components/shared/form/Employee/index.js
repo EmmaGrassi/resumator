@@ -37,6 +37,11 @@ const forms = {
   Languages: LanguagesForm,
 };
 
+function findErrorTab(props) {
+  const personalTabKeys = ['role', 'surname', 'name', 'email', 'phonenumber', 'dateOfBirth', 'cityOfResidence', 'countryOfResidence'];
+  return props.errors ? Object.keys(props.errors).map(key => personalTabKeys.includes(key) ? 'personal' : key.toLowerCase()) : [];
+}
+
 function mapStateToProps(state) {
   return {
     profile: state.user.profile.toJS(),
@@ -106,9 +111,17 @@ class EmployeeForm extends React.Component {
 
 
   renderNavItems() {
+    const errors = findErrorTab(this.props);
     return navItems.map((v, i) => {
+      const hasErrors = errors.includes(v.toLowerCase());
       if (i === 0) {
-        return <NavItem key={i} eventKey={i + 1} ref={`${v}Tab`}>{v}</NavItem>;
+        return (<NavItem
+          key={i}
+          eventKey={i + 1}
+          ref={`${v}Tab`}
+          className={hasErrors ? 'withError' : null}
+        >{v}
+        </NavItem>);
       }
 
       return (
@@ -116,6 +129,7 @@ class EmployeeForm extends React.Component {
           key={i} eventKey={i + 1}
           ref={`${v}Tab`}
           disabled={!this.isSaved()}
+          className={hasErrors ? 'withError' : null}
         >
           {v}
         </NavItem>);
@@ -147,6 +161,7 @@ class EmployeeForm extends React.Component {
       values,
       profile,
       handleCancel,
+      selectedTab: this.state.selectedTab,
     };
 
     return (this.state.selectedTab === 'Personal') ?

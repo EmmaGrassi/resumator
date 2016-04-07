@@ -180,7 +180,7 @@ class Show extends React.Component {
   renderEducation() {
     const edus = this.props.show.item.education;
     if (edus.length === 0) return this.renderNoData('Education');
-    return (<div className="section education">
+    return (<div className="section education all-in-new-page">
       <div className="section-header">Education</div>
       <div className="section-content">
           {edus.map((v, i) => {
@@ -218,7 +218,7 @@ class Show extends React.Component {
   renderLanguages() {
     const langs = this.props.show.item.languages;
     if (langs.length === 0) return this.renderNoData('Languages');
-    return (<div className="section languages">
+    return (<div className="section languages all-in-new-page">
       <div className="section-header">Languages</div>
       <div className="section-content list-item">
           {langs.map((v, i) => {
@@ -236,7 +236,7 @@ class Show extends React.Component {
   renderCourses() {
     const courses = this.props.show.item.courses;
     if (courses.length === 0) return this.renderNoData('Courses');
-    return (<div className="section courses">
+    return (<div className="section courses all-in-new-page">
       <div className="section-header">Courses</div>
       <div className="section-content">
           {courses.map((v, i) => {
@@ -260,7 +260,7 @@ class Show extends React.Component {
   }
 
   renderNoData(section) {
-    return (<div className="section courses">
+    return (<div className="section noprint">
       <div className="section-header">{section}</div>
       <div className="section-content">
         No data for {section.toLowerCase()}

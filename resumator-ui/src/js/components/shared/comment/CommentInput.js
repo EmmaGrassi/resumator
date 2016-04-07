@@ -4,21 +4,17 @@ import {
   Button,
 } from 'react-bootstrap';
 
-function handleChange(e, value) {
-  console.log(e, value);
-}
-
-const inputProps = {
-  type: 'textarea',
-  placeholder: 'Write a comment...',
-  label: 'Add comment',
-  onChange: handleChange,
-  className: 'comment-input',
-};
-
 export default function CommentInput(props) {
+  const inputProps = {
+    type: 'textarea',
+    placeholder: 'Write a comment...',
+    label: 'Add comment',
+    onChange: props.onInputChange,
+    className: 'comment-input',
+  };
+
   return (<div className="comment-input-container">
     <Input { ...inputProps } />
-    <Button bsStyle="primary" className="pull-right">Submit</Button>
+    <Button bsStyle="primary" onClick={props.onCommentCreate} className="pull-right">Submit</Button>
   </div>);
 }

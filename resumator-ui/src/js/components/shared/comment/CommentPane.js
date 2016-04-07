@@ -33,10 +33,13 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-function CommentPane(props) {
+export function CommentPane(props) {
   return (<div className="comment-pane">
     <CommentList comments={props.comments} />
-    <CommentInput />
+    <CommentInput
+      onCommentCreate={props.onCommentCreate}
+      onInputChange={props.onInputChange}
+    />
   </div>);
 }
 

@@ -1,10 +1,12 @@
 import { configure } from '@kadira/storybook';
+import '../src/css/bootstrap.min.css';
+import '../src/css/bootstrap-theme.min.css';
+import '../src/styles/app.less';
+
+const req = require.context('../src/js/components/', true, /Story\.js$/);
 
 function loadStories() {
-  require('../stories/button');
-  require('../stories/comments');
-  require('../stories/commentPane');
-  // require as many as stories you need.
+  req.keys().forEach(req);
 }
 
 configure(loadStories, module);

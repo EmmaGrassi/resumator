@@ -2,6 +2,7 @@ import immutable from 'immutable';
 import { isNumber } from 'lodash';
 
 import employee from '../common/employee';
+import parseErrorFields from '../../helpers/parseErrorFields';
 
 const defaults = immutable.Map({
   isFetching: false,
@@ -11,6 +12,7 @@ const defaults = immutable.Map({
   item: employee,
   errors: immutable.Map(),
 });
+
 
 function edit(state = defaults, action = {}) {
   switch (action.type) {
@@ -30,7 +32,7 @@ function edit(state = defaults, action = {}) {
       return state
         .set('isFetching', false)
         .set('hasFailed', true)
-        .set('errors', action.errors);
+        .set('errors', action.errors.fields);
 
     case 'employees:edit:change':
       return state
@@ -43,13 +45,14 @@ function edit(state = defaults, action = {}) {
     case 'employees:update:success':
       return state
         .set('isSaving', false)
-        .set('hasFailed', false);
+        .set('hasFailed', false)
+        .set('errors', null);
 
     case 'employees:update:failure':
       return state
         .set('isSaving', false)
         .set('hasFailed', true)
-        .set('errors', action.errors);
+        .set('errors', parseErrorFields(action.errors.fields, state));
 
     case 'employees:addEntry':
       const type = action.payload;
@@ -68,5 +71,6 @@ function edit(state = defaults, action = {}) {
       return state;
   }
 }
+
 
 export default edit;

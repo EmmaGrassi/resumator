@@ -2,9 +2,7 @@ import { isEmpty, isString } from 'lodash';
 import { pushPath } from 'redux-simple-router';
 
 import store from '../../store';
-
 import employeeTypeToURL from '../../helpers/employeeTypeToURL';
-
 import updateService from '../../services/employee/update';
 
 import showAlert from '../alerts/show';
@@ -39,16 +37,18 @@ export default function update(email) {
     data.courses = data.courses.filter(x => !isEmpty(x));
     data.languages = data.languages.filter(x => !isEmpty(x));
 
-
-    console.log('from update', xsrfToken);
     updateService(email, data, xsrfToken, (error, results) => {
       if (error) {
-        handleRequestError(error)();
+        const whatHappened = Object.keys(results.fields)
+          .map(k => results.fields[k])
+          .join(' and ');
+
+        handleRequestError(error)(whatHappened);
         dispatch({ type: 'employees:update:failure', errors: results });
 
         dispatch(showAlert({
           level: 'danger',
-          message: `Failed to update user because of ${results}`,
+          message: `Failed to update user because of ${JSON.stringify(whatHappened)}`,
           id: 'user:update:failure',
         }));
 

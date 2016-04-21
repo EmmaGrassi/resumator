@@ -3,9 +3,6 @@ package io.sytac.resumator.security;
 import io.sytac.resumator.ConfigurationEntries;
 import lombok.extern.slf4j.Slf4j;
 
-import org.joda.time.Days;
-import org.joda.time.LocalDate;
-
 import javax.annotation.Priority;
 import javax.inject.Inject;
 import javax.ws.rs.Priorities;
@@ -15,7 +12,6 @@ import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.SecurityContext;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.Optional;
 
 /**
@@ -51,17 +47,20 @@ public class Oauth2AuthenticationFilter implements ContainerRequestFilter {
             Optional<Cookie> emailCookie  = Optional.ofNullable(requestContext.getCookies().get(Oauth2AuthenticationFilter.EMAIL_COOKIE));
             Optional<Cookie> domainCookie = Optional.ofNullable(requestContext.getCookies().get(Oauth2AuthenticationFilter.DOMAIN_COOKIE));
             
-            log.info("Authentication Cookie retrieved: "+authCookie.isPresent());
+            
             Optional<Identity> user = Optional.empty();
             
             try {
-                if(authCookie.isPresent()){
+                user=authCookie.flatMap(cookie->{
+                    log.info("Authentication Cookie retrieved ");
                     String key=security.getConfig().getProperty(ConfigurationEntries.COOKIE_KEY).get();
                     String cookieDecrypted=authService.decryptEntity(authCookie.get().getValue(),key);
 
-                    user = security.checkIfCookieValid(emailCookie, domainCookie, user,cookieDecrypted);
-                      
-                }
+                    return security.checkIfCookieValid(emailCookie, domainCookie,cookieDecrypted);
+                    
+                });
+                
+                
             } catch (Exception e) {
                 log.error("Error occured during cookie validation,cookie is being invalidated."+e.getMessage()+" "+e.getCause());
                 //do nothing since empty user will be set to the context.
